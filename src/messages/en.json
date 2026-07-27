@@ -316,7 +316,11 @@
       "newLeads": "New leads",
       "totalProjects": "Published projects",
       "totalServices": "Active services",
-      "recentLeads": "Recent leads"
+      "recentLeads": "Recent leads",
+      "analyticsTitle": "Analytics",
+      "analyticsHint": "Site visitor and performance metrics (opens in the Vercel dashboard).",
+      "analyticsVisitors": "Visitors & pages",
+      "analyticsPerformance": "Performance (Core Web Vitals)"
     },
     "leads": {
       "title": "Received leads",

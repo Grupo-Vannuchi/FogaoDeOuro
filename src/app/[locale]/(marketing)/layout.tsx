@@ -1,4 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsappButton } from "@/components/layout/whatsapp-button";
@@ -41,6 +43,10 @@ export default async function MarketingLayout({
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsappButton />
+      {/* Public-site analytics only — the admin layout is intentionally excluded
+          so internal usage doesn't pollute visitor/CWV stats. */}
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }

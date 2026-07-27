@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { resolveLocale } from "@/i18n/routing";
 
 /** Funnels are unlisted lead-capture pages — never indexed. */
@@ -20,5 +22,11 @@ export default async function FunnelsLayout({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
-  return <main className="flex min-h-screen flex-col">{children}</main>;
+  return (
+    <main className="flex min-h-screen flex-col">
+      {children}
+      <Analytics />
+      <SpeedInsights />
+    </main>
+  );
 }
