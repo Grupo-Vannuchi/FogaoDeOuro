@@ -343,7 +343,8 @@
       "filterTagAll": "Todas as tags",
       "filterClear": "Limpar filtros",
       "addTag": "Adicionar tag",
-      "removeTag": "Remover tag {tag}"
+      "removeTag": "Remover tag {tag}",
+      "whatsappSent": "✓ WhatsApp"
     },
     "projects": {
       "title": "Portfólio",
@@ -801,6 +802,31 @@
       "noQr": "QR Code indisponível. Tente novamente.",
       "waiting": "Aguardando conexão…",
       "close": "Fechar"
+    },
+    "leadNotify": {
+      "title": "Notificações de leads no WhatsApp",
+      "hint": "Envie todo lead que chegar pelo site para um grupo do WhatsApp do comercial. Escolha a instância e o grupo, ative e salve.",
+      "instance": "Instância",
+      "group": "Grupo do WhatsApp",
+      "selectInstance": "Selecione a instância…",
+      "selectGroup": "Selecione o grupo…",
+      "loadingInstances": "Carregando instâncias…",
+      "instancesError": "Não foi possível carregar as instâncias.",
+      "loadingGroups": "Carregando grupos…",
+      "groupsError": "Não foi possível carregar os grupos.",
+      "enable": "Enviar novos leads automaticamente",
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "saved": "Configuração salva.",
+      "forward": "Encaminhar",
+      "error": {
+        "missing_target": "Escolha uma instância e um grupo para ativar.",
+        "unauthorized": "Sessão expirada. Faça login novamente.",
+        "notConfigured": "Configure o grupo primeiro.",
+        "sendFailed": "Falha ao enviar. Tente de novo."
+      },
+      "disconnected": "desconectada",
+      "instanceDisconnected": "Instância desconectada. Conecte-a no painel de WhatsApp e tente de novo."
     }
   }
 }

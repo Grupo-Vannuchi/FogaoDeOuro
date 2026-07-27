@@ -17,6 +17,8 @@ export const tags = {
   funnels: "funnels",
   /** WhatsApp instances fetched from the (slow) Evolution server. */
   whatsappInstances: "whatsapp-instances",
+  /** WhatsApp groups of an Evolution instance. */
+  whatsappGroups: "whatsapp-groups",
 } as const;
 
 /**

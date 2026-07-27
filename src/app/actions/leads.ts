@@ -1,6 +1,8 @@
 "use server";
 
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { notifyLead } from "@/lib/lead-notify";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import {
   careerSchema,
@@ -36,7 +38,7 @@ export async function submitContactLead(
 
   try {
     const { name, email, phone, company, message } = parsed.data;
-    await prisma.lead.create({
+    const lead = await prisma.lead.create({
       data: {
         type: "CONTACT",
         name,
@@ -47,6 +49,9 @@ export async function submitContactLead(
         locale: resolveLocale(locale),
       },
     });
+    // Push to the sales WhatsApp group after the response — never delays or fails
+    // the visitor's submit.
+    after(() => notifyLead(lead));
     return { ok: true };
   } catch (error) {
     console.error("Failed to persist contact lead", error);
@@ -73,7 +78,7 @@ export async function submitCareerLead(
 
   try {
     const { name, email, phone, role, portfolio, message } = parsed.data;
-    await prisma.lead.create({
+    const lead = await prisma.lead.create({
       data: {
         type: "CAREER",
         name,
@@ -85,6 +90,7 @@ export async function submitCareerLead(
         locale: resolveLocale(locale),
       },
     });
+    after(() => notifyLead(lead));
     return { ok: true };
   } catch (error) {
     console.error("Failed to persist career lead", error);

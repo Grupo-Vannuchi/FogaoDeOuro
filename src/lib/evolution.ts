@@ -207,6 +207,95 @@ export function invalidateInstances(): void {
   updateTag(tags.whatsappInstances);
 }
 
+// --- Groups (lead-notification target picker) ---
+
+export type EvoGroup = { id: string; name: string };
+
+/** Raw group list of an instance. Slow-ish (~3s), so it throws on failure (never
+ * cached) and gets a generous timeout. */
+async function loadGroups(instance: string): Promise<EvoGroup[]> {
+  const res = await evoRequest<unknown>(
+    "GET",
+    `/group/fetchAllGroups/${encodeURIComponent(instance)}?getParticipants=false`,
+    undefined,
+    15_000,
+  );
+  if (!res.ok) throw new Error(res.error);
+  const raw = Array.isArray(res.data)
+    ? res.data
+    : ((res.data as Record<string, unknown>)?.groups ?? []);
+  const list = Array.isArray(raw) ? raw : [];
+  return list
+    .map((g) => {
+      const o = (g ?? {}) as Record<string, unknown>;
+      const id = pick(o, ["id", "jid"]);
+      const name = pick(o, ["subject", "name"]) ?? id;
+      return id ? { id, name: name ?? id } : null;
+    })
+    .filter(Boolean) as EvoGroup[];
+}
+
+// `unstable_cache` keys on the function arguments too, so each instance gets its
+// own 5-min entry.
+const cachedGroups = unstable_cache(loadGroups, ["whatsapp-groups"], {
+  tags: [tags.whatsappGroups],
+  revalidate: 300,
+});
+
+/** List an instance's WhatsApp groups (the ones it belongs to). Cached; pass
+ * `force` for a fresh read. */
+export async function fetchGroups(
+  instance: string,
+  force = false,
+): Promise<EvoResult<EvoGroup[]>> {
+  if (!isEvolutionConfigured()) return { ok: false, error: "not_configured" };
+  if (!instance) return { ok: false, error: "no_instance" };
+  try {
+    const data = force ? await loadGroups(instance) : await cachedGroups(instance);
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "fetch_failed",
+    };
+  }
+}
+
+/** Send a plain-text message to a WhatsApp group (by its JID) from an instance.
+ * Best-effort — never throws. */
+export async function sendToGroup(
+  instance: string,
+  groupJid: string,
+  message: string,
+): Promise<SendResult> {
+  if (!isEvolutionConfigured()) return { ok: false, error: "not_configured" };
+  if (!instance || !groupJid) return { ok: false, error: "no_target" };
+  if (!message.trim()) return { ok: false, error: "empty_message" };
+  const url = `${serverBase()}/message/sendText/${encodeURIComponent(instance)}`;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: env.EVOLUTION_API_KEY!,
+      },
+      body: JSON.stringify({ number: groupJid, text: message }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      const error = `http_${res.status}: ${body.slice(0, 200)}`;
+      console.error("Evolution sendToGroup failed", error);
+      return { ok: false, error };
+    }
+    return { ok: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "fetch_failed";
+    console.error("Evolution sendToGroup error", message);
+    return { ok: false, error: message };
+  }
+}
+
 /** Create an instance (Baileys/WhatsApp) and return its first QR code. */
 export async function createInstance(name: string): Promise<EvoResult<EvoQrCode>> {
   const res = await evoRequest<Record<string, unknown>>("POST", "/instance/create", {

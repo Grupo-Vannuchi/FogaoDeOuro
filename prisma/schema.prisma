@@ -190,6 +190,9 @@ model Lead {
   message   String
   tags      String[]   @default([]) // free-form labels applied by admins for triage
   locale    String     @default("pt")
+  /// Set when this lead was pushed to the sales WhatsApp group (auto or manual).
+  /// Null = not delivered yet; drives the "✓ WhatsApp" badge + resend recovery.
+  whatsappNotifiedAt DateTime?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -387,6 +390,21 @@ model GoogleAccount {
   updatedAt    DateTime  @updatedAt
 
   @@map("google_account")
+}
+
+/// Singleton config for pushing new site leads to a sales WhatsApp group via
+/// Evolution. `instance` is an Evolution instance name; `groupId` is the group
+/// JID (`…@g.us`). When `enabled` is false or unset, no auto-notification runs.
+model LeadNotificationConfig {
+  id        String   @id @default(cuid())
+  enabled   Boolean  @default(false)
+  instance  String? // Evolution instance name that sends the message
+  groupId   String? // WhatsApp group JID ("…@g.us")
+  groupName String? // group subject, for display in the admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("lead_notification_config")
 }
 
 /// Editable GLOBAL default lead-capture block — one row per locale. The admin

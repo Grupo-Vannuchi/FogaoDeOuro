@@ -1,0 +1,56 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "@/i18n/navigation";
+import { Send, Loader2, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { forwardLeadAction } from "@/app/actions/lead-notify";
+
+function errorKey(error: string): "notConfigured" | "sendFailed" {
+  return error === "not_configured" ? "notConfigured" : "sendFailed";
+}
+
+/** Manually (re)send a lead to the sales WhatsApp group. Refreshes on success so
+ * the "✓ WhatsApp" badge appears. */
+export function LeadForwardButton({ id }: { id: string }) {
+  const t = useTranslations("admin.leadNotify");
+  const router = useRouter();
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
+  const [err, setErr] = useState<string | null>(null);
+
+  async function onClick() {
+    setErr(null);
+    setState("sending");
+    const res = await forwardLeadAction(id);
+    if (res.ok) {
+      setState("sent");
+      router.refresh();
+    } else {
+      setState("error");
+      setErr(t(`error.${errorKey(res.error)}` as "error.sendFailed"));
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={state === "sending"}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand hover:text-foreground disabled:opacity-60"
+      >
+        {state === "sending" ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : state === "sent" ? (
+          <Check className="size-4 text-emerald-600" />
+        ) : (
+          <Send className="size-4" />
+        )}
+        {t("forward")}
+      </button>
+      {err ? <span className="text-xs text-red-500">{err}</span> : null}
+    </div>
+  );
+}

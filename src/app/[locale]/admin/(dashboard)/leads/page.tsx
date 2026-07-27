@@ -4,6 +4,8 @@ import { getLeads, getLeadTags } from "@/lib/admin-queries";
 import { LeadStatusButtons } from "@/components/admin/lead-status-buttons";
 import { LeadFilters } from "@/components/admin/lead-filters";
 import { LeadTags } from "@/components/admin/lead-tags";
+import { LeadNotifyConfig } from "@/components/admin/lead-notify-config";
+import { LeadForwardButton } from "@/components/admin/lead-forward-button";
 import { cn } from "@/lib/utils";
 import { resolveLocale } from "@/i18n/routing";
 
@@ -63,6 +65,8 @@ export default async function LeadsPage({
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
 
+      <LeadNotifyConfig />
+
       <LeadFilters tags={allTags} current={{ type, status, tag }} />
 
       {leads.length === 0 ? (
@@ -91,6 +95,11 @@ export default async function LeadsPage({
                     >
                       {statusLabel[lead.status]}
                     </span>
+                    {lead.whatsappNotifiedAt ? (
+                      <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
+                        {t("whatsappSent")}
+                      </span>
+                    ) : null}
                   </div>
                   <a
                     href={`mailto:${lead.email}`}
@@ -125,7 +134,10 @@ export default async function LeadsPage({
 
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
                 <LeadTags id={lead.id} tags={lead.tags} />
-                <LeadStatusButtons id={lead.id} status={lead.status} />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <LeadStatusButtons id={lead.id} status={lead.status} />
+                  <LeadForwardButton id={lead.id} />
+                </div>
               </div>
             </li>
           ))}

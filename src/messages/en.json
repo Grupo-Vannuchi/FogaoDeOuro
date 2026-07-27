@@ -343,7 +343,8 @@
       "filterTagAll": "All tags",
       "filterClear": "Clear filters",
       "addTag": "Add tag",
-      "removeTag": "Remove tag {tag}"
+      "removeTag": "Remove tag {tag}",
+      "whatsappSent": "✓ WhatsApp"
     },
     "projects": {
       "title": "Portfolio",
@@ -801,6 +802,31 @@
       "noQr": "QR code unavailable. Please try again.",
       "waiting": "Waiting for connection…",
       "close": "Close"
+    },
+    "leadNotify": {
+      "title": "Lead notifications on WhatsApp",
+      "hint": "Send every lead from the site to a sales WhatsApp group. Pick the instance and group, enable and save.",
+      "instance": "Instance",
+      "group": "WhatsApp group",
+      "selectInstance": "Select the instance…",
+      "selectGroup": "Select the group…",
+      "loadingInstances": "Loading instances…",
+      "instancesError": "Couldn't load instances.",
+      "loadingGroups": "Loading groups…",
+      "groupsError": "Couldn't load groups.",
+      "enable": "Send new leads automatically",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Settings saved.",
+      "forward": "Forward",
+      "error": {
+        "missing_target": "Pick an instance and a group to enable.",
+        "unauthorized": "Session expired. Please log in again.",
+        "notConfigured": "Configure the group first.",
+        "sendFailed": "Send failed. Please try again."
+      },
+      "disconnected": "disconnected",
+      "instanceDisconnected": "Instance disconnected. Connect it in the WhatsApp panel and try again."
     }
   }
 }
