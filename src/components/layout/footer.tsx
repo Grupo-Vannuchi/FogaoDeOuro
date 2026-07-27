@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
-import { Instagram, Linkedin, Music2, Facebook } from "lucide-react";
+import { Music2 } from "lucide-react";
+import { Instagram, Linkedin, Facebook } from "@/components/ui/brand-icons";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
 import { Container } from "@/components/ui/container";

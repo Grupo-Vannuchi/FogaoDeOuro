@@ -1,5 +1,4 @@
 import {
-  Instagram,
   Palette,
   Camera,
   Megaphone,
@@ -22,6 +21,7 @@ import {
   Building2,
   type LucideIcon,
 } from "lucide-react";
+import { Instagram } from "@/components/ui/brand-icons";
 
 /**
  * Maps the icon names stored on `Service.icon` to lucide components. Add new

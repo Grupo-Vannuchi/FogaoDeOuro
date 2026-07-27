@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin } from "@/components/ui/brand-icons";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { getTeam } from "@/lib/queries";
