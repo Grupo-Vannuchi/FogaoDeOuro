@@ -30,9 +30,6 @@
   "home": {
     "hero": {
       "eyebrow": "Há {years} anos no mercado",
-      "titleLead": "Sua marca na primeira página do Google",
-      "rotating": ["Focada em crescimento previsível!"],
-      "subtitle": "A N8X Marketing usa a estratégia de Ideal Customer Profile (ICP) para encontrar, abordar e engajar clientes ideais todos os dias.",
       "primaryCta": "Começar um projeto",
       "secondaryCta": "Conhecer trabalhos",
       "carouselLabel": "Destaques",
@@ -41,16 +38,16 @@
       "goToSlide": "Ir para o slide {n}",
       "slides": [
         {
-          "title": "Marketing que faz sua marca crescer",
-          "subtitle": "Estratégia, conteúdo e tráfego pago em uma operação integrada e focada em resultado."
+          "title": "Deixamos o seu site na primeira página de pesquisas no Google",
+          "subtitle": "O topo do Google traz visibilidade orgânica e tráfego qualificado para quem busca pelo seu serviço."
         },
         {
-          "title": "Conteúdo e redes sociais que vendem",
-          "subtitle": "Transformamos sua audiência em clientes com conteúdo consistente e com a cara da marca."
+          "title": "Gestão de redes sociais que faz você faturar mais com vendas no mercado digital",
+          "subtitle": "Redes sociais lucrativas com posicionamento de marca focado em transformar seguidores em clientes rentáveis."
         },
         {
-          "title": "Campanhas orientadas a dados, resultado de verdade",
-          "subtitle": "Mídia paga e análise para escalar seu negócio com previsibilidade."
+          "title": "Prospecção, atendimento e marketing automatizados para o seu negócio não parar de crescer",
+          "subtitle": "Escale sua prospecção e otimize seu atendimento com processos que trabalham 24 horas por você."
         }
       ]
     },
@@ -278,6 +275,12 @@
     "label": "Idioma",
     "pt": "Português",
     "en": "English"
+  },
+  "theme": {
+    "toggle": "Tema: {mode}. Clique para alternar.",
+    "system": "sistema",
+    "light": "claro",
+    "dark": "escuro"
   },
   "notFound": {
     "title": "Página não encontrada",

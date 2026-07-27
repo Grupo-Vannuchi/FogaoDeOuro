@@ -74,6 +74,14 @@ export default async function LocaleLayout({
     >
       <head>
         <ThemeStyle />
+        {/* Applies a saved theme choice before first paint so the page never
+            flashes the wrong palette. No stored choice (or "system") leaves the
+            attribute off, so the OS preference wins. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
       </head>
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

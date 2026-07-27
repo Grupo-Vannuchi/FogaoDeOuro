@@ -23,9 +23,11 @@ function LogoRow({
           <Image
             src={client.logoUrl}
             alt={client.name}
-            width={140}
-            height={70}
-            className="h-12 w-auto opacity-60 grayscale transition duration-300 hover:scale-105 hover:opacity-100 hover:grayscale-0"
+            // 2x the rendered height (h-20 = 80px) so logos stay sharp on
+            // retina screens — bumping the CSS size alone would blur them.
+            width={280}
+            height={140}
+            className="h-20 w-auto opacity-60 grayscale transition duration-300 hover:scale-105 hover:opacity-100 hover:grayscale-0"
           />
         );
         return (
@@ -64,7 +66,7 @@ export async function Clients() {
   const row = Array.from({ length: repeats }, () => clients).flat();
 
   return (
-    <section className="border-y border-border py-12">
+    <section className="border-y border-border py-16">
       <Container>
         <Reveal
           as="h2"

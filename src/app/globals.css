@@ -41,14 +41,24 @@
   --border: #e4e4e7;
 }
 
+/* Dark neutrals. Mirrors the three-state logic in `ThemeStyle`: follow the OS by
+   default, but let an explicit `data-theme` choice win. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --card: #111113;
     --card-foreground: #ededed;
     --muted: #1c1c1f;
     --muted-foreground: #a1a1aa;
     --border: #27272a;
   }
+}
+
+:root[data-theme="dark"] {
+  --card: #111113;
+  --card-foreground: #ededed;
+  --muted: #1c1c1f;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
 }
 
 @layer base {

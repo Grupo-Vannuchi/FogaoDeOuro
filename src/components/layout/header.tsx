@@ -6,6 +6,7 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import {
   InformationMenu,
   type InformationLink,
@@ -93,6 +94,7 @@ export function Header({
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <LocaleSwitcher />
           <Link href="/contact" className={buttonVariants({ size: "sm" })}>
             {tc("talkToUs")}
@@ -199,7 +201,10 @@ export function Header({
             ) : null}
 
             <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-              <LocaleSwitcher />
+              <div className="flex items-center gap-1">
+                <ThemeToggle />
+                <LocaleSwitcher />
+              </div>
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}

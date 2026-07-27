@@ -30,9 +30,6 @@
   "home": {
     "hero": {
       "eyebrow": "{years} years in the market",
-      "titleLead": "Your brand on the first page of Google",
-      "rotating": ["Speaks out, and N8X sets the tone!"],
-      "subtitle": "N8X Marketing uses the Ideal Customer Profile (ICP) strategy to find, approach, and engage your ideal customers every day.",
       "primaryCta": "Start a project",
       "secondaryCta": "See our work",
       "carouselLabel": "Highlights",
@@ -41,16 +38,16 @@
       "goToSlide": "Go to slide {n}",
       "slides": [
         {
-          "title": "Marketing that makes your brand grow",
-          "subtitle": "Strategy, content and paid traffic in one integrated operation, focused on results."
+          "title": "We put your site on Google's first page",
+          "subtitle": "Ranking at the top brings organic visibility and qualified traffic from people already searching for your service."
         },
         {
-          "title": "Content and social media that sell",
-          "subtitle": "We turn your audience into customers with consistent, on-brand content."
+          "title": "Social media management that turns your channels into revenue",
+          "subtitle": "Profitable social media with brand positioning built to turn followers into paying customers."
         },
         {
-          "title": "Data-driven campaigns, real results",
-          "subtitle": "Paid media and analytics to scale your business with predictability."
+          "title": "Automated prospecting, support and marketing so your business never stops growing",
+          "subtitle": "Scale your outreach and streamline support with processes that work for you around the clock."
         }
       ]
     },
@@ -278,6 +275,12 @@
     "label": "Language",
     "pt": "Português",
     "en": "English"
+  },
+  "theme": {
+    "toggle": "Theme: {mode}. Click to switch.",
+    "system": "system",
+    "light": "light",
+    "dark": "dark"
   },
   "notFound": {
     "title": "Page not found",

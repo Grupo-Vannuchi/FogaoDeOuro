@@ -9,9 +9,9 @@ import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carouse
  * copy in `home.hero.slides`. Swap for the agency's own photography when ready.
  */
 const slideImages = [
-  "/hero/slide-1.jpg", // marketing team meeting
-  "/hero/slide-2.jpg", // modern office interior
-  "/hero/slide-3.jpg", // marketing analytics / data
+  "/hero/slide-1.webp", // Google first-page positioning
+  "/hero/slide-2.webp", // social media management / conversion
+  "/hero/slide-3.webp", // automated prospecting & marketing
 ];
 
 export async function Hero() {
