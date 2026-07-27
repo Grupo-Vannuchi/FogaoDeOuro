@@ -2,6 +2,7 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 import { sendToGroup } from "@/lib/evolution";
 import { normalizePhoneBR, toWhatsappNumber } from "@/lib/phone";
+import { sourceLabel } from "@/lib/attribution";
 
 /**
  * Pushes a new (or manually forwarded) site lead to the sales WhatsApp group via
@@ -20,6 +21,12 @@ export type LeadForNotify = {
   role: string | null;
   portfolio: string | null;
   message: string;
+  referrer: string | null;
+  landingPage: string | null;
+  landingLabel: string | null;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
   createdAt: Date;
 };
 
@@ -53,6 +60,19 @@ export function formatLeadMessage(
     lines.push(`🏢 Empresa: ${lead.company}`);
   }
   lines.push("", "💬 Mensagem:", lead.message.trim());
+
+  // Attribution — how the lead found us.
+  lines.push(
+    "",
+    `📍 Origem: ${sourceLabel({
+      referrer: lead.referrer ?? undefined,
+      utmSource: lead.utmSource ?? undefined,
+    })}`,
+  );
+  const landing = lead.landingLabel ?? lead.landingPage;
+  if (landing) lines.push(`🔗 Entrou por: ${landing}`);
+  if (lead.utmCampaign) lines.push(`🏷️ Campanha: ${lead.utmCampaign}`);
+
   lines.push("", `🕓 ${dateFmt.format(lead.createdAt)}`);
 
   const e164 = lead.phone ? normalizePhoneBR(lead.phone) : null;

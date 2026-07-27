@@ -1,0 +1,81 @@
+import "server-only";
+import { prisma } from "@/lib/prisma";
+import { localize } from "@/lib/content";
+import { locales, defaultLocale, type Locale } from "@/i18n/routing";
+
+/**
+ * Turns a captured landing path (e.g. `/informations/agencia-de-seo`) into a
+ * human label ("Informações / Agência de SEO"), resolving content titles from
+ * the DB. Called once when a lead is created and the result is FROZEN on the
+ * lead — so renaming/deleting content later never rewrites historical
+ * attribution. Best-effort: falls back to the section + slug, then the path.
+ */
+
+const SECTION_LABELS: Record<Locale, Record<string, string>> = {
+  pt: {
+    "": "Início",
+    about: "Quem somos",
+    services: "Serviços",
+    portfolio: "Portfólio",
+    informations: "Informações",
+    contact: "Contato",
+    careers: "Trabalhe conosco",
+    privacy: "Privacidade",
+    terms: "Termos",
+  },
+  en: {
+    "": "Home",
+    about: "About",
+    services: "Services",
+    portfolio: "Portfolio",
+    informations: "Information",
+    contact: "Contact",
+    careers: "Careers",
+    privacy: "Privacy",
+    terms: "Terms",
+  },
+};
+
+async function contentTitle(
+  section: string,
+  slug: string,
+  locale: Locale,
+): Promise<string | null> {
+  let row: { title: unknown } | null = null;
+  if (section === "informations") {
+    row = await prisma.information.findFirst({ where: { slug }, select: { title: true } });
+  } else if (section === "services") {
+    row = await prisma.service.findFirst({ where: { slug }, select: { title: true } });
+  } else if (section === "portfolio") {
+    row = await prisma.project.findFirst({ where: { slug }, select: { title: true } });
+  }
+  return row ? localize(row.title, locale) : null;
+}
+
+export async function resolveLandingLabel(
+  path: string,
+  locale: string,
+): Promise<string> {
+  const loc: Locale = (locales as readonly string[]).includes(locale)
+    ? (locale as Locale)
+    : defaultLocale;
+  try {
+    const seg = path
+      .split("?")[0]
+      .split("/")
+      .filter(Boolean); // ["informations","agencia-de-seo"] (or ["en", …])
+    if (seg[0] && (locales as readonly string[]).includes(seg[0])) seg.shift();
+    const section = seg[0] ?? "";
+    const slug = seg[1];
+    const sectionLabel =
+      SECTION_LABELS[loc][section] ?? (section || SECTION_LABELS[loc][""]);
+    if (!slug) return sectionLabel;
+    if (["informations", "services", "portfolio"].includes(section)) {
+      const title = await contentTitle(section, slug, loc);
+      if (title) return `${sectionLabel} / ${title}`;
+    }
+    return `${sectionLabel} / ${slug}`;
+  } catch {
+    return path;
+  }
+}

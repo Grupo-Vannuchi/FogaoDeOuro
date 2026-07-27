@@ -348,7 +348,9 @@
       "filterClear": "Clear filters",
       "addTag": "Add tag",
       "removeTag": "Remove tag {tag}",
-      "whatsappSent": "✓ WhatsApp"
+      "whatsappSent": "✓ WhatsApp",
+      "source": "Source",
+      "landedOn": "landed on"
     },
     "projects": {
       "title": "Portfolio",

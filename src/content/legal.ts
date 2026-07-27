@@ -125,7 +125,7 @@ const pt: { terms: LegalDoc; privacy: LegalDoc } = {
       {
         heading: "10. Cookies",
         body: [
-          "O Site utiliza cookies estritamente necessários ao seu funcionamento. Mais detalhes sobre o uso de cookies estão descritos na Política de Privacidade. O Usuário pode gerenciar cookies nas configurações do seu navegador.",
+          "O Site utiliza cookies estritamente necessários ao seu funcionamento e tecnologias de armazenamento de sessão para funcionalidades do Site, incluindo o registro temporário da origem do acesso. Ferramentas de análise de audiência são utilizadas de forma agregada e sem cookies. Mais detalhes estão descritos na Política de Privacidade. O Usuário pode gerenciar cookies nas configurações do seu navegador.",
         ],
       },
       {
@@ -213,6 +213,7 @@ const pt: { terms: LegalDoc; privacy: LegalDoc } = {
         body: [
           "Formulário de contato: ao utilizá-lo, coletamos nome, e-mail, telefone, empresa (quando informada) e o conteúdo da mensagem.",
           "Formulário 'Trabalhe Conosco': ao se candidatar a uma vaga, coletamos nome, e-mail, telefone, a vaga ou função desejada, eventual link de portfólio e o conteúdo da mensagem.",
+          "Origem do acesso: ao enviar um dos formulários, registramos também informações sobre como você chegou até o Site — por exemplo, a página de entrada, o endereço de referência (site de origem) e eventuais parâmetros de campanha (UTMs) —, com a finalidade de compreender a eficácia dos nossos canais de divulgação e direcionar melhor o atendimento.",
           "Não coletamos intencionalmente dados pessoais sensíveis. Pedimos que você não inclua tais informações nas mensagens enviadas pelos formulários.",
         ],
       },
@@ -220,6 +221,8 @@ const pt: { terms: LegalDoc; privacy: LegalDoc } = {
         heading: "5. Dados coletados automaticamente",
         body: [
           "Durante a navegação, podem ser registrados dados técnicos como endereço IP, tipo de navegador e dispositivo, sistema operacional, páginas acessadas, data e horário de acesso e preferências (por exemplo, idioma), por meio de cookies e tecnologias semelhantes.",
+          "Utilizamos serviços de análise de audiência e de desempenho (Vercel Web Analytics e Speed Insights) que coletam métricas de forma agregada e anônima, sem uso de cookies, para acompanhar acessos e a performance do Site.",
+          "Para registrar a origem do seu acesso durante a visita (conforme o item 4), utilizamos o armazenamento de sessão (sessionStorage) do navegador, que é apagado ao encerrar a aba ou a sessão — não se trata de cookie de rastreamento persistente.",
           "Esses dados são utilizados de forma agregada para fins de operação, segurança e melhoria do Site.",
         ],
       },
@@ -240,6 +243,7 @@ const pt: { terms: LegalDoc; privacy: LegalDoc } = {
         heading: "8. Cookies",
         body: [
           "Utilizamos cookies estritamente necessários ao funcionamento do Site (por exemplo, para lembrar o idioma escolhido e manter sessões de áreas administrativas). Esses cookies são essenciais e não dependem de consentimento.",
+          "Além dos cookies necessários, empregamos o armazenamento de sessão (sessionStorage) do seu navegador para fins funcionais — em especial, registrar temporariamente a origem do seu acesso até o envio de um formulário —, o qual é apagado ao encerrar a sessão. Não utilizamos cookies de rastreamento publicitário, e nossas ferramentas de análise de audiência funcionam sem cookies.",
           "Você pode configurar o seu navegador para bloquear ou alertar sobre cookies; contudo, algumas funcionalidades do Site podem deixar de operar corretamente.",
         ],
       },
@@ -396,7 +400,7 @@ const en: { terms: LegalDoc; privacy: LegalDoc } = {
       {
         heading: "10. Cookies",
         body: [
-          "The Site uses cookies strictly necessary for its operation. Further details about the use of cookies are described in the Privacy Policy. The User may manage cookies in their browser settings.",
+          "The Site uses cookies strictly necessary for its operation and session-storage technologies for Site features, including temporarily recording the traffic source. Audience analytics tools are used in aggregate form and without cookies. Further details are described in the Privacy Policy. The User may manage cookies in their browser settings.",
         ],
       },
       {
@@ -484,6 +488,7 @@ const en: { terms: LegalDoc; privacy: LegalDoc } = {
         body: [
           "Contact form: when you use it, we collect your name, email, phone, company (when provided) and the message content.",
           "'Careers' form: when you apply for a position, we collect your name, email, phone, the desired role, an optional portfolio link and the message content.",
+          "Traffic source: when you submit a form, we also record how you reached the Site — for example, the landing page, the referring address (source site) and any campaign parameters (UTMs) — in order to understand the effectiveness of our channels and better direct our follow-up.",
           "We do not intentionally collect sensitive personal data. Please do not include such information in messages sent through the forms.",
         ],
       },
@@ -491,6 +496,8 @@ const en: { terms: LegalDoc; privacy: LegalDoc } = {
         heading: "5. Automatically collected data",
         body: [
           "During browsing, technical data such as IP address, browser and device type, operating system, pages visited, date and time of access and preferences (for example, language) may be recorded through cookies and similar technologies.",
+          "We use audience and performance analytics services (Vercel Web Analytics and Speed Insights) that collect metrics in aggregate, anonymous form, without cookies, to monitor traffic and Site performance.",
+          "To record your traffic source during a visit (as described in item 4), we use your browser's session storage (sessionStorage), which is cleared when the tab or session ends — it is not a persistent tracking cookie.",
           "This data is used in aggregate form for operation, security and Site improvement purposes.",
         ],
       },
@@ -511,6 +518,7 @@ const en: { terms: LegalDoc; privacy: LegalDoc } = {
         heading: "8. Cookies",
         body: [
           "We use cookies strictly necessary for the Site to function (for example, to remember the chosen language and maintain administrative sessions). These cookies are essential and do not depend on consent.",
+          "In addition to necessary cookies, we use your browser's session storage (sessionStorage) for functional purposes — in particular, to temporarily record your traffic source until a form is submitted — which is cleared when the session ends. We do not use advertising tracking cookies, and our audience analytics tools work without cookies.",
           "You can configure your browser to block or alert you about cookies; however, some Site features may stop working properly.",
         ],
       },

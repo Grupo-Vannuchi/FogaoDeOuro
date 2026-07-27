@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Textarea, Label, FieldError } from "@/components/ui/field";
 import { submitContactLead } from "@/app/actions/leads";
 import { contactSchema, type ContactInput } from "@/lib/validations/lead";
+import { readAttribution } from "@/lib/attribution";
 
 export function ContactForm() {
   const t = useTranslations("contact.form");
@@ -32,7 +33,10 @@ export function ContactForm() {
 
   async function onSubmit(data: ContactInput) {
     setStatus("idle");
-    const result = await submitContactLead(data, locale);
+    const result = await submitContactLead(
+      { ...data, ...readAttribution() },
+      locale,
+    );
     if (result.ok) {
       reset();
       setStatus("success");

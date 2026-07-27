@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AttributionCapture } from "@/components/attribution-capture";
 import { resolveLocale } from "@/i18n/routing";
 
 /** Funnels are unlisted lead-capture pages — never indexed. */
@@ -27,6 +28,7 @@ export default async function FunnelsLayout({
       {children}
       <Analytics />
       <SpeedInsights />
+      <AttributionCapture />
     </main>
   );
 }

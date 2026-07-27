@@ -6,6 +6,7 @@ import { LeadFilters } from "@/components/admin/lead-filters";
 import { LeadTags } from "@/components/admin/lead-tags";
 import { LeadNotifyConfig } from "@/components/admin/lead-notify-config";
 import { LeadForwardButton } from "@/components/admin/lead-forward-button";
+import { sourceLabel } from "@/lib/attribution";
 import { cn } from "@/lib/utils";
 import { resolveLocale } from "@/i18n/routing";
 
@@ -131,6 +132,22 @@ export default async function LeadsPage({
               ) : null}
 
               <p className="mt-3 whitespace-pre-wrap text-sm">{lead.message}</p>
+
+              {lead.referrer || lead.landingPage || lead.utmSource ? (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    {t("source")}:
+                  </span>{" "}
+                  {sourceLabel({
+                    referrer: lead.referrer ?? undefined,
+                    utmSource: lead.utmSource ?? undefined,
+                  })}
+                  {lead.landingLabel || lead.landingPage
+                    ? ` · ${t("landedOn")}: ${lead.landingLabel ?? lead.landingPage}`
+                    : ""}
+                  {lead.utmCampaign ? ` · ${lead.utmCampaign}` : ""}
+                </p>
+              ) : null}
 
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
                 <LeadTags id={lead.id} tags={lead.tags} />

@@ -190,6 +190,17 @@ model Lead {
   message   String
   tags      String[]   @default([]) // free-form labels applied by admins for triage
   locale    String     @default("pt")
+  // --- Attribution (how the lead found the site — first-touch, captured client
+  // side into sessionStorage and sent with the form). All optional. ---
+  referrer    String? // external referrer host (e.g. google.com), "" = direct
+  landingPage String? // first path of the visit (e.g. /informations/agencia-de-seo)
+  /// Human label for `landingPage`, resolved + FROZEN at capture (e.g.
+  /// "Informações / Agência de SEO"). Frozen so renaming/deleting content later
+  /// doesn't rewrite historical attribution.
+  landingLabel String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
   /// Set when this lead was pushed to the sales WhatsApp group (auto or manual).
   /// Null = not delivered yet; drives the "✓ WhatsApp" badge + resend recovery.
   whatsappNotifiedAt DateTime?

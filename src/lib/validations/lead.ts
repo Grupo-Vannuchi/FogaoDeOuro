@@ -25,6 +25,15 @@ const optionalText = z.string().trim().max(200).optional().or(z.literal(""));
 /** Honeypot: hidden from humans; bots tend to fill it → dropped server-side. */
 const honeypot = z.string().max(200).optional();
 
+/** Client-captured first-touch attribution (all optional, capped in length). */
+const attributionShape = {
+  referrer: optionalText,
+  landingPage: optionalText,
+  utmSource: optionalText,
+  utmMedium: optionalText,
+  utmCampaign: optionalText,
+};
+
 export function contactSchema(m: LeadMessages = defaultMessages) {
   return z.object({
     name: z.string().trim().min(2, m.nameMin).max(120),
@@ -33,6 +42,7 @@ export function contactSchema(m: LeadMessages = defaultMessages) {
     company: optionalText,
     message: z.string().trim().min(10, m.messageMin).max(2000),
     hp: honeypot,
+    ...attributionShape,
   });
 }
 
@@ -51,6 +61,7 @@ export function careerSchema(m: LeadMessages = defaultMessages) {
       .or(z.literal("")),
     message: z.string().trim().min(10, m.messageMin).max(2000),
     hp: honeypot,
+    ...attributionShape,
   });
 }
 

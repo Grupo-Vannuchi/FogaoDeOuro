@@ -8,6 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea, Label, FieldError } from "@/components/ui/field";
 import { submitCareerLead } from "@/app/actions/leads";
+import { readAttribution } from "@/lib/attribution";
 import { careerSchema, type CareerInput } from "@/lib/validations/lead";
 
 export function CareersForm() {
@@ -32,7 +33,10 @@ export function CareersForm() {
 
   async function onSubmit(data: CareerInput) {
     setStatus("idle");
-    const result = await submitCareerLead(data, locale);
+    const result = await submitCareerLead(
+      { ...data, ...readAttribution() },
+      locale,
+    );
     if (result.ok) {
       reset();
       setStatus("success");

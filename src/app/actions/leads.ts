@@ -3,6 +3,7 @@
 import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { notifyLead } from "@/lib/lead-notify";
+import { resolveLandingLabel } from "@/lib/lead-landing";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import {
   careerSchema,
@@ -17,6 +18,23 @@ export type LeadResult = { ok: boolean };
 
 function resolveLocale(locale: string): string {
   return hasLocale(routing.locales, locale) ? locale : defaultLocale;
+}
+
+/** First-touch attribution fields, normalized to null, for the lead row. */
+function attributionData(d: {
+  referrer?: string;
+  landingPage?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+}) {
+  return {
+    referrer: d.referrer || null,
+    landingPage: d.landingPage || null,
+    utmSource: d.utmSource || null,
+    utmMedium: d.utmMedium || null,
+    utmCampaign: d.utmCampaign || null,
+  };
 }
 
 /** Persist a contact-form submission. Re-validates server-side. */
@@ -38,6 +56,10 @@ export async function submitContactLead(
 
   try {
     const { name, email, phone, company, message } = parsed.data;
+    // Resolve the landing page to a human label and FREEZE it on the lead.
+    const landingLabel = parsed.data.landingPage
+      ? await resolveLandingLabel(parsed.data.landingPage, locale)
+      : null;
     const lead = await prisma.lead.create({
       data: {
         type: "CONTACT",
@@ -47,6 +69,8 @@ export async function submitContactLead(
         company: company || null,
         message,
         locale: resolveLocale(locale),
+        ...attributionData(parsed.data),
+        landingLabel,
       },
     });
     // Push to the sales WhatsApp group after the response — never delays or fails
@@ -78,6 +102,9 @@ export async function submitCareerLead(
 
   try {
     const { name, email, phone, role, portfolio, message } = parsed.data;
+    const landingLabel = parsed.data.landingPage
+      ? await resolveLandingLabel(parsed.data.landingPage, locale)
+      : null;
     const lead = await prisma.lead.create({
       data: {
         type: "CAREER",
@@ -88,6 +115,8 @@ export async function submitCareerLead(
         portfolio: portfolio || null,
         message,
         locale: resolveLocale(locale),
+        ...attributionData(parsed.data),
+        landingLabel,
       },
     });
     after(() => notifyLead(lead));
