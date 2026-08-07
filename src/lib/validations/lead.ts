@@ -46,24 +46,4 @@ export function contactSchema(m: LeadMessages = defaultMessages) {
   });
 }
 
-export function careerSchema(m: LeadMessages = defaultMessages) {
-  return z.object({
-    name: z.string().trim().min(2, m.nameMin).max(120),
-    email: z.string().trim().email(m.emailInvalid).max(200),
-    phone: optionalText,
-    role: optionalText,
-    portfolio: z
-      .string()
-      .trim()
-      .url()
-      .max(300)
-      .optional()
-      .or(z.literal("")),
-    message: z.string().trim().min(10, m.messageMin).max(2000),
-    hp: honeypot,
-    ...attributionShape,
-  });
-}
-
 export type ContactInput = z.infer<ReturnType<typeof contactSchema>>;
-export type CareerInput = z.infer<ReturnType<typeof careerSchema>>;

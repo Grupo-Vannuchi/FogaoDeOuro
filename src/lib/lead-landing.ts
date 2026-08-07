@@ -14,25 +14,14 @@ import { locales, defaultLocale, type Locale } from "@/i18n/routing";
 const SECTION_LABELS: Record<Locale, Record<string, string>> = {
   pt: {
     "": "Início",
-    about: "Quem somos",
-    services: "Serviços",
-    portfolio: "Portfólio",
-    informations: "Informações",
-    contact: "Contato",
-    careers: "Trabalhe conosco",
+    experiencia: "A Experiência",
+    gastronomia: "Nossa Gastronomia",
+    galeria: "Galeria",
+    reservas: "Horários & Reservas",
+    informations: "Novidades",
+    contato: "Contato",
     privacy: "Privacidade",
     terms: "Termos",
-  },
-  en: {
-    "": "Home",
-    about: "About",
-    services: "Services",
-    portfolio: "Portfolio",
-    informations: "Information",
-    contact: "Contact",
-    careers: "Careers",
-    privacy: "Privacy",
-    terms: "Terms",
   },
 };
 

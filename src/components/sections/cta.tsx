@@ -1,14 +1,13 @@
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button";
-import { whatsappLink } from "@/config/site";
+import { ReserveButton } from "@/components/reserve-button";
 
 export async function CTA() {
   const t = await getTranslations("home.cta");
-  const tc = await getTranslations("common");
 
   return (
     <section className="py-20 sm:py-section">
@@ -26,25 +25,17 @@ export async function CTA() {
           </p>
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
-              href="/contact"
+              href="/reservas"
               className={buttonVariants({ variant: "accent", size: "lg", className: "group" })}
             >
               {t("button")}
               <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({
-                variant: "outline",
-                size: "lg",
-                className: "border-white/40 text-brand-foreground hover:bg-white/10",
-              })}
-            >
-              <MessageCircle className="size-5" />
-              {tc("sendWhatsapp")}
-            </a>
+            <ReserveButton
+              variant="outline"
+              size="lg"
+              className="border-white/40 text-brand-foreground hover:bg-white/10"
+            />
           </div>
         </Reveal>
       </Container>

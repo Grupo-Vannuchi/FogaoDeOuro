@@ -1,13 +1,14 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────
- *  N8X MARKETING — BRAND CONFIGURATION
+ *  FOGÃO DE OURO RESTAURANTE — BRAND CONFIGURATION
  * ─────────────────────────────────────────────────────────────────────────
  * This is the single source of truth for branding. To re-skin the entire site
- * for a new agency, edit the values below — name, contact details, social
+ * for another brand, edit the values below — name, contact details, social
  * links, theme colours and navigation. Nothing else needs to change.
  *
- * All user-facing *copy* lives in `src/messages/{locale}.json` (it is bilingual);
- * this file holds only brand identity, contact data and theme tokens.
+ * All user-facing *copy* lives in `src/messages/pt.json` (the site is
+ * Portuguese-only); this file holds only brand identity, contact data and
+ * theme tokens.
  */
 
 export type ThemePalette = {
@@ -23,36 +24,53 @@ export type ThemePalette = {
 };
 
 /** Keys available under the `nav` translation namespace. */
-export type NavKey = "about" | "services" | "portfolio" | "careers" | "contact";
+export type NavKey =
+  | "inicio"
+  | "experiencia"
+  | "gastronomia"
+  | "reservas"
+  | "contato";
 
 export type NavItem = {
   /** Translation key under the `nav` namespace. */
   key: NavKey;
-  /** Route relative to the locale root, e.g. "/portfolio". */
+  /** Route relative to the locale root, e.g. "/gastronomia". */
   href: string;
+};
+
+/**
+ * Service hours. `days` uses schema.org `DayOfWeek` names because the value is
+ * emitted verbatim into `openingHoursSpecification` — the signal that makes
+ * Google show "Aberto · fecha às 15h" next to the listing.
+ */
+export type OpeningHours = {
+  days: (
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday"
+  )[];
+  /** 24h "HH:MM". */
+  opens: string;
+  closes: string;
 };
 
 export type SiteConfig = {
   /** Public brand name shown in the wordmark and titles. */
   name: string;
-  /** Legal entity name (footer / legal copy). */
-  legalName: string;
-  /** Year the agency was founded — drives the "years in business" copy. */
+  /**
+   * Registered legal entity name (footer / structured data). Optional: while it
+   * is unknown the footer falls back to `name` and the JSON-LD omits the field,
+   * which is preferable to publishing a guess.
+   */
+  legalName?: string;
+  /** Year the restaurant was founded — drives the "years in business" copy. */
   foundedYear: number;
   /** Company registration number (Brazil: CNPJ). Optional. */
   registration?: string;
-  /**
-   * Parent company, when the agency is a brand/division of a larger group.
-   * Emitted as `parentOrganization` in structured data so search/AI engines
-   * resolve the corporate relationship and disambiguate the brand. Optional.
-   */
-  parentOrganization?: {
-    name: string;
-    /** Parent's official website, if any. */
-    url?: string;
-    /** Authoritative profiles for the parent (Google profile, LinkedIn, …). */
-    sameAs?: string[];
-  };
 
   contact: {
     email: string;
@@ -71,6 +89,9 @@ export type SiteConfig = {
       city: string;
       region: string;
       country: string;
+      /** Brazilian CEP. Required by schema.org `PostalAddress` to resolve the
+       *  restaurant to a physical place in local search results. */
+      postalCode?: string;
     };
   };
 
@@ -90,6 +111,16 @@ export type SiteConfig = {
   /** Primary navigation shown in the header and footer. */
   nav: NavItem[];
 
+  /** When the restaurant serves. Drives both the copy and the local SEO schema. */
+  openingHours: OpeningHours;
+
+  /**
+   * Cuisine types for schema.org `Restaurant.servesCuisine`.
+   * Note: no `priceRange` — the client's visual direction forbids publishing
+   * prices, and emitting one in structured data would surface it in search.
+   */
+  servesCuisine: string[];
+
   theme: {
     light: ThemePalette;
     dark: ThemePalette;
@@ -97,106 +128,124 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "N8X Marketing",
-  legalName: "n8x marketing & vendas.",
-  foundedYear: 2017,
-  registration: "43.158.706/0001-99",
-
-  parentOrganization: {
-    name: "Grupo Vannuchi Engenharia",
-    url: "https://www.grupovannuchi.com.br",
-    // Authoritative profiles for entity disambiguation: the group's LinkedIn
-    // company page + its Google Knowledge Graph entity (kgmid).
-    sameAs: [
-      "https://br.linkedin.com/company/grupovannucci",
-      "https://www.google.com/search?kgmid=/g/11khvqzvcc",
-    ],
-  },
+  name: "Fogão de Ouro",
+  // `legalName` (razão social) e `registration` (CNPJ) ainda não foram
+  // fornecidos pelo cliente. Deixados de fora de propósito — ver
+  // `src/content/legal.ts`, onde a ausência está marcada explicitamente.
+  foundedYear: 2001,
 
   contact: {
-    email: "marketing@n8company.com.br",
-    phone: "+55 (13) 99733-4424",
+    email: "fogaodeouro@fogaodeouro.com.br",
+    phone: "+55 (13) 3219-1552",
     whatsapp: {
-      number: "5513997334424",
-      display: "(13) 99733-4424",
+      // TODO(cliente): número de WhatsApp do restaurante. Enquanto estiver
+      // vazio, `whatsappLink()` devolve null e os CTAs de reserva caem para o
+      // telefone — ver `hasWhatsapp()`.
+      number: "",
+      display: "",
       defaultMessage:
-        "Olá! Encontrei o contato de vocês pelo seu site e gostaria de saber mais sobre os serviços. Podem me ajudar?",
+        "Olá! Gostaria de fazer uma reserva no Fogão de Ouro. Podem me ajudar?",
     },
     address: {
-      street: "Rua Frei Gaspar, 22 - sala 14",
+      street: "Rua Frei Gaspar, 46 — Centro Histórico",
       city: "Santos",
       region: "SP",
       country: "Brasil",
+      postalCode: "11010-090",
     },
   },
 
   social: {
-    instagram: "https://instagram.com/n8xmarketing",
-    tiktok: "https://tiktok.com/@thigo.vannuchi",
-    linkedin: "https://www.linkedin.com/in/thiago-v-a060a7215/",
-  },
-
-  // Confirme/ajuste o nome do autor padrão dos artigos.
-  author: {
-    name: "Thiago Vannuchi",
-    url: "https://www.linkedin.com/in/thiago-v-a060a7215/",
+    instagram: "https://instagram.com/fogao.de.ouro",
   },
 
   nav: [
-    { key: "about", href: "/about" },
-    { key: "services", href: "/services" },
-    { key: "portfolio", href: "/portfolio" },
-    { key: "careers", href: "/careers" },
-    { key: "contact", href: "/contact" },
+    { key: "inicio", href: "/" },
+    { key: "experiencia", href: "/experiencia" },
+    { key: "gastronomia", href: "/gastronomia" },
+    { key: "reservas", href: "/reservas" },
+    { key: "contato", href: "/contato" },
   ],
 
+  openingHours: {
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "11:00",
+    closes: "15:00",
+  },
+
+  servesCuisine: ["Brasileira", "Churrasco", "Frutos do mar", "Buffet"],
+
+  /**
+   * Dark-first, per the client's visual direction: a graphite ground makes the
+   * food photography the protagonist. The four brand colours are amber
+   * (#E68A08 — "Ouro"), ember (#E04F26), warm graphite (#474544) and cream
+   * (#EFE9C2).
+   *
+   * The light theme darkens the amber to #8A5206: the pure brand amber over
+   * cream is 2.14:1, which is unreadable. Same hue, darker tone — the practice
+   * of shipping a per-theme brand hex is what the previous brand did too.
+   * Contrast ratios are reproducible via
+   * `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
+   */
   theme: {
     light: {
-      brand: "#0B0050",
-      brandForeground: "#ffffff",
-      accent: "#f59e0b",
-      background: "#e0e0e0",
-      foreground: "#0a0a0a",
+      brand: "#8A5206", // 5.20:1 sobre o creme
+      brandForeground: "#ffffff", // 6.38:1 sobre o brand
+      accent: "#E04F26", // 3.22:1 — gráfico/UI, nunca texto
+      background: "#EFE9C2",
+      foreground: "#474544", // 7.77:1
     },
     dark: {
-      brand: "#4D9CFB",
-      brandForeground: "#0a0a0a",
-      accent: "#fbbf24",
-      background: "#0a0a0a",
-      foreground: "#ededed",
+      brand: "#E68A08", // 6.89:1 sobre o grafite
+      brandForeground: "#171615", // 6.89:1 sobre o brand
+      accent: "#E04F26", // 4.57:1
+      background: "#171615",
+      foreground: "#EFE9C2", // 14.72:1
     },
   },
 };
 
-/** Number of full years the agency has been operating. */
+/** Number of full years the restaurant has been operating. */
 export function yearsInBusiness(now: Date = new Date()): number {
   return now.getFullYear() - siteConfig.foundedYear;
 }
 
+/** Whether a WhatsApp number has been configured for the restaurant. */
+export function hasWhatsapp(): boolean {
+  return siteConfig.contact.whatsapp.number.trim().length > 0;
+}
+
 /**
- * Build a wa.me deep link. Falls back to the configured default message when
- * none is passed, so every CTA opens WhatsApp with the pre-filled greeting.
+ * Build a wa.me deep link, or `null` when no number is configured yet. Callers
+ * must handle the null case — falling back to the phone number — so an
+ * unconfigured WhatsApp degrades to "ligar" instead of a dead link.
  */
-export function whatsappLink(message?: string): string {
+export function whatsappLink(message?: string): string | null {
+  if (!hasWhatsapp()) return null;
   const base = `https://wa.me/${siteConfig.contact.whatsapp.number}`;
   const text = message ?? siteConfig.contact.whatsapp.defaultMessage;
   return text ? `${base}?text=${encodeURIComponent(text)}` : base;
 }
 
-/** The agency's address as a single comma-separated line. */
+/** A `tel:` href built from the human-readable phone. */
+export function phoneLink(): string {
+  return `tel:${siteConfig.contact.phone.replace(/[^\d+]/g, "")}`;
+}
+
+/** The restaurant's address as a single comma-separated line. */
 export function fullAddress(): string {
   const { street, city, region, country } = siteConfig.contact.address;
   return [street, city, region, country].filter(Boolean).join(", ");
 }
 
 /**
- * Build a Google Maps embed URL pointing at the agency's address. Uses the
+ * Build a Google Maps embed URL pointing at the restaurant's address. Uses the
  * keyless `output=embed` endpoint, which renders a fully interactive map (zoom,
  * pan, "Open in Maps") without an API key.
  *
  * @param zoom Initial zoom level (1 = world, 20 = building).
  */
-export function mapEmbedUrl(zoom = 15): string {
+export function mapEmbedUrl(zoom = 17): string {
   const params = new URLSearchParams({
     q: fullAddress(),
     z: String(zoom),

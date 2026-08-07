@@ -25,6 +25,7 @@
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
 
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
@@ -32,33 +33,49 @@
   --spacing-section: 6rem;
 }
 
-/* Neutral / UI tokens (not brand-specific). Light + dark variants. */
+/*
+ * Neutral / UI tokens (not brand-specific). Warm greys, not the stock cool
+ * greys: the brand ground is graphite `#171615` (dark) and cream `#EFE9C2`
+ * (light), and a blue-leaning neutral reads as dirty against both.
+ *
+ * Dark-first, mirroring `ThemeStyle`: the dark set sits on bare `:root` and the
+ * light set is the variant, so the two files can never disagree about which
+ * theme is the default.
+ */
 :root {
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --muted: #f4f4f5;
-  --muted-foreground: #52525b;
-  --border: #e4e4e7;
+  --card: #232120;
+  --card-foreground: #efe9c2;
+  --muted: #201e1d;
+  --muted-foreground: #b8b2a6;
+  --border: #474544;
 }
 
-/* Dark neutrals. Mirrors the three-state logic in `ThemeStyle`: follow the OS by
-   default, but let an explicit `data-theme` choice win. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --card: #111113;
-    --card-foreground: #ededed;
-    --muted: #1c1c1f;
-    --muted-foreground: #a1a1aa;
-    --border: #27272a;
+/* Light neutrals. Follow the OS by default, but let an explicit `data-theme`
+   choice win. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --card: #fbf7e6;
+    --card-foreground: #474544;
+    --muted: #e7e0b8;
+    --muted-foreground: #6b6862;
+    --border: #ded7ae;
   }
 }
 
+:root[data-theme="light"] {
+  --card: #fbf7e6;
+  --card-foreground: #474544;
+  --muted: #e7e0b8;
+  --muted-foreground: #6b6862;
+  --border: #ded7ae;
+}
+
 :root[data-theme="dark"] {
-  --card: #111113;
-  --card-foreground: #ededed;
-  --muted: #1c1c1f;
-  --muted-foreground: #a1a1aa;
-  --border: #27272a;
+  --card: #232120;
+  --card-foreground: #efe9c2;
+  --muted: #201e1d;
+  --muted-foreground: #b8b2a6;
+  --border: #474544;
 }
 
 @layer base {
@@ -72,6 +89,15 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Serif display for headings, sans for body — the client's typographic
+     direction. Scoped to h1–h3 so small UI headings (h4+ in cards, admin
+     forms) stay on the sans and keep their density. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
   }
 
   /* Visible, brand-coloured focus ring for keyboard users. */

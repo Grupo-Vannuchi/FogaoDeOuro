@@ -5,14 +5,19 @@ import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carouse
 /**
  * Hero carousel background images — self-hosted under `/public/hero` so
  * `next/image` serves optimized AVIF/WebP from the SAME origin (faster LCP than
- * fetching from a remote host). One per slide, matched by index to the localized
- * copy in `home.hero.slides`. Swap for the agency's own photography when ready.
+ * fetching from a remote host). One per slide, matched by index to the copy in
+ * `home.hero.slides`.
+ *
+ * ⚠️ EMPTY ON PURPOSE. The client's brief requires 100% authorial photography
+ * (close-ups of food on the brasa, the renovated dining room) and none has been
+ * delivered yet. Until then the carousel falls back to a brand gradient — stock
+ * imagery would misrepresent the restaurant, and the previous brand's photos
+ * literally carried its logo in frame.
+ *
+ * To ship the real photos: drop three WebP files here, keep them roughly the
+ * same weight (~100–230 KB), and list them below. Slide 1 is the home page LCP.
  */
-const slideImages = [
-  "/hero/slide-1.webp", // Google first-page positioning
-  "/hero/slide-2.webp", // social media management / conversion
-  "/hero/slide-3.webp", // automated prospecting & marketing
-];
+const slideImages: string[] = [];
 
 export async function Hero() {
   const t = await getTranslations("home.hero");
@@ -20,7 +25,9 @@ export async function Hero() {
 
   const slides: HeroSlide[] = copy.map((slide, i) => ({
     ...slide,
-    image: slideImages[i % slideImages.length],
+    image: slideImages.length
+      ? slideImages[i % slideImages.length]
+      : undefined,
   }));
 
   return (

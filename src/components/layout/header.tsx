@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
-import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import {
   InformationMenu,
@@ -22,11 +21,9 @@ export type DropdownLink = {
 };
 
 export function Header({
-  portfolioLinks = [],
   serviceLinks = [],
   informationLinks = [],
 }: {
-  portfolioLinks?: DropdownLink[];
   serviceLinks?: DropdownLink[];
   informationLinks?: InformationLink[];
 }) {
@@ -35,10 +32,13 @@ export function Header({
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState<NavKey | null>(null);
 
-  /** Per-nav-key child links that turn an item into a dropdown. */
+  /**
+   * Per-nav-key child links that turn an item into a dropdown. Only
+   * "Nossa Gastronomia" has children; the gallery lives inside "A Experiência"
+   * and is not a top-level menu item, per the client's navigation.
+   */
   const dropdowns: Partial<Record<NavKey, DropdownLink[]>> = {
-    services: serviceLinks,
-    portfolio: portfolioLinks,
+    gastronomia: serviceLinks,
   };
 
   return (
@@ -95,8 +95,7 @@ export function Header({
 
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
-          <LocaleSwitcher />
-          <Link href="/contact" className={buttonVariants({ size: "sm" })}>
+          <Link href="/reservas" className={buttonVariants({ size: "sm" })}>
             {tc("talkToUs")}
           </Link>
           <InformationMenu links={informationLinks} />
@@ -203,10 +202,9 @@ export function Header({
             <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
               <div className="flex items-center gap-1">
                 <ThemeToggle />
-                <LocaleSwitcher />
               </div>
               <Link
-                href="/contact"
+                href="/reservas"
                 onClick={() => setOpen(false)}
                 className={buttonVariants({ size: "sm" })}
               >

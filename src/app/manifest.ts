@@ -5,13 +5,17 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: siteConfig.name,
     short_name: siteConfig.name.split(" ")[0],
-    description: siteConfig.legalName,
+    description: `Restaurante no Centro Histórico de ${siteConfig.contact.address.city}`,
     start_url: "/",
     display: "standalone",
-    background_color: siteConfig.theme.light.background,
-    theme_color: siteConfig.theme.light.brand,
+    // Dark-first: the install splash and the browser chrome should match the
+    // theme the site actually ships with, not the secondary light palette.
+    background_color: siteConfig.theme.dark.background,
+    theme_color: siteConfig.theme.dark.brand,
     icons: [
-      { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      // No `/favicon.ico`: the previous brand's file was removed and the icon is
+      // now generated from the palette by `src/app/icon.tsx`. Ship a real .ico
+      // alongside the client's logo when it arrives.
       // The 512×512 icon route (src/app/icon.tsx) downscales for the install
       // prompt and home-screen launcher; the `maskable` copy lets Android crop
       // it cleanly. Same source, two declared purposes (the spec keeps them

@@ -6,7 +6,8 @@ import { Mail, Phone, MessageCircle, MapPin } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/ui/section";
 import { ContactForm } from "@/components/forms/contact-form";
-import { siteConfig, whatsappLink } from "@/config/site";
+import { ReserveButton } from "@/components/reserve-button";
+import { fullAddress, phoneLink, siteConfig, whatsappLink } from "@/config/site";
 
 export async function generateMetadata({
   params,
@@ -18,7 +19,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("subtitle"),
-    ...localeMetadata(locale, "/contact"),
+    ...localeMetadata(locale, "/contato"),
   };
 }
 
@@ -32,15 +33,33 @@ export default async function ContactPage({
   const t = await getTranslations("contact");
   const { contact } = siteConfig;
 
-  const channels = [
+  const whatsapp = whatsappLink();
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`;
+
+  const channels: {
+    icon: typeof Mail;
+    label: string;
+    value: string;
+    href?: string;
+  }[] = [
     { icon: Mail, label: t("labels.email"), value: contact.email, href: `mailto:${contact.email}` },
-    { icon: Phone, label: t("labels.phone"), value: contact.phone, href: `tel:${contact.phone.replace(/[^+\d]/g, "")}` },
-    { icon: MessageCircle, label: t("labels.whatsapp"), value: contact.whatsapp.display, href: whatsappLink() },
+    { icon: Phone, label: t("labels.phone"), value: contact.phone, href: phoneLink() },
+    // Only listed once a number exists — see `hasWhatsapp()` in the site config.
+    ...(whatsapp
+      ? [
+          {
+            icon: MessageCircle,
+            label: t("labels.whatsapp"),
+            value: contact.whatsapp.display,
+            href: whatsapp,
+          },
+        ]
+      : []),
     {
       icon: MapPin,
       label: t("labels.address"),
       value: `${contact.address.street}, ${contact.address.city} — ${contact.address.region}`,
-      href: undefined,
+      href: mapsLink,
     },
   ];
 
@@ -79,6 +98,17 @@ export default async function ContactPage({
                 </li>
               ))}
             </ul>
+            <div className="flex flex-col gap-3">
+              <ReserveButton />
+              <a
+                href={mapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-brand underline-offset-4 hover:underline"
+              >
+                {t("route")}
+              </a>
+            </div>
           </aside>
         </div>
       </Section>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import {
   getTranslations,
@@ -17,6 +17,19 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+/**
+ * Display face for headings — the client's direction asks for "serifada
+ * elegante nos títulos + sans limpa no corpo". Self-hosted by `next/font`, so
+ * it costs no extra connection and can't shift layout (`display: swap` plus a
+ * matched fallback metric are handled by Next).
+ */
+const playfair = Playfair_Display({
+  // Not `--font-serif`: that name is the Tailwind theme token in globals.css,
+  // and pointing it at itself would be circular.
+  variable: "--font-serif-display",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 /** Pre-render every locale at build time. */
@@ -69,7 +82,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full`}
       suppressHydrationWarning
     >
       <head>

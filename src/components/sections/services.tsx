@@ -25,7 +25,7 @@ export async function Services({ locale }: { locale: Locale }) {
           align="left"
         />
         <Link
-          href="/services"
+          href="/gastronomia"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
           {tc("viewAllServices")}

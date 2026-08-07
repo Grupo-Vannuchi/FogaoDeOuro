@@ -7,10 +7,10 @@ import { absoluteUrl, localizedUrl } from "@/lib/seo";
  * single `<script type="application/ld+json">`. Entities cross-reference each
  * other by stable `@id` so search/AI engines resolve one connected graph:
  *
- *   ORG_ID  — the agency as a {@link https://schema.org/ProfessionalService}
+ *   ORG_ID  — the restaurant as a {@link https://schema.org/Restaurant}
  *   SITE_ID — the website as a {@link https://schema.org/WebSite}
  *
- * Services and portfolio cases point back to ORG_ID as their provider/creator.
+ * Gastronomy and gallery entries point back to ORG_ID as their provider/creator.
  */
 const ORG_ID = `${localizedUrl(defaultLocale)}/#organization`;
 const SITE_ID = `${localizedUrl(defaultLocale)}/#website`;
@@ -27,45 +27,59 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 }
 
 /**
- * Organization / LocalBusiness structured data for the agency. Emitted once on
- * public pages so search engines (and AI engines) can resolve the brand as an
- * entity — name, contact, address and social profiles. JSON-LD only.
+ * `Restaurant` structured data — the entity for the whole brand. This is what
+ * lets Google show the opening hours, the address and the reservation signal
+ * directly in the results, which a generic `Organization` cannot do.
+ *
+ * Deliberately omits `priceRange`: the client's visual direction forbids
+ * publishing prices, and structured data surfaces in search too.
  */
 export function OrganizationJsonLd() {
-  const { name, legalName, foundedYear, contact, social, parentOrganization } =
-    siteConfig;
+  const {
+    name,
+    legalName,
+    foundedYear,
+    contact,
+    social,
+    openingHours,
+    servesCuisine,
+  } = siteConfig;
   const url = localizedUrl(defaultLocale);
 
   const data = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
+    "@type": "Restaurant",
     "@id": ORG_ID,
     name,
-    legalName,
+    // Only emitted once the razão social is known — a guess would be worse.
+    ...(legalName && { legalName }),
     url,
     email: contact.email,
     telephone: contact.phone,
     foundingDate: String(foundedYear),
+    servesCuisine,
+    acceptsReservations: true,
+    menu: `${url}/gastronomia`,
     address: {
       "@type": "PostalAddress",
       streetAddress: contact.address.street,
       addressLocality: contact.address.city,
       addressRegion: contact.address.region,
       addressCountry: contact.address.country,
+      ...(contact.address.postalCode && {
+        postalCode: contact.address.postalCode,
+      }),
     },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: openingHours.days,
+        opens: openingHours.opens,
+        closes: openingHours.closes,
+      },
+    ],
     // Filter out unset social links so `sameAs` never contains undefined.
     sameAs: Object.values(social).filter(Boolean),
-    // Declare the corporate parent so engines resolve the group relationship.
-    ...(parentOrganization && {
-      parentOrganization: {
-        "@type": "Organization",
-        name: parentOrganization.name,
-        ...(parentOrganization.url && { url: parentOrganization.url }),
-        ...(parentOrganization.sameAs?.length && {
-          sameAs: parentOrganization.sameAs,
-        }),
-      },
-    }),
   };
 
   return <JsonLd data={data} />;
@@ -131,7 +145,7 @@ export function ServiceJsonLd({
     name,
     description,
     serviceType: name,
-    url: localizedUrl(locale, `/services/${slug}`),
+    url: localizedUrl(locale, `/gastronomia/${slug}`),
     inLanguage: locale,
     provider: { "@id": ORG_ID },
     areaServed: {
@@ -210,7 +224,7 @@ export function CreativeWorkJsonLd({
     name,
     description,
     genre: category,
-    url: localizedUrl(locale, `/portfolio/${slug}`),
+    url: localizedUrl(locale, `/galeria/${slug}`),
     image: absoluteUrl(image),
     dateCreated: String(year),
     inLanguage: locale,

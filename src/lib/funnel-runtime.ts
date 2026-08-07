@@ -78,23 +78,4 @@ export const DEFAULT_TEMPLATE_STEPS: Record<Locale, FunnelDefaultStep[]> = {
       text: "Show, {NOME}! Com a sua experiência como {CARGO}, tenho certeza de que isso vai fazer muito sentido pra você. Bora?",
     },
   ],
-  en: [
-    {
-      kind: "bot",
-      text: "Hi there! Great to have you. 👋 I'll ask a few quick questions to tailor everything for you.",
-    },
-    { kind: "input", field: "name", prompt: "First things first — what should we call you?" },
-    { kind: "bot", text: "Nice to meet you, {NOME}! 🙌" },
-    {
-      kind: "input",
-      field: "phone",
-      prompt: "What's your best WhatsApp number? (with country/area code)",
-    },
-    { kind: "input", field: "email", prompt: "And what's your best email?" },
-    { kind: "input", field: "role", prompt: "What's your role at the company?" },
-    {
-      kind: "bot",
-      text: "Awesome, {NOME}! With your experience as {CARGO}, I'm sure this will click for you. Ready?",
-    },
-  ],
 };

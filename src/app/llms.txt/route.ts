@@ -18,14 +18,26 @@ function line(title: string, path: string, description?: string): string {
 }
 
 export async function GET(): Promise<Response> {
-  const { name, legalName } = siteConfig;
+  const { name } = siteConfig;
 
   const core = [
-    line("Quem somos", "/about", "A agência, o time e a forma de trabalhar"),
-    line("Serviços", "/services", "Tudo o que a agência oferece"),
-    line("Portfólio", "/portfolio", "Cases e projetos realizados"),
-    line("Contato", "/contact", "Fale com a equipe"),
-    line("Trabalhe conosco", "/careers", "Vagas e oportunidades"),
+    line(
+      "A Experiência",
+      "/experiencia",
+      "O salão, a história da casa e o que esperar de um almoço aqui",
+    ),
+    line(
+      "Nossa Gastronomia",
+      "/gastronomia",
+      "Churrasco na brasa, peixes, ilha de massas e o buffet completo",
+    ),
+    line("Galeria", "/galeria", "Fotos do salão e dos pratos"),
+    line(
+      "Horários & Reservas",
+      "/reservas",
+      "Quando abrimos, o melhor horário para ir e reservas para grupos",
+    ),
+    line("Contato", "/contato", "Endereço, telefone e como chegar"),
   ];
 
   let services: string[] = [];
@@ -35,23 +47,24 @@ export async function GET(): Promise<Response> {
       getServices(defaultLocale),
       getProjects(defaultLocale),
     ]);
-    services = s.map((x) => line(x.title, `/services/${x.slug}`, x.description));
-    projects = p.map((x) => line(x.title, `/portfolio/${x.slug}`, x.summary));
+    services = s.map((x) => line(x.title, `/gastronomia/${x.slug}`, x.description));
+    projects = p.map((x) => line(x.title, `/galeria/${x.slug}`, x.summary));
   } catch {
     // Database unavailable — ship the core pages only.
   }
 
+  const { openingHours } = siteConfig;
   const sections = [
     `# ${name}`,
     "",
-    `> ${legalName} — agência de marketing e vendas em ${fullAddress()}.`,
+    `> Restaurante no Centro Histórico de Santos — ${fullAddress()}. Buffet com churrasco na brasa, peixes e ilha de massas, de segunda a sexta das ${openingHours.opens.replace(":00", "h")} às ${openingHours.closes.replace(":00", "h")}.`,
     "",
     "## Páginas principais",
     ...core,
   ];
 
-  if (services.length) sections.push("", "## Serviços", ...services);
-  if (projects.length) sections.push("", "## Portfólio", ...projects);
+  if (services.length) sections.push("", "## Nossa gastronomia", ...services);
+  if (projects.length) sections.push("", "## Galeria", ...projects);
 
   return new Response(`${sections.join("\n")}\n`, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },

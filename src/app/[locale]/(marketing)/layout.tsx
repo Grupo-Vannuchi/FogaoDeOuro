@@ -19,12 +19,12 @@ export default async function MarketingLayout({
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
 
-  const [projects, services, informations] = await Promise.all([
-    getProjects(locale),
+  // The gallery is no longer a top-level menu item, so the header only needs
+  // the gastronomy children — one query fewer on every marketing page.
+  const [services, informations] = await Promise.all([
     getServices(locale),
     getInformations(locale),
   ]);
-  const portfolioLinks = projects.map((p) => ({ slug: p.slug, title: p.title }));
   const serviceLinks = services.map((s) => ({ slug: s.slug, title: s.title }));
   const informationLinks = informations.map((i) => ({
     slug: i.slug,
@@ -36,11 +36,7 @@ export default async function MarketingLayout({
     <>
       <OrganizationJsonLd />
       <WebSiteJsonLd />
-      <Header
-        portfolioLinks={portfolioLinks}
-        serviceLinks={serviceLinks}
-        informationLinks={informationLinks}
-      />
+      <Header serviceLinks={serviceLinks} informationLinks={informationLinks} />
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsappButton />

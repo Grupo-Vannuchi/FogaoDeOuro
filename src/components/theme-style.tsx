@@ -15,20 +15,24 @@ function paletteVars(palette: ThemePalette): string {
  * `:root`. Rendered in the document <head> so the values are present before first
  * paint (no flash).
  *
- * Three-state theming:
- *  - no `data-theme` attribute → follow the OS (`prefers-color-scheme`);
- *  - `data-theme="dark"`       → force dark, whatever the OS says;
- *  - `data-theme="light"`      → force light (the `:not([data-theme="light"])`
- *    guard is what lets an explicit light choice beat the OS dark preference).
+ * **Dark-first.** The client's visual direction puts the food on a graphite
+ * ground, so the dark palette is the default that sits on bare `:root`; light is
+ * the variant. Three-state theming, mirroring that inversion:
+ *  - no `data-theme` attribute → follow the OS (`prefers-color-scheme: light`
+ *    opts into the light palette; anything else stays dark);
+ *  - `data-theme="light"` → force light, whatever the OS says;
+ *  - `data-theme="dark"`  → force dark (the `:not([data-theme="dark"])` guard is
+ *    what lets an explicit dark choice beat an OS light preference).
  * The attribute is set pre-paint by the inline script in the root layout and
  * toggled by `ThemeToggle`.
  */
 export function ThemeStyle() {
   const { light, dark } = siteConfig.theme;
   const css = [
-    `:root{${paletteVars(light)}}`,
-    `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${paletteVars(dark)}}}`,
-    `:root[data-theme="dark"]{${paletteVars(dark)}}`,
+    `:root{color-scheme:dark;${paletteVars(dark)}}`,
+    `@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;${paletteVars(light)}}}`,
+    `:root[data-theme="light"]{color-scheme:light;${paletteVars(light)}}`,
+    `:root[data-theme="dark"]{color-scheme:dark;${paletteVars(dark)}}`,
   ].join("");
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }

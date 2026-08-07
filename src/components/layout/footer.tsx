@@ -104,7 +104,7 @@ export async function Footer() {
       <div className="border-t border-border">
         <Container className="flex flex-col gap-3 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {siteConfig.legalName}. {t("rights")}
+            © {year} {siteConfig.legalName ?? siteConfig.name}. {t("rights")}
           </p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <Link

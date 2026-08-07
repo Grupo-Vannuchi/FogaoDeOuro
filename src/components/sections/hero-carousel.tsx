@@ -9,7 +9,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type HeroSlide = {
-  image: string;
+  /**
+   * Background photo. Optional: while the client's authorial photography is
+   * pending, slides render a brand-coloured gradient instead of a stand-in
+   * photo — a generic stock image would misrepresent the restaurant.
+   */
+  image?: string;
   title: string;
   subtitle: string;
 };
@@ -95,14 +100,21 @@ export function HeroCarousel({
                 active ? "opacity-100" : "pointer-events-none opacity-0",
               )}
             >
-              {(i === 0 || deferredReady) && (
-                <Image
-                  src={slide.image}
-                  alt=""
-                  fill
-                  priority={i === 0}
-                  sizes="100vw"
-                  className="object-cover"
+              {slide.image ? (
+                (i === 0 || deferredReady) && (
+                  <Image
+                    src={slide.image}
+                    alt=""
+                    fill
+                    priority={i === 0}
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                )
+              ) : (
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-[radial-gradient(120%_100%_at_80%_20%,var(--color-accent)_0%,transparent_55%),radial-gradient(90%_90%_at_20%_90%,var(--color-brand)_0%,transparent_60%)] opacity-30"
                 />
               )}
               {/* Readability overlay — strong on the left where the text sits. */}
@@ -121,7 +133,7 @@ export function HeroCarousel({
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Link
-                    href="/contact"
+                    href="/experiencia"
                     tabIndex={active ? undefined : -1}
                     className={buttonVariants({ size: "lg", className: "group" })}
                   >
@@ -129,7 +141,7 @@ export function HeroCarousel({
                     <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                   <Link
-                    href="/portfolio"
+                    href="/contato"
                     tabIndex={active ? undefined : -1}
                     className={buttonVariants({ variant: "outline", size: "lg" })}
                   >
@@ -143,22 +155,26 @@ export function HeroCarousel({
 
         {count > 1 ? (
           <>
-            <button
-              type="button"
-              onClick={() => go(index - 1)}
-              aria-label={labels.prev}
-              className="absolute left-3 top-1/2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background sm:left-5"
-            >
-              <ChevronLeft className="size-6" />
-            </button>
-            <button
-              type="button"
-              onClick={() => go(index + 1)}
-              aria-label={labels.next}
-              className="absolute right-3 top-1/2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background sm:right-5"
-            >
-              <ChevronRight className="size-6" />
-            </button>
+            {/* Bottom-right, not vertically centred: the copy is left-aligned and
+                full-height arrows sat on top of the subtitle at desktop widths. */}
+            <div className="absolute bottom-2.5 right-3 z-10 flex gap-2 sm:right-5">
+              <button
+                type="button"
+                onClick={() => go(index - 1)}
+                aria-label={labels.prev}
+                className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background"
+              >
+                <ChevronLeft className="size-6" />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(index + 1)}
+                aria-label={labels.next}
+                className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background"
+              >
+                <ChevronRight className="size-6" />
+              </button>
+            </div>
 
             <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1">
               {slides.map((_, i) => (

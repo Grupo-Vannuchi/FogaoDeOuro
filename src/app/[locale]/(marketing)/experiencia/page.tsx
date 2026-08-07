@@ -3,15 +3,16 @@ import { localeMetadata } from "@/lib/seo";
 import { richTags } from "@/i18n/rich";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button";
-import { Team } from "@/components/sections/team";
-import { siteConfig, whatsappLink } from "@/config/site";
+import { ReserveButton } from "@/components/reserve-button";
+import { PortfolioPreview } from "@/components/sections/portfolio-preview";
+import { siteConfig } from "@/config/site";
 
 export async function generateMetadata({
   params,
@@ -23,7 +24,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("metaDescription"),
-    ...localeMetadata(locale, "/about"),
+    ...localeMetadata(locale, "/experiencia"),
   };
 }
 
@@ -155,7 +156,7 @@ export default async function AboutPage({
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
-                  href="/contact"
+                  href="/contato"
                   className={buttonVariants({
                     variant: "accent",
                     size: "lg",
@@ -165,20 +166,12 @@ export default async function AboutPage({
                   {tc("talkToUs")}
                   <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
-                <a
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonVariants({
-                    variant: "outline",
-                    size: "lg",
-                    className:
-                      "border-white/40 text-brand-foreground hover:bg-white/10",
-                  })}
-                >
-                  <MessageCircle className="size-5" />
-                  {tc("sendWhatsapp")}
-                </a>
+                <ReserveButton
+                  variant="outline"
+                  size="lg"
+                  className="border-white/40 text-brand-foreground hover:bg-white/10"
+                  label={tc("reserveTable")}
+                />
               </div>
             </div>
           </Reveal>
@@ -188,7 +181,10 @@ export default async function AboutPage({
         </Container>
       </section>
 
-      <Team locale={locale} />
+      {/* §3.3 do briefing: a galeria do salão vive dentro desta página — não é
+          item de menu. O time não aparece: a direção visual do cliente proíbe
+          rostos de funcionários e clientes. */}
+      <PortfolioPreview locale={locale} />
     </>
   );
 }

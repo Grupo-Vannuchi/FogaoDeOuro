@@ -6,7 +6,7 @@ import type { ProjectCardView } from "@/lib/queries";
 export function ProjectCard({ project }: { project: ProjectCardView }) {
   return (
     <Link
-      href={`/portfolio/${project.slug}`}
+      href={`/galeria/${project.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg focus-visible:shadow-lg"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">

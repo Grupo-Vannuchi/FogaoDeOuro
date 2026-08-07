@@ -6,7 +6,7 @@ import type { ServiceView } from "@/lib/queries";
 export function ServiceCard({ service }: { service: ServiceView }) {
   return (
     <Link
-      href={`/services/${service.slug}`}
+      href={`/gastronomia/${service.slug}`}
       className="group flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg focus-visible:shadow-lg"
     >
       <span className="inline-flex size-12 items-center justify-center rounded-lg bg-brand/10 text-brand transition-transform duration-300 group-hover:scale-110">

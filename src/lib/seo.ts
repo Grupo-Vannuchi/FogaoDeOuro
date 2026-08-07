@@ -35,7 +35,7 @@ export function absoluteUrl(pathOrUrl: string): string {
 /**
  * `alternates` block for a page's `generateMetadata`: a self-referencing
  * canonical for the current locale plus hreflang links for every locale.
- * Pass the page's path without the locale prefix, e.g. `"/about"` (home = "").
+ * Pass the page's path without the locale prefix, e.g. `"/experiencia"` (home = "").
  */
 export function localeAlternates(locale: Locale, path = "") {
   return {
@@ -76,7 +76,7 @@ export function baseOpenGraph(
  * The `alternates` + `openGraph` block for a page's `generateMetadata`: a
  * self-referencing canonical for the locale, plus a complete Open Graph object
  * (via `baseOpenGraph`) with the page's own `url`. Spread into the returned
- * metadata: `...localeMetadata(locale, "/about")`. Pass `ogOverrides` for
+ * metadata: `...localeMetadata(locale, "/experiencia")`. Pass `ogOverrides` for
  * per-page Open Graph (e.g. `{ type: "article" }`).
  */
 export function localeMetadata(

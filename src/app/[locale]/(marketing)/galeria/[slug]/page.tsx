@@ -35,7 +35,7 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
-    ...localeMetadata(locale, `/portfolio/${slug}`, {
+    ...localeMetadata(locale, `/galeria/${slug}`, {
       images: [{ url: absoluteUrl(project.coverImage), alt: project.title }],
     }),
   };
@@ -76,17 +76,17 @@ export default async function ProjectPage({
       <BreadcrumbJsonLd
         items={[
           { name: siteConfig.name, url: localizedUrl(locale) },
-          { name: tn("portfolio"), url: localizedUrl(locale, "/portfolio") },
+          { name: tn("galeria"), url: localizedUrl(locale, "/galeria") },
           {
             name: project.title,
-            url: localizedUrl(locale, `/portfolio/${slug}`),
+            url: localizedUrl(locale, `/galeria/${slug}`),
           },
         ]}
       />
       <div className="border-b border-border bg-muted/30">
         <Container className="py-12 sm:py-16">
           <Link
-            href="/portfolio"
+            href="/galeria"
             className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
@@ -176,12 +176,12 @@ export default async function ProjectPage({
           <h2 className="text-balance text-2xl font-bold sm:text-3xl">
             {t("ctaTitle")}
           </h2>
-          <Link href="/contact" className={buttonVariants({ size: "lg" })}>
+          <Link href="/contato" className={buttonVariants({ size: "lg" })}>
             {t("ctaButton")}
             <ArrowRight className="size-5" />
           </Link>
           <Link
-            href="/portfolio"
+            href="/galeria"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {tc("viewAllProjects")}

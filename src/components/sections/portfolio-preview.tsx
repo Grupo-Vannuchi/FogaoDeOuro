@@ -25,7 +25,7 @@ export async function PortfolioPreview({ locale }: { locale: Locale }) {
           align="left"
         />
         <Link
-          href="/portfolio"
+          href="/galeria"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
           {tc("viewAllProjects")}

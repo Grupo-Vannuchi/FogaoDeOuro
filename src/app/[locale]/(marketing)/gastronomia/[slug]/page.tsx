@@ -37,7 +37,7 @@ export async function generateMetadata({
   return {
     title: service.title,
     description: service.description,
-    ...localeMetadata(locale, `/services/${slug}`),
+    ...localeMetadata(locale, `/gastronomia/${slug}`),
   };
 }
 
@@ -66,17 +66,17 @@ export default async function ServicePage({
       <BreadcrumbJsonLd
         items={[
           { name: siteConfig.name, url: localizedUrl(locale) },
-          { name: tn("services"), url: localizedUrl(locale, "/services") },
+          { name: tn("gastronomia"), url: localizedUrl(locale, "/gastronomia") },
           {
             name: service.title,
-            url: localizedUrl(locale, `/services/${slug}`),
+            url: localizedUrl(locale, `/gastronomia/${slug}`),
           },
         ]}
       />
       <div className="border-b border-border bg-muted/30">
         <Container className="py-12 sm:py-16">
           <Link
-            href="/services"
+            href="/gastronomia"
             className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
@@ -108,12 +108,12 @@ export default async function ServicePage({
           <h2 className="text-balance text-2xl font-bold sm:text-3xl">
             {t("ctaTitle")}
           </h2>
-          <Link href="/contact" className={buttonVariants({ size: "lg" })}>
+          <Link href="/contato" className={buttonVariants({ size: "lg" })}>
             {t("ctaButton")}
             <ArrowRight className="size-5" />
           </Link>
           <Link
-            href="/services"
+            href="/gastronomia"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {t("viewAll")}

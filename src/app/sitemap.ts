@@ -14,12 +14,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const staticEntries: Entry[] = [
     "",
-    "/about",
-    "/services",
+    "/experiencia",
+    "/gastronomia",
     "/informations",
-    "/portfolio",
-    "/contact",
-    "/careers",
+    "/galeria",
+    "/reservas",
+    "/contato",
     "/terms",
     "/privacy",
   ].map((path) => ({ path, lastModified: now }));
@@ -35,11 +35,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
     // Detail pages carry the real edit date of their content record.
     projectEntries = projects.map((p) => ({
-      path: `/portfolio/${p.slug}`,
+      path: `/galeria/${p.slug}`,
       lastModified: p.updatedAt,
     }));
     serviceEntries = services.map((s) => ({
-      path: `/services/${s.slug}`,
+      path: `/gastronomia/${s.slug}`,
       lastModified: s.updatedAt,
     }));
     informationEntries = informations.map((i) => ({

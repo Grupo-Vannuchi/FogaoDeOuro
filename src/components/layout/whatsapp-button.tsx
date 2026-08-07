@@ -3,15 +3,21 @@ import { whatsappLink } from "@/config/site";
 
 /**
  * Floating WhatsApp button fixed to the bottom-right of the viewport. Opens a
- * wa.me deep link to the agency's WhatsApp contact in a new tab.
+ * wa.me deep link to the restaurant's WhatsApp in a new tab.
+ *
+ * Renders nothing until a number is configured: a floating WhatsApp badge that
+ * doesn't open WhatsApp is worse than no badge at all.
  */
 export async function WhatsappButton() {
+  const href = whatsappLink();
+  if (!href) return null;
+
   const tc = await getTranslations("common");
   const label = tc("sendWhatsapp");
 
   return (
     <a
-      href={whatsappLink()}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}

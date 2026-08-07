@@ -56,14 +56,14 @@ async function collect<T extends { slug: string }, D>(
 }
 
 export async function GET(): Promise<Response> {
-  const { name, legalName } = siteConfig;
+  const { name } = siteConfig;
 
   const sections: string[] = [
     `# ${name} — conteúdo completo`,
     "",
-    `> ${legalName} — agência de marketing e vendas em ${fullAddress()}.`,
+    `> Restaurante no Centro Histórico de Santos — ${fullAddress()}.`,
     "",
-    "Versão expandida de /llms.txt: o texto completo de serviços, cases e artigos, para citação por LLMs.",
+    "Versão expandida de /llms.txt: o texto completo da gastronomia, da galeria e das novidades, para citação por LLMs.",
   ];
 
   let svc: string[] = [];
@@ -80,12 +80,12 @@ export async function GET(): Promise<Response> {
       collect(
         services,
         (slug) => getServiceBySlug(defaultLocale, slug),
-        (s) => block(s.title, `/services/${s.slug}`, s.description, s.content),
+        (s) => block(s.title, `/gastronomia/${s.slug}`, s.description, s.content),
       ),
       collect(
         projects,
         (slug) => getProjectBySlug(defaultLocale, slug),
-        (p) => block(p.title, `/portfolio/${p.slug}`, p.summary, p.content),
+        (p) => block(p.title, `/galeria/${p.slug}`, p.summary, p.content),
       ),
       collect(
         informations,

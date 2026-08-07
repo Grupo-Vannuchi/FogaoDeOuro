@@ -1,27 +1,31 @@
 {
   "metadata": {
-    "defaultTitle": "{brand} — Sua marca na primeira página do Google",
+    "defaultTitle": "{brand} | Restaurante por Quilo no Centro de Santos",
     "titleTemplate": "%s · {brand}",
-    "description": "A N8X Marketing é uma agência de marketing digital especializada em estratégia, conteúdo, posicionamento de marca e crescimento previsível para empresas.",
-    "keywords": "agência, publicidade, marketing, social media, branding, tráfego pago"
+    "description": "Restaurante no Centro Histórico de Santos. Churrasco na brasa, peixes nobres e ilha de massas preparada na hora, em um salão de 180 lugares. Segunda a sexta, das 11h às 15h.",
+    "keywords": "restaurante por quilo centro de santos, almoço executivo santos, churrasco centro de santos, feijoada santos, restaurante para eventos santos, restaurante perto da bolsa do café"
   },
   "nav": {
-    "about": "Quem somos",
-    "services": "Serviços",
-    "portfolio": "Portfólio",
-    "careers": "Trabalhe conosco",
-    "contact": "Contato",
-    "information": "Informações",
+    "inicio": "Início",
+    "experiencia": "A Experiência",
+    "gastronomia": "Nossa Gastronomia",
+    "galeria": "Galeria",
+    "reservas": "Horários & Reservas",
+    "contato": "Contato",
+    "information": "Novidades",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu"
   },
   "common": {
-    "talkToUs": "Fale com a gente",
-    "startProject": "Começar um projeto",
-    "viewWork": "Ver trabalhos",
-    "viewAllProjects": "Ver todos os projetos",
-    "viewAllServices": "Ver todos os serviços",
-    "viewCase": "Ver case",
+    "talkToUs": "Falar com o restaurante",
+    "makeReservation": "Fazer minha reserva",
+    "reserveTable": "Reserve a sua mesa",
+    "callUs": "Ligar {phone}",
+    "startProject": "Fazer minha reserva",
+    "viewWork": "Ver a galeria",
+    "viewAllProjects": "Ver toda a galeria",
+    "viewAllServices": "Ver toda a gastronomia",
+    "viewCase": "Ver",
     "learnMore": "Saiba mais",
     "sendWhatsapp": "Chamar no WhatsApp",
     "backHome": "Voltar para o início",
@@ -29,169 +33,198 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Há {years} anos no mercado",
-      "primaryCta": "Começar um projeto",
-      "secondaryCta": "Conhecer trabalhos",
+      "eyebrow": "{years} anos no Centro de Santos",
+      "primaryCta": "Conheça a experiência",
+      "secondaryCta": "Como chegar",
       "carouselLabel": "Destaques",
       "prevSlide": "Slide anterior",
       "nextSlide": "Próximo slide",
       "goToSlide": "Ir para o slide {n}",
       "slides": [
         {
-          "title": "Deixamos o seu site na primeira página de pesquisas no Google",
-          "subtitle": "O topo do Google traz visibilidade orgânica e tráfego qualificado para quem busca pelo seu serviço."
+          "title": "A sua melhor experiência do dia.",
+          "subtitle": "Há mais de 20 anos, transformamos o seu almoço em um momento irresistível e inesquecível. Um ambiente acolhedor e premium, onde a suculência das carnes nobres e o nosso atendimento impecável esperam por você."
         },
         {
-          "title": "Gestão de redes sociais que faz você faturar mais com vendas no mercado digital",
-          "subtitle": "Redes sociais lucrativas com posicionamento de marca focado em transformar seguidores em clientes rentáveis."
+          "title": "Picanha no ponto, direto da brasa.",
+          "subtitle": "Cortes selecionados fatiados na hora, peixes nobres e a ilha de massas preparada na sua frente. O churrasco que fez a fama da casa."
         },
         {
-          "title": "Prospecção, atendimento e marketing automatizados para o seu negócio não parar de crescer",
-          "subtitle": "Escale sua prospecção e otimize seu atendimento com processos que trabalham 24 horas por você."
+          "title": "O almoço à altura do seu dia.",
+          "subtitle": "Salão amplo, climatizado e silencioso o bastante para a conversa que importa — no coração do Centro Histórico."
         }
       ]
     },
     "services": {
-      "eyebrow": "O que fazemos",
-      "title": "Soluções completas",
-      "subtitle": "marketing digital para empresas que querem decolar!"
+      "eyebrow": "A experiência",
+      "title": "Tudo o que espera por você",
+      "subtitle": "churrasco na brasa, peixes nobres, massas na hora e um buffet que não existe igual no Centro."
     },
     "portfolio": {
-      "eyebrow": "Portfólio",
-      "title": "Trabalhos que falam por nós",
-      "subtitle": "Cases selecionados de marcas que confiaram na gente."
+      "eyebrow": "Galeria",
+      "title": "O salão e a mesa",
+      "subtitle": "O ambiente renovado e os pratos que saem todos os dias."
     },
     "stats": {
-      "title": "Números que contam nossa história"
+      "title": "O Fogão de Ouro em números"
     },
     "clients": {
-      "title": "Marcas que confiam na gente"
+      "title": "Quem almoça com a gente"
     },
     "testimonials": {
-      "eyebrow": "Depoimentos",
-      "title": "O que dizem sobre nós",
-      "subtitle": "A satisfação de quem trabalha com a gente."
+      "eyebrow": "Avaliações do Google · 4,5 ★",
+      "title": "O que dizem por aqui",
+      "subtitle": "Mais de 1.200 avaliações de quem volta sempre."
     },
     "team": {
-      "eyebrow": "Time",
-      "title": "Gente que faz acontecer",
-      "subtitle": "Especialistas apaixonados por marcas."
+      "eyebrow": "A casa",
+      "title": "Quem faz acontecer",
+      "subtitle": "A tradição da nossa família, todos os dias no Centro."
     },
     "cta": {
-      "title": "Pronto para transformar sua marca?",
-      "subtitle": "Conte o seu desafio. A gente cuida da estratégia, da execução e do resultado.",
-      "button": "Começar agora"
+      "title": "O buffet abre às 11h. Recém-servido, fumegante, completo.",
+      "subtitle": "Chegue cedo e almoce com calma — ou venha depois das 13h30 e aproveite o salão tranquilo, com reposição garantida.",
+      "button": "Horários & Reservas"
     }
   },
   "about": {
-    "title": "Agência de marketing digital full service para empresas que querem crescer com previsibilidade",
-    "metaDescription": "A N8X Marketing é uma agência de marketing digital que integra estratégia, gestão de redes sociais, tráfego pago, produção audiovisual e inteligência artificial para posicionar marcas com consistência e resultado.",
-    "subtitle": "Estratégia, conteúdo e posicionamento de marca desde {foundedYear}.",
-    "lead": "A N8X Marketing é uma agência de marketing digital que integra <b>estratégia, gestão de redes sociais, tráfego pago, produção audiovisual e inteligência artificial</b> para posicionar marcas com consistência e resultado. Atendemos empresas que querem ir além de \"só postar\" e buscam uma operação de marketing estruturada, orientada por dados e alinhada aos objetivos de negócio.",
+    "title": "Mais que um almoço. Um ritual do Centro de Santos.",
+    "metaDescription": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu refúgio no Centro Histórico de Santos: salão amplo, elegante e discreto, com churrasco na brasa, peixes nobres e massas preparadas na hora.",
+    "subtitle": "No Centro Histórico de Santos desde {foundedYear}.",
+    "lead": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu verdadeiro refúgio no Centro Histórico. Muito mais do que uma refeição, entregamos uma <b>experiência de conforto absoluto</b>: um salão amplo, elegante e discreto, pensado em cada detalhe para acolher desde uma pausa merecida até grandes almoços de negócios. Aqui, a tradição da nossa família encontra o rigor que o seu paladar exige.",
     "practice": {
-      "title": "O que fazemos na prática",
-      "intro": "Atuamos como um time de marketing completo para o seu negócio, conectando <b>planejamento estratégico</b> com execução diária. Isso inclui:",
+      "title": "O que faz o almoço aqui ser diferente",
+      "intro": "O ponto de encontro de quem exige excelência no Centro Histórico. Transformamos o seu almoço com um salão acolhedor e <b>100% renovado</b>, acompanhado de uma fartura irresistível:",
       "items": [
-        "Diagnóstico de marca, público e concorrência",
-        "Definição de posicionamento e linha de comunicação",
-        "Gestão de redes sociais (principalmente Instagram, Facebook e LinkedIn)",
-        "Tráfego pago com foco em ROI (Meta Ads e Google Ads)",
-        "Roteiro, captação e edição de vídeos e fotos profissionais",
-        "Landing pages e funis simples para captação de leads",
-        "IA aplicada ao marketing para ganhar escala sem perder a linha criativa da marca"
+        "Churrasco de verdade — picanha, cupim, maminha e cortes selecionados, fatiados na hora, direto da brasa",
+        "Peixes e frutos do mar escolhidos a dedo, toda semana, pelo próprio dono da casa",
+        "Ilha de massas preparada na hora, na sua frente — você escolhe a massa, os ingredientes e o molho",
+        "Buffet completo com saladas frescas, pratos quentes e variedade que não existe em outro lugar do Centro",
+        "Sobremesas e um dos cafés mais elogiados de Santos para fechar",
+        "Salão amplo, climatizado e silencioso o bastante para a conversa que importa"
       ]
     },
     "services": {
-      "title": "Principais serviços de marketing digital que oferecemos",
-      "intro": "Entre os serviços mais demandados pelos nossos clientes estão:",
+      "title": "Um salão pensado para o seu dia",
+      "intro": "São 180 lugares no coração do Centro Histórico, a poucos passos da Bolsa do Café e do Museu do Café. O espaço foi desenhado para atender bem em qualquer cenário:",
       "items": [
-        "Gestão de redes sociais com calendário editorial, criação de artes, textos e acompanhamento de métricas",
-        "Gestão de tráfego pago focada em geração de leads, pedidos e oportunidades reais de negócio",
-        "Produção audiovisual (foto e vídeo) para campanhas, anúncios, cardápios digitais e posicionamento de marca",
-        "Otimização de páginas, estruturas simples de landing page e funil de vendas",
-        "Implementação de IA no marketing para acelerar testes de criativos, roteiros e variações de anúncios"
+        "A pausa de quem trabalha no Centro e tem uma hora de almoço para aproveitar",
+        "Almoços de diretoria e reuniões que precisam de silêncio e discrição",
+        "Confraternizações de equipe e eventos corporativos",
+        "Quem vem sozinho e quer comer bem, sem pressa",
+        "Famílias e grupos que procuram variedade em uma mesa só"
       ]
     },
     "audience": {
-      "title": "Para quem a N8X Marketing é a agência certa",
-      "intro": "Somos a escolha ideal para empresas que precisam de uma <b>agência de marketing digital full service</b> com visão de negócio, e não apenas produção de post. Atendemos:",
+      "title": "Tradição, conforto e sabor incomparável",
+      "intro": "Somos o endereço de quem <b>exige excelência</b> no Centro Histórico. O que nos trouxe até aqui:",
       "items": [
-        "Negócios locais que querem ser referência na região",
-        "Bares, restaurantes e casas noturnas que vivem de movimento",
-        "Escritórios, construtoras, empresas de engenharia e serviços B2B",
-        "Marcas que já investem em mídia, mas não enxergam claramente o retorno",
-        "Empresas que precisam transformar seguidores em clientes"
+        "Mais de 20 anos servindo o Centro de Santos",
+        "4,5 ★ em mais de 1.200 avaliações no Google",
+        "Salão de 180 lugares, amplo e climatizado",
+        "Buffet reposto ao longo de todo o serviço",
+        "Atendimento que trata o seu tempo com respeito"
       ],
-      "note": "Se você procura uma <b>agência de marketing em Santos</b> ou Baixada Santista com olhar estratégico e execução constante, a N8X foi pensada exatamente para esse cenário."
-    },
-    "whyFullService": {
-      "title": "Por que trabalhar com uma agência de marketing digital full service",
-      "p1": "Ao contratar uma agência de marketing digital full service como a N8X, sua empresa passa a contar com um time que cuida do <b>posicionamento da marca, presença digital e geração de demanda</b> do início ao fim. Em vez de lidar com vários prestadores diferentes, você tem uma única operação integrada, alinhada a metas claras.",
-      "p2": "Isso significa mais consistência na comunicação, menos retrabalho, leitura de dados mais clara e decisões baseadas em resultado — não em achismo. Para negócios que precisam crescer com previsibilidade, essa visão integrada é fundamental."
+      "note": "Se você procura um <b>restaurante por quilo no Centro de Santos</b> que leve a comida a sério, o Fogão de Ouro foi feito exatamente para esse cenário."
     },
     "timing": {
-      "title": "Como saber se é o momento certo de investir em marketing digital",
-      "intro": "Alguns sinais mostram que está na hora de ter uma agência acompanhando sua operação:",
+      "title": "O melhor momento para você",
+      "intro": "Servimos de segunda a sexta, das 11h às 15h. Cada horário tem o seu clima:",
       "items": [
-        "Você depende apenas de indicação ou movimento orgânico",
-        "Já investiu em anúncios, mas não sabe exatamente o que funcionou",
-        "Seu Instagram não transmite o potencial real da sua empresa",
-        "Não existe um calendário claro de ações, campanhas ou lançamentos",
-        "As ações de marketing não conversam com o comercial"
+        "11h — buffet recém-montado, tudo fumegante",
+        "11h30 às 13h30 — o pico do Centro, salão cheio e movimentado",
+        "Após 13h30 — salão tranquilo, com reposição garantida"
       ],
-      "note": "Se você se reconhece em alguns desses pontos, é um bom momento para conversar com uma <b>agência de marketing especializada</b> que traga visão estratégica e execução para o dia a dia."
+      "note": "Chegue cedo e almoce com calma, ou venha no fim do serviço e aproveite o salão mais silencioso — a comida é a mesma do primeiro ao último minuto."
+    },
+    "whyFullService": {
+      "title": "A brasa, o mar e a massa. Todos os dias.",
+      "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana — escolhida pessoalmente, toda semana, pelo dono da casa.",
+      "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente. Completam a mesa as saladas frescas, os pratos quentes e as sobremesas: torta holandesa, pudim, petit gâteau — e o café que fecha a sua hora de almoço."
     },
     "contactCta": {
-      "title": "Fale com a N8X Marketing",
+      "title": "Reserve a sua mesa",
       "paragraphs": [
-        "Quer entender como a N8X pode ajudar sua marca a se posicionar melhor e gerar mais resultados com marketing digital? Entre em contato pelo formulário do site ou fale diretamente com nossa equipe pelo WhatsApp.",
-        "Vamos analisar o momento da sua empresa, seus objetivos e o cenário atual de comunicação para construir um plano de ação que faça sentido para o seu negócio — sem promessas vazias, com estratégia, execução e leitura de dados."
+        "Confraternizações de equipe, almoços de diretoria e eventos corporativos, no coração do Centro Histórico. O salão de 180 lugares comporta o seu grupo com conforto.",
+        "Fale com a gente para acertar dia, horário e número de pessoas — e deixe o resto por nossa conta."
       ],
-      "tagline": "Sua marca transmite, a N8X dá o tom."
+      "tagline": "Tudo isso espera por você a partir das 11h."
     },
-    "disclaimer": "N8X Marketing (N8X, N8X Company e N8 Company) é a agência de marketing digital do grupo, com foco em estratégia, tráfego pago e conteúdo."
+    "disclaimer": "Fogão de Ouro Restaurante — Rua Frei Gaspar, 46, Centro Histórico de Santos/SP. Segunda a sexta, das 11h às 15h. Cartões, VR e VA."
   },
   "portfolio": {
-    "title": "Portfólio",
-    "subtitle": "Cases de marcas que crescem com a gente.",
-    "empty": "Em breve, novos cases por aqui.",
-    "client": "Cliente",
+    "title": "Galeria",
+    "subtitle": "O salão renovado, a brasa e a mesa posta.",
+    "empty": "Em breve, novas fotos por aqui.",
+    "client": "Ambiente",
     "year": "Ano",
     "category": "Categoria",
-    "tags": "Entregas",
-    "nextProject": "Próximo case",
-    "ctaTitle": "Quer um case assim para a sua marca?",
-    "ctaButton": "Vamos conversar"
+    "tags": "Destaques",
+    "nextProject": "Próxima",
+    "ctaTitle": "Quer ver de perto?",
+    "ctaButton": "Fazer minha reserva"
   },
   "services": {
-    "title": "Serviços",
-    "subtitle": "Soluções completas de marketing digital para negócios que querem decolar.",
-    "empty": "Em breve, novos serviços por aqui.",
-    "ctaTitle": "Pronto para crescer com esse serviço?",
-    "ctaButton": "Vamos conversar",
-    "viewAll": "Ver todos os serviços"
+    "title": "Nossa Gastronomia",
+    "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo — todos os dias.",
+    "empty": "Em breve, novidades por aqui.",
+    "ctaTitle": "Tudo isso espera por você a partir das 11h.",
+    "ctaButton": "Fazer minha reserva",
+    "viewAll": "Ver toda a gastronomia"
   },
   "informations": {
-    "title": "Informações",
-    "subtitle": "Conteúdos e informações sobre a N8X Marketing.",
-    "empty": "Em breve, novas informações por aqui.",
-    "viewAll": "Ver todas as informações",
-    "listTitle": "Todas as informações",
+    "title": "Novidades",
+    "subtitle": "Novidades e informações do Fogão de Ouro.",
+    "empty": "Em breve, novidades por aqui.",
+    "viewAll": "Ver todas as novidades",
+    "listTitle": "Todas as novidades",
     "view": "Ver",
     "viewImage": "Ver imagem",
     "prevImage": "Imagem anterior",
     "nextImage": "Próxima imagem",
     "imageCaption": "Imagem ilustrativa de {title}",
     "relatedTitle": "Páginas relacionadas",
-    "regionsTitle": "Regiões onde a N8X atende {title}:",
-    "menuLabel": "Abrir informações",
-    "menuTitle": "Informações",
+    "regionsTitle": "Regiões que atendemos com {title}:",
+    "menuLabel": "Abrir novidades",
+    "menuTitle": "Novidades",
     "menuClose": "Fechar"
   },
+  "reservas": {
+    "title": "Horários & Reservas",
+    "metaDescription": "Segunda a sexta, das 11h às 15h, no Centro Histórico de Santos. Salão de 180 lugares para confraternizações, almoços de diretoria e eventos corporativos.",
+    "subtitle": "Segunda a sexta, das 11h às 15h.",
+    "hoursTitle": "Segunda a sexta, das 11h às 15h",
+    "bestTimeTitle": "O melhor momento para você",
+    "bestTime": [
+      {
+        "when": "11h",
+        "what": "buffet recém-montado, tudo fumegante"
+      },
+      {
+        "when": "11h30 às 13h30",
+        "what": "o pico do Centro"
+      },
+      {
+        "when": "Após 13h30",
+        "what": "salão tranquilo, reposição garantida"
+      }
+    ],
+    "groupsTitle": "Seu evento no salão de 180 lugares",
+    "groupsCopy": "Confraternizações de equipe, almoços de diretoria e eventos corporativos, no coração do Centro Histórico.",
+    "groupsMessage": "Olá! Gostaria de informações sobre reserva para grupos e eventos no Fogão de Ouro.",
+    "practicalTitle": "Informações práticas",
+    "paymentsLabel": "Pagamentos",
+    "payments": "Cartões de crédito e débito, VR e VA",
+    "accessLabel": "Acesso",
+    "access": "A poucos passos da Bolsa do Café e do Museu do Café",
+    "addressLabel": "Endereço",
+    "hoursLabel": "Horário"
+  },
   "contact": {
-    "title": "Vamos conversar",
-    "subtitle": "Conte sobre o seu projeto. Respondemos em até um dia útil.",
-    "infoTitle": "Outras formas de falar com a gente",
+    "title": "Estamos no coração do Centro Histórico",
+    "subtitle": "Rua Frei Gaspar, 46 — a poucos passos da Bolsa do Café. Segunda a sexta, das 11h às 15h.",
+    "infoTitle": "Como falar com a gente",
+    "route": "Traçar rota",
     "labels": {
       "email": "E-mail",
       "phone": "Telefone",
@@ -204,28 +237,11 @@
       "phone": "Telefone (opcional)",
       "company": "Empresa (opcional)",
       "message": "Mensagem",
-      "messagePlaceholder": "Conte um pouco sobre o seu desafio…",
+      "messagePlaceholder": "Conte o que você precisa — reserva, evento, dúvida…",
       "submit": "Enviar mensagem",
       "submitting": "Enviando…",
       "success": "Mensagem enviada! Em breve entramos em contato.",
-      "error": "Não foi possível enviar agora. Tente novamente ou chame no WhatsApp."
-    }
-  },
-  "careers": {
-    "title": "Trabalhe com a gente",
-    "subtitle": "Gosta de marcas, dados e criatividade? Manda seu portfólio.",
-    "form": {
-      "name": "Nome",
-      "email": "E-mail",
-      "phone": "Telefone (opcional)",
-      "role": "Vaga de interesse",
-      "portfolio": "Link do portfólio (opcional)",
-      "message": "Conte sobre você",
-      "messagePlaceholder": "Sua experiência, o que te move…",
-      "submit": "Enviar candidatura",
-      "submitting": "Enviando…",
-      "success": "Candidatura recebida! Vamos analisar e retornar.",
-      "error": "Não foi possível enviar agora. Tente novamente mais tarde."
+      "error": "Não foi possível enviar agora. Tente novamente ou ligue para a gente."
     }
   },
   "validation": {
@@ -235,13 +251,15 @@
     "required": "Campo obrigatório."
   },
   "footer": {
-    "tagline": "Comunicação que transforma marcas.",
+    "tagline": "Fogão de Ouro Restaurante — no Centro Histórico de Santos.",
     "navTitle": "Navegação",
     "contactTitle": "Contato",
     "socialTitle": "Redes",
     "rights": "Todos os direitos reservados.",
     "registration": "CNPJ {value}",
     "mapTitle": "Nossa localização no mapa",
+    "hours": "Segunda a sexta, das 11h às 15h",
+    "payments": "Cartões, VR e VA",
     "terms": "Termos de Uso",
     "privacy": "Política de Privacidade"
   },
@@ -270,11 +288,6 @@
     "invalidEmail": "Digite um e-mail válido.",
     "prevDay": "Dia anterior",
     "nextDay": "Próximo dia"
-  },
-  "localeSwitcher": {
-    "label": "Idioma",
-    "pt": "Português",
-    "en": "English"
   },
   "theme": {
     "toggle": "Tema: {mode}. Clique para alternar.",
@@ -367,7 +380,7 @@
       "sectionContent": "Conteúdo ({locale})",
       "sectionVisibility": "Visibilidade",
       "slug": "Slug",
-      "slugHint": "Usado na URL: /portfolio/seu-slug",
+      "slugHint": "Usado na URL: /galeria/seu-slug",
       "clientName": "Nome do cliente",
       "year": "Ano",
       "order": "Ordem",

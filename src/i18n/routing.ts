@@ -5,8 +5,12 @@ import { hasLocale } from "next-intl";
  * Single source of truth for the locales the site supports.
  * Add a locale here, add a matching message catalog in `src/messages/`, and add
  * the locale key to every `LocalizedText` value — nothing else needs to change.
+ *
+ * The Fogão de Ouro site is Portuguese-only: the restaurant serves the Centro
+ * Histórico of Santos and has no English-speaking audience to justify the
+ * translation burden on every piece of admin-managed content.
  */
-export const locales = ["pt", "en"] as const;
+export const locales = ["pt"] as const;
 export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = "pt";
