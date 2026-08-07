@@ -1,1 +1,2 @@
 @AGENTS.md
+@docs/WHITELABEL-FOGAO-DE-OURO.md
