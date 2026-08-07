@@ -6,6 +6,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Working in this repo (agents & humans)
 
+**This is the site of the Fogão de Ouro**, a restaurant in the Centro Histórico of
+Santos/SP. The repo is a **fork of the N8X Marketing site** (an agency) that was
+re-skinned for the restaurant — so anything that still smells like an agency
+(portfolio, services-as-offerings, careers, funnels) is either already renamed or
+on its way out. The rebrand decisions and their rationale live in
+[`docs/superpowers/specs/`](docs/superpowers/specs/); read that before undoing
+something that looks odd.
+
 Project conventions distilled from real lessons in this codebase and from the
 team's coding skills (`prisma-patterns`, `react-patterns`, `react-performance`,
 `security-review`, `nextjs-turbopack`). These rules exist because we hit the
@@ -19,8 +27,13 @@ bugs they prevent. Follow them.
   `npm run typecheck && npm run lint && npm run build`. Report failures honestly.
 - **Never send secrets to the client.** Keys (Evolution, Google, Upstash, DB)
   stay server-side. No `NEXT_PUBLIC_*` for secrets.
-- **Both languages, always.** Any UI string goes in **both** `src/messages/pt.json`
-  and `src/messages/en.json`.
+- **Portuguese only.** Every UI string goes in `src/messages/pt.json`. There is
+  no `en.json` — the restaurant serves the Centro de Santos and has no
+  English-speaking audience. Don't reintroduce a second locale casually.
+- **Never invent client data.** Razão social, CNPJ, the LGPD officer's e-mail and
+  the final domain are still unknown; `src/content/legal.ts` marks them with
+  `«PENDENTE: …»` on purpose. Filling those with a plausible guess — or with the
+  agency's old values — is a legal problem, not a cosmetic one.
 - Use the dedicated tools/skills. When touching DB, React, security or Next.js,
   the matching skill encodes deeper rules — these are the project-specific subset.
 
@@ -28,20 +41,32 @@ bugs they prevent. Follow them.
 
 ```
 src/
-  app/[locale]/(marketing)/   public site
-  app/[locale]/(funnels)/     public funnel runtime  (/f/<slug>) — noindex
+  app/[locale]/(marketing)/   public site: / · /experiencia · /gastronomia ·
+                              /galeria · /reservas · /contato · /informations ·
+                              /privacy · /terms
+  app/[locale]/(funnels)/     public funnel runtime  (/f/<slug>) — noindex, to be removed
   app/[locale]/admin/         login + (dashboard) session-guarded admin
   app/actions/                server actions (funnels, funnels-public, whatsapp, auth, …)
   app/api/admin/…             admin API routes (google oauth, csv export)
   components/                 ui, sections, admin, funnels
-  config/site.ts              ⭐ white-label brand + theme (single source of truth)
+  config/site.ts              ⭐ white-label brand + theme + opening hours
   lib/                        env, prisma, queries (DAL), auth, rate-limit, evolution,
                               google-calendar, validations, funnel-*
-  messages/                   pt.json, en.json (typed catalogs)
+  messages/                   pt.json (typed catalog)
   proxy.ts                    Next 16 proxy (next-intl locale negotiation; excludes /api)
 prisma/                       schema.prisma + migrations + seeds + backups/snapshot.sql
-docs/                         ARCHITECTURE, RUNBOOK, ADRs, SEO audit
+docs/                         ARCHITECTURE, RUNBOOK, ADRs, SEO audit, superpowers/specs
 ```
+
+**Routes are renamed, and the rename is three coupled edits.** The `NavKey` type
+in `config/site.ts`, the `nav` keys in `messages/pt.json` and the folder names
+under `(marketing)/` must agree. The admin still uses `services`/`projects`
+internally — `Service` backs "Nossa Gastronomia" and `Project` backs the gallery.
+
+**Reservations go straight to WhatsApp.** There is no booking backend.
+`whatsappLink()` returns `null` while no number is configured, and every caller
+must handle that — `ReserveButton` degrades to a `tel:` link. Don't "fix" the
+null by hardcoding a number.
 
 ## Prisma (database) — skill: `prisma-patterns`
 
@@ -83,9 +108,10 @@ docs/                         ARCHITECTURE, RUNBOOK, ADRs, SEO audit
 
 ## Security — skill: `security-review`
 
-- **Public endpoints** (`submitFunnel`, `getFunnelSlots`, `submitContactLead`,
-  `submitCareerLead`): honeypot + **per-IP rate limit** (`lib/rate-limit`,
-  Upstash with in-memory fallback) + `zod` validation as the server boundary.
+- **Public endpoints** (`submitFunnel`, `getFunnelSlots`, `submitContactLead`):
+  honeypot + **per-IP rate limit** (`lib/rate-limit`, Upstash with in-memory
+  fallback) + `zod` validation as the server boundary. (`submitCareerLead` was
+  removed with the careers page — one fewer public write endpoint.)
 - **Admin** server actions and `/api/admin/*` routes gate on `getCurrentUser()`.
 - **Secrets** only in env, read server-side. Never log them; redact in errors.
 - **Integration tokens expire** — detect and surface it (Google `invalid_grant`
@@ -98,16 +124,38 @@ docs/                         ARCHITECTURE, RUNBOOK, ADRs, SEO audit
 
 ## i18n
 
-- `next-intl`. Add keys to **both** `pt.json` and `en.json`. The funnel is
-  single-language per funnel (`locale` chosen at creation). ICU braces in stored
+- `next-intl`, **Portuguese only** (`locales = ["pt"]`). Add keys to
+  `pt.json`. `LocalizedText` is still a `Record<Locale, string>`, so DB content
+  keeps its JSON shape — there is just one key in it now. ICU braces in stored
   copy that should render literally must be escaped: `'{NOME}'`.
 
-## Funnels (the big subsystem)
+## Brand & theme
+
+- **Dark-first.** The dark palette sits on bare `:root` in `theme-style.tsx`;
+  light is the variant. `globals.css` mirrors that inversion for the neutral
+  tokens — keep the two files agreeing about which theme is the default.
+- The four client colours are amber `#E68A08` (brand — the "Ouro"), ember
+  `#E04F26` (accent), graphite `#474544` and cream `#EFE9C2`. The **light theme
+  darkens the amber to `#8A5206`** because the pure tone over cream is 2.14:1.
+  Verify any palette change with
+  `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
+- Headings are a display serif (Playfair), body is the sans. Set in
+  `globals.css` under `@layer base`, scoped to `h1`–`h3`.
+- **No prices anywhere** — the client's direction forbids it, on the page *and*
+  in structured data (`priceRange` is deliberately absent from the `Restaurant`
+  schema, since it would surface in search results).
+
+## Funnels (inherited subsystem — scheduled for removal)
 
 Conversational lead-capture quiz at `/f/<slug>` (noindex), built in the admin.
 Branching → per-answer named endings (MEETING / BONUS / MESSAGE / REDIRECT),
 Google Calendar + Evolution WhatsApp integrations, per-funnel instance, CSV
 export. **Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) before changing it.**
+
+The restaurant doesn't use it and it will be dropped in a dedicated PR, taking
+the whole Google Calendar OAuth integration with it. When that happens, **keep**
+`Lead`, `LeadNotificationConfig`, `lib/evolution.ts` and `lib/lead-notify.ts` —
+the contact form still depends on them.
 
 ## Workflow & board
 

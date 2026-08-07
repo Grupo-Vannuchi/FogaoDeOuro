@@ -1,20 +1,25 @@
-# n8x marketing
+# Fogão de Ouro Restaurante
 
-[![CI](https://github.com/Grupo-Vannuchi/n8x/actions/workflows/ci.yml/badge.svg)](https://github.com/Grupo-Vannuchi/n8x/actions/workflows/ci.yml)
+[![CI](https://github.com/Grupo-Vannuchi/FogaoDeOuro/actions/workflows/ci.yml/badge.svg)](https://github.com/Grupo-Vannuchi/FogaoDeOuro/actions/workflows/ci.yml)
 
-A production-grade, **marketing-agency website** built with Next.js 16
-(App Router), TypeScript, Tailwind CSS v4, Prisma and PostgreSQL. Inspired by the
-structure of a full-service advertising agency: hero, services, portfolio/case
-studies, stats, client logos, testimonials, team, plus contact & careers lead
-capture and a small authenticated admin.
+Site institucional do **Fogão de Ouro**, restaurante no Centro Histórico de
+Santos/SP, construído com Next.js 16 (App Router), TypeScript, Tailwind CSS v4,
+Prisma e PostgreSQL: hero, a experiência da casa, a gastronomia, galeria,
+horários & reservas, contato, avaliações — mais um admin autenticado.
 
-The whole brand is driven by a single config file, the UI is **bilingual
-(pt-BR / English)** via next-intl, and all dynamic content lives in Postgres and
-is editable through the admin.
+O projeto é um **fork do site da N8X Marketing** (uma agência), re-skinado para o
+restaurante. A marca inteira sai de um único arquivo de configuração, o site é
+**só em português** via next-intl, e todo o conteúdo dinâmico vive no Postgres e
+é editável pelo admin.
 
-> Beyond the marketing site, the app ships a **conversational lead-capture
-> "funnels"** feature (admin builder + public `/f/<slug>` runtime) with Google
-> Calendar, WhatsApp (Evolution) and rate-limiting integrations. See
+> **Reservas acontecem no WhatsApp**, sem backend de agendamento: os CTAs abrem
+> um deep link `wa.me` com mensagem pré-preenchida. Sem número configurado, eles
+> degradam para o telefone — ver `whatsappLink()` em `src/config/site.ts`.
+
+> O app ainda carrega o subsistema de **funis** herdado da agência (builder no
+> admin + runtime público em `/f/<slug>`) com Google Calendar, WhatsApp
+> (Evolution) e rate limiting. Ele **será removido** — ver
+> [`docs/superpowers/specs/`](docs/superpowers/specs/) e
 > [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Documentation
@@ -52,7 +57,8 @@ is editable through the admin.
 src/
   app/
     [locale]/
-      (marketing)/        # public site: home, portfolio, about, contact, careers
+      (marketing)/        # público: home, experiencia, gastronomia, galeria,
+                          #          reservas, contato, informations, privacy, terms
       admin/
         login/            # public login screen
         (dashboard)/      # session-guarded: dashboard + leads management
@@ -63,7 +69,7 @@ src/
   config/site.ts          # ⭐ white-label brand config (single source of truth)
   i18n/                   # routing, navigation, request config
   lib/                    # env, prisma, queries (DAL), session, auth, validations
-  messages/               # pt.json, en.json (typed translation catalogs)
+  messages/               # pt.json (typed translation catalog — PT-only)
   proxy.ts                # Next 16 proxy (next-intl locale negotiation)
 prisma/                   # schema.prisma + seed.ts
 ```
@@ -75,10 +81,11 @@ Key design decisions:
   injected as CSS custom properties at runtime (`ThemeStyle`), so re-skinning is
   a config edit — no component changes.
 - **Content in the database, copy in catalogs.** UI strings live in
-  `src/messages/*.json` (type-checked against the catalog). Dynamic content
-  (services, projects, testimonials, team, stats, clients) lives in Postgres with
-  bilingual JSON fields resolved per request in the data-access layer
-  (`src/lib/queries.ts`).
+  `src/messages/pt.json` (type-checked against the catalog). Dynamic content
+  (gastronomy blocks, gallery, testimonials, stats) lives in Postgres with
+  localized JSON fields resolved per request in the data-access layer
+  (`src/lib/queries.ts`). The JSON shape still supports several locales
+  (`LocalizedText`), the site just declares one.
 - **Security boundary in the DAL.** Admin pages are guarded by `requireAdmin`
   (verifies the jose session + DB user). Server actions re-validate every input
   with the same zod schema used on the client.
@@ -90,17 +97,17 @@ three different places**, so each is easy to change in isolation.
 
 | Kind of content                          | Lives in                         | Why                                   |
 | ---------------------------------------- | -------------------------------- | ------------------------------------- |
-| **Brand identity** (name, colours, contact, socials, menu) | `src/config/site.ts`            | Re-branding = editing one file        |
-| **UI copy** (section titles, buttons, labels)              | `src/messages/{pt,en}.json`     | Bilingual and easy to review          |
-| **Dynamic content** (projects, services, testimonials, team, stats) | PostgreSQL (seeded + admin)     | Editable without touching code        |
+| **Brand identity** (name, colours, contact, socials, menu, opening hours) | `src/config/site.ts`            | Re-branding = editing one file        |
+| **UI copy** (section titles, buttons, labels)              | `src/messages/pt.json`          | One catalog, easy to review           |
+| **Dynamic content** (gallery, gastronomy, testimonials, stats) | PostgreSQL (seeded + admin)     | Editable without touching code        |
 
 ### Request flow
 
 ```
-Request  →  proxy.ts                 detects the locale (pt = "/", en = "/en")
+Request  →  proxy.ts                 resolves the locale (pt is the only one, served at "/")
          →  app/[locale]/layout.tsx  loads fonts, injects brand colours, provides translations
          →  the page (Server Component)
-              ├─ reads UI copy   via getTranslations() → src/messages/*.json
+              ├─ reads UI copy   via getTranslations() → src/messages/pt.json
               └─ reads content   via src/lib/queries.ts → PostgreSQL (resolved to the active locale)
          →  rendered HTML
 ```
@@ -113,10 +120,11 @@ Request  →  proxy.ts                 detects the locale (pt = "/", en = "/en")
   whole site.
 - **`src/i18n/`** — locale setup. `routing.ts` declares the locales; `proxy.ts`
   negotiates the locale per request; `request.ts` loads the right message file.
-- **`src/messages/{pt,en}.json`** — every fixed string on the site, grouped by
-  area (`home`, `about`, `contact`, `footer`, `admin`, …). Keys are type-checked.
-- **`prisma/schema.prisma`** — the database tables. Bilingual fields (e.g. a
-  project title) are stored as JSON `{ "pt": "…", "en": "…" }`.
+- **`src/messages/pt.json`** — every fixed string on the site, grouped by area
+  (`home`, `about`, `reservas`, `contact`, `footer`, `admin`, …). Keys are
+  type-checked.
+- **`prisma/schema.prisma`** — the database tables. Localized fields (e.g. a
+  gallery item's title) are stored as JSON `{ "pt": "…" }`.
 - **`prisma/seed.ts`** — the initial/demo content that populates the database.
 - **`src/lib/queries.ts`** — the data-access layer: reads published content and
   returns it already resolved to the active locale (view-ready objects).
@@ -128,7 +136,12 @@ Request  →  proxy.ts                 detects the locale (pt = "/", en = "/en")
 - **`src/lib/{session,auth}.ts` + `src/app/actions/`** — auth (signed cookie via
   jose) and server actions (login, saving a lead, changing a lead's status).
 
-## Funnels & integrations
+## Funnels & integrations (inherited — scheduled for removal)
+
+> This whole subsystem came from the agency fork and the restaurant does not use
+> it. Removing it also removes the entire Google Calendar OAuth integration.
+> **Do not** remove `Lead`, `LeadNotificationConfig`, `src/lib/evolution.ts` or
+> `src/lib/lead-notify.ts` with it — the contact form depends on them.
 
 The admin builds conversational funnels served at `/f/<slug>` (noindex). Endings
 can book a **Google Calendar** meeting (with a Meet link), send a **WhatsApp**
@@ -145,88 +158,115 @@ Integration env (all optional — features degrade gracefully when unset):
 
 ## Customization guide
 
-> Rule of thumb: anything that differs **between pt and en** lives in the message
-> files; anything that's **the brand** lives in `src/config/site.ts`.
+> Rule of thumb: **copy** lives in the message catalog; **the brand** lives in
+> `src/config/site.ts`.
 
 ### Colours
 
-`src/config/site.ts` → the `theme` object (has `light` and `dark`):
+`src/config/site.ts` → the `theme` object. The site is **dark-first**: the dark
+palette is the default (it sits on bare `:root` in `theme-style.tsx`) and light
+is the variant.
 
 ```ts
 theme: {
-  light: {
-    brand: "#4f46e5",           // primary colour (buttons, links, highlights)
-    brandForeground: "#ffffff", // text on top of the brand colour
-    accent: "#f59e0b",          // secondary accent
-    background: "#ffffff",
-    foreground: "#0a0a0a",      // body text colour
+  dark: {                        // o padrão
+    brand: "#E68A08",            // âmbar — o "Ouro" da marca
+    brandForeground: "#171615",  // texto sobre o brand
+    accent: "#E04F26",           // brasa
+    background: "#171615",       // grafite
+    foreground: "#EFE9C2",       // creme
   },
-  dark: { /* … */ },
+  light: { /* âmbar escurecido para #8A5206 — ver o comentário no arquivo */ },
 }
 ```
 
-Change these and the whole site re-colours — no CSS edits needed.
+Change these and the whole site re-colours — no CSS edits needed. The neutral
+tokens (`card`, `muted`, `border`) live in `src/app/globals.css` and are warm on
+purpose; a cool grey reads as dirty against the graphite and the cream.
 
-### Brand name, contact, socials, registration
+Contrast is verifiable: `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
+
+### Brand name, contact, socials, opening hours
 
 Top of `src/config/site.ts`:
 
 ```ts
-name: "Lumen Studio",   // shown in the wordmark and page titles
-foundedYear: 2016,      // drives the "X years in business" copy
+name: "Fogão de Ouro",  // shown in the wordmark and page titles
+foundedYear: 2001,      // drives the "X anos" copy
 contact: { email, phone, whatsapp, address },
-social:  { instagram, tiktok, linkedin },
+social:  { instagram },
+openingHours: { days, opens, closes },  // copy + schema.org
+servesCuisine: [...],                   // schema.org Restaurant
 ```
 
 ### Navigation menu
 
-`src/config/site.ts` → the `nav` array (order + links). The **labels** are
-translations, under the `nav` key in `src/messages/{pt,en}.json`.
+`src/config/site.ts` → the `nav` array (order + links). Changing it means three
+coupled edits: the `NavKey` type, the `nav` keys in `src/messages/pt.json`, and
+the route folders under `src/app/[locale]/(marketing)/`.
 
 ### Section titles, hero, buttons and all fixed text
 
-`src/messages/pt.json` and `src/messages/en.json`. For example:
+`src/messages/pt.json`. For example:
 
-- Hero headline → `home.hero.titleLead` + `home.hero.rotating`
-- "Services" title → `home.services.title`
-- Buttons → `common.talkToUs`, `common.viewWork`, …
-- About page → `about.*`
+- Hero slides → `home.hero.slides`
+- "Nossa Gastronomia" title → `services.title`
+- Buttons → `common.makeReservation`, `common.talkToUs`, …
+- A Experiência page → `about.*`
+- Horários & Reservas page → `reservas.*`
 
-### Content (projects, services, testimonials, team, stats)
+### Content (gallery, gastronomy, testimonials, stats)
 
 Two options:
 
-1. **Edit the seed data** in `prisma/seed.ts` (each item has a `pt` and `en`
-   value), then re-run `npm run db:seed`.
-2. **Through the admin** at `/admin` — currently leads management; content CRUD
-   is the documented next step.
+1. **Edit the seed data** in `prisma/seed.ts`, then re-run `npm run db:seed`.
+2. **Through the admin** at `/admin`.
 
-### Logo
+> ⚠️ The bundled snapshot (`prisma/backups/snapshot.sql`) still carries the
+> **agency's** demo content — 150 articles, 10 projects, 13 client logos. It is
+> useful to exercise the layout locally, but none of it belongs to the
+> restaurant. Replace it through the admin before any deploy.
 
-`src/components/layout/logo.tsx` — the only place the wordmark is rendered. Swap
-the text for an `<Image>` to use a logo file.
+### Logo and photography — currently placeholders
+
+The client has not delivered a logo or the authorial photography yet, so:
+
+- `src/components/layout/logo.tsx` renders a **typographic wordmark** from the
+  palette. Swap it for an `<Image>` pair (light/dark) when the mark arrives.
+- `src/app/icon.tsx`, `src/app/apple-icon.tsx` and
+  `src/app/[locale]/opengraph-image.tsx` generate their images from the palette
+  too, and must be updated with the logo.
+- `src/components/sections/hero.tsx` has an **empty** `slideImages` array; the
+  carousel falls back to a brand gradient. Drop three WebP files in
+  `public/hero/` and list them there. Slide 1 is the home page LCP.
+- There is no `favicon.ico` — ship one with the logo.
 
 ### Images
 
-Demo imagery comes from `picsum.photos` (set in `prisma/seed.ts`). To use images
-from another host, add the hostname to `images.remotePatterns` in `next.config.ts`.
+To use images from another host, add the hostname to `images.remotePatterns` in
+`next.config.ts`.
 
 ### Add a language
 
+The site is intentionally Portuguese-only. To bring another one back:
+
 1. Add the locale to `locales` in `src/i18n/routing.ts`.
 2. Create `src/messages/<locale>.json`.
-3. Add the locale key to every bilingual value in `prisma/seed.ts`.
+3. Add the locale key to every `LocalizedText` value (`prisma/seed.ts`, admin
+   forms). `npm run typecheck` lists every place that needs it.
+4. Re-add a locale switcher to the header (`git log` has the removed component).
 
 ### Quick reference
 
 | I want to change…              | Go to…                                                            |
 | ------------------------------ | ----------------------------------------------------------------- |
 | Colours                        | `theme` in `src/config/site.ts`                                   |
-| Name / contact / socials       | top of `src/config/site.ts`                                       |
-| Menu items                     | `nav` in `src/config/site.ts` + labels in `src/messages/*.json`   |
-| Section titles / button text   | `src/messages/pt.json` and `src/messages/en.json`                 |
-| Projects / services / etc.     | `prisma/seed.ts` (+ `npm run db:seed`) or the admin               |
-| Logo                           | `src/components/layout/logo.tsx`                                  |
+| Name / contact / socials / hours | top of `src/config/site.ts`                                     |
+| Menu items                     | `nav` + `NavKey` in `src/config/site.ts`, `nav` in `pt.json`, route folders |
+| Section titles / button text   | `src/messages/pt.json`                                            |
+| Gallery / gastronomy / etc.    | `prisma/seed.ts` (+ `npm run db:seed`) or the admin               |
+| Logo                           | `src/components/layout/logo.tsx` (+ icon/OG routes)               |
+| Hero photos                    | `slideImages` in `src/components/sections/hero.tsx`               |
 | Allowed image hosts            | `next.config.ts`                                                  |
 
 ## Getting started
@@ -240,7 +280,17 @@ from another host, add the hostname to `images.remotePatterns` in `next.config.t
 
 ```bash
 npm install
-cp .env.example .env   # then edit values (a dev .env is already included)
+```
+
+There is **no `.env.example` in the repo** — write `.env` by hand (it is
+git-ignored). The contract is `src/lib/env.ts`; the minimum for local dev:
+
+```ini
+DB_PORT=5433
+DATABASE_URL="postgresql://agency:agency@localhost:5433/agency"
+DIRECT_URL="postgresql://agency:agency@localhost:5433/agency"
+SESSION_SECRET="<32+ chars — generate one, see below>"
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
 
 Generate a real `SESSION_SECRET`:
@@ -259,6 +309,14 @@ npm run db:migrate        # create tables
 npm run db:seed           # demo content + first admin user
 ```
 
+Alternatively, restore the committed dump — but **it is 10 migrations behind the
+schema**, so always follow it with `migrate deploy`, or the app boots against a
+schema that is missing the funnels and lead-attribution tables:
+
+```bash
+npm run db:restore && npx prisma migrate deploy
+```
+
 > **Port note:** if you already run a local PostgreSQL on `5432`, set `DB_PORT`
 > to a free port (e.g. `5433`) and point `DATABASE_URL` at it. The bundled
 > `.env` is configured this way out of the box (`5433`).
@@ -272,7 +330,7 @@ The seed creates an admin from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`
 npm run dev
 ```
 
-- Public site: <http://localhost:3000> (pt-BR) and <http://localhost:3000/en>
+- Public site: <http://localhost:3000> (pt-BR — the only locale)
 - Admin: <http://localhost:3000/admin> → redirects to `/admin/login`
 
 ## Scripts
