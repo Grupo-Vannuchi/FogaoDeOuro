@@ -16,7 +16,6 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "db:seed-e2e": "tsx prisma/seed-e2e.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
