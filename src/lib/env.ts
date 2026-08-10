@@ -35,10 +35,6 @@ const serverSchema = z.object({
   // When absent (e.g. local dev), the limiter falls back to in-memory.
   KV_REST_API_URL: z.string().url().optional(),
   KV_REST_API_TOKEN: z.string().min(1).optional(),
-  // Google OAuth (Calendar) for MEETING funnels.
-  GOOGLE_CLIENT_ID: z.string().min(1).optional(),
-  GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
-  GOOGLE_REDIRECT_URI: z.string().url().optional(),
   // Supabase Storage for admin image uploads (server-only). Base project URL +
   // a secret key (`sb_secret_…` or the legacy service_role). When unset, uploads
   // are disabled and the URL fields still work. Never NEXT_PUBLIC — server only.

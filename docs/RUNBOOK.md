@@ -18,25 +18,16 @@ the production deploy basics see SNAPSHOT.md too.
 | `EVOLUTION_BASE_URL` / `EVOLUTION_API_KEY` | server | Evolution server + global key. |
 | `EVOLUTION_INSTANCE` | server | Default WhatsApp instance (per-funnel override wins). |
 | `WHATSAPP_INBOX_URL` | server | External conversation inbox link (metodon8n / Chatwoot). |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `GOOGLE_REDIRECT_URI` | server | OAuth (Calendar). |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | Vercel (Upstash) | Rate-limit store. Absent locally → in-memory fallback. |
 
 **Editing a Sensitive var on Vercel:** the value is write-only — you must re-paste
 the whole value (it can't be partially edited). Then **Redeploy**.
 
-## Google Calendar (MEETING funnels)
+## Google Calendar — removido
 
-**Connect / reconnect:** admin → `Funis → Conexão Google` → **Reconectar**
-(`/api/admin/google/connect`). The button turns **amber** on the funnels page
-when the token is expired (`GoogleAccount.invalidatedAt`).
-
-**Avoid the 7-day expiry (important):** an OAuth app in **Testing** mode has its
-refresh token revoked after ~7 days → meetings silently stop scheduling. Fix:
-Google Cloud Console → **OAuth consent screen → Publish app** (or set **Internal**
-on Workspace). The Calendar scope must be on the consent screen.
-
-**Symptoms of an expired token:** the scheduler shows no slots and the funnel
-falls back to "we'll be in touch"; logs show `invalid_grant`. → Reconnect.
+A integração existia apenas para os endings do tipo MEETING dos funis e saiu
+junto com eles em agosto de 2026. Não há mais OAuth para reconectar, nem
+`GOOGLE_*` para configurar na Vercel.
 
 ## WhatsApp (Evolution) instances
 
