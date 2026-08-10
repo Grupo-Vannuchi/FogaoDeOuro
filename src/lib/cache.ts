@@ -14,7 +14,6 @@ export const tags = {
   team: "team",
   stats: "stats",
   clients: "clients",
-  funnels: "funnels",
   /** WhatsApp instances fetched from the (slow) Evolution server. */
   whatsappInstances: "whatsapp-instances",
   /** WhatsApp groups of an Evolution instance. */

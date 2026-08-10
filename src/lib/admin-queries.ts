@@ -1,12 +1,6 @@
 import "server-only";
 import type {
   Client,
-  Funnel,
-  FunnelDefaultTemplate,
-  FunnelEnding,
-  FunnelQuestion,
-  FunnelSubmission,
-  GoogleAccount,
   Information,
   Lead,
   LeadStatus,
@@ -145,64 +139,4 @@ export async function getAdminStats(): Promise<Stat[]> {
 
 export async function getStatById(id: string): Promise<Stat | null> {
   return prisma.stat.findUnique({ where: { id } });
-}
-
-// ---------------------------------------------------------------------------
-// Funnels
-// ---------------------------------------------------------------------------
-
-/** All funnels for the admin list, newest first, with their endings. */
-export async function getAdminFunnels(): Promise<
-  (Funnel & { endings: FunnelEnding[]; _count: { submissions: number } })[]
-> {
-  return prisma.funnel.findMany({
-    orderBy: [{ createdAt: "desc" }],
-    include: {
-      endings: { orderBy: { order: "asc" } },
-      _count: { select: { submissions: true } },
-    },
-  });
-}
-
-/** A funnel with its ordered questions + endings, for the edit page. */
-export async function getFunnelById(
-  id: string,
-): Promise<
-  | (Funnel & { questions: FunnelQuestion[]; endings: FunnelEnding[] })
-  | null
-> {
-  return prisma.funnel.findUnique({
-    where: { id },
-    include: {
-      questions: { orderBy: { order: "asc" } },
-      endings: { orderBy: { order: "asc" } },
-    },
-  });
-}
-
-/** The global default lead-capture template for a locale (the "edit default"). */
-export async function getFunnelDefaultTemplate(
-  locale: string,
-): Promise<FunnelDefaultTemplate | null> {
-  return prisma.funnelDefaultTemplate.findUnique({ where: { locale } });
-}
-
-/** Submissions for one funnel (the inbox), newest first. */
-export async function getFunnelSubmissions(
-  funnelId: string,
-): Promise<FunnelSubmission[]> {
-  return prisma.funnelSubmission.findMany({
-    where: { funnelId },
-    orderBy: { createdAt: "desc" },
-  });
-}
-
-/** Total funnel submissions across all funnels (for the nav badge). */
-export async function countFunnelSubmissions(): Promise<number> {
-  return prisma.funnelSubmission.count();
-}
-
-/** The single connected Google account row, if any. */
-export async function getGoogleAccount(): Promise<GoogleAccount | null> {
-  return prisma.googleAccount.findFirst();
 }
