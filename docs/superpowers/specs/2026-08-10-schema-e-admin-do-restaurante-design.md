@@ -209,6 +209,10 @@ model MenuItem {
 ```
 
 `weekday` usa `1`–`5` (segunda a sexta), coerente com o horário do restaurante.
+**Confirmado pelo dono do projeto** — o campo existe. Ele vinha do §4.3 do PDF de
+copy ("A Semana no Fogão"), não do WHITELABEL, por isso não foi assumido de
+início. Um `Int?` opcional dentro de `MenuItem` custa uma coluna e dispensa um
+model dedicado para cinco pratos.
 
 ```prisma
 /// Uma foto da galeria (salão, fachada, ambiente, pratos). Substitui `Project`,
