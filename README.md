@@ -227,19 +227,31 @@ Two options:
 > useful to exercise the layout locally, but none of it belongs to the
 > restaurant. Replace it through the admin before any deploy.
 
-### Logo and photography — currently placeholders
+### Logo — delivered
 
-The client has not delivered a logo or the authorial photography yet, so:
+The client's mark is in. The original lives in `docs/Logos-fogao_de_Ouro/`; the
+cuts the site actually uses are in [`public/brand/`](public/brand/README.md),
+which documents how each one was derived and why.
 
-- `src/components/layout/logo.tsx` renders a **typographic wordmark** from the
-  palette. Swap it for an `<Image>` pair (light/dark) when the mark arrives.
-- `src/app/icon.tsx`, `src/app/apple-icon.tsx` and
-  `src/app/[locale]/opengraph-image.tsx` generate their images from the palette
-  too, and must be updated with the logo.
-- `src/components/sections/hero.tsx` has an **empty** `slideImages` array; the
-  carousel falls back to a brand gradient. Drop three WebP files in
-  `public/hero/` and list them there. Slide 1 is the home page LCP.
-- There is no `favicon.ico` — ship one with the logo.
+The short version: the lockup is stacked and nearly square, so the header and the
+admin login use a **wordmark-only** cut, while the footer and the Open Graph card
+carry the complete mark. The lockup's tagline is graphite and only reaches 1.97:1
+on the dark ground, so the dark theme gets a cut with a cream tagline — swapped by
+CSS in `globals.css`, not by Tailwind's `dark:` variant, which would ignore the
+site's `data-theme` toggle.
+
+`npm run brand:rasters` regenerates the PNGs that `src/app/icon.tsx`,
+`apple-icon.tsx` and `opengraph-image.tsx` embed (satori can't resolve the logo's
+gradient fills from an SVG). The outputs are committed, so a normal build never
+needs it.
+
+There is no `favicon.ico`; `src/app/icon.tsx` covers every current browser.
+
+### Photography — still a placeholder
+
+`src/components/sections/hero.tsx` has an **empty** `slideImages` array and the
+carousel falls back to a brand gradient. Drop three WebP files in `public/hero/`
+and list them there. Slide 1 is the home page LCP, so keep it light.
 
 ### Images
 
@@ -265,7 +277,7 @@ The site is intentionally Portuguese-only. To bring another one back:
 | Menu items                     | `nav` + `NavKey` in `src/config/site.ts`, `nav` in `pt.json`, route folders |
 | Section titles / button text   | `src/messages/pt.json`                                            |
 | Gallery / gastronomy / etc.    | `prisma/seed.ts` (+ `npm run db:seed`) or the admin               |
-| Logo                           | `src/components/layout/logo.tsx` (+ icon/OG routes)               |
+| Logo                           | `public/brand/` (see its README) + `src/components/layout/logo.tsx` |
 | Hero photos                    | `slideImages` in `src/components/sections/hero.tsx`               |
 | Allowed image hosts            | `next.config.ts`                                                  |
 

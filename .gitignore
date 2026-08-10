@@ -46,3 +46,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# brand originals: the SVG/PNG/PDF cuts under docs/Logos-fogao_de_Ouro are
+# versioned (they are the source of truth for public/brand), but the delivery
+# zips and the EPS are ~7.5 MB of redundancy — same artwork, formats nothing in
+# this project reads.
+docs/Logos-fogao_de_Ouro/*.zip
+docs/Logos-fogao_de_Ouro/EPS/

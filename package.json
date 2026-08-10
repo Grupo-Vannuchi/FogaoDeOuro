@@ -24,7 +24,8 @@
     "db:set-admin": "tsx prisma/set-admin.ts",
     "db:studio": "prisma studio",
     "db:dump": "docker exec n8x-marketing-db pg_dump -U agency -d agency --clean --if-exists --no-owner --no-privileges > prisma/backups/snapshot.sql",
-    "db:restore": "docker exec -i n8x-marketing-db psql -U agency -d agency < prisma/backups/snapshot.sql"
+    "db:restore": "docker exec -i n8x-marketing-db psql -U agency -d agency < prisma/backups/snapshot.sql",
+    "brand:rasters": "node scripts/build-brand-rasters.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -67,6 +68,7 @@
     "eslint-config-next": "16.2.12",
     "jsdom": "^29.1.1",
     "prisma": "^6.2.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.1",
     "typescript": "^5",

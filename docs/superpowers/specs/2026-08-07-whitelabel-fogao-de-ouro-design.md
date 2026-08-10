@@ -46,7 +46,7 @@ conteúdo vive no banco e é editado pelo admin.
 | E-mail do encarregado de dados (LGPD) | `legal.ts` |
 | **Número do WhatsApp** | `contact.whatsapp.*` — **trava todas as reservas** |
 | Domínio final | `NEXT_PUBLIC_SITE_URL` (canonical, sitemap, robots, OG) |
-| Logo (clara e escura) | `logo.tsx`, `icon.tsx`, `apple-icon.tsx`, `opengraph-image.tsx`, favicon |
+| ~~Logo (clara e escura)~~ | **entregue em 10/08/2026** — ver `public/brand/README.md` |
 | Fotografia autoral | hero, cards de gastronomia, galeria do salão |
 
 Onde faltar imagem, usar **placeholder neutro** marcado para troca (autorizado pelo dono

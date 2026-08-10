@@ -77,12 +77,15 @@ serviços, contato, rodapé, admin, mensagens de validação.
 - `public/hero/slide-1.webp`, `slide-2.webp`, `slide-3.webp` → carrossel do hero
   (referenciados em `src/components/sections/hero.tsx`). **Mantenha WebP e
   tamanho parecido** — o slide 1 é o LCP da home; imagem pesada derruba a performance
-- `public/n8x-logo.png` e `public/n8x-logo-dark.png` → substituir **e atualizar as
-  4 referências**: `src/components/layout/logo.tsx`, `src/app/icon.tsx`,
-  `src/app/apple-icon.tsx`, `src/app/[locale]/opengraph-image.tsx`
-- `src/app/favicon.ico` → favicon do restaurante
+- ~~`public/n8x-logo.png` / `public/n8x-logo-dark.png`~~ → **feito.** Os arquivos
+  da n8x saíram e a marca do cliente vive em `public/brand/` (wordmark, lockup
+  claro/escuro, símbolo, e os PNG que as rotas de imagem embutem). O README de lá
+  explica como cada corte foi obtido do original — leia antes de mexer
+- `src/app/favicon.ico` → não existe e não é necessário: `src/app/icon.tsx` cobre
+  os navegadores atuais
 - `src/app/[locale]/opengraph-image.tsx` → imagem de compartilhamento (WhatsApp,
-  redes). Gerada em runtime com o logo + cores da marca
+  redes). Hoje é o lockup sobre o grafite; **quando as fotos chegarem**, virar
+  um prato real com a marca por cima — converte muito mais numa prévia de WhatsApp
 
 ### 4. Documentos legais — `src/content/legal.ts` ⚠️ crítico e fácil de esquecer
 
@@ -231,7 +234,9 @@ Google exibir horário, faixa de preço e avaliações na busca. Ganho real.
 - [ ] Ano de fundação
 - [ ] Horário de funcionamento
 - [ ] Domínio final do site
-- [ ] Logo (versão clara e escura) e as 3 fotos do hero
+- [x] Logo — entregue em 10/08/2026 (`docs/Logos-fogao_de_Ouro/`; os cortes em uso
+      estão em `public/brand/`, com o porquê de cada um no README de lá)
+- [ ] As 3 fotos do hero
 - [ ] Paleta de cores da marca
 - [ ] Cardápio (categorias, itens, preços, fotos)
 

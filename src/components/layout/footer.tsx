@@ -31,7 +31,9 @@ export async function Footer() {
     <footer className="mt-auto border-t border-border bg-muted/30">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
-          <Logo />
+          {/* The footer has the vertical room the header doesn't, so it carries
+              the complete mark — stove and all. */}
+          <Logo variant="lockup" />
           <p className="max-w-xs text-sm text-muted-foreground">
             {t("tagline")}
           </p>
