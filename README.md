@@ -310,9 +310,9 @@ npm run db:migrate        # create tables
 npm run db:seed           # demo content + first admin user
 ```
 
-Alternatively, restore the committed dump — but **it is 10 migrations behind the
+Alternatively, restore the committed dump — but **it is 11 migrations behind the
 schema**, so always follow it with `migrate deploy`, or the app boots against a
-schema that is missing the funnels and lead-attribution tables:
+schema that is missing tables:
 
 ```bash
 npm run db:restore && npx prisma migrate deploy

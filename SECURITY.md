@@ -6,19 +6,19 @@ the in-app Terms of Use and Privacy Policy.
 
 ## Reporting a vulnerability
 
-Email **marketing@n8company.com.br** with a description and reproduction steps.
-Do **not** open a public issue for a security problem. We aim to acknowledge
-within a few business days.
+Email **fogaodeouro@fogaodeouro.com.br** (the restaurant's contact address; can
+be swapped for a dedicated security address later) with a description and
+reproduction steps. Do **not** open a public issue for a security problem. We
+aim to acknowledge within a few business days.
 
 ## Where the boundaries are
 
-- **Public, unauthenticated:** the marketing site, the contact & careers lead
-  forms (`submitContactLead` / `submitCareerLead`), and the funnel runtime
-  (`/f/<slug>` + `submitFunnel` / `getFunnelSlots`). All of these carry a honeypot
-  + per-IP rate limit. Treat all input as hostile.
-- **Authenticated (admin):** everything under `/admin` and `/api/admin/*`, gated
-  by `getCurrentUser()` (jose JWT session, bcrypt password).
-- **Secrets:** DB, Evolution, Google, Upstash — server-side only, in env vars.
+- **Public, unauthenticated:** the marketing site and the contact lead form
+  (`submitContactLead`), which carries a honeypot + per-IP rate limit. Treat
+  all input as hostile.
+- **Authenticated (admin):** everything under `/admin`, gated by
+  `getCurrentUser()` (jose JWT session, bcrypt password).
+- **Secrets:** DB, Evolution, Upstash — server-side only, in env vars.
 
 ## Conventions (enforced in `AGENTS.md`)
 
@@ -26,10 +26,11 @@ within a few business days.
   boundary. Prisma queries are parameterized (no raw SQL concatenation).
 - **Public endpoints:** honeypot + **per-IP rate limit** (`src/lib/rate-limit.ts`).
 - **Secrets:** never `NEXT_PUBLIC_*`, never sent to the client, never logged;
-  redact in error messages. The Evolution global key and Google tokens stay server-side.
-- **Expired integration tokens** are detected and surfaced (Google `invalid_grant`
-  → `GoogleAccount.invalidatedAt` → admin reconnect prompt), never silently mimicking
-  a different outcome.
+  redact in error messages. The Evolution global key stays server-side.
+- **Integration state is surfaced, not hidden**: the Evolution instance
+  connection state (`"open"` / `"connecting"` / `"close"`, `src/lib/evolution.ts`)
+  is exposed to the admin panel so a disconnected WhatsApp instance is visible
+  instead of failing silently or mimicking a different outcome.
 - **Response headers** (`next.config.ts`): HSTS, `X-Frame-Options: DENY`,
   `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`.
   A **CSP is not yet in place** (needs a nonce middleware — see ADR-0004); this is

@@ -24,4 +24,4 @@ open** — it never takes the funnel down.
   via env presence.
 - ⚠️ The KV vars are **Sensitive** on Vercel and so aren't pulled to local dev →
   local uses the weaker in-memory fallback (acceptable for dev).
-- Limits live at the call sites (`submitFunnel` 5/min, `getFunnelSlots` 20/min).
+- Limits live at the call sites (`submitContactLead` 5/min).

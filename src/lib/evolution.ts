@@ -175,10 +175,11 @@ async function loadInstances(): Promise<EvoInstance[]> {
 
 /**
  * Cached instance list. The slow Evolution call is paid once per 60s and shared
- * across every caller (the WhatsApp panel, the default-instance lookup), so
- * normal page loads are instant. Admin mutations (create/delete/logout) tag-out
- * the cache via `invalidateInstances()`, and Next serves the last good list if
- * a background refresh fails.
+ * across every caller of `fetchInstances()` (e.g. the WhatsApp admin panel), so
+ * normal page loads are instant. `defaultInstance()` reads `env.EVOLUTION_INSTANCE`
+ * directly and never touches this cache. Admin mutations (create/delete/logout)
+ * tag-out the cache via `invalidateInstances()`, and Next serves the last good
+ * list if a background refresh fails.
  */
 const cachedInstances = unstable_cache(loadInstances, ["whatsapp-instances"], {
   tags: [tags.whatsappInstances],

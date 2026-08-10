@@ -34,7 +34,7 @@ npm run dev             # http://localhost:3000  (admin at /admin)
 Conventional Commits: `type(scope): summary`.
 
 - `feat` new capability · `fix` bug · `chore` tooling/config · `refactor`,
-  `docs`, `perf`, `style` as usual. Scope is usually `funnels`, `admin`, `seo`, …
+  `docs`, `perf`, `style` as usual. Scope is usually `leads`, `admin`, `seo`, …
 - When an AI agent helped, end the message with:
   ```
   Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>

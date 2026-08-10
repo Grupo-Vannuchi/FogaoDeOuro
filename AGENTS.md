@@ -81,8 +81,7 @@ null by hardcoding a number.
 - **Never return raw Prisma rows to the client.** Map to a view-model that omits
   secrets (e.g. `CurrentUser` drops `passwordHash`).
 - `updateMany`/`deleteMany` return a **count, not rows**; `@updatedAt` is skipped
-  on bulk writes; always pass a `where` to `deleteMany` (the one exception is the
-  `GoogleAccount` singleton, commented as intentional).
+  on bulk writes; always pass a `where` to `deleteMany`.
 
 ## React / Next.js — skills: `react-patterns`, `react-performance`, `nextjs-turbopack`
 
@@ -109,11 +108,11 @@ null by hardcoding a number.
   (`lib/rate-limit`, Upstash with in-memory fallback) + `zod` validation as the
   server boundary. (`submitCareerLead` was removed with the careers page — one
   fewer public write endpoint.)
-- **Admin** server actions and `/api/admin/*` routes gate on `getCurrentUser()`.
+- **Admin** server actions gate on `getCurrentUser()`.
 - **Secrets** only in env, read server-side. Never log them; redact in errors.
-- **Integration tokens expire** — detect and surface it (Google `invalid_grant`
-  flags `GoogleAccount.invalidatedAt`; the admin panel prompts a reconnect).
-  Never fail silently in a way that mimics a different outcome.
+- **Integration state can go stale** — detect and surface it (the Evolution
+  instance connection state feeds the admin WhatsApp panel). Never fail
+  silently in a way that mimics a different outcome.
 - **Headers** are set in `next.config.ts`. CSP is intentionally **deferred**
   (needs a nonce middleware; would break inline JSON-LD) — see ADR-0004.
 - Validate user input with `zod`; rely on Prisma's parameterized queries (no raw

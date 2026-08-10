@@ -28,7 +28,8 @@ muda no código conforme a checklist abaixo. **Não reescreva a arquitetura.**
 ## Decisões já tomadas (não precisa perguntar)
 
 1. **Site só em português.** Nada de bilíngue.
-2. **Os funis serão removidos** — mas só **depois** do rebrand.
+2. **Os funis foram removidos** (agosto de 2026) — feito depois do rebrand, como
+   planejado.
 3. **Cardápio terá models próprios** (`MenuCategory` + `MenuItem`).
 
 ---
@@ -37,7 +38,8 @@ muda no código conforme a checklist abaixo. **Não reescreva a arquitetura.**
 
 **Fase 1 — Rebrand** (itens 1 a 5): coloca o site do cliente de pé.
 **Fase 2 — PT-only** (item 6).
-**Fase 3 — Remoção dos funis** (item 7), num PR dedicado.
+**Fase 3 — Remoção dos funis** (item 7), num PR dedicado. ✅ **Concluída em
+agosto de 2026.**
 **Fase 4 — Adaptações de restaurante** (cardápio, horário, SEO local).
 
 Proponha um plano antes de cada fase e valide com o dono do projeto.
@@ -144,31 +146,17 @@ O site é bilíngue hoje; o cliente não precisa de inglês.
 
 ---
 
-## FASE 3 — Remover os funis
+## FASE 3 — Remover os funis ✅ concluída (agosto de 2026)
 
-O cliente não precisa do subsistema de funis (quiz conversacional com
-agendamento). Como o banco é **novo e sem dados**, dropar as tabelas é seguro.
+O subsistema de funis (quiz conversacional com agendamento) e a integração
+OAuth do Google Calendar, que só ele usava, foram removidos por inteiro —
+rotas, admin, models Prisma, server actions, componentes, testes e2e e o
+namespace i18n. O que é compartilhado com o formulário de contato (`Lead`,
+`LeadNotificationConfig`, `src/lib/evolution.ts`, `src/lib/lead-notify.ts`) foi
+mantido, como planejado.
 
-~53 arquivos citam `funnel`. Envolve:
-
-- rotas `src/app/[locale]/(funnels)/f/[slug]` e o grupo `(funnels)` inteiro
-- admin `src/app/[locale]/admin/(dashboard)/funnels`
-- models Prisma `Funnel`, `FunnelEnding`, `FunnelQuestion`, `FunnelSubmission`,
-  `FunnelDefaultTemplate` + os enums relacionados (gerar migração)
-- server actions `funnels.ts`, `funnels-public.ts`
-- componentes em `src/components/funnels/`
-- `e2e/funnel.spec.ts` e o seed de e2e (**o CI quebra se esquecer disso**)
-- namespace `funnel` no catálogo i18n
-
-**Ganho importante:** o Google Calendar é usado **exclusivamente** pelos funis.
-Removendo-os, some a integração OAuth inteira — `GOOGLE_CLIENT_ID`,
-`GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`, `src/lib/google-calendar.ts`, as
-rotas `src/app/api/admin/google/*` e toda a manutenção manual de reconexão
-descrita no RUNBOOK. Menos setup, menos coisa pra quebrar.
-
-⚠️ Cuidado para **não** remover junto o que é compartilhado: `Lead`,
-`LeadNotificationConfig`, `src/lib/evolution.ts` e `src/lib/lead-notify.ts`
-continuam em uso pelo formulário de contato.
+Veja o que foi de fato executado em
+[`docs/superpowers/plans/2026-08-10-remover-funis.md`](superpowers/plans/2026-08-10-remover-funis.md).
 
 ---
 

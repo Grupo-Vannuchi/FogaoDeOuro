@@ -1,6 +1,9 @@
 # 0003 — WhatsApp instance is chosen per funnel
 
-- **Status:** Accepted
+- **Status:** Superseded (2026-08) — the funnels subsystem was removed along
+  with `Funnel.whatsappInstance` and `/admin/funnels/whatsapp`. The Evolution
+  instance is now chosen once, in the lead-notification config
+  (`/admin/leads/whatsapp`), not per funnel.
 - **Date:** 2026-06
 
 ## Context
