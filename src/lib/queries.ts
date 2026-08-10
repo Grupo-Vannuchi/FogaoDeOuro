@@ -104,6 +104,25 @@ export type ClientView = {
   website: string | null;
 };
 
+export type MenuItemView = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  image: string;
+  tags: string[];
+  /** 1 (segunda) a 5 (sexta); null = prato permanente. */
+  weekday: number | null;
+};
+
+export type MenuCategoryView = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  items: MenuItemView[];
+};
+
 export const getServices = unstable_cache(
   async (
     locale: Locale,
@@ -387,6 +406,54 @@ export const getClients = unstable_cache(
   },
   ["clients"],
   { tags: [tags.clients], revalidate },
+);
+
+/** O cardápio publicado: categorias na ordem, cada uma com os itens disponíveis.
+ * Uma consulta só — os itens vêm no `include`, sem N+1. */
+export const getMenu = unstable_cache(
+  async (locale: Locale): Promise<MenuCategoryView[]> => {
+    const rows = await prisma.menuCategory.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      include: {
+        items: {
+          where: { available: true },
+          orderBy: { order: "asc" },
+        },
+      },
+    });
+    return rows.map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: localize(c.name, locale),
+      description: localize(c.description, locale),
+      items: c.items.map((i) => ({
+        id: i.id,
+        slug: i.slug,
+        name: localize(i.name, locale),
+        description: localize(i.description, locale),
+        image: i.image,
+        tags: i.tags,
+        weekday: i.weekday,
+      })),
+    }));
+  },
+  ["menu"],
+  { tags: [tags.menu], revalidate },
+);
+
+/** Só o que o dropdown de "Nossa Gastronomia" precisa. */
+export const getMenuCategoryLinks = unstable_cache(
+  async (locale: Locale): Promise<{ slug: string; name: string }[]> => {
+    const rows = await prisma.menuCategory.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      select: { slug: true, name: true },
+    });
+    return rows.map((c) => ({ slug: c.slug, name: localize(c.name, locale) }));
+  },
+  ["menu", "links"],
+  { tags: [tags.menu], revalidate },
 );
 
 function toProjectCard(locale: Locale) {

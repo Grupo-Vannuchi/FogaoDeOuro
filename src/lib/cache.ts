@@ -14,6 +14,8 @@ export const tags = {
   team: "team",
   stats: "stats",
   clients: "clients",
+  /** Cardápio: categorias e itens compartilham uma tag só. */
+  menu: "menu",
   /** WhatsApp instances fetched from the (slow) Evolution server. */
   whatsappInstances: "whatsapp-instances",
   /** WhatsApp groups of an Evolution instance. */

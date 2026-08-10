@@ -5,6 +5,8 @@ import type {
   Lead,
   LeadStatus,
   LeadType,
+  MenuCategory,
+  MenuItem,
   Project,
   Service,
   Stat,
@@ -139,4 +141,35 @@ export async function getAdminStats(): Promise<Stat[]> {
 
 export async function getStatById(id: string): Promise<Stat | null> {
   return prisma.stat.findUnique({ where: { id } });
+}
+
+/** Cardápio completo para o admin: todas as categorias, publicadas ou não,
+ * com todos os seus itens. */
+export async function getAdminMenu(): Promise<
+  (MenuCategory & { items: MenuItem[] })[]
+> {
+  return prisma.menuCategory.findMany({
+    orderBy: { order: "asc" },
+    include: { items: { orderBy: { order: "asc" } } },
+  });
+}
+
+export async function getMenuCategoryById(
+  id: string,
+): Promise<MenuCategory | null> {
+  return prisma.menuCategory.findUnique({ where: { id } });
+}
+
+export async function getMenuItemById(id: string): Promise<MenuItem | null> {
+  return prisma.menuItem.findUnique({ where: { id } });
+}
+
+/** Categorias reduzidas ao que o seletor do formulário de item precisa. */
+export async function getMenuCategoryOptions(): Promise<
+  { id: string; name: unknown }[]
+> {
+  return prisma.menuCategory.findMany({
+    orderBy: { order: "asc" },
+    select: { id: true, name: true },
+  });
 }
