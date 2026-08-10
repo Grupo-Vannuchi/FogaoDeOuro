@@ -8,9 +8,11 @@ import { toWhatsappNumber } from "@/lib/phone";
  * Evolution API (WhatsApp) client. Server-only — the global API key never
  * reaches the browser. Two surfaces:
  *  - `sendText`: best-effort message send (never throws) to a single number.
- *    Picks the instance per call (explicit override → default). Not called
- *    internally today — `sendToGroup` below is what the lead notification
- *    flow (`lead-notify.ts`) actually uses.
+ *    Picks the instance per call (explicit override → default). Nothing calls
+ *    it today — `sendToGroup` below is what the lead notification flow
+ *    (`lead-notify.ts`) uses. **Kept on purpose:** the ability to message a
+ *    single customer is part of what this white-label offers, and the client
+ *    was told the system has it. Do not delete it as dead code.
  *  - instance management (`fetchInstances`, `createInstance`, `connectInstance`,
  *    `getConnectionState`, `logoutInstance`, `deleteInstance`): admin-only, used
  *    by the WhatsApp panel. These surface errors to the admin UI.

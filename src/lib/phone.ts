@@ -28,6 +28,11 @@ export function toWhatsappNumber(e164: string): string {
 /**
  * Progressive Brazilian phone mask for form inputs, e.g. "(13) 91234-5678".
  * Caps at 11 digits (DDD + 9-digit mobile); 10 digits render as a landline.
+ *
+ * No form wires it up right now — the one that did was removed with the
+ * funnels. **Kept on purpose:** phone input is part of what this white-label
+ * offers, and the next form to need it (reservation, event enquiry) should
+ * reuse this rather than re-derive the mask. Do not delete it as dead code.
  */
 export function maskPhoneBR(input: string): string {
   const d = input.replace(/\D/g, "").slice(0, 11);
