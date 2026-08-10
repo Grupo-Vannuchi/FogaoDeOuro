@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 // server action room instead of the platform default.
 export const maxDuration = 30;
 
-export default async function FunnelWhatsappPage({
+export default async function LeadsWhatsappPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -30,11 +30,11 @@ export default async function FunnelWhatsappPage({
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div>
         <Link
-          href="/admin/funnels"
+          href="/admin/leads"
           className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          {t("backToFunnels")}
+          {t("backToLeads")}
         </Link>
         <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("subtitle")}</p>

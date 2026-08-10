@@ -363,7 +363,8 @@
       "removeTag": "Remover tag {tag}",
       "whatsappSent": "✓ WhatsApp",
       "source": "Origem",
-      "landedOn": "entrou por"
+      "landedOn": "entrou por",
+      "whatsappLink": "Instâncias do WhatsApp"
     },
     "projects": {
       "title": "Portfólio",
@@ -788,7 +789,7 @@
     "whatsapp": {
       "title": "Instâncias do WhatsApp",
       "subtitle": "Crie e gerencie as instâncias da Evolution usadas pelos funis, sem sair do painel.",
-      "backToFunnels": "Funis",
+      "backToLeads": "Voltar para Contatos",
       "inboxTitle": "Conversas",
       "inboxHint": "As conversas com os contatos acontecem no inbox dedicado. Abra para atender.",
       "inboxNotConfigured": "Defina WHATSAPP_INBOX_URL no ambiente para abrir o inbox de conversas (painel do metodon8n agora; Chatwoot/Evo CRM ao self-hostar).",

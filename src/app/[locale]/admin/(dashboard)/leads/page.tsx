@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { MessagesSquare } from "lucide-react";
 import type { LeadStatus, LeadType } from "@prisma/client";
 import { getLeads, getLeadTags } from "@/lib/admin-queries";
 import { LeadStatusButtons } from "@/components/admin/lead-status-buttons";
@@ -9,6 +10,8 @@ import { LeadForwardButton } from "@/components/admin/lead-forward-button";
 import { sourceLabel } from "@/lib/attribution";
 import { cn } from "@/lib/utils";
 import { resolveLocale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
+import { buttonVariants } from "@/components/ui/button";
 
 const statusStyles: Record<LeadStatus, string> = {
   NEW: "bg-brand/10 text-brand",
@@ -64,7 +67,16 @@ export default async function LeadsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
+        <Link
+          href="/admin/leads/whatsapp"
+          className={cn(buttonVariants({ variant: "outline", size: "md" }))}
+        >
+          <MessagesSquare className="size-4" />
+          {t("whatsappLink")}
+        </Link>
+      </div>
 
       <LeadNotifyConfig />
 
