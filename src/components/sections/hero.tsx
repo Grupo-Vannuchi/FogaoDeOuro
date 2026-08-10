@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { yearsInBusiness } from "@/config/site";
+import { fillYears, yearsInBusiness } from "@/config/site";
 import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carousel";
 
 /**
@@ -24,7 +24,11 @@ export async function Hero() {
   const copy = t.raw("slides") as { title: string; subtitle: string }[];
 
   const slides: HeroSlide[] = copy.map((slide, i) => ({
-    ...slide,
+    title: slide.title,
+    // The eyebrow computes the age from `foundedYear`; a slide that hardcoded it
+    // would drift out of sync every January and contradict the badge sitting
+    // right above it.
+    subtitle: fillYears(slide.subtitle),
     image: slideImages.length
       ? slideImages[i % slideImages.length]
       : undefined,

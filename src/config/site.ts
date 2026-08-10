@@ -210,6 +210,22 @@ export function yearsInBusiness(now: Date = new Date()): number {
   return now.getFullYear() - siteConfig.foundedYear;
 }
 
+/**
+ * Fills the `{years}` token in copy read through `t.raw()`.
+ *
+ * Ordered copy (hero slides, bullet lists) is read as a raw array, and next-intl
+ * types values per message: a template-literal key over an array whose other
+ * items carry no placeholder resolves to "no values accepted", so `t(key, {…})`
+ * stops typechecking. Substituting the token directly keeps any item free to
+ * mention the age without its position becoming load-bearing — reordering the
+ * copy can't silently leave a raw `{years}` on the page.
+ *
+ * The age is a small integer, so no ICU number formatting is lost.
+ */
+export function fillYears(text: string, now: Date = new Date()): string {
+  return text.replaceAll("{years}", String(yearsInBusiness(now)));
+}
+
 /** Whether a WhatsApp number has been configured for the restaurant. */
 export function hasWhatsapp(): boolean {
   return siteConfig.contact.whatsapp.number.trim().length > 0;

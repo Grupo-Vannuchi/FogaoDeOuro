@@ -12,7 +12,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button";
 import { ReserveButton } from "@/components/reserve-button";
 import { PortfolioPreview } from "@/components/sections/portfolio-preview";
-import { siteConfig } from "@/config/site";
+import { fillYears, siteConfig } from "@/config/site";
 
 export async function generateMetadata({
   params,
@@ -58,7 +58,13 @@ export default async function AboutPage({
 
   const practiceItems = t.raw("practice.items") as string[];
   const servicesItems = t.raw("services.items") as string[];
-  const audienceItems = t.raw("audience.items") as string[];
+  // A bullet mentions how long the house has been open; `fillYears` resolves it
+  // from `foundedYear` so it can't drift out of sync with the rest of the site.
+  // Wrapped rather than passed by reference: `.map` would feed the index in as
+  // `fillYears`'s second argument.
+  const audienceItems = (t.raw("audience.items") as string[]).map((item) =>
+    fillYears(item),
+  );
   const timingItems = t.raw("timing.items") as string[];
   const contactParagraphs = t.raw("contactCta.paragraphs") as string[];
 

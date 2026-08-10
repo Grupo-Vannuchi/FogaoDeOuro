@@ -43,7 +43,7 @@
       "slides": [
         {
           "title": "A sua melhor experiência do dia.",
-          "subtitle": "Há mais de 20 anos, transformamos o seu almoço em um momento irresistível e inesquecível. Um ambiente acolhedor e premium, onde a suculência das carnes nobres e o nosso atendimento impecável esperam por você."
+          "subtitle": "Há {years} anos, transformamos o seu almoço em um momento irresistível e inesquecível. Um ambiente acolhedor e premium, onde a suculência das carnes nobres e o nosso atendimento impecável esperam por você."
         },
         {
           "title": "Picanha no ponto, direto da brasa.",
@@ -119,7 +119,7 @@
       "title": "Tradição, conforto e sabor incomparável",
       "intro": "Somos o endereço de quem <b>exige excelência</b> no Centro Histórico. O que nos trouxe até aqui:",
       "items": [
-        "Mais de 20 anos servindo o Centro de Santos",
+        "{years} anos servindo o Centro de Santos",
         "4,5 ★ em mais de 1.200 avaliações no Google",
         "Salão de 180 lugares, amplo e climatizado",
         "Buffet reposto ao longo de todo o serviço",
