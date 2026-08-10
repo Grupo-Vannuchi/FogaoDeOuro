@@ -90,20 +90,41 @@ refatoração recria o schema da agência para apagá-lo em seguida.
 
 **Decisão: reset depois do schema final e da reescrita dos seeds.**
 
-### 3.5 Tensão registrada — `TeamMember`
+### 3.5 `TeamMember` e `Project` também saem
 
-O WHITELABEL manda reaproveitar `TeamMember` para "Chef / equipe". O spec de
-07/08 anotou que o §7 do PDF de copy do cliente **proíbe rostos no site**.
+O WHITELABEL mandava reaproveitar os dois — `TeamMember` para "Chef / equipe" e
+`Project` para a galeria. **Decisão do dono do projeto: nenhum dos dois é
+reaproveitado.**
 
-**Decisão: seguir o WHITELABEL — o model fica.** Registrado aqui porque, se a
-diretriz de rostos valer, a seção nasce sem poder ser preenchida. Confirmar com o
-cliente antes de investir em copy para ela.
+`TeamMember` é remoção limpa: só a seção "Quem faz acontecer" da home o consome.
+A decisão também dissolve a tensão que o spec de 07/08 havia registrado — o §7 do
+PDF de copy proíbe rostos no site, então a seção nasceria sem poder ser
+preenchida de qualquer forma.
+
+`Project` não é limpo: sustenta 11 arquivos, incluindo a rota `/galeria` inteira.
+Mas a `/galeria` **não está no menu** (a nav é Início · Experiência · Gastronomia
+· Reservas · Contato) — é uma rota alcançável só por link direto.
+
+### 3.6 A galeria ganha um model próprio
+
+O §3.3 da copy do cliente prevê uma "Galeria do salão", ou seja, existe conteúdo
+planejado para a página. Removê-la junto com `Project` deixaria esse conteúdo sem
+onde morar.
+
+**Decisão: `/galeria` sobrevive, alimentada por um model feito para foto** —
+`GalleryPhoto`, com imagem, legenda, ordem e publicado. Sem `slug`, sem conteúdo
+longo, sem página de detalhe.
+
+`Project` carregava `clientName`, `year`, `summary`, `content`, `tags` e um
+`[slug]` com página própria: estrutura de estudo de caso de agência. Uma foto do
+salão não tem cliente, ano, nem texto de mil palavras. Reaproveitar significaria
+manter seis campos mortos para usar dois.
 
 ---
 
 ## 4. Schema final
 
-De **16 models para 9** — 9 removidos, 2 criados. Em tabelas, 17 → 10, contando a
+De **16 models para 8** — 11 removidos, 3 criados. Em tabelas, 17 → 9, contando a
 `_prisma_migrations` interna do Prisma.
 
 ### 4.1 Novos
@@ -152,14 +173,30 @@ model MenuItem {
 
 `weekday` usa `1`–`5` (segunda a sexta), coerente com o horário do restaurante.
 
+```prisma
+/// Uma foto da galeria (salão, fachada, ambiente, pratos). Substitui `Project`,
+/// que era um estudo de caso de agência: uma foto não tem cliente, ano, resumo
+/// nem página de detalhe.
+model GalleryPhoto {
+  id        String   @id @default(cuid())
+  image     String
+  caption   Json     @default("{}")  // LocalizedText, opcional
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, order])
+  @@map("gallery_photos")
+}
+```
+
 ### 4.2 Mantidos, com limpeza
 
 | Model | Vira | Mudança |
 |---|---|---|
 | `Information` | Novidades / blog | nenhuma |
 | `Testimonial` | Avaliações | remove `company` |
-| `TeamMember` | Chef / equipe | nenhuma |
-| `Project` | Galeria | remove `clientName`, `year` |
 | `AdminUser` | — | nenhuma |
 | `Lead` | Contatos | remove `role`, `portfolio`; enum `LeadType` perde `CAREER` |
 | `LeadNotificationConfig` | — | nenhuma |
@@ -173,6 +210,8 @@ model MenuItem {
 | `Service` | substituído pelo cardápio (§3.1) |
 | `Client` | sem destino no WHITELABEL (§3.2) |
 | `Stat` | sem destino no WHITELABEL (§3.2) |
+| `TeamMember` | não reaproveitado (§3.5) |
+| `Project` | substituído por `GalleryPhoto` (§3.6) |
 | `Funnel`, `FunnelEnding`, `FunnelQuestion`, `FunnelSubmission`, `FunnelDefaultTemplate` | Fase 3 |
 | `GoogleAccount` | usado exclusivamente pelos funis |
 
@@ -194,13 +233,13 @@ De 10 seções para 6, com rotas em português acompanhando o site público.
 |---|---|---|---|
 | `/admin` | Visão geral | — | mantida |
 | `/admin/cardapio` | Cardápio | `MenuCategory` + `MenuItem` | **nova** |
-| `/admin/galeria` | Galeria | `Project` | renomeia `/admin/projects` |
+| `/admin/galeria` | Galeria | `GalleryPhoto` | **nova** (substitui `/admin/projects`) |
 | `/admin/novidades` | Novidades | `Information` | renomeia `/admin/informations` |
 | `/admin/avaliacoes` | Avaliações | `Testimonial` | renomeia `/admin/testimonials` |
-| `/admin/equipe` | Equipe | `TeamMember` | renomeia `/admin/team` |
 | `/admin/contatos` | Contatos | `Lead` | renomeia `/admin/leads` |
 
-Saem: `/admin/services`, `/admin/clients`, `/admin/stats`, `/admin/funnels`.
+Saem: `/admin/services`, `/admin/clients`, `/admin/stats`, `/admin/team`,
+`/admin/projects` e `/admin/funnels`.
 
 O CRUD do cardápio segue **exatamente** o padrão dos recursos existentes: DAL em
 [`lib/queries.ts`](../../../src/lib/queries.ts) com `unstable_cache` + tags,
@@ -217,17 +256,30 @@ agrupa por categoria e ordena por `order`.
 
 | Onde | Mudança |
 |---|---|
-| Home | perde "Quem almoça com a gente" (`Client`) e "O Fogão de Ouro em números" (`Stat`) |
-| Home | a seção de gastronomia passa a ler o cardápio |
+| Home | perde "Quem almoça com a gente" (`Client`), "O Fogão de Ouro em números" (`Stat`) e "Quem faz acontecer" (`TeamMember`) |
+| Home | a seção de gastronomia passa a ler o cardápio; a prévia da galeria passa a ler `GalleryPhoto` |
 | `/gastronomia` | passa a renderizar categorias + itens |
 | `/gastronomia/[slug]` | **removida** — prato não tem página própria |
+| `/galeria` | passa a ser uma grade de fotos |
+| `/galeria/[slug]` | **removida** — foto não tem página própria |
 | Header | o dropdown de "Nossa Gastronomia" passa a listar categorias do cardápio (hoje lista `Service`) |
-| `sitemap.ts` | perde as entradas de `Service` |
+| `sitemap.ts` | perde as entradas de `Service` e de `Project` |
+| `llms.txt` / `llms-full.txt` | perdem as entradas de `Project` |
 | `pt.json` | namespaces `about` → `experiencia`, `portfolio` → `galeria`, `services` → `cardapio` |
+
+A home fica com: Hero · Cardápio · Galeria · Avaliações · CTA.
 
 Seis lugares consomem `Service` hoje: `experiencia/page.tsx`,
 `gastronomia/page.tsx`, `gastronomia/[slug]/page.tsx`, `(marketing)/layout.tsx`,
 `sections/services.tsx` e `sitemap.ts`.
+
+Onze consomem `Project`: os dois acima (`sitemap.ts`, `(marketing)/layout.tsx`),
+mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
+`galeria/page.tsx`, `galeria/[slug]/page.tsx`, `(marketing)/page.tsx`,
+`admin/(dashboard)/projects/[id]/page.tsx`, `components/project-card.tsx` e
+`components/sections/portfolio-preview.tsx`.
+
+`TeamMember` tem um consumidor só: `components/sections/team.tsx`.
 
 ---
 
@@ -237,10 +289,15 @@ Seis lugares consomem `Service` hoje: `experiencia/page.tsx`,
 |---|---|---|
 | 1 | **RMV** | remover os funis (52 arquivos, 5 models, OAuth do Google, `e2e/funnel.spec.ts` e o seed de e2e) |
 | 2 | **CRE** | `MenuCategory` + `MenuItem` + DAL + CRUD no admin + `/gastronomia` |
-| 3 | **RMV** | remover `Service`, `Client`, `Stat` e as seções que os consomem |
-| 4 | **UPD** | limpar campos de agência (`Project`, `Testimonial`, `Lead`/`CAREER`) |
-| 5 | **UPD** | renomear rotas e labels do admin + namespaces do `pt.json` |
-| 6 | **UPD** | reescrever os seeds e zerar o banco |
+| 3 | **CRE** | `GalleryPhoto` + DAL + CRUD no admin + `/galeria` |
+| 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome |
+| 5 | **UPD** | limpar campos de agência (`Testimonial.company`, `Lead`/`CAREER`) |
+| 6 | **UPD** | renomear rotas e labels do admin + namespaces do `pt.json` |
+| 7 | **UPD** | reescrever os seeds e zerar o banco |
+
+Os PRs 2 e 3 **criam antes de destruir**: `/gastronomia` e `/galeria` passam a
+ler os models novos enquanto os antigos ainda existem, e só o PR 4 os derruba.
+Assim nenhum PR intermediário deixa uma rota pública quebrada.
 
 Cada PR fecha com `npm run typecheck && npm run lint && npm run build` verde.
 
@@ -250,10 +307,11 @@ Cada PR fecha com `npm run typecheck && npm run lint && npm run build` verde.
 
 1. **`e2e/funnel.spec.ts` e o seed de e2e** — o CI quebra se saírem do ar sem
    serem removidos junto (registrado no WHITELABEL, Fase 3).
-2. **Migrações são destrutivas.** Dropar `services`, `clients`, `stats` e as
-   tabelas de funil apaga dados. É aceitável porque o banco de produção não
-   existe ainda e o local será zerado de propósito — mas nenhuma dessas migrações
-   pode rodar contra um banco com dados reais do cliente.
+2. **Migrações são destrutivas.** Dropar `services`, `clients`, `stats`,
+   `team_members`, `projects` e as tabelas de funil apaga dados. É aceitável
+   porque o banco de produção não existe ainda e o local será zerado de propósito
+   — mas nenhuma dessas migrações pode rodar contra um banco com dados reais do
+   cliente.
 3. **`prisma migrate dev` só no Docker local.** Em produção é `migrate deploy`,
    que o build da Vercel já roda.
 4. **Nunca editar migração já aplicada** (quebra de checksum).
@@ -274,8 +332,9 @@ Cada PR fecha com `npm run typecheck && npm run lint && npm run build` verde.
 - `npm test` e o e2e verdes (sem resíduo de funil).
 - Nenhuma string "n8x", "N8X" ou "Vannuchi" no site público **nem no admin**.
 - Nenhum model, rota de admin ou namespace i18n com nome de agência.
-- Banco final com 9 models e nenhum registro de demonstração.
+- Banco final com 8 models e nenhum registro de demonstração.
 - Cardápio cadastrável pelo admin e renderizado em `/gastronomia`.
+- Galeria cadastrável pelo admin e renderizada em `/galeria`.
 - `Lead`, `LeadNotificationConfig`, `evolution.ts` e `lead-notify.ts` intactos e
   o formulário de contato funcionando.
 - Nenhum dado do cliente inventado — o que não veio continua pendente e visível.
