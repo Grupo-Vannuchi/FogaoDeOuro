@@ -162,6 +162,46 @@ model Stat {
   @@map("stats")
 }
 
+/// Uma categoria do cardápio (entradas, pratos, sobremesas, bebidas).
+model MenuCategory {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        Json // LocalizedText
+  description Json       @default("{}") // LocalizedText, opcional
+  order       Int        @default(0)
+  published   Boolean    @default(true)
+  items       MenuItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([published, order])
+  @@map("menu_categories")
+}
+
+/// Um prato. SEM preço: a diretriz do cliente proíbe publicar valores, e o
+/// buffet é por quilo — preço por prato não existe como conceito aqui.
+model MenuItem {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        Json // LocalizedText
+  description Json         @default("{}") // LocalizedText
+  image       String       @default("")
+  available   Boolean      @default(true)
+  order       Int          @default(0)
+  tags        String[]     @default([]) // "vegetariano", "picante", …
+  /// "A Semana no Fogão": prato fixo de um dia útil, 1 (segunda) a 5 (sexta).
+  /// Null = item permanente. Evita um model dedicado só para os cinco pratos.
+  weekday     Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([categoryId, order])
+  @@index([available, order])
+  @@map("menu_items")
+}
+
 // ---------------------------------------------------------------------------
 // Leads (contact + careers form submissions)
 // ---------------------------------------------------------------------------
