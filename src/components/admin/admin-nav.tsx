@@ -7,6 +7,7 @@ import {
   FolderKanban,
   Sparkles,
   Info,
+  UtensilsCrossed,
   Building2,
   Quote,
   Users,
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/admin", key: "dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/admin/cardapio", key: "cardapio", icon: UtensilsCrossed, exact: false },
   { href: "/admin/projects", key: "projects", icon: FolderKanban, exact: false },
   { href: "/admin/services", key: "services", icon: Sparkles, exact: false },
   { href: "/admin/informations", key: "informations", icon: Info, exact: false },
