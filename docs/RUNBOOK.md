@@ -16,7 +16,7 @@ the production deploy basics see SNAPSHOT.md too.
 | `SESSION_SECRET` | Vercel + local | JWT session signing. |
 | `NEXT_PUBLIC_SITE_URL` | Vercel + local | Inlined at build — set before the first build. |
 | `EVOLUTION_BASE_URL` / `EVOLUTION_API_KEY` | server | Evolution server + global key. |
-| `EVOLUTION_INSTANCE` | server | Default WhatsApp instance (per-funnel override wins). |
+| `EVOLUTION_INSTANCE` | server | Default WhatsApp instance (explicit override wins). |
 | `WHATSAPP_INBOX_URL` | server | External conversation inbox link (metodon8n / Chatwoot). |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | Vercel (Upstash) | Rate-limit store. Absent locally → in-memory fallback. |
 
@@ -31,12 +31,13 @@ junto com eles em agosto de 2026. Não há mais OAuth para reconectar, nem
 
 ## WhatsApp (Evolution) instances
 
-Admin → `Funis → Instâncias WhatsApp` (`/admin/funnels/whatsapp`):
+Admin → `Contatos → Instâncias do WhatsApp` (`/admin/leads/whatsapp`):
 
 - **Create** an instance → scan the **QR** with WhatsApp → it polls until
   connected (`open`).
 - **Reconnect / Logout / Delete** per instance.
-- Each funnel picks its instance in the editor (empty = default `EVOLUTION_INSTANCE`).
+- The lead-notification config (`/admin/leads`) picks which instance + group
+  receives new-lead pushes — both are required for it to send.
 - **Conversations** are not rebuilt here — the "Conversas" button opens the
   external inbox (`WHATSAPP_INBOX_URL`). See ADR-0005.
 
@@ -49,7 +50,7 @@ Admin → `Funis → Instâncias WhatsApp` (`/admin/funnels/whatsapp`):
   connect to the project with prefix `KV` (creates `KV_REST_API_URL/TOKEN`).
   Keep **Sensitive** on; don't enable the Development environment (Sensitive vars
   can't be pulled locally — local uses the in-memory fallback).
-- Limits (per IP, sliding window): `submitFunnel` 5/min, `getFunnelSlots` 20/min.
+- Limits (per IP, sliding window): `submitContactLead` (the contact form) 5/min.
   Adjust in `src/lib/rate-limit.ts` call sites. The limiter **fails open**.
 
 ## Deploy

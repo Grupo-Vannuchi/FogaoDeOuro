@@ -9,7 +9,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 **This is the site of the Fogão de Ouro**, a restaurant in the Centro Histórico of
 Santos/SP. The repo is a **fork of the N8X Marketing site** (an agency) that was
 re-skinned for the restaurant — so anything that still smells like an agency
-(portfolio, services-as-offerings, careers, funnels) is either already renamed or
+(portfolio, services-as-offerings, careers) is either already renamed or
 on its way out. The rebrand decisions and their rationale live in
 [`docs/superpowers/specs/`](docs/superpowers/specs/); read that before undoing
 something that looks odd.
@@ -44,14 +44,12 @@ src/
   app/[locale]/(marketing)/   public site: / · /experiencia · /gastronomia ·
                               /galeria · /reservas · /contato · /informations ·
                               /privacy · /terms
-  app/[locale]/(funnels)/     public funnel runtime  (/f/<slug>) — noindex, to be removed
   app/[locale]/admin/         login + (dashboard) session-guarded admin
-  app/actions/                server actions (funnels, funnels-public, whatsapp, auth, …)
-  app/api/admin/…             admin API routes (google oauth, csv export)
-  components/                 ui, sections, admin, funnels
+  app/actions/                server actions (whatsapp, auth, …)
+  components/                 ui, sections, admin
   config/site.ts              ⭐ white-label brand + theme + opening hours
   lib/                        env, prisma, queries (DAL), auth, rate-limit, evolution,
-                              google-calendar, validations, funnel-*
+                              validations
   messages/                   pt.json (typed catalog)
   proxy.ts                    Next 16 proxy (next-intl locale negotiation; excludes /api)
 prisma/                       schema.prisma + migrations + seeds + backups/snapshot.sql
@@ -81,7 +79,7 @@ null by hardcoding a number.
 - **No external calls inside `$transaction`** (5s timeout) — book meetings / send
   WhatsApp *outside* the transaction. Use the array form for independent ops.
 - **Never return raw Prisma rows to the client.** Map to a view-model that omits
-  secrets (e.g. `FunnelRunView` drops `completionMessage`).
+  secrets (e.g. `CurrentUser` drops `passwordHash`).
 - `updateMany`/`deleteMany` return a **count, not rows**; `@updatedAt` is skipped
   on bulk writes; always pass a `where` to `deleteMany` (the one exception is the
   `GoogleAccount` singleton, commented as intentional).
@@ -92,13 +90,12 @@ null by hardcoding a number.
   `crypto.randomUUID()` or mutation during render — use refs, effects, or event
   handlers. No `setState` during render.
 - **Stale closures kill data.** Don't read state you just set in the same handler.
-  Compute the new value locally and pass it forward (this is exactly the funnel
-  "answers disappeared" bug — see `answerChoice` → `runSubmit`).
+  Compute the new value locally and pass it forward.
 - **Kill request waterfalls.** Independent `await`s → `Promise.all`. Check cheap
   sync conditions before awaiting remote data.
 - **Don't block a page render on a slow/optional integration.** Load it
-  client-side and non-blocking (e.g. the funnel editor loads WhatsApp instances
-  in an effect, never server-side).
+  client-side and non-blocking (e.g. the WhatsApp instance manager loads
+  instances in an effect, never server-side).
 - **Server/client boundary:** keep Prisma, secrets and `server-only` modules on
   the server. `"use client"` only when you need state/effects/handlers.
 - **Caching:** read content through the DAL (`src/lib/queries.ts`) with
@@ -108,10 +105,10 @@ null by hardcoding a number.
 
 ## Security — skill: `security-review`
 
-- **Public endpoints** (`submitFunnel`, `getFunnelSlots`, `submitContactLead`):
-  honeypot + **per-IP rate limit** (`lib/rate-limit`, Upstash with in-memory
-  fallback) + `zod` validation as the server boundary. (`submitCareerLead` was
-  removed with the careers page — one fewer public write endpoint.)
+- **Public endpoints** (`submitContactLead`): honeypot + **per-IP rate limit**
+  (`lib/rate-limit`, Upstash with in-memory fallback) + `zod` validation as the
+  server boundary. (`submitCareerLead` was removed with the careers page — one
+  fewer public write endpoint.)
 - **Admin** server actions and `/api/admin/*` routes gate on `getCurrentUser()`.
 - **Secrets** only in env, read server-side. Never log them; redact in errors.
 - **Integration tokens expire** — detect and surface it (Google `invalid_grant`
@@ -144,18 +141,6 @@ null by hardcoding a number.
 - **No prices anywhere** — the client's direction forbids it, on the page *and*
   in structured data (`priceRange` is deliberately absent from the `Restaurant`
   schema, since it would surface in search results).
-
-## Funnels (inherited subsystem — scheduled for removal)
-
-Conversational lead-capture quiz at `/f/<slug>` (noindex), built in the admin.
-Branching → per-answer named endings (MEETING / BONUS / MESSAGE / REDIRECT),
-Google Calendar + Evolution WhatsApp integrations, per-funnel instance, CSV
-export. **Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) before changing it.**
-
-The restaurant doesn't use it and it will be dropped in a dedicated PR, taking
-the whole Google Calendar OAuth integration with it. When that happens, **keep**
-`Lead`, `LeadNotificationConfig`, `lib/evolution.ts` and `lib/lead-notify.ts` —
-the contact form still depends on them.
 
 ## Workflow & board
 

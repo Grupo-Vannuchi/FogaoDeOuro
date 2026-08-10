@@ -26,7 +26,7 @@ export function toWhatsappNumber(e164: string): string {
 }
 
 /**
- * Progressive Brazilian phone mask for funnel inputs, e.g. "(13) 91234-5678".
+ * Progressive Brazilian phone mask for form inputs, e.g. "(13) 91234-5678".
  * Caps at 11 digits (DDD + 9-digit mobile); 10 digits render as a landline.
  */
 export function maskPhoneBR(input: string): string {

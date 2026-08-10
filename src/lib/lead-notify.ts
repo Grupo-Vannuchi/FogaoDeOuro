@@ -38,8 +38,8 @@ const dateFmt = new Intl.DateTimeFormat("pt-BR", {
   timeZone: "America/Sao_Paulo",
 });
 
-/** Build the organized WhatsApp message for a lead (mirrors the Calendar event
- * layout used by the funnel: labeled fields, then the message body). */
+/** Build the organized WhatsApp message for a lead: labeled fields, then the
+ * message body. */
 export function formatLeadMessage(
   lead: LeadForNotify,
   opts: { manual?: boolean } = {},

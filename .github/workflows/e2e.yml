@@ -55,8 +55,8 @@ jobs:
       - name: Apply migrations
         run: npx prisma migrate deploy
 
-      # playwright.config seeds the E2E funnel in globalSetup and, under CI,
-      # builds + starts the app as the web server before running the specs.
+      # playwright.config builds + starts the app as the web server (CI only)
+      # before running the specs — no globalSetup/seeding needed.
       - name: Run E2E tests
         run: npm run test:e2e
 

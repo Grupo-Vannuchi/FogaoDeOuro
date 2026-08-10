@@ -9,7 +9,7 @@ import { env } from "@/lib/env";
  * serverless instances) when `KV_REST_API_URL`/`KV_REST_API_TOKEN` are set;
  * otherwise falls back to a per-instance in-memory window (fine for local dev,
  * weak on serverless). Fails OPEN: if the limiter errors, the request is allowed
- * — protection should never take the funnel down.
+ * — protection should never take the form down.
  */
 
 export type RateLimitResult = { ok: true } | { ok: false; retryAfter: number };

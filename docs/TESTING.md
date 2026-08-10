@@ -1,9 +1,12 @@
 # Testing plan
 
-The strategy and rollout for automated tests in n8x. Grounded in the
-`react-testing` and `e2e-testing` skills, adapted to this codebase. Status:
-**Phase 3a landed** (Vitest base + first unit/component tests + CI). Phase 3b
-(Playwright) and 3c (growth) still open.
+The strategy and rollout for automated tests in this codebase. Grounded in the
+`react-testing` and `e2e-testing` skills. Status: **Phase 3a and 3b landed**
+(Vitest base + unit/component tests + CI, Playwright + E2E + CI). Phase 3c
+(growth) is ongoing. The funnel subsystem that the suite originally covered
+(`funnel-runner`, `funnel-form`, `funnel-scheduler`, a seeded E2E funnel) has
+since been removed along with the rest of the funnels feature — this doc now
+describes the suite as it exists today, built around the contact form.
 
 ## Philosophy
 
@@ -36,7 +39,7 @@ Scripts (package.json):
 "test:e2e": "playwright test"
 ```
 
-## Setup pieces (n8x-specific)
+## Setup pieces
 
 ### Vitest
 - **`vitest.config.ts`** — `environment: "jsdom"`, the `@/` alias mirroring
@@ -51,11 +54,11 @@ Scripts (package.json):
   the actual copy and assertions read like the UI.
 
 ### What to mock (and what NOT)
-- **Server actions** (`submitFunnel`, `submitContactLead`, …): n8x uses Server
-  Actions, **not client `fetch`** — so don't reach for MSW for these. `vi.mock`
-  the action module and assert it was called with the right payload:
+- **Server actions** (`submitContactLead`, …): the app uses Server Actions,
+  **not client `fetch`** — so don't reach for MSW for these. `vi.mock` the
+  action module and assert it was called with the right payload:
   ```ts
-  vi.mock("@/app/actions/funnels-public", () => ({ submitFunnel: vi.fn() }));
+  vi.mock("@/app/actions/leads", () => ({ submitContactLead: vi.fn() }));
   ```
   (Use **MSW** only if/when a real client-side `fetch` appears.)
 - **`@/lib/prisma`**: mock it for any action *unit* test (no DB in unit tests).
@@ -66,41 +69,31 @@ Scripts (package.json):
 - **`playwright.config.ts`** — `webServer` runs the app against a **test DB**
   (`npm run build && npm run start`, or `npm run dev` locally); `retries: 2` in
   CI, `workers: 1` in CI; `trace: "on-first-retry"`, `screenshot/video:
-  "...-on-failure"`. Projects: chromium (+ mobile-chrome later).
-- **Seed a published, dependency-free funnel** (a `MESSAGE` or `REDIRECT` ending —
-  no Google/WhatsApp needed; WhatsApp send is best-effort and never blocks). Add a
-  `prisma/seed-e2e.ts` that creates it, run before the suite.
+  "...-on-failure"`. Projects: chromium (+ mobile-chrome later). No
+  `globalSetup` — the contact form needs no seeded content, so nothing runs
+  before the suite.
 - Prefer accessible locators (`getByRole`/`getByText`); add a few `data-testid`
-  only where the chat UI is ambiguous.
+  only where a flow is genuinely ambiguous.
 
 ## What to test — prioritized
 
 ### Unit (Vitest) — pure logic, fast, high coverage
 | Target | File | Why |
 |---|---|---|
-| `interpolateTokens` ({NOME}/{DATA}/{HORA}…) | `src/lib/funnel-runtime.ts` | core, pure, easy |
 | phone normalize / mask (BR → E.164) | `src/lib/phone.ts` | pure, edge cases |
 | rate-limit in-memory window | `src/lib/rate-limit.ts` | pure, fail-open |
-| form converters `formToInput`/`funnelToForm` | `src/lib/funnel-form.ts` | round-trip correctness |
-| zod schemas (funnel, lead, submission) | `src/lib/validations/*` | boundary rules + honeypot |
+| zod schemas (lead) | `src/lib/validations/*` | boundary rules + honeypot |
 
 ### Component (Vitest + RTL) — behavior + a11y
 | Target | File | Key cases |
 |---|---|---|
-| **`funnel-runner`** | `src/components/funnels/funnel-runner.tsx` | branching to questions/endings; **the "Não" → ending keeps the answer** (regression of the stale-closure bug); phone validation/mask; rate-limited / error messages |
-| `funnel-scheduler` | `src/components/funnels/funnel-scheduler.tsx` | unavailable slots → `onUnavailable`; pick a slot → `onConfirm` |
-| `contact-form` / `careers-form` | `src/components/forms/*` | honeypot dropped; zod errors shown; success state; **axe: no violations** |
-| `funnel-form` (admin) | `src/components/admin/funnel-form.tsx` | add/remove ending; empty-name error (light) |
+| `contact-form` | `src/components/forms/contact-form.tsx` | honeypot dropped; zod errors shown; success state; **axe: no violations** |
 
 ### E2E (Playwright) — full flows
 | Flow | Notes |
 |---|---|
-| Fill a funnel end-to-end | seeded `MESSAGE`/`REDIRECT` funnel → answer → see completion → assert a `FunnelSubmission` row |
 | Contact form submit | fill → success; (optionally) honeypot path |
 | Admin smoke | login → one CRUD action visible |
-
-> The funnel **MEETING** ending depends on Google (live slots) — cover it with a
-> component test (mock the slots action), **not** E2E, to stay deterministic.
 
 ## Conventions (from the skills)
 - `await` every `userEvent`; `userEvent.setup()` once per test.
@@ -117,24 +110,30 @@ Scripts (package.json):
   early. Goal: a red `npm run test` blocks the PR.
 - **Playwright → a separate workflow** (`.github/workflows/e2e.yml`, heavier:
   browsers + app + DB): `playwright install --with-deps chromium`, the Postgres
-  service, migrations, `npm run test:e2e` (which seeds + builds/starts the app),
-  and an uploaded report artifact. Runs on PRs/pushes; not yet a required merge
-  check (see Phase 3b).
+  service, migrations, `npm run test:e2e` (which builds/starts the app), and an
+  uploaded report artifact. Runs on PRs/pushes; not yet a required merge check
+  (see Phase 3b).
 
 ## Phased rollout
 
 ### Phase 3a — Vitest base + first tests + CI  *(DONE)*
 - [x] Deps + scripts (`test`, `test:watch`) + `vitest.config.ts` + `test/setup.ts` + `test/test-utils.tsx`. Asset stub deferred — the tested components don't import images; add it when one does.
-- [x] Unit tests: `interpolateTokens`, `phone`, `rate-limit` (exported `memLimit`), `funnel-form` round-trip.
-- [x] Component tests: `funnel-runner` (**answers regression**), `contact-form` (honeypot hidden + validation + success + axe).
+- [x] Unit tests: `phone`, `rate-limit` (exported `memLimit`).
+- [x] Component tests: `contact-form` (honeypot hidden + validation + success + axe).
 - [x] Added the `Test` step to `ci.yml` (runs first — no DB/browser needed).
-- **Done:** `npm run test` is green (26 tests); the answers-regression test fails if the `answerChoice` fix is reverted.
+- **Done:** `npm run test` is green (3 files, 19 tests). *(Landed with more coverage —
+  `interpolateTokens`, `funnel-form` round-trip, and the `funnel-runner`
+  answers-regression component test — that was removed along with the rest of
+  the funnels subsystem; see
+  [`docs/superpowers/plans/2026-08-10-remover-funis.md`](superpowers/plans/2026-08-10-remover-funis.md).)*
 
 ### Phase 3b — Playwright + E2E  *(DONE)*
-- [x] Playwright + `playwright.config.ts` (chromium; `locale: pt-BR` so next-intl serves the seeded pt content; `webServer` = dev locally / `build && start` in CI) + `prisma/seed-e2e.ts` (run in `globalSetup`).
-- [x] E2E: complete the seeded MESSAGE funnel end to end; submit the contact form. `npm run test:e2e` (2 passing).
+- [x] Playwright + `playwright.config.ts` (chromium; `locale: pt-BR` so next-intl serves pt content; `webServer` = dev locally / `build && start` in CI). No `globalSetup` — the contact form needs no seeded content.
+- [x] E2E: submit the contact form. `npm run test:e2e` (`e2e/contact.spec.ts`, 1 passing).
 - [x] CI: separate `.github/workflows/e2e.yml` (Postgres service + `playwright install --with-deps chromium` + migrations + `test:e2e` + report artifact). **Not yet a required merge check** — let it prove stable, then add it to branch protection.
 - **Done:** `npm run test:e2e` green locally; the E2E workflow runs on PRs/pushes.
+  *(Originally also seeded and ran a funnel end-to-end via `prisma/seed-e2e.ts`
+  in `globalSetup`; both were removed with the funnels subsystem.)*
 
 ### Phase 3c — grow coverage  *(ongoing)*
 - [x] Coverage reporting wired (`npm run test:cov`, v8) — **non-blocking** (no thresholds yet; baseline ~7%).

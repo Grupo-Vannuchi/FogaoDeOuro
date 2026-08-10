@@ -7,8 +7,10 @@ import { toWhatsappNumber } from "@/lib/phone";
 /**
  * Evolution API (WhatsApp) client. Server-only — the global API key never
  * reaches the browser. Two surfaces:
- *  - `sendText`: best-effort message send (never throws), used by the funnel
- *    completion flow. Picks the instance per call (funnel override → default).
+ *  - `sendText`: best-effort message send (never throws) to a single number.
+ *    Picks the instance per call (explicit override → default). Not called
+ *    internally today — `sendToGroup` below is what the lead notification
+ *    flow (`lead-notify.ts`) actually uses.
  *  - instance management (`fetchInstances`, `createInstance`, `connectInstance`,
  *    `getConnectionState`, `logoutInstance`, `deleteInstance`): admin-only, used
  *    by the WhatsApp panel. These surface errors to the admin UI.
@@ -22,7 +24,7 @@ export function isEvolutionConfigured(): boolean {
   return Boolean(env.EVOLUTION_BASE_URL && env.EVOLUTION_API_KEY);
 }
 
-/** Default instance to send from when a funnel doesn't pick its own. */
+/** Default instance to send from when a call doesn't pick its own. */
 export function defaultInstance(): string | null {
   return env.EVOLUTION_INSTANCE ?? null;
 }
@@ -90,7 +92,7 @@ export async function sendText(
         apikey: env.EVOLUTION_API_KEY!,
       },
       body: JSON.stringify({ number, text: message }),
-      // Don't let a slow/unreachable instance hang the funnel response.
+      // Don't let a slow/unreachable instance hang the caller's request.
       signal: AbortSignal.timeout(10_000),
     });
 
@@ -173,10 +175,10 @@ async function loadInstances(): Promise<EvoInstance[]> {
 
 /**
  * Cached instance list. The slow Evolution call is paid once per 60s and shared
- * across the WhatsApp panel + the funnel editor, so normal page loads are
- * instant. Admin mutations (create/delete/logout) tag-out the cache via
- * `invalidateInstances()`, and Next serves the last good list if a background
- * refresh fails.
+ * across every caller (the WhatsApp panel, the default-instance lookup), so
+ * normal page loads are instant. Admin mutations (create/delete/logout) tag-out
+ * the cache via `invalidateInstances()`, and Next serves the last good list if
+ * a background refresh fails.
  */
 const cachedInstances = unstable_cache(loadInstances, ["whatsapp-instances"], {
   tags: [tags.whatsappInstances],

@@ -9,7 +9,7 @@ import { cleanup } from "@testing-library/react";
 afterEach(() => cleanup());
 
 // jsdom doesn't implement scrollIntoView; stub it so components that autoscroll
-// (e.g. the funnel runner) don't throw during tests.
+// don't throw during tests.
 if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => {};
 }

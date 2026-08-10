@@ -16,20 +16,14 @@ restaurante. A marca inteira sai de um único arquivo de configuração, o site 
 > um deep link `wa.me` com mensagem pré-preenchida. Sem número configurado, eles
 > degradam para o telefone — ver `whatsappLink()` em `src/config/site.ts`.
 
-> O app ainda carrega o subsistema de **funis** herdado da agência (builder no
-> admin + runtime público em `/f/<slug>`) com Google Calendar, WhatsApp
-> (Evolution) e rate limiting. Ele **será removido** — ver
-> [`docs/superpowers/specs/`](docs/superpowers/specs/) e
-> [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-
 ## Documentation
 
 | Doc | What |
 | --- | --- |
 | [`AGENTS.md`](AGENTS.md) | Conventions & rules — **read before coding** (DB, React, security, Next). |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Setup, workflow, commit/board conventions. |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the system fits together + the funnels subsystem. |
-| [`docs/RUNBOOK.md`](docs/RUNBOOK.md) | Operations: Google, WhatsApp, Upstash, env vars, deploy. |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the system fits together + lead notification. |
+| [`docs/RUNBOOK.md`](docs/RUNBOOK.md) | Operations: WhatsApp, Upstash, env vars, deploy. |
 | [`docs/adr/`](docs/adr/) | Architecture decision records (the *why*). |
 | [`docs/TESTING.md`](docs/TESTING.md) | Testing strategy & rollout plan. |
 | [`SECURITY.md`](SECURITY.md) | Security policy & pre-deploy checklist. |
@@ -136,25 +130,20 @@ Request  →  proxy.ts                 resolves the locale (pt is the only one, 
 - **`src/lib/{session,auth}.ts` + `src/app/actions/`** — auth (signed cookie via
   jose) and server actions (login, saving a lead, changing a lead's status).
 
-## Funnels & integrations (inherited — scheduled for removal)
+## Lead notification & integrations
 
-> This whole subsystem came from the agency fork and the restaurant does not use
-> it. Removing it also removes the entire Google Calendar OAuth integration.
-> **Do not** remove `Lead`, `LeadNotificationConfig`, `src/lib/evolution.ts` or
-> `src/lib/lead-notify.ts` with it — the contact form depends on them.
-
-The admin builds conversational funnels served at `/f/<slug>` (noindex). Endings
-can book a **Google Calendar** meeting (with a Meet link), send a **WhatsApp**
-message (**Evolution API**), offer a **bonus** download, or **redirect** to an
-external URL. The public submit endpoint is **rate-limited** per IP
-(**Upstash**/Vercel KV, in-memory fallback). Full design in
+A contact-form submission is persisted first (durable), then best-effort
+pushed to a **WhatsApp** group via the **Evolution API**
+(`src/lib/lead-notify.ts`) — `LeadNotificationConfig` holds the target
+instance and group, and the admin can also forward a lead manually. The
+public submit endpoint is **rate-limited** per IP (**Upstash**/Vercel KV,
+in-memory fallback). Full design in
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); operational steps (connecting
-Google/WhatsApp, env vars) in [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
+WhatsApp, env vars) in [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
 
 Integration env (all optional — features degrade gracefully when unset):
 `EVOLUTION_BASE_URL`, `EVOLUTION_API_KEY`, `EVOLUTION_INSTANCE`,
-`WHATSAPP_INBOX_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`,
-`GOOGLE_REDIRECT_URI`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+`WHATSAPP_INBOX_URL`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
 
 ## Customization guide
 

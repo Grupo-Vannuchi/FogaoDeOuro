@@ -23,8 +23,8 @@ const serverSchema = z.object({
     .enum(["development", "test", "production"])
     .default("development"),
 
-  // --- Integrations (optional — funnels degrade gracefully when unset) -------
-  // Evolution API (WhatsApp) for funnel completion/message sends.
+  // --- Integrations (optional — degrade gracefully when unset) ---------------
+  // Evolution API (WhatsApp) for lead-notification message sends.
   EVOLUTION_BASE_URL: z.string().url().optional(),
   EVOLUTION_API_KEY: z.string().min(1).optional(),
   EVOLUTION_INSTANCE: z.string().min(1).optional(),
