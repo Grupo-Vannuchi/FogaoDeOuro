@@ -120,6 +120,43 @@ longo, sem página de detalhe.
 salão não tem cliente, ano, nem texto de mil palavras. Reaproveitar significaria
 manter seis campos mortos para usar dois.
 
+### 3.7 As avaliações ficam, como prova social verificável
+
+O restaurante tem **4,5★ e mais de 1.200 avaliações no Google**. Essa prova
+social só alcança quem já está no Google — quem chega por link, Instagram ou
+busca direta não vê nada. E o número solto ("4,5★") convence menos que alguém
+dizendo que a picanha sai no ponto.
+
+**Decisão: manter o model, reformado para o restaurante.**
+
+| | Campo |
+|---|---|
+| **Sai** | `company`, `role` — cargo e empresa são de depoimento de agência; um cliente de almoço não tem "Diretor de Marketing, Empresa X" |
+| **Fica** | `authorName`, `quote`, `rating`, `avatarUrl` |
+| **Entra** | `source` ("Google"), `sourceUrl` (link para a avaliação real) |
+
+`sourceUrl` é o que resolve o problema original. Um depoimento digitado no admin,
+sem origem, ao lado de uma nota real, parece fabricado. Com o link, a citação
+vira **verificável** — o visitante confere no Google. O trabalho vira curadoria
+das melhores avaliações que já existem, não redação.
+
+⚠️ **Fora do structured data.** As diretrizes do Google proíbem *self-serving
+reviews*: marcar `aggregateRating` ou `Review` sobre o próprio negócio, no site
+do próprio negócio. Exibir as citações na página é permitido; emiti-las no
+JSON-LD do `Restaurant` arrisca penalidade de rich result. Aparecem na página,
+ficam fora do schema.
+
+### 3.8 `Information` fica, e a rota vira português
+
+`Information` permanece como "Novidades", conforme o mapeamento do WHITELABEL.
+
+`/informations` é hoje a **única rota pública com nome em inglês** — todas as
+outras já foram traduzidas no rebrand, e o menu já exibe o label "Novidades".
+**Decisão: a rota passa a `/novidades`.** Não há custo de SEO: o site ainda não
+está no ar.
+
+O conteúdo atual (150 artigos de SEO da agência) não é migrado.
+
 ---
 
 ## 4. Schema final
@@ -195,8 +232,8 @@ model GalleryPhoto {
 
 | Model | Vira | Mudança |
 |---|---|---|
-| `Information` | Novidades / blog | nenhuma |
-| `Testimonial` | Avaliações | remove `company` |
+| `Information` | Novidades | nenhuma no model; a rota vira `/novidades` (§3.8) |
+| `Testimonial` | Avaliações | remove `company` e `role`; adiciona `source` e `sourceUrl` (§3.7) |
 | `AdminUser` | — | nenhuma |
 | `Lead` | Contatos | remove `role`, `portfolio`; enum `LeadType` perde `CAREER` |
 | `LeadNotificationConfig` | — | nenhuma |
@@ -262,10 +299,12 @@ agrupa por categoria e ordena por `order`.
 | `/gastronomia/[slug]` | **removida** — prato não tem página própria |
 | `/galeria` | passa a ser uma grade de fotos |
 | `/galeria/[slug]` | **removida** — foto não tem página própria |
+| `/informations` | renomeada para **`/novidades`** (§3.8) |
+| Avaliações | ganham origem e link para a avaliação real no Google (§3.7) |
 | Header | o dropdown de "Nossa Gastronomia" passa a listar categorias do cardápio (hoje lista `Service`) |
-| `sitemap.ts` | perde as entradas de `Service` e de `Project` |
+| `sitemap.ts` | perde as entradas de `Service` e de `Project`; as de `Information` mudam de prefixo |
 | `llms.txt` / `llms-full.txt` | perdem as entradas de `Project` |
-| `pt.json` | namespaces `about` → `experiencia`, `portfolio` → `galeria`, `services` → `cardapio` |
+| `pt.json` | namespaces `about` → `experiencia`, `portfolio` → `galeria`, `services` → `cardapio`, `informations` → `novidades` |
 
 A home fica com: Hero · Cardápio · Galeria · Avaliações · CTA.
 
@@ -291,8 +330,8 @@ mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
 | 2 | **CRE** | `MenuCategory` + `MenuItem` + DAL + CRUD no admin + `/gastronomia` |
 | 3 | **CRE** | `GalleryPhoto` + DAL + CRUD no admin + `/galeria` |
 | 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome |
-| 5 | **UPD** | limpar campos de agência (`Testimonial.company`, `Lead`/`CAREER`) |
-| 6 | **UPD** | renomear rotas e labels do admin + namespaces do `pt.json` |
+| 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` |
+| 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` |
 | 7 | **UPD** | reescrever os seeds e zerar o banco |
 
 Os PRs 2 e 3 **criam antes de destruir**: `/gastronomia` e `/galeria` passam a
@@ -323,6 +362,15 @@ Cada PR fecha com `npm run typecheck && npm run lint && npm run build` verde.
 7. **Conteúdo novo, não migrado.** O cliente é novo: nada do conteúdo atual
    (artigos, projetos, logos) é aproveitado. Os seeds passam a criar apenas o
    admin e, no máximo, um esqueleto vazio de categorias.
+8. **Avaliações fora do structured data.** O Google proíbe *self-serving
+   reviews* — `aggregateRating`/`Review` sobre o próprio negócio no site dele.
+   As citações aparecem na página, mas nunca no JSON-LD do `Restaurant`, sob
+   pena de perder o rich result (§3.7).
+9. **Números de prova social envelhecem.** A copy diz "mais de 1.200 avaliações"
+   enquanto o Google já mostra 1,3 mil: a formulação aberta é proposital, porque
+   subestima e continua verdadeira conforme o número cresce. Mesma lógica do
+   `{years}`, que é calculado a partir de `foundedYear` em vez de escrito na
+   copy — ver `fillYears()` em [`site.ts`](../../../src/config/site.ts).
 
 ---
 
