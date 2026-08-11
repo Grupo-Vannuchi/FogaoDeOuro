@@ -28,11 +28,11 @@ function revalidateTestimonials(): void {
 function toData(input: TestimonialInput) {
   return {
     authorName: input.authorName,
-    company: input.company,
     avatarUrl: input.avatarUrl || null,
     rating: input.rating,
-    role: input.role,
     quote: input.quote,
+    source: input.source,
+    sourceUrl: input.sourceUrl || null,
     order: input.order,
     published: input.published,
   };

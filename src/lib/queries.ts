@@ -43,11 +43,11 @@ export type InformationDetailView = InformationView & {
 export type TestimonialView = {
   id: string;
   authorName: string;
-  company: string;
   avatarUrl: string | null;
   rating: number;
-  role: string;
   quote: string;
+  source: string;
+  sourceUrl: string | null;
 };
 
 export type MenuItemView = {
@@ -163,11 +163,11 @@ export const getTestimonials = unstable_cache(
     return rows.map((t) => ({
       id: t.id,
       authorName: t.authorName,
-      company: t.company,
       avatarUrl: t.avatarUrl,
       rating: t.rating,
-      role: localize(t.role, locale),
       quote: localize(t.quote, locale),
+      source: t.source,
+      sourceUrl: t.sourceUrl,
     }));
   },
   ["testimonials"],
