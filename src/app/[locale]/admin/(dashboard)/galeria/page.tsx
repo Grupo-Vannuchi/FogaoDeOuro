@@ -62,7 +62,7 @@ export default async function AdminGaleriaPage({
               </div>
 
               <p className="truncate text-sm text-muted-foreground">
-                {localize(photo.caption, locale) || "—"}
+                {localize(photo.caption, locale) || t("noCaption")}
               </p>
 
               <div className="flex items-center gap-1 border-t border-border pt-3">

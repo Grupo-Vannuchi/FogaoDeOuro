@@ -68,7 +68,7 @@ export function GalleryPhotoForm({
               id="image"
               label={t("image")}
               hint={t("imageHint")}
-              preset="cover"
+              preset="gallery"
               value={watch("image") ?? ""}
               onChange={(v) => setValue("image", v, { shouldDirty: true })}
             />

@@ -156,6 +156,7 @@
     "title": "Galeria",
     "subtitle": "O salão renovado, a brasa e a mesa posta.",
     "empty": "Em breve, novas fotos por aqui.",
+    "photoAlt": "Foto do Fogão de Ouro",
     "client": "Ambiente",
     "year": "Ano",
     "category": "Categoria",
@@ -536,6 +537,7 @@
       "published": "Publicada (visível no site)",
       "save": "Salvar",
       "saving": "Salvando…",
+      "noCaption": "Sem legenda",
       "deleteConfirm": "Apagar esta foto?",
       "errorUnknown": "Não foi possível salvar. Tente de novo."
     },
