@@ -11,12 +11,12 @@ type LocalizedStrings = Record<Locale, string>;
 
 export type TestimonialFormValues = {
   authorName: string;
-  company: string;
   avatarUrl: string;
   rating: string;
   order: string;
   published: boolean;
-  role: LocalizedStrings;
+  source: string;
+  sourceUrl: string;
   quote: LocalizedStrings;
 };
 
@@ -41,25 +41,25 @@ function trimLocalized(value: LocalizedStrings): LocalizedStrings {
 export function emptyTestimonialForm(): TestimonialFormValues {
   return {
     authorName: "",
-    company: "",
     avatarUrl: "",
     rating: "5",
     order: "0",
     published: true,
-    role: blankLocalized(),
+    source: "Google",
+    sourceUrl: "",
     quote: blankLocalized(),
   };
 }
 
-/** Testimonial row as stored (avatarUrl nullable, bilingual fields opaque JSON). */
+/** Testimonial row as stored (avatarUrl/sourceUrl nullable, quote opaque JSON). */
 type TestimonialRow = {
   authorName: string;
-  company: string;
   avatarUrl: string | null;
   rating: number;
   order: number;
   published: boolean;
-  role: unknown;
+  source: string;
+  sourceUrl: string | null;
   quote: unknown;
 };
 
@@ -67,12 +67,12 @@ type TestimonialRow = {
 export function testimonialToForm(t: TestimonialRow): TestimonialFormValues {
   return {
     authorName: t.authorName,
-    company: t.company,
     avatarUrl: t.avatarUrl ?? "",
     rating: String(t.rating),
     order: String(t.order),
     published: t.published,
-    role: readLocalizedText(t.role),
+    source: t.source,
+    sourceUrl: t.sourceUrl ?? "",
     quote: readLocalizedText(t.quote),
   };
 }
@@ -81,12 +81,12 @@ export function testimonialToForm(t: TestimonialRow): TestimonialFormValues {
 export function formToInput(values: TestimonialFormValues): TestimonialInput {
   return {
     authorName: values.authorName.trim(),
-    company: values.company.trim(),
     avatarUrl: values.avatarUrl.trim(),
     rating: Number(values.rating),
     order: Number(values.order),
     published: values.published,
-    role: trimLocalized(values.role),
+    source: values.source.trim(),
+    sourceUrl: values.sourceUrl.trim(),
     quote: trimLocalized(values.quote),
   };
 }
