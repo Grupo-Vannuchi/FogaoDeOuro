@@ -1,8 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   Inbox,
-  FolderKanban,
-  Layers,
+  UtensilsCrossed,
+  Images,
   BarChart3,
   Gauge,
   ExternalLink,
@@ -28,8 +28,8 @@ export default async function DashboardPage({
 
   const cards = [
     { label: t("newLeads"), value: stats.newLeads, icon: Inbox },
-    { label: t("totalProjects"), value: stats.totalProjects, icon: FolderKanban },
-    { label: t("totalServices"), value: stats.totalServices, icon: Layers },
+    { label: t("totalMenuItems"), value: stats.totalMenuItems, icon: UtensilsCrossed },
+    { label: t("totalGalleryPhotos"), value: stats.totalGalleryPhotos, icon: Images },
   ];
 
   const dateFormatter = new Intl.DateTimeFormat(locale, {

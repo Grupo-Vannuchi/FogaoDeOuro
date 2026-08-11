@@ -4,15 +4,10 @@ import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
   Inbox,
-  FolderKanban,
-  Sparkles,
   Info,
   UtensilsCrossed,
   Images,
-  Building2,
   Quote,
-  Users,
-  BarChart3,
 } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -21,13 +16,8 @@ const items = [
   { href: "/admin", key: "dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/cardapio", key: "cardapio", icon: UtensilsCrossed, exact: false },
   { href: "/admin/galeria", key: "galeria", icon: Images, exact: false },
-  { href: "/admin/projects", key: "projects", icon: FolderKanban, exact: false },
-  { href: "/admin/services", key: "services", icon: Sparkles, exact: false },
   { href: "/admin/informations", key: "informations", icon: Info, exact: false },
-  { href: "/admin/clients", key: "clients", icon: Building2, exact: false },
   { href: "/admin/testimonials", key: "testimonials", icon: Quote, exact: false },
-  { href: "/admin/team", key: "team", icon: Users, exact: false },
-  { href: "/admin/stats", key: "stats", icon: BarChart3, exact: false },
   { href: "/admin/leads", key: "leads", icon: Inbox, exact: false },
 ] as const;
 
