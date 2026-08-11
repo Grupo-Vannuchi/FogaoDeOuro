@@ -62,15 +62,27 @@ model Information {
   @@map("informations")
 }
 
-/// A client testimonial / quote.
+/// Uma avaliação de cliente, curada a partir das avaliações públicas do Google.
+///
+/// `source` e `sourceUrl` são o que separam isto de um depoimento inventado: com
+/// o link, o visitante confere a avaliação na origem. Por isso não há `company`
+/// nem `role` — cargo e empresa eram de depoimento de agência; quem almoça aqui
+/// não tem "Diretor de Marketing, Empresa X".
+///
+/// ⚠️ Estas avaliações NUNCA entram no structured data: o Google proíbe
+/// self-serving reviews (`Review`/`aggregateRating` sobre o próprio negócio, no
+/// site dele). Aparecem na página, ficam fora do JSON-LD.
 model Testimonial {
   id         String   @id @default(cuid())
   authorName String
-  company    String
   avatarUrl  String?
   rating     Int      @default(5)
-  role       Json // LocalizedText
   quote      Json // LocalizedText
+  /// Onde a avaliação foi publicada, ex.: "Google".
+  source     String   @default("Google")
+  /// Link direto para a avaliação na origem. Opcional, mas é ele que torna a
+  /// citação verificável — o admin insiste nele por hint, não por validação.
+  sourceUrl  String?
   order      Int      @default(0)
   published  Boolean  @default(true)
   createdAt  DateTime @default(now())
