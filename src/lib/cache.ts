@@ -7,13 +7,8 @@
  * data, and Next revalidates every cached page that read it, regardless of path.
  */
 export const tags = {
-  services: "services",
   informations: "informations",
-  projects: "projects",
   testimonials: "testimonials",
-  team: "team",
-  stats: "stats",
-  clients: "clients",
   /** Cardápio: categorias e itens compartilham uma tag só. */
   menu: "menu",
   /** Fotos da galeria. */

@@ -127,36 +127,6 @@ export function BreadcrumbJsonLd({
   return <JsonLd data={data} />;
 }
 
-/** `Service` schema for a service detail page, provided by the agency. */
-export function ServiceJsonLd({
-  locale,
-  slug,
-  name,
-  description,
-}: {
-  locale: Locale;
-  slug: string;
-  name: string;
-  description: string;
-}) {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name,
-    description,
-    serviceType: name,
-    url: localizedUrl(locale, `/gastronomia/${slug}`),
-    inLanguage: locale,
-    provider: { "@id": ORG_ID },
-    areaServed: {
-      "@type": "Country",
-      name: siteConfig.contact.address.country,
-    },
-  };
-
-  return <JsonLd data={data} />;
-}
-
 /** `Article` schema for an information detail page, published by the agency. */
 export function ArticleJsonLd({
   locale,
@@ -195,40 +165,6 @@ export function ArticleJsonLd({
         }
       : { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
-  };
-
-  return <JsonLd data={data} />;
-}
-
-/** `CreativeWork` schema for a portfolio case study, created by the agency. */
-export function CreativeWorkJsonLd({
-  locale,
-  slug,
-  name,
-  description,
-  image,
-  year,
-  category,
-}: {
-  locale: Locale;
-  slug: string;
-  name: string;
-  description: string;
-  image: string;
-  year: number;
-  category: string;
-}) {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name,
-    description,
-    genre: category,
-    url: localizedUrl(locale, `/galeria/${slug}`),
-    image: absoluteUrl(image),
-    dateCreated: String(year),
-    inLanguage: locale,
-    creator: { "@id": ORG_ID },
   };
 
   return <JsonLd data={data} />;

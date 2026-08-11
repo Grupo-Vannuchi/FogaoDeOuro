@@ -33,10 +33,6 @@ async function contentTitle(
   let row: { title: unknown } | null = null;
   if (section === "informations") {
     row = await prisma.information.findFirst({ where: { slug }, select: { title: true } });
-  } else if (section === "services") {
-    row = await prisma.service.findFirst({ where: { slug }, select: { title: true } });
-  } else if (section === "portfolio") {
-    row = await prisma.project.findFirst({ where: { slug }, select: { title: true } });
   }
   return row ? localize(row.title, locale) : null;
 }
@@ -59,7 +55,7 @@ export async function resolveLandingLabel(
     const sectionLabel =
       SECTION_LABELS[loc][section] ?? (section || SECTION_LABELS[loc][""]);
     if (!slug) return sectionLabel;
-    if (["informations", "services", "portfolio"].includes(section)) {
+    if (section === "informations") {
       const title = await contentTitle(section, slug, loc);
       if (title) return `${sectionLabel} / ${title}`;
     }
