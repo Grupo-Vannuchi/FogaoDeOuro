@@ -1,7 +1,7 @@
 import { siteConfig, fullAddress } from "@/config/site";
 import { defaultLocale } from "@/i18n/routing";
 import { localizedUrl } from "@/lib/seo";
-import { getMenu, getProjects } from "@/lib/queries";
+import { getMenu } from "@/lib/queries";
 
 /**
  * `/llms.txt` — a concise, link-rich map of the site for LLM/AI crawlers, per
@@ -41,16 +41,11 @@ export async function GET(): Promise<Response> {
   ];
 
   let menu: string[] = [];
-  let projects: string[] = [];
   try {
-    const [categories, p] = await Promise.all([
-      getMenu(defaultLocale),
-      getProjects(defaultLocale),
-    ]);
+    const categories = await getMenu(defaultLocale);
     menu = categories.map((c) =>
       line(c.name, `/gastronomia#${c.slug}`, c.description),
     );
-    projects = p.map((x) => line(x.title, `/galeria/${x.slug}`, x.summary));
   } catch {
     // Database unavailable — ship the core pages only.
   }
@@ -66,7 +61,6 @@ export async function GET(): Promise<Response> {
   ];
 
   if (menu.length) sections.push("", "## Nossa gastronomia", ...menu);
-  if (projects.length) sections.push("", "## Galeria", ...projects);
 
   return new Response(`${sections.join("\n")}\n`, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },

@@ -3,8 +3,6 @@ import { defaultLocale } from "@/i18n/routing";
 import { localizedUrl } from "@/lib/seo";
 import {
   getMenu,
-  getProjects,
-  getProjectBySlug,
   getInformations,
   getInformationBySlug,
 } from "@/lib/queries";
@@ -12,9 +10,10 @@ import type { MenuCategoryView } from "@/lib/queries";
 
 /**
  * `/llms-full.txt` — the expanded companion to `/llms.txt`: the FULL text of the
- * menu, gallery and articles inline, so LLMs can cite the content without
- * fetching each page (llmstxt.org convention). Plain text, revalidated daily;
- * degrades gracefully if the database is unavailable.
+ * menu and articles inline, so LLMs can cite the content without fetching each
+ * page (llmstxt.org convention). The gallery has no long-form content of its
+ * own — see `/galeria` directly. Plain text, revalidated daily; degrades
+ * gracefully if the database is unavailable.
  */
 export const revalidate = 86400;
 
@@ -80,40 +79,30 @@ export async function GET(): Promise<Response> {
     "",
     `> Restaurante no Centro Histórico de Santos — ${fullAddress()}.`,
     "",
-    "Versão expandida de /llms.txt: o texto completo da gastronomia, da galeria e das novidades, para citação por LLMs.",
+    "Versão expandida de /llms.txt: o texto completo da gastronomia e das novidades, para citação por LLMs.",
   ];
 
   let menu: string[] = [];
-  let prj: string[] = [];
   let inf: string[] = [];
   try {
-    const [categories, projects, informations] = await Promise.all([
+    const [categories, informations] = await Promise.all([
       getMenu(defaultLocale),
-      getProjects(defaultLocale),
       getInformations(defaultLocale),
     ]);
 
     menu = categories.map(menuCategoryBlock);
 
-    [prj, inf] = await Promise.all([
-      collect(
-        projects,
-        (slug) => getProjectBySlug(defaultLocale, slug),
-        (p) => block(p.title, `/galeria/${p.slug}`, p.summary, p.content),
-      ),
-      collect(
-        informations,
-        (slug) => getInformationBySlug(defaultLocale, slug),
-        (i) =>
-          block(i.title, `/informations/${i.slug}`, i.description, i.content),
-      ),
-    ]);
+    inf = await collect(
+      informations,
+      (slug) => getInformationBySlug(defaultLocale, slug),
+      (i) =>
+        block(i.title, `/informations/${i.slug}`, i.description, i.content),
+    );
   } catch {
     // Lists unavailable — ship the header only.
   }
 
   if (menu.length) sections.push("", "# Gastronomia", "", menu.join("\n\n"));
-  if (prj.length) sections.push("", "# Portfólio", "", prj.join("\n\n"));
   if (inf.length) sections.push("", "# Artigos", "", inf.join("\n\n"));
 
   return new Response(`${sections.join("\n")}\n`, {

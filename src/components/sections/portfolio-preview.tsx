@@ -3,17 +3,17 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { ProjectCard } from "@/components/project-card";
+import { GalleryPhotoCard } from "@/components/gallery-photo-card";
 import { buttonVariants } from "@/components/ui/button";
-import { getProjects } from "@/lib/queries";
+import { getGalleryPhotos } from "@/lib/queries";
 import type { Locale } from "@/i18n/routing";
 
 export async function PortfolioPreview({ locale }: { locale: Locale }) {
   const t = await getTranslations("home.portfolio");
   const tc = await getTranslations("common");
-  const projects = await getProjects(locale, { featuredOnly: true, take: 3 });
+  const photos = (await getGalleryPhotos(locale)).slice(0, 3);
 
-  if (projects.length === 0) return null;
+  if (photos.length === 0) return null;
 
   return (
     <Section id="portfolio">
@@ -33,9 +33,9 @@ export async function PortfolioPreview({ locale }: { locale: Locale }) {
         </Link>
       </div>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project, i) => (
-          <Reveal key={project.id} delay={(i % 3) * 90} className="h-full">
-            <ProjectCard project={project} />
+        {photos.map((photo, i) => (
+          <Reveal key={photo.id} delay={(i % 3) * 90} className="h-full">
+            <GalleryPhotoCard photo={photo} />
           </Reveal>
         ))}
       </div>

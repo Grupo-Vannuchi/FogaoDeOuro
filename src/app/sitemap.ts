@@ -1,10 +1,7 @@
 import type { MetadataRoute } from "next";
 import { defaultLocale } from "@/i18n/routing";
 import { localizedUrl, languageAlternates } from "@/lib/seo";
-import {
-  getInformationSitemapEntries,
-  getProjectSitemapEntries,
-} from "@/lib/queries";
+import { getInformationSitemapEntries } from "@/lib/queries";
 
 type Entry = { path: string; lastModified: Date };
 
@@ -23,18 +20,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/privacy",
   ].map((path) => ({ path, lastModified: now }));
 
-  let projectEntries: Entry[] = [];
   let informationEntries: Entry[] = [];
   try {
-    const [projects, informations] = await Promise.all([
-      getProjectSitemapEntries(),
-      getInformationSitemapEntries(),
-    ]);
+    const informations = await getInformationSitemapEntries();
     // Detail pages carry the real edit date of their content record.
-    projectEntries = projects.map((p) => ({
-      path: `/galeria/${p.slug}`,
-      lastModified: p.updatedAt,
-    }));
     informationEntries = informations.map((i) => ({
       path: `/informations/${i.slug}`,
       lastModified: i.updatedAt,
@@ -43,11 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Database unavailable at build time — ship the static routes only.
   }
 
-  return [
-    ...staticEntries,
-    ...projectEntries,
-    ...informationEntries,
-  ].map(
+  return [...staticEntries, ...informationEntries].map(
     ({ path, lastModified }) => ({
       url: localizedUrl(defaultLocale, path),
       lastModified,
