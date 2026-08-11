@@ -1,6 +1,7 @@
 import "server-only";
 import type {
   Client,
+  GalleryPhoto,
   Information,
   Lead,
   LeadStatus,
@@ -172,4 +173,15 @@ export async function getMenuCategoryOptions(): Promise<
     orderBy: { order: "asc" },
     select: { id: true, name: true },
   });
+}
+
+/** Todas as fotos da galeria (publicadas e rascunhos) para a lista do admin. */
+export async function getAdminGalleryPhotos(): Promise<GalleryPhoto[]> {
+  return prisma.galleryPhoto.findMany({ orderBy: { order: "asc" } });
+}
+
+export async function getGalleryPhotoById(
+  id: string,
+): Promise<GalleryPhoto | null> {
+  return prisma.galleryPhoto.findUnique({ where: { id } });
 }

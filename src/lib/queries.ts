@@ -123,6 +123,12 @@ export type MenuCategoryView = {
   items: MenuItemView[];
 };
 
+export type GalleryPhotoView = {
+  id: string;
+  image: string;
+  caption: string;
+};
+
 export const getServices = unstable_cache(
   async (
     locale: Locale,
@@ -454,6 +460,23 @@ export const getMenuCategoryLinks = unstable_cache(
   },
   ["menu", "links"],
   { tags: [tags.menu], revalidate },
+);
+
+/** As fotos publicadas da galeria, na ordem definida no admin. */
+export const getGalleryPhotos = unstable_cache(
+  async (locale: Locale): Promise<GalleryPhotoView[]> => {
+    const rows = await prisma.galleryPhoto.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+    return rows.map((p) => ({
+      id: p.id,
+      image: p.image,
+      caption: localize(p.caption, locale),
+    }));
+  },
+  ["gallery"],
+  { tags: [tags.gallery], revalidate },
 );
 
 function toProjectCard(locale: Locale) {
