@@ -69,10 +69,12 @@ export function MenuCategoryForm({
             <Label htmlFor="slug">{t("categorySlug")}</Label>
             <Input
               id="slug"
+              placeholder="entradas"
               aria-invalid={Boolean(errors.slug)}
               {...register("slug", required)}
             />
             <FieldError>{errors.slug?.message}</FieldError>
+            <p className="mt-1 text-xs text-muted-foreground">{t("categorySlugHint")}</p>
           </div>
           <div>
             <Label htmlFor="order">{t("order")}</Label>

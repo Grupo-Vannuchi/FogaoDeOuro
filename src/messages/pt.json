@@ -478,6 +478,7 @@
       "statusAvailable": "Disponível",
       "statusUnavailable": "Indisponível",
       "categorySlug": "Identificador na URL",
+      "categorySlugHint": "Identificador interno da categoria (letras minúsculas e hífens).",
       "categoryName": "Nome",
       "categoryDescription": "Descrição (opcional)",
       "itemName": "Nome do prato",
