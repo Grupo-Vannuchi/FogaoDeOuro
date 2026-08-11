@@ -79,7 +79,7 @@ export function Header({
                     {links.map((link) => (
                       <li key={link.slug}>
                         <Link
-                          href={`${item.href}/${link.slug}`}
+                          href={`${item.href}#${link.slug}`}
                           className="block truncate rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                         >
                           {link.title}
@@ -164,7 +164,7 @@ export function Header({
                       {links.map((link) => (
                         <li key={link.slug}>
                           <Link
-                            href={`${item.href}/${link.slug}`}
+                            href={`${item.href}#${link.slug}`}
                             onClick={() => setOpen(false)}
                             className="block truncate rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                           >

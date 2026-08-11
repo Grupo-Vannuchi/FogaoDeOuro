@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/page-header";
-import { ServiceCard } from "@/components/service-card";
+import { MenuItemCard } from "@/components/menu-item-card";
 import { Reveal } from "@/components/ui/reveal";
-import { Section } from "@/components/ui/section";
-import { getServices } from "@/lib/queries";
+import { Section, SectionHeader } from "@/components/ui/section";
+import { getMenu } from "@/lib/queries";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
+
+/** 1 = segunda … 5 = sexta — indexado por `weekday - 1` para o rótulo traduzido. */
+const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"] as const;
 
 export async function generateMetadata({
   params,
@@ -30,24 +33,41 @@ export default async function ServicesPage({
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
   const t = await getTranslations("services");
-  const services = await getServices(locale);
+  const categories = await getMenu(locale);
 
   return (
     <>
       <PageHeader title={t("title")} subtitle={t("subtitle")} />
-      <Section>
-        {services.length === 0 ? (
+      {categories.length === 0 ? (
+        <Section>
           <p className="text-center text-muted-foreground">{t("empty")}</p>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, i) => (
-              <Reveal key={service.id} delay={(i % 3) * 90} className="h-full">
-                <ServiceCard service={service} />
-              </Reveal>
-            ))}
-          </div>
-        )}
-      </Section>
+        </Section>
+      ) : (
+        categories.map((category) => (
+          <Section key={category.id} id={category.slug}>
+            <SectionHeader
+              title={category.name}
+              subtitle={category.description}
+              align="left"
+            />
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {category.items.map((item, i) => (
+                <Reveal key={item.id} delay={(i % 3) * 90} className="h-full">
+                  <div className="flex h-full flex-col gap-2">
+                    {item.weekday !== null ? (
+                      <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand">
+                        <span className="sr-only">{t("weekOfTitle")}: </span>
+                        {t(weekdayKeys[item.weekday - 1])}
+                      </span>
+                    ) : null}
+                    <MenuItemCard item={item} />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </Section>
+        ))
+      )}
     </>
   );
 }

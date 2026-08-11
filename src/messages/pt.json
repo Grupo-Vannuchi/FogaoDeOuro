@@ -170,7 +170,13 @@
     "empty": "Em breve, novidades por aqui.",
     "ctaTitle": "Tudo isso espera por você a partir das 11h.",
     "ctaButton": "Fazer minha reserva",
-    "viewAll": "Ver toda a gastronomia"
+    "viewAll": "Ver toda a gastronomia",
+    "weekOfTitle": "A Semana no Fogão",
+    "weekday1": "Segunda",
+    "weekday2": "Terça",
+    "weekday3": "Quarta",
+    "weekday4": "Quinta",
+    "weekday5": "Sexta"
   },
   "informations": {
     "title": "Novidades",

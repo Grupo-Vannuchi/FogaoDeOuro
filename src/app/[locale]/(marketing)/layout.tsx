@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsappButton } from "@/components/layout/whatsapp-button";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/json-ld";
-import { getInformations, getProjects, getServices } from "@/lib/queries";
+import { getInformations, getMenuCategoryLinks } from "@/lib/queries";
 import { resolveLocale } from "@/i18n/routing";
 
 export default async function MarketingLayout({
@@ -21,11 +21,11 @@ export default async function MarketingLayout({
 
   // The gallery is no longer a top-level menu item, so the header only needs
   // the gastronomy children — one query fewer on every marketing page.
-  const [services, informations] = await Promise.all([
-    getServices(locale),
+  const [categories, informations] = await Promise.all([
+    getMenuCategoryLinks(locale),
     getInformations(locale),
   ]);
-  const serviceLinks = services.map((s) => ({ slug: s.slug, title: s.title }));
+  const categoryLinks = categories.map((c) => ({ slug: c.slug, title: c.name }));
   const informationLinks = informations.map((i) => ({
     slug: i.slug,
     title: i.title,
@@ -36,7 +36,7 @@ export default async function MarketingLayout({
     <>
       <OrganizationJsonLd />
       <WebSiteJsonLd />
-      <Header serviceLinks={serviceLinks} informationLinks={informationLinks} />
+      <Header serviceLinks={categoryLinks} informationLinks={informationLinks} />
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsappButton />

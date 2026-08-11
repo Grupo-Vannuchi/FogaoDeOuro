@@ -4,7 +4,6 @@ import { localizedUrl, languageAlternates } from "@/lib/seo";
 import {
   getInformationSitemapEntries,
   getProjectSitemapEntries,
-  getServiceSitemapEntries,
 } from "@/lib/queries";
 
 type Entry = { path: string; lastModified: Date };
@@ -25,22 +24,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ].map((path) => ({ path, lastModified: now }));
 
   let projectEntries: Entry[] = [];
-  let serviceEntries: Entry[] = [];
   let informationEntries: Entry[] = [];
   try {
-    const [projects, services, informations] = await Promise.all([
+    const [projects, informations] = await Promise.all([
       getProjectSitemapEntries(),
-      getServiceSitemapEntries(),
       getInformationSitemapEntries(),
     ]);
     // Detail pages carry the real edit date of their content record.
     projectEntries = projects.map((p) => ({
       path: `/galeria/${p.slug}`,
       lastModified: p.updatedAt,
-    }));
-    serviceEntries = services.map((s) => ({
-      path: `/gastronomia/${s.slug}`,
-      lastModified: s.updatedAt,
     }));
     informationEntries = informations.map((i) => ({
       path: `/informations/${i.slug}`,
@@ -53,7 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticEntries,
     ...projectEntries,
-    ...serviceEntries,
     ...informationEntries,
   ].map(
     ({ path, lastModified }) => ({
