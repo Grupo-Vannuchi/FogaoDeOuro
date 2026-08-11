@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/hero";
-import { Clients } from "@/components/sections/clients";
 import { Services } from "@/components/sections/services";
 import { PortfolioPreview } from "@/components/sections/portfolio-preview";
-import { Stats } from "@/components/sections/stats";
 import { Testimonials } from "@/components/sections/testimonials";
-import { Team } from "@/components/sections/team";
 import { CTA } from "@/components/sections/cta";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
@@ -37,12 +34,9 @@ export default async function HomePage({
   return (
     <>
       <Hero />
-      <Clients />
       <Services locale={locale} />
       <PortfolioPreview locale={locale} />
-      <Stats locale={locale} />
       <Testimonials locale={locale} />
-      <Team locale={locale} />
       <CTA />
     </>
   );
