@@ -20,9 +20,8 @@ async function seedAdmin() {
 async function main() {
   await seedAdmin();
 
-  // The marketing "Informações" catalog. No demo Services/Projects/Clients/
-  // Testimonials/Team/Stats are seeded — those are managed entirely via the
-  // admin CMS.
+  // The marketing "Informações" catalog. No demo cardápio, galeria or
+  // testimonials are seeded — those are managed entirely via the admin CMS.
   const informations = buildInformations();
   for (const i of informations) {
     await prisma.information.upsert({

@@ -10,7 +10,8 @@ import { absoluteUrl, localizedUrl } from "@/lib/seo";
  *   ORG_ID  — the restaurant as a {@link https://schema.org/Restaurant}
  *   SITE_ID — the website as a {@link https://schema.org/WebSite}
  *
- * Gastronomy and gallery entries point back to ORG_ID as their provider/creator.
+ * The website and information articles point back to ORG_ID as their
+ * publisher via {@link WebSiteJsonLd} and {@link ArticleJsonLd}.
  */
 const ORG_ID = `${localizedUrl(defaultLocale)}/#organization`;
 const SITE_ID = `${localizedUrl(defaultLocale)}/#website`;
@@ -127,7 +128,7 @@ export function BreadcrumbJsonLd({
   return <JsonLd data={data} />;
 }
 
-/** `Article` schema for an information detail page, published by the agency. */
+/** `Article` schema for an information detail page, published by the restaurant. */
 export function ArticleJsonLd({
   locale,
   slug,

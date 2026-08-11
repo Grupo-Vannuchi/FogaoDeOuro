@@ -14,22 +14,18 @@ import { env } from "@/lib/env";
 const BUCKET = "media";
 
 /** Per-use processing presets: target size + fit. WebP output for all. */
-export type ImagePreset = "cover" | "gallery" | "avatar" | "photo" | "logo";
+export type ImagePreset = "cover" | "gallery" | "avatar";
 
 const PRESETS: Record<
   ImagePreset,
   { width: number; height?: number; fit: keyof sharp.FitEnum; folder: string }
 > = {
-  // 16:9 card/cover art (informations, project covers).
+  // 16:9 card/cover art (informations covers).
   cover: { width: 1200, height: 675, fit: "cover", folder: "covers" },
-  // Portfolio gallery — cap the width, keep the aspect ratio.
+  // Gallery photos (pratos, ambiente) — cap the width, keep the aspect ratio.
   gallery: { width: 1600, fit: "inside", folder: "gallery" },
   // Square testimonial avatar.
   avatar: { width: 256, height: 256, fit: "cover", folder: "avatars" },
-  // Square team photo.
-  photo: { width: 512, height: 512, fit: "cover", folder: "team" },
-  // Client logo — keep aspect, don't crop; transparency preserved by WebP.
-  logo: { width: 400, height: 400, fit: "inside", folder: "logos" },
 };
 
 export function isStorageConfigured(): boolean {

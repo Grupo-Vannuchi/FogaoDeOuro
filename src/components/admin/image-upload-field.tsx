@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { UploadCloud, Loader2, X, ImageIcon } from "lucide-react";
-import { Input, Textarea, Label } from "@/components/ui/field";
+import { Input, Label } from "@/components/ui/field";
 import { uploadImageAction } from "@/app/actions/upload";
 import type { ImagePreset } from "@/lib/storage";
 import { useTranslations } from "next-intl";
@@ -112,108 +112,6 @@ export function ImageUploadField({
           {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
         </div>
       </div>
-    </div>
-  );
-}
-
-/**
- * Gallery variant: many images stored as a newline-separated URL string (the
- * shape `project.gallery` uses). Upload multiple files (each processed to a
- * standard WebP) which append to the list, remove any thumbnail, or edit the raw
- * URLs directly (hybrid — legacy/external URLs still work).
- */
-export function GalleryUploadField({
-  label,
-  hint,
-  value,
-  onChange,
-}: {
-  label?: string;
-  hint?: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  const t = useTranslations("admin.upload");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const urls = value
-    .split("\n")
-    .map((u) => u.trim())
-    .filter(Boolean);
-
-  async function onFiles(files: FileList | null) {
-    if (!files || files.length === 0) return;
-    setError(null);
-    setUploading(true);
-    const added: string[] = [];
-    for (const file of Array.from(files)) {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("preset", "gallery");
-      const res = await uploadImageAction(fd);
-      if (res.ok) added.push(res.url);
-      else setError(t(errorKey(res.error)));
-    }
-    setUploading(false);
-    if (added.length) onChange([...urls, ...added].join("\n"));
-    if (inputRef.current) inputRef.current.value = "";
-  }
-
-  return (
-    <div>
-      {label ? <Label>{label}</Label> : null}
-      {urls.length > 0 ? (
-        <div className="mt-1 flex flex-wrap gap-2">
-          {urls.map((u, i) => (
-            <div
-              key={`${u}-${i}`}
-              className="relative size-16 overflow-hidden rounded-lg border border-border bg-muted"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={u} alt="" className="size-full object-cover" />
-              <button
-                type="button"
-                onClick={() => onChange(urls.filter((_, j) => j !== i).join("\n"))}
-                aria-label={t("remove")}
-                className="absolute right-0.5 top-0.5 inline-flex size-4 items-center justify-center rounded bg-background/80 text-muted-foreground backdrop-blur transition-colors hover:text-red-600"
-              >
-                <X className="size-3" />
-              </button>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        disabled={uploading}
-        className="mt-2 inline-flex w-fit items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:border-brand disabled:opacity-60"
-      >
-        {uploading ? (
-          <Loader2 className="size-4 animate-spin" />
-        ) : (
-          <UploadCloud className="size-4" />
-        )}
-        {uploading ? t("uploading") : t("upload")}
-      </button>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        className="hidden"
-        onChange={(e) => onFiles(e.target.files)}
-      />
-      <Textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="https://…&#10;https://…"
-        className="mt-2"
-      />
-      {error ? <p className="mt-1 text-xs text-red-500">{error}</p> : null}
-      {hint ? <p className="mt-1 text-xs text-muted-foreground">{hint}</p> : null}
     </div>
   );
 }

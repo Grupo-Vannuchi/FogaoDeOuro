@@ -9,8 +9,8 @@ import { locales, defaultLocale, type Locale } from "@/i18n/routing";
  *
  * Localized fields are built from `locales` so adding a locale needs no change
  * here: the default locale is required, the others may be left blank (the public
- * site falls back to the default locale via `localize`). Mirrors the services
- * schema — see `src/lib/validations/service.ts`.
+ * site falls back to the default locale via `localize`). Mirrors the menu
+ * schema — see `src/lib/validations/menu.ts`.
  */
 
 /** `{ pt: string, en: string }` — default locale required, others optional. */

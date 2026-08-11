@@ -207,10 +207,10 @@ the route folders under `src/app/[locale]/(marketing)/`.
 
 ### Content (gallery, menu, testimonials)
 
-Two options:
-
-1. **Edit the seed data** in `prisma/seed.ts`, then re-run `npm run db:seed`.
-2. **Through the admin** at `/admin`.
+**Through the admin** at `/admin`. There is no seed script for cardápio
+(`MenuCategory`/`MenuItem`) or galeria (`GalleryPhoto`); `prisma/seed.ts` only
+seeds the admin user and the informations catalog — see
+[`SNAPSHOT.md`](SNAPSHOT.md).
 
 > ⚠️ The bundled snapshot (`prisma/backups/snapshot.sql`) still carries the
 > **agency's** demo content — 150 articles, 10 projects, 13 client logos. It is
@@ -266,7 +266,7 @@ The site is intentionally Portuguese-only. To bring another one back:
 | Name / contact / socials / hours | top of `src/config/site.ts`                                     |
 | Menu items                     | `nav` + `NavKey` in `src/config/site.ts`, `nav` in `pt.json`, route folders |
 | Section titles / button text   | `src/messages/pt.json`                                            |
-| Gallery / gastronomy / etc.    | `prisma/seed.ts` (+ `npm run db:seed`) or the admin               |
+| Gallery / cardápio / testimonials | the admin at `/admin` (no seed script for these)                |
 | Logo                           | `public/brand/` (see its README) + `src/components/layout/logo.tsx` |
 | Hero photos                    | `slideImages` in `src/components/sections/hero.tsx`               |
 | Allowed image hosts            | `next.config.ts`                                                  |

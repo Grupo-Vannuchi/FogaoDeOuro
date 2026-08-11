@@ -10,7 +10,7 @@ import {
 
 type Result = UploadResult | { ok: false; error: string };
 
-const PRESETS: ImagePreset[] = ["cover", "gallery", "avatar", "photo", "logo"];
+const PRESETS: ImagePreset[] = ["cover", "gallery", "avatar"];
 const MAX_BYTES = 15 * 1024 * 1024; // raw upload cap (sharp shrinks it after)
 
 /**

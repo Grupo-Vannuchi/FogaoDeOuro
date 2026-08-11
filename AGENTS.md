@@ -62,7 +62,9 @@ under `(marketing)/` must agree. "Nossa Gastronomia" is backed by
 `MenuCategory`/`MenuItem`, and the gallery is backed by `GalleryPhoto`. The
 agency-era models (`Service`, `Project`, `Client`, `Stat`, `TeamMember`) and
 their admin, DAL and seeds are gone — the admin now has exactly six sections:
-Visão geral, Cardápio, Galeria, Novidades, Avaliações and Contatos.
+dashboard, cardápio, galeria, informações (route/namespace `informations`,
+due to become novidades), depoimentos (route/namespace `testimonials`, due
+to become avaliações) and contatos.
 
 **Reservations go straight to WhatsApp.** There is no booking backend.
 `whatsappLink()` returns `null` while no number is configured, and every caller

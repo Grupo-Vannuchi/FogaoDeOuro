@@ -8,7 +8,7 @@ import type { InformationInput } from "@/lib/validations/information";
  * `formToInput` maps those to the structured `InformationInput` the server
  * expects, and `informationToForm` does the reverse so the edit form can be
  * pre-filled. Kept free of "use client" / "server-only" so both sides can import
- * it. Mirrors `src/lib/service-form.ts`.
+ * it. Mirrors `src/lib/menu-form.ts`.
  */
 
 /** Localized string map, one entry per supported locale. */

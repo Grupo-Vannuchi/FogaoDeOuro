@@ -162,24 +162,32 @@ Veja o que foi de fato executado em
 
 ## FASE 4 — Adaptações de restaurante
 
-O schema atual é de agência. Mapeamento:
+O schema original era de agência. Mapeamento do que foi planejado e o que de
+fato aconteceu:
 
-| Hoje (agência) | Vira (restaurante) | Como |
+| Hoje (agência) | Virou (restaurante) | Status |
 |---|---|---|
-| `Information` (artigos) | Novidades / blog | reaproveita direto |
-| `Testimonial` | Avaliações de clientes | reaproveita direto |
-| `TeamMember` | Chef / equipe | reaproveita direto |
-| `Project` / portfólio | Galeria (pratos, ambiente) | reaproveita, muda a copy |
-| `Service` | ❌ não serve para cardápio | não tem preço |
+| `Information` (artigos) | Novidades / blog | ✅ reaproveitado direto |
+| `Testimonial` | Avaliações de clientes | ✅ reaproveitado direto |
+| `TeamMember` | ~~Chef / equipe~~ | ✅ **removido** (agosto de 2026) — a seção de equipe só fazia sentido para agência e não foi reaproveitada |
+| `Project` / portfólio | Galeria (pratos, ambiente) | ✅ **substituído** pelo model próprio `GalleryPhoto`; `Project` foi removido |
+| `Service` | ❌ não servia para cardápio (sem preço) | ✅ **removido**; virou os models de cardápio abaixo |
+| `Client`, `Stat` | — (só faziam sentido para agência) | ✅ **removidos** |
 
-### Cardápio — models próprios
+Os cinco models de agência (`Service`, `Project`, `Client`, `Stat`,
+`TeamMember`) — admin, DAL e seeds inclusos — foram removidos por inteiro em
+agosto de 2026. Não reintroduza nem reaproveite esses nomes; qualquer novo
+cadastro de conteúdo usa os models atuais.
 
-Criar `MenuCategory` (entradas, pratos, sobremesas, bebidas — com ordem) e
+### Cardápio — models próprios ✅ concluído
+
+`MenuCategory` (entradas, pratos, sobremesas, bebidas — com ordem) e
 `MenuItem` (nome, descrição, **preço**, foto, disponibilidade, ordem, tags do
-tipo vegetariano/picante), com CRUD no admin seguindo **exatamente** o padrão dos
-recursos existentes (DAL em `src/lib/queries.ts` com `unstable_cache` + tags,
-`updateTag` nas escritas, validação `zod`, view-models — nunca devolver linha
-crua do Prisma para o cliente).
+tipo vegetariano/picante) foram criados, com CRUD no admin seguindo o mesmo
+padrão dos recursos existentes (DAL em `src/lib/queries.ts` com
+`unstable_cache` + tags, `updateTag` nas escritas, validação `zod`,
+view-models — nunca devolver linha crua do Prisma para o cliente). A galeria
+(`GalleryPhoto`) segue o mesmo padrão.
 
 ### Horário de funcionamento
 
