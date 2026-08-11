@@ -202,6 +202,22 @@ model MenuItem {
   @@map("menu_items")
 }
 
+/// Uma foto da galeria (salão, fachada, ambiente, pratos). Substitui `Project`,
+/// que era um estudo de caso de agência: uma foto não tem cliente, ano, resumo
+/// nem página de detalhe.
+model GalleryPhoto {
+  id        String   @id @default(cuid())
+  image     String
+  caption   Json     @default("{}") // LocalizedText, opcional
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, order])
+  @@map("gallery_photos")
+}
+
 // ---------------------------------------------------------------------------
 // Leads (contact + careers form submissions)
 // ---------------------------------------------------------------------------
