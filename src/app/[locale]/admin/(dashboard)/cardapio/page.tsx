@@ -3,10 +3,14 @@ import { Plus, Pencil } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { MenuCategoryDeleteButton } from "@/components/admin/menu-category-delete-button";
+import { MenuItemDeleteButton } from "@/components/admin/menu-item-delete-button";
 import { getAdminMenu } from "@/lib/admin-queries";
 import { localize } from "@/lib/content";
 import { resolveLocale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+
+/** 1 = segunda … 5 = sexta — indexado por `weekday - 1` para o rótulo traduzido. */
+const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"] as const;
 
 export default async function AdminCardapioPage({
   params,
@@ -77,7 +81,63 @@ export default async function AdminCardapioPage({
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground">{t("emptyItems")}</p>
+              <div className="flex flex-col gap-2 border-t border-border pt-3">
+                {category.items.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">{t("emptyItems")}</p>
+                ) : (
+                  <ul className="flex flex-col gap-2">
+                    {category.items.map((item) => (
+                      <li
+                        key={item.id}
+                        className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-muted/40 px-3 py-2"
+                      >
+                        <div className="flex min-w-0 flex-wrap items-center gap-2">
+                          <span className="truncate text-sm font-medium">
+                            {localize(item.name, locale)}
+                          </span>
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-0.5 text-xs font-medium",
+                              item.available
+                                ? "bg-emerald-500/10 text-emerald-600"
+                                : "bg-muted text-muted-foreground",
+                            )}
+                          >
+                            {item.available ? t("statusAvailable") : t("statusUnavailable")}
+                          </span>
+                          {item.weekday !== null ? (
+                            <span className="rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand">
+                              {t(weekdayKeys[item.weekday - 1])}
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <div className="flex shrink-0 items-center gap-1">
+                          <Link
+                            href={`/admin/cardapio/itens/${item.id}`}
+                            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                          >
+                            <Pencil className="size-4" />
+                            {t("edit")}
+                          </Link>
+                          <MenuItemDeleteButton
+                            id={item.id}
+                            name={localize(item.name, locale)}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <Link
+                  href={`/admin/cardapio/itens/new?categoria=${category.id}`}
+                  className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-brand transition-colors hover:text-brand/80"
+                >
+                  <Plus className="size-4" />
+                  {t("newItem")}
+                </Link>
+              </div>
             </li>
           ))}
         </ul>

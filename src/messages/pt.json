@@ -481,6 +481,8 @@
       "categorySlugHint": "Identificador interno da categoria (letras minúsculas e hífens).",
       "categoryName": "Nome",
       "categoryDescription": "Descrição (opcional)",
+      "itemSlug": "Identificador na URL",
+      "itemSlugHint": "Identificador interno do prato (letras minúsculas e hífens).",
       "itemName": "Nome do prato",
       "itemDescription": "Descrição",
       "itemImage": "Foto",
