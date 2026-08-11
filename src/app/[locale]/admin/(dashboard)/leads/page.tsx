@@ -24,7 +24,7 @@ function first(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-const LEAD_TYPES: LeadType[] = ["CONTACT", "CAREER"];
+const LEAD_TYPES: LeadType[] = ["CONTACT"];
 const LEAD_STATUSES: LeadStatus[] = ["NEW", "CONTACTED", "ARCHIVED"];
 
 export default async function LeadsPage({
@@ -56,7 +56,6 @@ export default async function LeadsPage({
 
   const typeLabel: Record<LeadType, string> = {
     CONTACT: t("typeContact"),
-    CAREER: t("typeCareer"),
   };
   const statusLabel: Record<LeadStatus, string> = {
     NEW: t("statusNew"),
@@ -135,11 +134,9 @@ export default async function LeadsPage({
                 </time>
               </div>
 
-              {(lead.company || lead.role || lead.portfolio) ? (
+              {lead.company ? (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {[lead.company, lead.role, lead.portfolio]
-                    .filter(Boolean)
-                    .join(" · ")}
+                  {lead.company}
                 </p>
               ) : null}
 

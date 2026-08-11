@@ -44,7 +44,6 @@ export function LeadFilters({
       >
         <option value="">{t("filterTypeAll")}</option>
         <option value="CONTACT">{t("typeContact")}</option>
-        <option value="CAREER">{t("typeCareer")}</option>
       </select>
 
       <select

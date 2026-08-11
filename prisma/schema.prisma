@@ -148,12 +148,11 @@ model GalleryPhoto {
 }
 
 // ---------------------------------------------------------------------------
-// Leads (contact + careers form submissions)
+// Leads (contact form submissions)
 // ---------------------------------------------------------------------------
 
 enum LeadType {
   CONTACT
-  CAREER
 }
 
 enum LeadStatus {
@@ -170,8 +169,6 @@ model Lead {
   email     String
   phone     String?
   company   String? // for CONTACT
-  role      String? // desired role, for CAREER
-  portfolio String? // link, for CAREER
   message   String
   tags      String[]   @default([]) // free-form labels applied by admins for triage
   locale    String     @default("pt")

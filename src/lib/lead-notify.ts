@@ -13,13 +13,11 @@ import { sourceLabel } from "@/lib/attribution";
 
 export type LeadForNotify = {
   id: string;
-  type: "CONTACT" | "CAREER";
+  type: "CONTACT";
   name: string;
   email: string;
   phone: string | null;
   company: string | null;
-  role: string | null;
-  portfolio: string | null;
   message: string;
   referrer: string | null;
   landingPage: string | null;
@@ -44,21 +42,15 @@ export function formatLeadMessage(
   lead: LeadForNotify,
   opts: { manual?: boolean } = {},
 ): string {
-  const source = lead.type === "CAREER" ? "Vaga/Carreira" : "Contato";
   const header = opts.manual ? "📋 Lead encaminhado" : "🔔 Novo lead";
   const lines = [
-    `${header} — ${source}`,
+    `${header} — Contato`,
     "━━━━━━━━━━━━━━━",
     `👤 Nome: ${lead.name}`,
     `📧 E-mail: ${lead.email}`,
   ];
   if (lead.phone) lines.push(`📱 Telefone: ${lead.phone}`);
-  if (lead.type === "CAREER") {
-    if (lead.role) lines.push(`💼 Cargo pretendido: ${lead.role}`);
-    if (lead.portfolio) lines.push(`🔗 Portfólio: ${lead.portfolio}`);
-  } else if (lead.company) {
-    lines.push(`🏢 Empresa: ${lead.company}`);
-  }
+  if (lead.company) lines.push(`🏢 Empresa: ${lead.company}`);
   lines.push("", "💬 Mensagem:", lead.message.trim());
 
   // Attribution — how the lead found us.

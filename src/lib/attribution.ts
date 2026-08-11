@@ -1,8 +1,8 @@
 /**
  * Lead attribution — how a visitor first reached the site. Captured client-side
  * on the first page of a visit into `sessionStorage` (first-touch, session-scoped
- * — not a persistent tracking cookie), then sent with the contact/careers form
- * and stored on the lead. `sourceLabel` is pure and safe to use on the server.
+ * — not a persistent tracking cookie), then sent with the contact form and
+ * stored on the lead. `sourceLabel` is pure and safe to use on the server.
  */
 
 export type Attribution = {
