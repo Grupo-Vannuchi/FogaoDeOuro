@@ -10,6 +10,14 @@ testimonials/team/stats.
 
 Git tag for this exact state: **`snapshot-2026-06-09`** (moves to the latest save).
 
+> ⚠️ **This dump is outdated.** `prisma/backups/snapshot.sql` predates the
+> `MenuCategory`/`MenuItem`/`GalleryPhoto` tables (cardápio and galeria) and
+> still contains data for `Service`/`Project`/`Client`/`Stat`/`TeamMember`,
+> which no longer exist in the schema. `npm run db:restore` **drops and
+> recreates** the database from this file, so restoring today loses the
+> cardápio and galeria content. A fresh `npm run db:dump` would fix this, but
+> that call belongs to the project owner, not this task.
+
 ## Initiate the system (bring it back exactly)
 
 ```bash
@@ -17,6 +25,7 @@ docker compose up -d          # start Postgres (container n8x-marketing-db, host
 npm install                   # only if node_modules is missing
 npm run db:generate           # generate the Prisma client
 npm run db:restore            # load prisma/backups/snapshot.sql (exact data, drops + recreates)
+npx prisma migrate deploy     # bring the schema back up to date (cardápio + galeria tables)
 npm run dev                   # http://localhost:3000
 ```
 
@@ -32,11 +41,10 @@ If you'd rather regenerate the data from code (e.g. fresh DB, no dump):
 ```bash
 npm run db:migrate            # apply schema
 npm run db:seed               # admin user + 150 informations
-npx tsx prisma/seed-services.ts          # 8 services
-npx tsx prisma/seed-projects.ts          # 10 project base records (real Drive covers)
-npx tsx prisma/seed-projects-content.ts  # project case content
-npx tsx prisma/seed-clients.ts           # 13 clients (real Drive logos)
 ```
+
+There is no seed script for cardápio (`MenuCategory`/`MenuItem`) or galeria
+(`GalleryPhoto`) — load that content through the admin after seeding.
 
 ## Re-save a new snapshot later
 

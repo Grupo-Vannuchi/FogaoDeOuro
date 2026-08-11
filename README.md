@@ -76,10 +76,10 @@ Key design decisions:
   a config edit — no component changes.
 - **Content in the database, copy in catalogs.** UI strings live in
   `src/messages/pt.json` (type-checked against the catalog). Dynamic content
-  (gastronomy blocks, gallery, testimonials, stats) lives in Postgres with
-  localized JSON fields resolved per request in the data-access layer
-  (`src/lib/queries.ts`). The JSON shape still supports several locales
-  (`LocalizedText`), the site just declares one.
+  (menu, gallery, testimonials) lives in Postgres with localized JSON fields
+  resolved per request in the data-access layer (`src/lib/queries.ts`). The
+  JSON shape still supports several locales (`LocalizedText`), the site just
+  declares one.
 - **Security boundary in the DAL.** Admin pages are guarded by `requireAdmin`
   (verifies the jose session + DB user). Server actions re-validate every input
   with the same zod schema used on the client.
@@ -93,7 +93,7 @@ three different places**, so each is easy to change in isolation.
 | ---------------------------------------- | -------------------------------- | ------------------------------------- |
 | **Brand identity** (name, colours, contact, socials, menu, opening hours) | `src/config/site.ts`            | Re-branding = editing one file        |
 | **UI copy** (section titles, buttons, labels)              | `src/messages/pt.json`          | One catalog, easy to review           |
-| **Dynamic content** (gallery, gastronomy, testimonials, stats) | PostgreSQL (seeded + admin)     | Editable without touching code        |
+| **Dynamic content** (menu, gallery, testimonials) | PostgreSQL (seeded + admin)     | Editable without touching code        |
 
 ### Request flow
 
@@ -123,10 +123,11 @@ Request  →  proxy.ts                 resolves the locale (pt is the only one, 
 - **`src/lib/queries.ts`** — the data-access layer: reads published content and
   returns it already resolved to the active locale (view-ready objects).
 - **`src/app/[locale]/(marketing)/`** — the public pages. The home page is
-  assembled from blocks in **`src/components/sections/`** (hero, services,
-  portfolio, stats, clients, testimonials, team, cta).
+  assembled from blocks in **`src/components/sections/`** (hero, menu-preview,
+  gallery-preview, testimonials, cta).
 - **`src/app/[locale]/admin/`** — the login screen and the session-guarded
-  dashboard + leads management.
+  dashboard: menu (cardápio), gallery, informations, testimonials and leads
+  management.
 - **`src/lib/{session,auth}.ts` + `src/app/actions/`** — auth (signed cookie via
   jose) and server actions (login, saving a lead, changing a lead's status).
 
@@ -204,7 +205,7 @@ the route folders under `src/app/[locale]/(marketing)/`.
 - A Experiência page → `about.*`
 - Horários & Reservas page → `reservas.*`
 
-### Content (gallery, gastronomy, testimonials, stats)
+### Content (gallery, menu, testimonials)
 
 Two options:
 
@@ -352,6 +353,6 @@ npm run dev
 - Public content pages render dynamically (fresh from the CMS). Switch to ISR
   with `export const revalidate = N` per page if you prefer cached pages.
 - `/admin` is excluded from `robots.txt` and marked `noindex`.
-- The admin currently ships **leads management** and a dashboard; the data layer
-  and admin shell are structured so content CRUD (projects, services, etc.) can
-  be added as additional `(dashboard)` routes following the same pattern.
+- The admin ships six sections — dashboard, cardápio (menu), galeria,
+  novidades (informations), avaliações (testimonials) and contatos (leads) —
+  all built as `(dashboard)` routes following the same DAL + zod pattern.

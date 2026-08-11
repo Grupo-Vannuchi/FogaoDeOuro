@@ -40,12 +40,13 @@ How the n8x system fits together. For coding conventions see
 | Validation | `src/lib/validations/*` (zod) | shared client form + server boundary |
 | Config | `src/config/site.ts` | white-label brand + theme |
 
-## Data model (Prisma — highlights)
+## Data model (Prisma — 8 models)
 
-- **Marketing content:** `Service`, `Project`, `Information`, `Testimonial`,
-  `TeamMember`, `Stat`, `Client` — bilingual JSON fields resolved per request.
-- **Leads:** `Lead` (contact / careers), `LeadNotificationConfig` (which
-  instance + WhatsApp group receives new-lead notifications).
+- **Marketing content:** `MenuCategory`, `MenuItem` (o cardápio), `GalleryPhoto`,
+  `Information`, `Testimonial` — localized JSON fields resolved per request.
+- **Leads:** `Lead` (contact), `LeadNotificationConfig` (which instance +
+  WhatsApp group receives new-lead notifications).
+- **Auth:** `AdminUser` (admin login session).
 
 ## Lead notification
 

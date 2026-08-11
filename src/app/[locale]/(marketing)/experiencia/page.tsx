@@ -11,7 +11,7 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button";
 import { ReserveButton } from "@/components/reserve-button";
-import { PortfolioPreview } from "@/components/sections/portfolio-preview";
+import { GalleryPreview } from "@/components/sections/gallery-preview";
 import { fillYears, siteConfig } from "@/config/site";
 
 export async function generateMetadata({
@@ -190,7 +190,7 @@ export default async function AboutPage({
       {/* §3.3 do briefing: a galeria do salão vive dentro desta página — não é
           item de menu. O time não aparece: a direção visual do cliente proíbe
           rostos de funcionários e clientes. */}
-      <PortfolioPreview locale={locale} />
+      <GalleryPreview locale={locale} />
     </>
   );
 }

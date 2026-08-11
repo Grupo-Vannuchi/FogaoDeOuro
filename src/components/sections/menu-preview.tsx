@@ -3,20 +3,21 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { GalleryPhotoCard } from "@/components/gallery-photo-card";
+import { MenuItemCard } from "@/components/menu-item-card";
 import { buttonVariants } from "@/components/ui/button";
-import { getGalleryPhotos } from "@/lib/queries";
+import { getMenu } from "@/lib/queries";
 import type { Locale } from "@/i18n/routing";
 
-export async function PortfolioPreview({ locale }: { locale: Locale }) {
-  const t = await getTranslations("home.portfolio");
+export async function MenuPreview({ locale }: { locale: Locale }) {
+  const t = await getTranslations("home.services");
   const tc = await getTranslations("common");
-  const photos = (await getGalleryPhotos(locale)).slice(0, 3);
+  const categories = await getMenu(locale);
+  const items = categories.flatMap((category) => category.items).slice(0, 8);
 
-  if (photos.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
-    <Section id="portfolio">
+    <Section id="services" className="bg-muted/30">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <SectionHeader
           eyebrow={t("eyebrow")}
@@ -25,20 +26,20 @@ export async function PortfolioPreview({ locale }: { locale: Locale }) {
           align="left"
         />
         <Link
-          href="/galeria"
+          href="/gastronomia"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
-          {tc("viewAllProjects")}
+          {tc("viewAllServices")}
           <ArrowRight className="size-4" />
         </Link>
       </div>
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {photos.map((photo, i) => (
-          <Reveal key={photo.id} delay={(i % 3) * 90} className="h-full">
-            <GalleryPhotoCard photo={photo} />
+      <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item, i) => (
+          <Reveal as="li" key={item.id} delay={(i % 3) * 90} className="h-full">
+            <MenuItemCard item={item} />
           </Reveal>
         ))}
-      </div>
+      </ul>
     </Section>
   );
 }

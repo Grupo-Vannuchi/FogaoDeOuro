@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/hero";
-import { Services } from "@/components/sections/services";
-import { PortfolioPreview } from "@/components/sections/portfolio-preview";
+import { MenuPreview } from "@/components/sections/menu-preview";
+import { GalleryPreview } from "@/components/sections/gallery-preview";
 import { Testimonials } from "@/components/sections/testimonials";
 import { CTA } from "@/components/sections/cta";
 import { resolveLocale } from "@/i18n/routing";
@@ -34,8 +34,8 @@ export default async function HomePage({
   return (
     <>
       <Hero />
-      <Services locale={locale} />
-      <PortfolioPreview locale={locale} />
+      <MenuPreview locale={locale} />
+      <GalleryPreview locale={locale} />
       <Testimonials locale={locale} />
       <CTA />
     </>
