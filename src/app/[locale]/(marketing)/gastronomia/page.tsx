@@ -8,9 +8,6 @@ import { getMenu } from "@/lib/queries";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 
-/** 1 = segunda … 5 = sexta — indexado por `weekday - 1` para o rótulo traduzido. */
-const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"] as const;
-
 export async function generateMetadata({
   params,
 }: {
@@ -53,15 +50,7 @@ export default async function ServicesPage({
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {category.items.map((item, i) => (
                 <Reveal key={item.id} delay={(i % 3) * 90} className="h-full">
-                  <div className="flex h-full flex-col gap-2">
-                    {item.weekday !== null ? (
-                      <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand">
-                        <span className="sr-only">{t("weekOfTitle")}: </span>
-                        {t(weekdayKeys[item.weekday - 1])}
-                      </span>
-                    ) : null}
-                    <MenuItemCard item={item} />
-                  </div>
+                  <MenuItemCard item={item} />
                 </Reveal>
               ))}
             </div>

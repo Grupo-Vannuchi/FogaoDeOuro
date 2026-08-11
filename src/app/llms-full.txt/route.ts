@@ -2,19 +2,19 @@ import { siteConfig, fullAddress } from "@/config/site";
 import { defaultLocale } from "@/i18n/routing";
 import { localizedUrl } from "@/lib/seo";
 import {
-  getServices,
-  getServiceBySlug,
+  getMenu,
   getProjects,
   getProjectBySlug,
   getInformations,
   getInformationBySlug,
 } from "@/lib/queries";
+import type { MenuCategoryView } from "@/lib/queries";
 
 /**
  * `/llms-full.txt` — the expanded companion to `/llms.txt`: the FULL text of the
- * agency's services, cases and articles inline, so LLMs can cite the content
- * without fetching each page (llmstxt.org convention). Plain text, revalidated
- * daily; degrades gracefully if the database is unavailable.
+ * menu, gallery and articles inline, so LLMs can cite the content without
+ * fetching each page (llmstxt.org convention). Plain text, revalidated daily;
+ * degrades gracefully if the database is unavailable.
  */
 export const revalidate = 86400;
 
@@ -29,6 +29,23 @@ function block(
   if (summary) parts.push("", summary);
   if (content.length) parts.push("", content.join("\n"));
   return parts.join("\n");
+}
+
+/**
+ * One menu category as a block: heading + anchor URL + description, with its
+ * dishes listed inline (name + description) — dishes have no long-form body
+ * text of their own, unlike services/projects/articles.
+ */
+function menuCategoryBlock(category: MenuCategoryView): string {
+  const dishes = category.items.map((item) =>
+    item.description ? `- ${item.name}: ${item.description}` : `- ${item.name}`,
+  );
+  return block(
+    category.name,
+    `/gastronomia#${category.slug}`,
+    category.description,
+    dishes,
+  );
 }
 
 /**
@@ -66,22 +83,19 @@ export async function GET(): Promise<Response> {
     "Versão expandida de /llms.txt: o texto completo da gastronomia, da galeria e das novidades, para citação por LLMs.",
   ];
 
-  let svc: string[] = [];
+  let menu: string[] = [];
   let prj: string[] = [];
   let inf: string[] = [];
   try {
-    const [services, projects, informations] = await Promise.all([
-      getServices(defaultLocale),
+    const [categories, projects, informations] = await Promise.all([
+      getMenu(defaultLocale),
       getProjects(defaultLocale),
       getInformations(defaultLocale),
     ]);
 
-    [svc, prj, inf] = await Promise.all([
-      collect(
-        services,
-        (slug) => getServiceBySlug(defaultLocale, slug),
-        (s) => block(s.title, `/gastronomia/${s.slug}`, s.description, s.content),
-      ),
+    menu = categories.map(menuCategoryBlock);
+
+    [prj, inf] = await Promise.all([
       collect(
         projects,
         (slug) => getProjectBySlug(defaultLocale, slug),
@@ -98,7 +112,7 @@ export async function GET(): Promise<Response> {
     // Lists unavailable — ship the header only.
   }
 
-  if (svc.length) sections.push("", "# Serviços", "", svc.join("\n\n"));
+  if (menu.length) sections.push("", "# Gastronomia", "", menu.join("\n\n"));
   if (prj.length) sections.push("", "# Portfólio", "", prj.join("\n\n"));
   if (inf.length) sections.push("", "# Artigos", "", inf.join("\n\n"));
 

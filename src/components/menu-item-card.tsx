@@ -1,14 +1,25 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import type { MenuItemView } from "@/lib/queries";
 
+/** 1 = segunda … 5 = sexta — indexado por `weekday - 1` para o rótulo traduzido. */
+const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"] as const;
+
 /** Card de um prato. Sem preço: o cliente não publica valores. */
-export function MenuItemCard({ item }: { item: MenuItemView }) {
+export async function MenuItemCard({ item }: { item: MenuItemView }) {
+  const t = await getTranslations("services");
   return (
     <article className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-5">
+      {item.weekday !== null ? (
+        <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand">
+          <span className="sr-only">{t("weekOfTitle")}: </span>
+          {t(weekdayKeys[item.weekday - 1])}
+        </span>
+      ) : null}
       {item.image ? (
         <Image
           src={item.image}
-          alt=""
+          alt={item.name}
           width={480}
           height={320}
           className="h-40 w-full rounded-lg object-cover"
