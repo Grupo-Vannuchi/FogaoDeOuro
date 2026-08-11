@@ -42,24 +42,6 @@ model AdminUser {
 // Marketing content (managed via the admin CMS)
 // ---------------------------------------------------------------------------
 
-/// A service the agency offers (social media, branding, etc.).
-model Service {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  icon        String // lucide-react icon name, e.g. "Megaphone"
-  title       Json // LocalizedText
-  description Json // LocalizedText
-  content     Json     @default("{}") // LocalizedRichText (array of paragraphs per locale)
-  featured    Boolean  @default(false)
-  order       Int      @default(0)
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([published, featured, order])
-  @@map("services")
-}
-
 /// An informational entry (knowledge base / "Informações"): listed in the navbar
 /// burger menu and rendered as a standalone article with a sidebar of siblings.
 model Information {
@@ -80,43 +62,6 @@ model Information {
   @@map("informations")
 }
 
-/// A portfolio case study.
-model Project {
-  id         String   @id @default(cuid())
-  slug       String   @unique
-  clientName String
-  category   Json // LocalizedText
-  year       Int
-  coverImage String
-  gallery    String[] @default([])
-  tags       String[] @default([])
-  title      Json // LocalizedText
-  summary    Json // LocalizedText
-  content    Json // LocalizedRichText (array of paragraphs per locale)
-  featured   Boolean  @default(false)
-  published  Boolean  @default(true)
-  order      Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([published, featured, order])
-  @@map("projects")
-}
-
-/// A client logo shown in the "they trust us" strip.
-model Client {
-  id        String   @id @default(cuid())
-  name      String
-  logoUrl   String
-  website   String?
-  order     Int      @default(0)
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("clients")
-}
-
 /// A client testimonial / quote.
 model Testimonial {
   id         String   @id @default(cuid())
@@ -132,34 +77,6 @@ model Testimonial {
   updatedAt  DateTime @updatedAt
 
   @@map("testimonials")
-}
-
-/// A member of the team.
-model TeamMember {
-  id        String   @id @default(cuid())
-  name      String
-  photoUrl  String?
-  socials   Json     @default("{}") // { instagram?, linkedin?, ... }
-  role      Json // LocalizedText
-  order     Int      @default(0)
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("team_members")
-}
-
-/// A headline statistic / animated counter.
-model Stat {
-  id        String   @id @default(cuid())
-  key       String   @unique // "years", "logos", "clients", "ads"
-  value     Int
-  suffix    String   @default("")
-  label     Json // LocalizedText
-  order     Int      @default(0)
-  published Boolean  @default(true)
-
-  @@map("stats")
 }
 
 /// Uma categoria do cardápio (entradas, pratos, sobremesas, bebidas).
