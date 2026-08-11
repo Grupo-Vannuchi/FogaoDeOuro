@@ -17,7 +17,8 @@ export type InformationActionResult =
 /** Informations render on the navbar burger menu, the informations list and each
  * information page. One content tag invalidates every cached page that reads
  * them, in any locale — no need to enumerate paths. (Admin pages are auth-gated,
- * hence dynamic.) Mirrors `revalidateServices` in `src/app/actions/services.ts`. */
+ * hence dynamic.) Same pattern as the other content revalidators in this
+ * directory (e.g. `revalidateTestimonials`). */
 function revalidateInformations(): void {
   // Read-your-own-writes: `updateTag` expires the tag immediately so the next
   // request to any page that reads it fetches fresh data. Admin edits must show
