@@ -77,13 +77,25 @@ export function TestimonialForm({
             <FieldError>{errors.authorName?.message}</FieldError>
           </div>
           <div>
-            <Label htmlFor="company">{t("company")}</Label>
+            <Label htmlFor="source">{t("source")}</Label>
             <Input
-              id="company"
-              aria-invalid={Boolean(errors.company)}
-              {...register("company", required)}
+              id="source"
+              aria-invalid={Boolean(errors.source)}
+              {...register("source", required)}
             />
-            <FieldError>{errors.company?.message}</FieldError>
+            <p className="mt-1 text-xs text-muted-foreground">{t("sourceHint")}</p>
+            <FieldError>{errors.source?.message}</FieldError>
+          </div>
+          <div>
+            <Label htmlFor="sourceUrl">{t("sourceUrl")}</Label>
+            <Input
+              id="sourceUrl"
+              placeholder="https://maps.google.com/…"
+              aria-invalid={Boolean(errors.sourceUrl)}
+              {...register("sourceUrl")}
+            />
+            <p className="mt-1 text-xs text-muted-foreground">{t("sourceUrlHint")}</p>
+            <FieldError>{errors.sourceUrl?.message}</FieldError>
           </div>
           <div>
             <Label htmlFor="rating">{t("rating")}</Label>
@@ -121,16 +133,6 @@ export function TestimonialForm({
             {t("sectionContent", { locale: localeLabel(locale) })}
           </legend>
           <div className="flex flex-col gap-4">
-            <div>
-              <Label htmlFor={`role-${locale}`}>{t("role")}</Label>
-              <Input
-                id={`role-${locale}`}
-                aria-invalid={Boolean(errors.role?.[locale])}
-                {...register(`role.${locale}` as const, locale === locales[0] ? required : {})}
-              />
-              <p className="mt-1 text-xs text-muted-foreground">{t("roleHint")}</p>
-              <FieldError>{errors.role?.[locale]?.message}</FieldError>
-            </div>
             <div>
               <Label htmlFor={`quote-${locale}`}>{t("quote")}</Label>
               <Textarea

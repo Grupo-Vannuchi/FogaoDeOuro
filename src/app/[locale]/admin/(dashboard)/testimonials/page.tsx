@@ -4,7 +4,6 @@ import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { TestimonialDeleteButton } from "@/components/admin/testimonial-delete-button";
 import { getAdminTestimonials } from "@/lib/admin-queries";
-import { localize } from "@/lib/content";
 import { resolveLocale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -60,7 +59,18 @@ export default async function AdminTestimonialsPage({
                   </span>
                 </div>
                 <p className="truncate text-sm text-muted-foreground">
-                  {localize(item.role, locale)} · {item.company}
+                  {item.sourceUrl ? (
+                    <a
+                      href={item.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-foreground"
+                    >
+                      {item.source}
+                    </a>
+                  ) : (
+                    item.source
+                  )}
                 </p>
               </div>
 

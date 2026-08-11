@@ -53,7 +53,18 @@ export async function Testimonials({ locale }: { locale: Locale }) {
               <div>
                 <p className="text-sm font-semibold">{item.authorName}</p>
                 <p className="text-xs text-muted-foreground">
-                  {item.role} · {item.company}
+                  {item.sourceUrl ? (
+                    <a
+                      href={item.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-foreground"
+                    >
+                      {item.source}
+                    </a>
+                  ) : (
+                    item.source
+                  )}
                 </p>
               </div>
             </figcaption>
