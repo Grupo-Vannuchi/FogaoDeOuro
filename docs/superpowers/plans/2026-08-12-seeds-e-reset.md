@@ -88,7 +88,9 @@ Fica só `seedAdmin()`. Remova o import, o laço de `upsert` das informações e
 
 O comentário que hoje diz *"No demo cardápio, galeria or testimonials are seeded"* passa a ser verdade — reescreva-o para dizer o que o seed faz agora e **por quê**: o conteúdo é do restaurante e entra pelo painel; um seed de demonstração viraria conteúdo inventado no site do cliente.
 
-⚠️ **Reforce a armadilha da senha.** O seed cai para `changeme123` quando `SEED_ADMIN_PASSWORD` não está definida, e o seed **roda no build da Vercel**. Deixe isso explícito no arquivo, apontando para `npm run db:set-admin`. Não mude o comportamento — só torne o risco impossível de não ver.
+⚠️ **Reforce a armadilha da senha.** O seed cai para `changeme123` quando `SEED_ADMIN_PASSWORD` não está definida. Deixe isso explícito no arquivo, apontando para `npm run db:set-admin`. Não mude o comportamento — só torne o risco impossível de não ver.
+
+**Correção ao próprio plano, feita durante a Task 1:** uma versão anterior deste documento afirmava que o seed roda no build da Vercel. **É falso.** O `vercel.json` tem `buildCommand: "npx prisma migrate deploy && next build"` — o seed nunca é invocado, e o `migrate deploy` não semeia sozinho. O risco continua real, mas o gatilho é outro: alguém rodando `npm run db:seed` à mão contra produção. Não repita a afirmação errada.
 
 - [ ] **Step 4: Validar**
 
@@ -291,9 +293,22 @@ Verifique a tag git citada (`snapshot-2026-06-09`) antes de repeti-la: se não e
 
 Em cada um, corrija o que ficou falso. Atenção especial a qualquer trecho que prometa que o seed popula conteúdo de exemplo — quem seguir isso vai achar que o ambiente quebrou ao ver o site vazio. Diga que o site nasce vazio **de propósito** e que o conteúdo entra pelo painel.
 
-- [ ] **Step 3: A senha do admin**
+- [ ] **Step 3: A senha do admin, e como o admin nasce em produção**
 
-Confirme que o `docs/RUNBOOK.md` manda trocar a senha padrão antes de qualquer deploy. Se não mandar, adicione — o seed roda no build da Vercel com `changeme123` quando `SEED_ADMIN_PASSWORD` não está definida, e esse é o risco de segurança mais concreto do projeto hoje.
+Confirme que o `docs/RUNBOOK.md` manda trocar a senha padrão antes de qualquer deploy. Se não mandar, adicione.
+
+⚠️ **Não repita que "o seed roda no build da Vercel" — é falso.** O `vercel.json` roda `npx prisma migrate deploy && next build`; o seed nunca é invocado. Isso levanta uma pergunta operacional que o RUNBOOK precisa responder e talvez não responda: **como o primeiro usuário admin passa a existir num ambiente novo?** O caminho real é `npm run db:set-admin` (lê `ADMIN_EMAIL`/`ADMIN_PASSWORD`) ou um `db:seed` manual com `SEED_ADMIN_PASSWORD` definida. Se o RUNBOOK não descreve nenhum dos dois, esse é um buraco de verdade — documente-o.
+
+- [ ] **Step 3b: Os documentos que prometem conteúdo de demonstração**
+
+Quatro arquivos dizem que o seed carrega conteúdo de exemplo, e depois deste PR nenhum deles está certo. Encontrados na Task 1:
+
+- `docker-compose.yml:5` — `npm run db:seed  # load demo content + admin user`
+- `README.md:311` — `# demo content + first admin user`
+- `README.md:348` — tabela: "Seed demo content + admin"
+- `SNAPSHOT.md:43` — `# admin user + 150 informations`
+
+Mais os trechos de `README.md:122,212,216,306` que a Task 1 apontou.
 
 - [ ] **Step 4: spec §7**
 
@@ -336,6 +351,6 @@ npx playwright test
 
 **O e2e grava um lead.** Depois dele a tabela `leads` não está mais vazia. Esperado; registre.
 
-**A senha `changeme123` roda no build da Vercel.** Não é escopo deste PR consertar, mas é escopo deixar impossível de não ver.
+**A senha `changeme123`.** O seed cai para ela quando `SEED_ADMIN_PASSWORD` não está definida. Não é escopo deste PR consertar, mas é escopo deixar impossível de não ver. **Não** afirme que ela chega a produção pelo build — a Task 1 verificou o `vercel.json` e o seed não roda lá. O gatilho real é um `db:seed` manual.
 
 **O snapshot antigo tem 290 KB e some.** É intencional: ele descreve um schema que não existe. O dono recusou o dump de pré-reset — não faça um por conta própria.
