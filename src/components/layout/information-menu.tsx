@@ -18,7 +18,7 @@ export type InformationLink = {
  * index. Pure CSS hover — mirrors the Services/Portfolio dropdowns in the header.
  */
 export function InformationMenu({ links }: { links: InformationLink[] }) {
-  const t = useTranslations("informations");
+  const t = useTranslations("novidades");
 
   return (
     <div className="group relative">

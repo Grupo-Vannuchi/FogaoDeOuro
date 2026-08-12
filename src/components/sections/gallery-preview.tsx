@@ -16,7 +16,7 @@ export async function GalleryPreview({ locale }: { locale: Locale }) {
   if (photos.length === 0) return null;
 
   return (
-    <Section id="portfolio">
+    <Section id="galeria">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <SectionHeader
           eyebrow={t("eyebrow")}

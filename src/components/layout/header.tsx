@@ -180,7 +180,7 @@ export function Header({
             {informationLinks.length > 0 ? (
               <div className="mt-2 border-t border-border pt-2">
                 <p className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  {t("information")}
+                  {t("novidades")}
                 </p>
                 <ul className="flex flex-col gap-0.5">
                   {informationLinks.map((link) => (

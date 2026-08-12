@@ -16,7 +16,7 @@ export default async function EditInformationPage({
   const { locale: rawLocale, id } = await params;
   const locale = resolveLocale(rawLocale);
   setRequestLocale(locale);
-  const t = await getTranslations("admin.informations");
+  const t = await getTranslations("admin.novidades");
 
   const information = await getInformationById(id);
   if (!information) notFound();

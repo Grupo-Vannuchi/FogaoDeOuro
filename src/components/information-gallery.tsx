@@ -33,7 +33,7 @@ export function InformationGallery({
   items: InformationView[];
   children: React.ReactNode;
 }) {
-  const t = useTranslations("informations");
+  const t = useTranslations("novidades");
   const [index, setIndex] = useState<number | null>(null);
   const isOpen = index !== null;
 

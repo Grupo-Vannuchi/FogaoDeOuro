@@ -32,7 +32,7 @@ export function InformationForm({
   informationId?: string;
   defaultValues: InformationFormValues;
 }) {
-  const t = useTranslations("admin.informations");
+  const t = useTranslations("admin.novidades");
   const tv = useTranslations("validation");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);

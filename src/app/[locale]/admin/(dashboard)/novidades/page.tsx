@@ -16,7 +16,7 @@ export default async function AdminInformationsPage({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations("admin.informations");
+  const t = await getTranslations("admin.novidades");
   const informations = await getAdminInformations();
 
   return (

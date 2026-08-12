@@ -20,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
-  const t = await getTranslations({ locale, namespace: "about" });
+  const t = await getTranslations({ locale, namespace: "experiencia" });
   return {
     title: t("title"),
     description: t("metaDescription"),
@@ -53,7 +53,7 @@ export default async function AboutPage({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations("about");
+  const t = await getTranslations("experiencia");
   const tc = await getTranslations("common");
 
   const practiceItems = t.raw("practice.items") as string[];

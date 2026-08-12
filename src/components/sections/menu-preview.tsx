@@ -17,7 +17,7 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
   if (items.length === 0) return null;
 
   return (
-    <Section id="services" className="bg-muted/30">
+    <Section id="gastronomia" className="bg-muted/30">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <SectionHeader
           eyebrow={t("eyebrow")}

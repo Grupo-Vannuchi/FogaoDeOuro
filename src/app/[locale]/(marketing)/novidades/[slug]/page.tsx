@@ -54,7 +54,7 @@ export default async function InformationPage({
   const { locale: rawLocale, slug } = await params;
   const locale = resolveLocale(rawLocale);
   setRequestLocale(locale);
-  const t = await getTranslations("informations");
+  const t = await getTranslations("novidades");
   const tn = await getTranslations("nav");
 
   // The article plus the full list that powers the right-hand sidebar.
@@ -86,7 +86,7 @@ export default async function InformationPage({
       <BreadcrumbJsonLd
         items={[
           { name: siteConfig.name, url: localizedUrl(locale) },
-          { name: tn("information"), url: localizedUrl(locale, "/novidades") },
+          { name: tn("novidades"), url: localizedUrl(locale, "/novidades") },
           {
             name: information.title,
             url: localizedUrl(locale, `/novidades/${slug}`),

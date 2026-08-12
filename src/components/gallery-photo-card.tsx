@@ -8,7 +8,7 @@ import type { GalleryPhotoView } from "@/lib/queries";
  * de um `alt` não vazio para quem usa leitor de tela.
  */
 export async function GalleryPhotoCard({ photo }: { photo: GalleryPhotoView }) {
-  const t = await getTranslations("portfolio");
+  const t = await getTranslations("galeria");
   return (
     <figure className="flex flex-col gap-2">
       <Image

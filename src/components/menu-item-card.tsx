@@ -7,7 +7,7 @@ const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"]
 
 /** Card de um prato. Sem preço: o cliente não publica valores. */
 export async function MenuItemCard({ item }: { item: MenuItemView }) {
-  const t = await getTranslations("services");
+  const t = await getTranslations("gastronomia");
   return (
     <article className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-5">
       {item.weekday !== null ? (

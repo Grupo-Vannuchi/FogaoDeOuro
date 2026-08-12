@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
-  const t = await getTranslations({ locale, namespace: "portfolio" });
+  const t = await getTranslations({ locale, namespace: "galeria" });
   return {
     title: t("title"),
     description: t("subtitle"),
@@ -29,7 +29,7 @@ export default async function PortfolioPage({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations("portfolio");
+  const t = await getTranslations("galeria");
   const photos = await getGalleryPhotos(locale);
 
   return (

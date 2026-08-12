@@ -16,7 +16,7 @@ const items = [
   { href: "/admin", key: "dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/cardapio", key: "cardapio", icon: UtensilsCrossed, exact: false },
   { href: "/admin/galeria", key: "galeria", icon: Images, exact: false },
-  { href: "/admin/novidades", key: "informations", icon: Info, exact: false },
+  { href: "/admin/novidades", key: "novidades", icon: Info, exact: false },
   { href: "/admin/testimonials", key: "testimonials", icon: Quote, exact: false },
   { href: "/admin/leads", key: "leads", icon: Inbox, exact: false },
 ] as const;

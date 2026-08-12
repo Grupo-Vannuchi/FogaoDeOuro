@@ -12,7 +12,7 @@
     "galeria": "Galeria",
     "reservas": "Horários & Reservas",
     "contato": "Contato",
-    "information": "Novidades",
+    "novidades": "Novidades",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu"
   },
@@ -76,7 +76,7 @@
       "button": "Horários & Reservas"
     }
   },
-  "about": {
+  "experiencia": {
     "title": "Mais que um almoço. Um ritual do Centro de Santos.",
     "metaDescription": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu refúgio no Centro Histórico de Santos: salão amplo, elegante e discreto, com churrasco na brasa, peixes nobres e massas preparadas na hora.",
     "subtitle": "No Centro Histórico de Santos desde {foundedYear}.",
@@ -141,7 +141,7 @@
     },
     "disclaimer": "Fogão de Ouro Restaurante — Rua Frei Gaspar, 46, Centro Histórico de Santos/SP. Segunda a sexta, das 11h às 15h. Cartões, VR e VA."
   },
-  "portfolio": {
+  "galeria": {
     "title": "Galeria",
     "subtitle": "O salão renovado, a brasa e a mesa posta.",
     "empty": "Em breve, novas fotos por aqui.",
@@ -154,7 +154,7 @@
     "ctaTitle": "Quer ver de perto?",
     "ctaButton": "Fazer minha reserva"
   },
-  "services": {
+  "gastronomia": {
     "title": "Nossa Gastronomia",
     "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo — todos os dias.",
     "empty": "Em breve, novidades por aqui.",
@@ -168,7 +168,7 @@
     "weekday4": "Quinta",
     "weekday5": "Sexta"
   },
-  "informations": {
+  "novidades": {
     "title": "Novidades",
     "subtitle": "Novidades e informações do Fogão de Ouro.",
     "empty": "Em breve, novidades por aqui.",
@@ -283,7 +283,7 @@
     "nav": {
       "dashboard": "Visão geral",
       "leads": "Contatos",
-      "informations": "Informações",
+      "novidades": "Informações",
       "cardapio": "Cardápio",
       "galeria": "Galeria",
       "testimonials": "Depoimentos",
@@ -331,7 +331,7 @@
       "landedOn": "entrou por",
       "whatsappLink": "Instâncias do WhatsApp"
     },
-    "informations": {
+    "novidades": {
       "title": "Informações",
       "new": "Nova informação",
       "editTitle": "Editar: {title}",
@@ -345,7 +345,7 @@
       "sectionContent": "Conteúdo ({locale})",
       "sectionVisibility": "Visibilidade",
       "slug": "Slug",
-      "slugHint": "Usado na URL: /informations/seu-slug",
+      "slugHint": "Usado na URL: /novidades/seu-slug",
       "icon": "Ícone",
       "iconPlaceholder": "Selecione um ícone",
       "iconHint": "Ícone exibido no menu e na listagem de informações.",

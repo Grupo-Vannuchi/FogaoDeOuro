@@ -20,7 +20,7 @@ export function InformationCard({
 }: {
   information: InformationView;
 }) {
-  const t = useTranslations("informations");
+  const t = useTranslations("novidades");
   const gallery = useInformationGallery();
 
   const actionClass =

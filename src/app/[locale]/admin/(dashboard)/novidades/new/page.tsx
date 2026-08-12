@@ -12,7 +12,7 @@ export default async function NewInformationPage({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
-  const t = await getTranslations("admin.informations");
+  const t = await getTranslations("admin.novidades");
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">

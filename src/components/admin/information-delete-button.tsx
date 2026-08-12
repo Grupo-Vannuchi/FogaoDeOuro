@@ -13,7 +13,7 @@ export function InformationDeleteButton({
   id: string;
   title: string;
 }) {
-  const t = useTranslations("admin.informations");
+  const t = useTranslations("admin.novidades");
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
