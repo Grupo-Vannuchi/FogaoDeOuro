@@ -307,14 +307,37 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 
 ---
 
-### Task 4: Chaves órfãs do catálogo
+### Task 4: Chaves aninhadas, copy do admin e chaves órfãs
 
 Cinco PRs de remoção passaram por aqui. O `typecheck` acusa chave **faltando**, nunca chave **sobrando** — então o `pt.json` provavelmente carrega labels de coisas que já não existem (serviços, projetos, equipe, clientes, números, carreiras).
 
-**Files:**
-- Modify: `src/messages/pt.json`
+A Task 3 renomeou os namespaces **de topo**. Esta tarefa fecha três pontas que ficaram, todas levantadas pela revisão da Task 3.
 
-- [ ] **Step 1: Levantar as candidatas**
+**Files:**
+- Modify: `src/messages/pt.json`, `src/components/sections/menu-preview.tsx`, `src/components/sections/gallery-preview.tsx`, e o que os greps apontarem
+
+- [ ] **Step 0a: As chaves aninhadas em `home`**
+
+`home.services` (`pt.json:58`) e `home.portfolio` (`pt.json:63`) sobreviveram porque são **aninhadas**, não de topo. Renomeie para `home.gastronomia` e `home.galeria`, e acompanhe os consumidores: `menu-preview.tsx:12` faz `getTranslations("home.services")` duas linhas acima de um `<Section id="gastronomia">`, e `gallery-preview.tsx:12` faz o mesmo com `home.portfolio`.
+
+- [ ] **Step 0b: A copy do admin passa a dizer "Novidades"**
+
+**Decisão do dono do projeto.** A Task 3 corrigiu a *chave* (`admin.novidades`), mas os *valores* ainda dizem "Informações" — então o administrador clica em "Informações", cai em `/admin/novidades` e edita uma página pública intitulada "Novidades".
+
+Percorra as 32 chaves de `admin.novidades` mais `admin.nav.novidades` e troque a copy visível:
+
+| Chave | De | Para |
+|---|---|---|
+| `admin.nav.novidades` | "Informações" | "Novidades" |
+| `admin.novidades.title` | "Informações" | "Novidades" |
+| `admin.novidades.new` | "Nova informação" | "Nova novidade" |
+| demais chaves | qualquer "informação"/"informações" na frase | "novidade"/"novidades" |
+
+Leia cada string antes de trocar — **concordância de gênero muda**: "esta informação" → "esta novidade" funciona, mas "o ícone exibido na listagem de informações" → "…de novidades" precisa de conferência frase a frase. Não troque no braço com `sed`.
+
+⚠️ Isto é **valor**, não chave: `admin.testimonials`, `admin.leads`, `admin.cardapio` e `admin.galeria` continuam intocados, chave *e* valor.
+
+- [ ] **Step 1: Levantar as candidatas órfãs**
 
 Para cada chave folha do catálogo, verifique se algo em `src/` a referencia. Um script de varredura serve melhor que o olho — mas **atenção aos falsos positivos**, que aqui são a regra:
 
@@ -324,6 +347,8 @@ Para cada chave folha do catálogo, verifique se algo em `src/` a referencia. Um
 - `metadata.*`, lido pelo `generateMetadata`
 
 **Regra:** na dúvida, **mantenha e reporte**. Apagar uma chave viva produz `MISSING_MESSAGE` em produção; manter uma chave morta não custa nada além de bytes. Liste no relatório tudo que você considerou e não apagou, com o motivo.
+
+**Uma candidata já identificada:** `nav.galeria`. O tipo `NavKey` (`src/config/site.ts:27-33`) não tem `"galeria"` — a nav é `inicio · experiencia · gastronomia · reservas · contato`. Mas **isso não prova que a chave é morta**: `nav.novidades` também está fora do `NavKey` e é lida como literal solto em `header.tsx:183`. Procure um consumidor literal antes de apagar.
 
 - [ ] **Step 2: Remover só o que for comprovadamente órfão**
 
@@ -429,9 +454,16 @@ npx playwright test
 ## Critérios de aceite do PR
 
 - [ ] `npm run typecheck && npm run lint && npm run build && npm test` verde; `npx playwright test` verde
-- [ ] `grep -rn '/informations' src/` volta **vazio**
+- [ ] **Nenhum caminho de rota** aponta para `/informations`:
+      `grep -rnE '(href|router\.push|redirect|localizedUrl).*/informations' src/` volta vazio.
+      ⚠️ Um `grep -rn '/informations' src/` cru **não serve** e foi um erro na primeira versão
+      deste plano: ele acerta os `import … from "@/app/actions/informations"`, que são
+      *module specifiers* de um arquivo que o próprio plano manda **não** renomear.
+      As duas ocorrências restantes devem ser exatamente essas.
+- [ ] Nenhuma superfície servida emite `/informations`: HTML público, `sitemap.xml`, `llms.txt`, `llms-full.txt`
 - [ ] `grep -rn 'Translations("\(about\|portfolio\|services\|informations\)"' src/` volta **vazio**
-- [ ] `grep -rn '"about"\|"portfolio"\|"services"' src/messages/pt.json` volta vazio *como chave de topo*
+- [ ] `grep -n '"about"\|"portfolio"\|"services"\|"informations"' src/messages/pt.json` volta vazio — **de topo e aninhadas** (`home.services` e `home.portfolio` inclusas)
+- [ ] O admin diz "Novidades", não "Informações", no menu lateral e no título da tela
 - [ ] `/pt/novidades` e `/pt/novidades/<slug-real>` respondem 200; `/pt/informations` responde 404
 - [ ] `sitemap.xml`, `llms.txt` e `llms-full.txt` não contêm `/informations`
 - [ ] Nenhuma rota pública nem tela do admin contém `MISSING_MESSAGE`
