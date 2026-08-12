@@ -9,7 +9,7 @@ import { getMenu } from "@/lib/queries";
 import type { Locale } from "@/i18n/routing";
 
 export async function MenuPreview({ locale }: { locale: Locale }) {
-  const t = await getTranslations("home.services");
+  const t = await getTranslations("home.gastronomia");
   const tc = await getTranslations("common");
   const categories = await getMenu(locale);
   const items = categories.flatMap((category) => category.items).slice(0, 8);

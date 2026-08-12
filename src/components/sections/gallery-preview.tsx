@@ -9,7 +9,7 @@ import { getGalleryPhotos } from "@/lib/queries";
 import type { Locale } from "@/i18n/routing";
 
 export async function GalleryPreview({ locale }: { locale: Locale }) {
-  const t = await getTranslations("home.portfolio");
+  const t = await getTranslations("home.galeria");
   const tc = await getTranslations("common");
   const photos = (await getGalleryPhotos(locale)).slice(0, 3);
 

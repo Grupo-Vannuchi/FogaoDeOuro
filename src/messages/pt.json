@@ -55,12 +55,12 @@
         }
       ]
     },
-    "services": {
+    "gastronomia": {
       "eyebrow": "A experiência",
       "title": "Tudo o que espera por você",
       "subtitle": "churrasco na brasa, peixes nobres, massas na hora e um buffet que não existe igual no Centro."
     },
-    "portfolio": {
+    "galeria": {
       "eyebrow": "Galeria",
       "title": "O salão e a mesa",
       "subtitle": "O ambiente renovado e os pratos que saem todos os dias."
@@ -93,7 +93,7 @@
         "Salão amplo, climatizado e silencioso o bastante para a conversa que importa"
       ]
     },
-    "services": {
+    "salao": {
       "title": "Um salão pensado para o seu dia",
       "intro": "São 180 lugares no coração do Centro Histórico, a poucos passos da Bolsa do Café e do Museu do Café. O espaço foi desenhado para atender bem em qualquer cenário:",
       "items": [
@@ -283,7 +283,7 @@
     "nav": {
       "dashboard": "Visão geral",
       "leads": "Contatos",
-      "novidades": "Informações",
+      "novidades": "Novidades",
       "cardapio": "Cardápio",
       "galeria": "Galeria",
       "testimonials": "Depoimentos",
@@ -332,14 +332,14 @@
       "whatsappLink": "Instâncias do WhatsApp"
     },
     "novidades": {
-      "title": "Informações",
-      "new": "Nova informação",
+      "title": "Novidades",
+      "new": "Nova novidade",
       "editTitle": "Editar: {title}",
-      "empty": "Nenhuma informação ainda. Crie a primeira.",
+      "empty": "Nenhuma novidade ainda. Crie a primeira.",
       "edit": "Editar",
       "delete": "Excluir",
       "deleteConfirm": "Excluir \"{title}\"? Esta ação não pode ser desfeita.",
-      "statusPublished": "Publicado",
+      "statusPublished": "Publicada",
       "statusDraft": "Rascunho",
       "sectionBasics": "Informações básicas",
       "sectionContent": "Conteúdo ({locale})",
@@ -348,9 +348,9 @@
       "slugHint": "Usado na URL: /novidades/seu-slug",
       "icon": "Ícone",
       "iconPlaceholder": "Selecione um ícone",
-      "iconHint": "Ícone exibido no menu e na listagem de informações.",
+      "iconHint": "Ícone exibido no menu e na listagem de novidades.",
       "image": "Imagem de capa (URL)",
-      "imageHint": "Imagem temática exibida no card da informação. Deixe em branco para usar apenas o ícone.",
+      "imageHint": "Imagem exibida no card da novidade. Deixe em branco para usar apenas o ícone.",
       "order": "Ordem",
       "orderHint": "Números menores aparecem primeiro.",
       "titleField": "Título",
@@ -358,8 +358,8 @@
       "content": "Texto",
       "contentHint": "Um bloco por linha. Aceita **negrito**, *itálico*, títulos ## e ###, listas com - e [links](/caminho).",
       "featured": "Destaque na página inicial",
-      "published": "Publicado (visível no site)",
-      "create": "Criar informação",
+      "published": "Publicada (visível no site)",
+      "create": "Criar novidade",
       "save": "Salvar alterações",
       "saving": "Salvando…",
       "cancel": "Cancelar",

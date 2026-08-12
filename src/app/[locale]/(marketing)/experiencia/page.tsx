@@ -57,7 +57,7 @@ export default async function AboutPage({
   const tc = await getTranslations("common");
 
   const practiceItems = t.raw("practice.items") as string[];
-  const servicesItems = t.raw("services.items") as string[];
+  const salaoItems = t.raw("salao.items") as string[];
   // A bullet mentions how long the house has been open; `fillYears` resolves it
   // from `foundedYear` so it can't drift out of sync with the rest of the site.
   // Wrapped rather than passed by reference: `.map` would feed the index in as
@@ -89,11 +89,11 @@ export default async function AboutPage({
             <CheckList items={practiceItems} />
           </div>
           <div>
-            <h2 className="text-2xl font-bold">{t("services.title")}</h2>
+            <h2 className="text-2xl font-bold">{t("salao.title")}</h2>
             <p className="mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-              {t.rich("services.intro", richTags)}
+              {t.rich("salao.intro", richTags)}
             </p>
-            <CheckList items={servicesItems} />
+            <CheckList items={salaoItems} />
           </div>
         </div>
       </Section>
