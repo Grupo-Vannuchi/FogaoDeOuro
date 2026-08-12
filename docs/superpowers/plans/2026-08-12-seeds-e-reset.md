@@ -254,6 +254,12 @@ npm run db:restore
 npx prisma migrate status
 ```
 
+⚠️ **`rm -rf .next` antes de qualquer build de verificação.** Descoberto na Task 2: mexer no banco por SQL **não invalida o `unstable_cache`**. O `updateTag()` só roda quando a escrita passa pela aplicação — apagar as linhas por `psql` passa por baixo dela. O implementador da Task 2 viu um build passar **servindo os 150 artigos já apagados**, a partir de 309 entradas sobreviventes em `.next/cache/fetch-cache`. O build "verde" era uma alucinação do cache.
+
+Esta tarefa repete a mesma sequência derrubar→restaurar→buildar, então cai na mesma armadilha. Limpe o `.next` primeiro, sempre.
+
+⚠️ **Não confie em `grep` de texto no HTML servido** para confirmar mensagem de estado vazio: o `pt.json` inteiro vai serializado no payload do RSC, então **qualquer** string do catálogo "aparece" na página. Tire os blocos `<script>` antes de conferir, ou verifique dentro do `<main>`.
+
 O `migrate status` precisa dizer **em dia** — é isso que prova que o dump carrega a `_prisma_migrations` coerente, que é justamente o que o snapshot antigo não fazia.
 
 Confirme de novo as 9 tabelas e o admin. Depois rode `npm run build` mais uma vez.
