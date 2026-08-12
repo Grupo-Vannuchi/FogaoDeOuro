@@ -316,6 +316,14 @@ Quatro arquivos dizem que o seed carrega conteúdo de exemplo, e depois deste PR
 
 Mais os trechos de `README.md:122,212,216,306` que a Task 1 apontou.
 
+- [ ] **Step 3c: O número "400+ páginas estáticas" é folclore**
+
+`AGENTS.md:93` justifica a regra do `connection_limit=1` dizendo que forçá-lo "starves the build's concurrent prerendering (`P2024` pool timeout across the 400+ static pages)".
+
+**Não existem 400+ páginas estáticas.** O `novidades/[slug]/page.tsx:24` tem `generateStaticParams()` retornando `[]` de propósito — os slugs nunca foram prerenderizados; renderizam sob demanda e ficam em ISR. O build produz 31 páginas.
+
+⚠️ **Corrija o número, mas mantenha a regra.** O conselho de não forçar `connection_limit=1` continua válido; só a justificativa está inflada. Não transforme a correção numa remoção — alguém no futuro vai ter a "boa ideia" de forçar o limite de novo.
+
 - [ ] **Step 4: spec §7**
 
 Marque o **PR 7** como concluído, no mesmo formato dos outros. É a única edição autorizada sob `docs/superpowers/`. **Não edite nada em `docs/superpowers/plans/`.**
