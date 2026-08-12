@@ -330,12 +330,12 @@ mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
 
 | PR | Área | O quê |
 |---|---|---|
-| 1 | **RMV** | remover os funis (52 arquivos, 5 models, OAuth do Google, `e2e/funnel.spec.ts` e o seed de e2e) |
-| 2 | **CRE** | `MenuCategory` + `MenuItem` + DAL + CRUD no admin + `/gastronomia` |
-| 3 | **CRE** | `GalleryPhoto` + DAL + CRUD no admin + `/galeria` |
-| 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome |
+| 1 | **RMV** | remover os funis (52 arquivos, 5 models, OAuth do Google, `e2e/funnel.spec.ts` e o seed de e2e) — ✅ concluído |
+| 2 | **CRE** | `MenuCategory` + `MenuItem` + DAL + CRUD no admin + `/gastronomia` — ✅ concluído |
+| 3 | **CRE** | `GalleryPhoto` + DAL + CRUD no admin + `/galeria` — ✅ concluído |
+| 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome — ✅ concluído |
 | 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` — ✅ concluído |
-| 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` |
+| 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` — ✅ concluído |
 | 7 | **UPD** | reescrever os seeds e zerar o banco |
 
 Os PRs 2 e 3 **criam antes de destruir**: `/gastronomia` e `/galeria` passam a

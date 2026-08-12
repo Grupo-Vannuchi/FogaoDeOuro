@@ -49,6 +49,13 @@ How the n8x system fits together. For coding conventions see
   the `Restaurant` JSON-LD (`src/components/json-ld.tsx`): Google forbids
   self-serving `Review`/`aggregateRating` about your own business on your own
   site.
+- **Naming convention:** these model names are deliberately English while the
+  routes they back are Portuguese — `Information` serves `/novidades`,
+  `Testimonial` serves `/admin/testimonials` (label "Depoimentos"),
+  `GalleryPhoto`/`MenuCategory`/`MenuItem` serve `/galeria`/`/gastronomia`.
+  Public surface and the i18n catalog (`pt.json`) are Portuguese; models,
+  file names, functions, cache tags and Storage folders stay English. See
+  `AGENTS.md` for the rationale.
 - **Leads:** `Lead` (contact), `LeadNotificationConfig` (which instance +
   WhatsApp group receives new-lead notifications).
 - **Auth:** `AdminUser` (admin login session).
