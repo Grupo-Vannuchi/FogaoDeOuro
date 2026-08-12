@@ -63,12 +63,12 @@ under `(marketing)/` must agree. "Nossa Gastronomia" is backed by
 agency-era models (`Service`, `Project`, `Client`, `Stat`, `TeamMember`) and
 their admin, DAL and seeds are gone — the admin now has exactly six sections:
 dashboard, cardápio, galeria, novidades (route/namespace `informations`
-was renamed to `novidades` — it was the last public route with an English
-name), depoimentos (route/namespace stays `testimonials` — a permanent
-scope decision, not unfinished work: its label already reads "Depoimentos"
-and its entries became verifiable Google reviews, so renaming the route
-would cost churn for zero user-visible change, same as renaming the
-`Testimonial` model would) and contatos.
+was renamed to `novidades`, closing out the marketing-namespace renaming
+started by the rebrand), depoimentos (route/namespace stays `testimonials`
+— a permanent scope decision, not unfinished work: its label already reads
+"Depoimentos" and its entries became verifiable Google reviews, so renaming
+the route would cost churn for zero user-visible change, same as renaming
+the `Testimonial` model would) and contatos.
 
 **The naming convention this rename settled:** public surface (routes, DOM
 anchor ids) and the i18n catalog (`pt.json`) are Portuguese; Prisma models,
