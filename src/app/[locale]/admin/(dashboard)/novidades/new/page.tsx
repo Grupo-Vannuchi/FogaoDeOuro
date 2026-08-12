@@ -18,7 +18,7 @@ export default async function NewInformationPage({
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div>
         <Link
-          href="/admin/informations"
+          href="/admin/novidades"
           className="mb-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />

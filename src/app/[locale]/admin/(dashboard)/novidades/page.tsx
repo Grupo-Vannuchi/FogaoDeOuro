@@ -23,7 +23,7 @@ export default async function AdminInformationsPage({
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <Link href="/admin/informations/new" className={buttonVariants({ size: "md" })}>
+        <Link href="/admin/novidades/new" className={buttonVariants({ size: "md" })}>
           <Plus className="size-4" />
           {t("new")}
         </Link>
@@ -72,7 +72,7 @@ export default async function AdminInformationsPage({
 
               <div className="flex shrink-0 items-center gap-1">
                 <Link
-                  href={`/admin/informations/${information.id}`}
+                  href={`/admin/novidades/${information.id}`}
                   className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   <Pencil className="size-4" />

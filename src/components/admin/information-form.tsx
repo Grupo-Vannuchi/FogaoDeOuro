@@ -56,7 +56,7 @@ export function InformationForm({
         : await createInformation(input);
 
     if (result.ok) {
-      router.push("/admin/informations");
+      router.push("/admin/novidades");
       router.refresh();
     } else {
       setServerError(t(`error.${result.error}`));
@@ -194,7 +194,7 @@ export function InformationForm({
           {isSubmitting ? t("saving") : mode === "create" ? t("create") : t("save")}
         </Button>
         <Link
-          href="/admin/informations"
+          href="/admin/novidades"
           className="inline-flex h-13 items-center px-4 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           {t("cancel")}
