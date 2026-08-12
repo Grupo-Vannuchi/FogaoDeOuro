@@ -151,7 +151,7 @@ export function ArticleJsonLd({
     "@type": "Article",
     headline: name,
     description,
-    url: localizedUrl(locale, `/informations/${slug}`),
+    url: localizedUrl(locale, `/novidades/${slug}`),
     inLanguage: locale,
     ...(image && { image: absoluteUrl(image) }),
     ...(datePublished && { datePublished }),

@@ -186,7 +186,7 @@ export function Header({
                   {informationLinks.map((link) => (
                     <li key={link.slug}>
                       <Link
-                        href={`/informations/${link.slug}`}
+                        href={`/novidades/${link.slug}`}
                         onClick={() => setOpen(false)}
                         className="flex items-center gap-3 rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                       >

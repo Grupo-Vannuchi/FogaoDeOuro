@@ -14,7 +14,7 @@ export type InformationLink = {
 /**
  * The "Informações"-style burger shown in the top-right of the navbar.
  * Hovering (or keyboard-focusing) it reveals a dropdown listing every published
- * information entry; clicking the burger itself navigates to the informations
+ * information entry; clicking the burger itself navigates to the /novidades
  * index. Pure CSS hover — mirrors the Services/Portfolio dropdowns in the header.
  */
 export function InformationMenu({ links }: { links: InformationLink[] }) {
@@ -23,7 +23,7 @@ export function InformationMenu({ links }: { links: InformationLink[] }) {
   return (
     <div className="group relative">
       <Link
-        href="/informations"
+        href="/novidades"
         aria-label={t("menuLabel")}
         className="inline-flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground group-focus-within:text-foreground"
       >
@@ -39,7 +39,7 @@ export function InformationMenu({ links }: { links: InformationLink[] }) {
               {links.map((link) => (
                 <li key={link.slug}>
                   <Link
-                    href={`/informations/${link.slug}`}
+                    href={`/novidades/${link.slug}`}
                     className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   >
                     <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">

@@ -37,7 +37,7 @@ export async function generateMetadata({
   return {
     title: information.title,
     description: information.description,
-    ...localeMetadata(locale, `/informations/${slug}`, {
+    ...localeMetadata(locale, `/novidades/${slug}`, {
       type: "article",
       ...(information.image && {
         images: [{ url: absoluteUrl(information.image), alt: information.title }],
@@ -86,17 +86,17 @@ export default async function InformationPage({
       <BreadcrumbJsonLd
         items={[
           { name: siteConfig.name, url: localizedUrl(locale) },
-          { name: tn("information"), url: localizedUrl(locale, "/informations") },
+          { name: tn("information"), url: localizedUrl(locale, "/novidades") },
           {
             name: information.title,
-            url: localizedUrl(locale, `/informations/${slug}`),
+            url: localizedUrl(locale, `/novidades/${slug}`),
           },
         ]}
       />
 
       <Container className="py-12 sm:py-16">
         <Link
-          href="/informations"
+          href="/novidades"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
@@ -148,7 +148,7 @@ export default async function InformationPage({
                   return (
                     <li key={item.id}>
                       <Link
-                        href={`/informations/${item.slug}`}
+                        href={`/novidades/${item.slug}`}
                         aria-current={active ? "page" : undefined}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",

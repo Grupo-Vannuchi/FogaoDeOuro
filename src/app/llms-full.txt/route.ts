@@ -96,7 +96,7 @@ export async function GET(): Promise<Response> {
       informations,
       (slug) => getInformationBySlug(defaultLocale, slug),
       (i) =>
-        block(i.title, `/informations/${i.slug}`, i.description, i.content),
+        block(i.title, `/novidades/${i.slug}`, i.description, i.content),
     );
   } catch {
     // Lists unavailable — ship the header only.

@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/experiencia",
     "/gastronomia",
-    "/informations",
+    "/novidades",
     "/galeria",
     "/reservas",
     "/contato",
@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const informations = await getInformationSitemapEntries();
     // Detail pages carry the real edit date of their content record.
     informationEntries = informations.map((i) => ({
-      path: `/informations/${i.slug}`,
+      path: `/novidades/${i.slug}`,
       lastModified: i.updatedAt,
     }));
   } catch {

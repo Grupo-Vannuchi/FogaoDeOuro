@@ -19,7 +19,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("subtitle"),
-    ...localeMetadata(locale, "/informations"),
+    ...localeMetadata(locale, "/novidades"),
   };
 }
 
