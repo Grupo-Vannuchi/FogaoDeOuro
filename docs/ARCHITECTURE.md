@@ -44,6 +44,11 @@ How the n8x system fits together. For coding conventions see
 
 - **Marketing content:** `MenuCategory`, `MenuItem` (o cardápio), `GalleryPhoto`,
   `Information`, `Testimonial` — localized JSON fields resolved per request.
+  `Testimonial` is a verifiable review (`source`/`sourceUrl` link back to where
+  it was posted, e.g. Google) and renders on the page only — it never feeds
+  the `Restaurant` JSON-LD (`src/components/json-ld.tsx`): Google forbids
+  self-serving `Review`/`aggregateRating` about your own business on your own
+  site.
 - **Leads:** `Lead` (contact), `LeadNotificationConfig` (which instance +
   WhatsApp group receives new-lead notifications).
 - **Auth:** `AdminUser` (admin login session).

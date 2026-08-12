@@ -145,6 +145,13 @@ null by hardcoding a number.
 - **No prices anywhere** — the client's direction forbids it, on the page *and*
   in structured data (`priceRange` is deliberately absent from the `Restaurant`
   schema, since it would surface in search results).
+- **Reviews never enter structured data — permanent rule.** Testimonials render
+  on the page (`components/sections/testimonials.tsx`), each one linking to its
+  real source via `source`/`sourceUrl`. They must never feed the `Restaurant`
+  JSON-LD (`components/json-ld.tsx`): Google forbids *self-serving reviews* —
+  emitting `Review`/`aggregateRating` about your own business, on your own
+  site, risks losing the rich result entirely. Don't "helpfully" wire
+  testimonials into the schema later.
 
 ## Workflow & board
 

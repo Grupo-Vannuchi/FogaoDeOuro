@@ -334,7 +334,7 @@ mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
 | 2 | **CRE** | `MenuCategory` + `MenuItem` + DAL + CRUD no admin + `/gastronomia` |
 | 3 | **CRE** | `GalleryPhoto` + DAL + CRUD no admin + `/galeria` |
 | 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome |
-| 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` |
+| 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` — ✅ concluído |
 | 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` |
 | 7 | **UPD** | reescrever os seeds e zerar o banco |
 
