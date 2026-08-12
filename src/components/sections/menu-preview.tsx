@@ -29,7 +29,7 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
           href="/gastronomia"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
-          {tc("viewAllServices")}
+          {tc("viewAllMenu")}
           <ArrowRight className="size-4" />
         </Link>
       </div>

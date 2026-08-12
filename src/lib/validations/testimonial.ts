@@ -36,8 +36,9 @@ const url = z.string().trim().url().max(500);
  * `href` of the review link in `components/sections/testimonials.tsx`.
  *
  * Defence in depth, not a live hole: only an authenticated admin writes the
- * field and React 19 refuses to render a `javascript:` href. Validation is the
- * layer that should say no, so it says no.
+ * field. React helps, but only partly — its sanitiser knows `javascript:` and
+ * nothing else, so `data:` and `vbscript:` would render untouched. Validation
+ * is the layer that should say no to all three, so it says no.
  */
 const SAFE_LINK_PROTOCOLS = new Set(["http:", "https:"]);
 

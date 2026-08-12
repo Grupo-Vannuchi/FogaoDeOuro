@@ -28,7 +28,7 @@ export async function GalleryPreview({ locale }: { locale: Locale }) {
           href="/galeria"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
-          {tc("viewAllProjects")}
+          {tc("viewAllGallery")}
           <ArrowRight className="size-4" />
         </Link>
       </div>

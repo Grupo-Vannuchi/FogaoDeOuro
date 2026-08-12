@@ -12,10 +12,10 @@ export type InformationLink = {
 };
 
 /**
- * The "Informações"-style burger shown in the top-right of the navbar.
+ * The "Novidades" burger shown in the top-right of the navbar.
  * Hovering (or keyboard-focusing) it reveals a dropdown listing every published
- * information entry; clicking the burger itself navigates to the /novidades
- * index. Pure CSS hover — mirrors the Services/Portfolio dropdowns in the header.
+ * entry; clicking the burger itself navigates to the /novidades index.
+ * Pure CSS hover — the same mechanism the header's other dropdowns use.
  */
 export function InformationMenu({ links }: { links: InformationLink[] }) {
   const t = useTranslations("novidades");
