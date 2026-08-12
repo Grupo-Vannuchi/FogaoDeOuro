@@ -324,7 +324,7 @@
     },
     "novidades": {
       "title": "Novidades",
-      "new": "Nova novidade",
+      "new": "Adicionar novidade",
       "editTitle": "Editar: {title}",
       "empty": "Nenhuma novidade ainda. Crie a primeira.",
       "edit": "Editar",
