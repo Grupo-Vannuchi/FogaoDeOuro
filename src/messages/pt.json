@@ -286,11 +286,7 @@
       "newLeads": "Novos contatos",
       "totalMenuItems": "Pratos disponíveis",
       "totalGalleryPhotos": "Fotos publicadas",
-      "recentLeads": "Contatos recentes",
-      "analyticsTitle": "Analytics",
-      "analyticsHint": "Métricas de visitantes e performance do site (abre no painel da Vercel).",
-      "analyticsVisitors": "Visitantes e páginas",
-      "analyticsPerformance": "Performance (Core Web Vitals)"
+      "recentLeads": "Contatos recentes"
     },
     "leads": {
       "title": "Contatos recebidos",

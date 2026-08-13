@@ -1,6 +1,4 @@
 import { setRequestLocale } from "next-intl/server";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -40,10 +38,10 @@ export default async function MarketingLayout({
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsappButton />
-      {/* Public-site analytics only — the admin layout is intentionally excluded
-          so internal usage doesn't pollute visitor/CWV stats. */}
-      <Analytics />
-      <SpeedInsights />
+      {/* Sem Vercel Analytics / Speed Insights: era infraestrutura da agência,
+          não do restaurante. Se um dia entrar, o parágrafo correspondente da
+          Política de Privacidade (`src/content/legal.ts`) precisa voltar junto —
+          declarar a coleta é obrigação de LGPD, não cortesia. */}
       <AttributionCapture />
     </>
   );

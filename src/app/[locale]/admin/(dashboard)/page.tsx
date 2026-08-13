@@ -1,12 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import {
-  Inbox,
-  UtensilsCrossed,
-  Images,
-  BarChart3,
-  Gauge,
-  ExternalLink,
-} from "lucide-react";
+import { Inbox, UtensilsCrossed, Images } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { getDashboardStats, getRecentLeads } from "@/lib/admin-queries";
 import { resolveLocale } from "@/i18n/routing";
@@ -62,42 +55,6 @@ export default async function DashboardPage({
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Analytics lives in the Vercel dashboard (richer + free) — link out
-          instead of rebuilding it here. */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <div className="flex items-center gap-2">
-          <BarChart3 className="size-5 text-brand" />
-          <h2 className="font-semibold">{t("analyticsTitle")}</h2>
-        </div>
-        <p className="mt-1 text-sm text-muted-foreground">{t("analyticsHint")}</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <a
-            href="https://vercel.com/moraesvannuchi-debugs-projects/n8x/analytics"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-sm font-medium transition-colors hover:border-brand"
-          >
-            <span className="inline-flex items-center gap-2">
-              <BarChart3 className="size-4 text-muted-foreground" />
-              {t("analyticsVisitors")}
-            </span>
-            <ExternalLink className="size-4 text-muted-foreground" />
-          </a>
-          <a
-            href="https://vercel.com/moraesvannuchi-debugs-projects/n8x/speed-insights"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-sm font-medium transition-colors hover:border-brand"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Gauge className="size-4 text-muted-foreground" />
-              {t("analyticsPerformance")}
-            </span>
-            <ExternalLink className="size-4 text-muted-foreground" />
-          </a>
-        </div>
       </div>
 
       <div className="rounded-xl border border-border bg-card">
