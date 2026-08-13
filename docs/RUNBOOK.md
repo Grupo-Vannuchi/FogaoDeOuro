@@ -19,9 +19,46 @@ the production deploy basics see SNAPSHOT.md too.
 | `EVOLUTION_INSTANCE` | server | Default WhatsApp instance (explicit override wins). |
 | `WHATSAPP_INBOX_URL` | server | External conversation inbox link (metodon8n / Chatwoot). |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | Vercel (Upstash) | Rate-limit store. Absent locally → in-memory fallback. |
+| `SUPABASE_URL` / `SUPABASE_SECRET_KEY` | server | Storage para o upload de imagem do admin. Sem elas o upload é desabilitado. **Nunca** `NEXT_PUBLIC_*`. |
+
+O template completo, com o porquê de cada uma, está em
+[`.env.example`](../.env.example) — versionado e sem valor nenhum.
+
+⚠️ **Use `.env`, não `.env.local`.** O Next lê os dois, mas o **Prisma CLI só lê
+`.env`** — e é ele que roda `migrate deploy` no build. Uma URL de banco que
+exista só no `.env.local` faz a migração falhar no deploy.
 
 **Editing a Sensitive var on Vercel:** the value is write-only — you must re-paste
 the whole value (it can't be partially edited). Then **Redeploy**.
+
+## Supabase — criar o projeto do zero
+
+Ordem importa: o banco precisa existir antes do primeiro deploy, porque o
+`buildCommand` da Vercel é `npx prisma migrate deploy && next build`.
+
+1. **Criar o projeto** em [supabase.com](https://supabase.com). Região
+   **`sa-east-1` (São Paulo)** — o público é de Santos. Guarde a senha do banco
+   no gerenciador de senhas: o Supabase **não a mostra de novo**.
+2. **Copiar as duas URLs** em *Project Settings → Database → Connection string*:
+   - **Transaction pooler, porta 6543** → `DATABASE_URL`, com `?pgbouncer=true`.
+     ⚠️ **Não** acrescente `connection_limit=1`.
+   - **Session pooler, porta 5432** → `DIRECT_URL`, só para migração.
+
+   Use o *pooler* nas duas, não o host direto `db.<ref>.supabase.co`: a conexão
+   direta é **IPv6-only** e o build da Vercel não a alcança.
+3. **Storage → New bucket → `media`, público.** Sem ele o upload de imagem do
+   admin falha — e é por ali que entram as fotos do cardápio e da galeria.
+4. **Manter a Data API desabilitada** (*Project Settings → API*). O app fala
+   direto por Prisma e não usa RLS; deixar a API ligada expõe as tabelas sem
+   política nenhuma protegendo-as.
+5. **Configurar tudo na Vercel antes do primeiro deploy** — inclusive um
+   `SESSION_SECRET` **novo**, não o de desenvolvimento.
+6. **Depois do deploy, criar o primeiro admin** — ver a seção abaixo. O build
+   nunca roda o seed, então o banco sobe migrado e **sem usuário nenhum**.
+
+O desenvolvimento local **continua no Postgres do Docker** (`docker compose up -d`,
+porta 5433). É de propósito: dá para zerar e testar migração destrutiva sem
+tocar no banco do cliente.
 
 ## Google Calendar — removido
 

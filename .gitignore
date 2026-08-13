@@ -36,6 +36,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# …exceto o template. Ele não carrega valor nenhum: é a checklist do que
+# precisa existir na Vercel antes do primeiro deploy.
+!.env.example
 
 # claude code local settings (machine-specific). `settings.json` is ignored too:
 # it accumulates a per-session permission allowlist full of one-off entries —
