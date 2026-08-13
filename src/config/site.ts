@@ -129,10 +129,11 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: "Fogão de Ouro",
-  // `legalName` (razão social) e `registration` (CNPJ) ainda não foram
-  // fornecidos pelo cliente. Deixados de fora de propósito — ver
-  // `src/content/legal.ts`, onde a ausência está marcada explicitamente.
+  // `legalName` (razão social) ainda não foi fornecida pelo cliente. Deixada de
+  // fora de propósito — ver `src/content/legal.ts`, onde a ausência está
+  // marcada explicitamente.
   foundedYear: 2001,
+  registration: "04.160.109/0001-47",
 
   contact: {
     email: "fogaodeouro@fogaodeouro.com.br",

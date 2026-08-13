@@ -13,8 +13,12 @@
  * ⚠️ NÃO PUBLICAR ENQUANTO HOUVER `PENDENTE_*` ABAIXO. Estes documentos são a base
  * legal do tratamento de dados (LGPD): publicar com o dado de outra empresa é pior
  * do que publicar em branco, por isso os campos que faltam estão marcados em vez
- * de preenchidos por aproximação. Falta obter do cliente a razão social, o CNPJ,
+ * de preenchidos por aproximação. Ainda falta obter do cliente a razão social,
  * o e-mail do encarregado de dados e o domínio final.
+ *
+ * O CNPJ foi fornecido pelo cliente em 12/08/2026 e conferido pelos dígitos
+ * verificadores. Ele também vive em `src/config/site.ts` (`registration`), que
+ * alimenta o rodapé — os dois precisam concordar.
  */
 
 /** Marca um dado que ainda não foi fornecido pelo cliente. Nunca inventar. */
@@ -24,7 +28,7 @@ const PENDENTE = (campo: string) => `«PENDENTE: ${campo}»`;
 export const legalEntity = {
   legalName: PENDENTE("razão social do restaurante"),
   tradeName: "Fogão de Ouro Restaurante",
-  cnpj: PENDENTE("CNPJ"),
+  cnpj: "04.160.109/0001-47",
   address:
     "Rua Frei Gaspar, nº 46 — Centro Histórico, CEP 11010-090, Santos/SP, Brasil",
   phones: "(13) 3219-1552",
