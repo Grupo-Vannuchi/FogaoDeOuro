@@ -20,8 +20,8 @@
     "makeReservation": "Fazer minha reserva",
     "reserveTable": "Reserve a sua mesa",
     "callUs": "Ligar {phone}",
-    "viewAllGallery": "Ver toda a galeria",
-    "viewAllMenu": "Ver toda a gastronomia",
+    "viewAllProjects": "Ver toda a galeria",
+    "viewAllServices": "Ver toda a gastronomia",
     "learnMore": "Saiba mais",
     "sendWhatsapp": "Chamar no WhatsApp",
     "backHome": "Voltar para o início",
@@ -243,7 +243,7 @@
     "contactTitle": "Contato",
     "socialTitle": "Redes",
     "rights": "Todos os direitos reservados.",
-    "registration": "CNPJ {value}",
+    "registration": "CNPJ {04.160.109/0001-47}",
     "mapTitle": "Nossa localização no mapa",
     "hours": "Segunda a sexta, das 11h às 15h",
     "payments": "Cartões, VR e VA",
@@ -286,7 +286,11 @@
       "newLeads": "Novos contatos",
       "totalMenuItems": "Pratos disponíveis",
       "totalGalleryPhotos": "Fotos publicadas",
-      "recentLeads": "Contatos recentes"
+      "recentLeads": "Contatos recentes",
+      "analyticsTitle": "Analytics",
+      "analyticsHint": "Métricas de visitantes e performance do site (abre no painel da Vercel).",
+      "analyticsVisitors": "Visitantes e páginas",
+      "analyticsPerformance": "Performance (Core Web Vitals)"
     },
     "leads": {
       "title": "Contatos recebidos",
