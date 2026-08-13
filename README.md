@@ -93,7 +93,7 @@ three different places**, so each is easy to change in isolation.
 | ---------------------------------------- | -------------------------------- | ------------------------------------- |
 | **Brand identity** (name, colours, contact, socials, menu, opening hours) | `src/config/site.ts`            | Re-branding = editing one file        |
 | **UI copy** (section titles, buttons, labels)              | `src/messages/pt.json`          | One catalog, easy to review           |
-| **Dynamic content** (menu, gallery, testimonials) | PostgreSQL (seeded + admin)     | Editable without touching code        |
+| **Dynamic content** (menu, gallery, testimonials) | PostgreSQL (entered via the admin) | Editable without touching code     |
 
 ### Request flow
 
@@ -119,7 +119,9 @@ Request  →  proxy.ts                 resolves the locale (pt is the only one, 
   type-checked.
 - **`prisma/schema.prisma`** — the database tables. Localized fields (e.g. a
   gallery item's title) are stored as JSON `{ "pt": "…" }`.
-- **`prisma/seed.ts`** — the initial/demo content that populates the database.
+- **`prisma/seed.ts`** — creates the first admin user, and nothing else. It
+  seeds **no content**: the cardápio, galeria, avaliações and novidades are the
+  restaurant's real content and are entered through the admin.
 - **`src/lib/queries.ts`** — the data-access layer: reads published content and
   returns it already resolved to the active locale (view-ready objects).
 - **`src/app/[locale]/(marketing)/`** — the public pages. The home page is
@@ -207,15 +209,17 @@ the route folders under `src/app/[locale]/(marketing)/`.
 
 ### Content (gallery, menu, testimonials)
 
-**Through the admin** at `/admin`. There is no seed script for cardápio
-(`MenuCategory`/`MenuItem`) or galeria (`GalleryPhoto`); `prisma/seed.ts` only
-seeds the admin user and the informations catalog — see
-[`SNAPSHOT.md`](SNAPSHOT.md).
+**Through the admin** at `/admin`. There is **no seed script for any content** —
+not for cardápio (`MenuCategory`/`MenuItem`), galeria (`GalleryPhoto`),
+avaliações (`Testimonial`) or novidades (`Information`). `prisma/seed.ts`
+creates the admin user and stops there; the bundled snapshot
+(`prisma/backups/snapshot.sql`) likewise holds one admin user and zero content.
+See [`SNAPSHOT.md`](SNAPSHOT.md).
 
-> ⚠️ The bundled snapshot (`prisma/backups/snapshot.sql`) still carries the
-> **agency's** demo content — 150 articles, 10 projects, 13 client logos. It is
-> useful to exercise the layout locally, but none of it belongs to the
-> restaurant. Replace it through the admin before any deploy.
+> **A fresh database means an empty site — that is correct, not broken.** The
+> public pages render their empty-state messages until you add content through
+> the admin. This is deliberate: demo rows would be invented content on a real
+> client's site.
 
 ### Logo — delivered
 
@@ -254,8 +258,9 @@ The site is intentionally Portuguese-only. To bring another one back:
 
 1. Add the locale to `locales` in `src/i18n/routing.ts`.
 2. Create `src/messages/<locale>.json`.
-3. Add the locale key to every `LocalizedText` value (`prisma/seed.ts`, admin
-   forms). `npm run typecheck` lists every place that needs it.
+3. Add the locale key to every `LocalizedText` value (admin forms, DAL, tests —
+   `prisma/seed.ts` has none, it only creates the admin user).
+   `npm run typecheck` lists every place that needs it.
 4. Re-add a locale switcher to the header (`git log` has the removed component).
 
 ### Quick reference
@@ -303,21 +308,25 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### 3. Database
 
-Start the bundled Postgres, apply the schema and load demo content:
+Start the bundled Postgres, apply the schema and create the admin user:
 
 ```bash
 docker compose up -d      # starts Postgres (host port from DB_PORT, default 5432)
 npm run db:migrate        # create tables
-npm run db:seed           # demo content + first admin user
+npm run db:seed           # first admin user — no content is seeded
 ```
 
-Alternatively, restore the committed dump — but **it is 11 migrations behind the
-schema**, so always follow it with `migrate deploy`, or the app boots against a
-schema that is missing tables:
+Alternatively, restore the committed dump, which is equivalent (schema up to
+date, one admin user, no content):
 
 ```bash
-npm run db:restore && npx prisma migrate deploy
+npm run db:restore
+npx prisma migrate status  # sanity check — should report "up to date"
 ```
+
+Either way the site starts **empty**, showing its empty-state messages. That is
+the intended state: add the cardápio, galeria, avaliações and novidades through
+the admin at `/admin`.
 
 > **Port note:** if you already run a local PostgreSQL on `5432`, set `DB_PORT`
 > to a free port (e.g. `5433`) and point `DATABASE_URL` at it. The bundled
@@ -325,6 +334,12 @@ npm run db:restore && npx prisma migrate deploy
 
 The seed creates an admin from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`
 (defaults: `admin@example.com` / `changeme123`).
+
+> ⚠️ `changeme123` is a local-only convenience. Never let it reach a public
+> deploy — set both variables before seeding a real environment, or use
+> `ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run db:set-admin`. See
+> [`docs/RUNBOOK.md`](docs/RUNBOOK.md) for how the first admin is created in
+> production (the Vercel build does **not** run the seed).
 
 ### 4. Run
 
@@ -345,7 +360,7 @@ npm run dev
 | `npm run lint`      | ESLint (flat config)                 |
 | `npm run typecheck` | `tsc --noEmit`                       |
 | `npm run db:migrate`| Apply Prisma migrations (dev)        |
-| `npm run db:seed`   | Seed demo content + admin            |
+| `npm run db:seed`   | Create the first admin user (no content) |
 | `npm run db:studio` | Open Prisma Studio                   |
 
 ## Notes

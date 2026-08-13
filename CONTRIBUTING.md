@@ -9,9 +9,14 @@ Thanks for working on n8x. This guide is the human-facing companion to
 docker compose up -d   # Postgres (container n8x-marketing-db, host port 5433)
 npm install
 cp .env.example .env    # if needed; a dev .env may already be present
-npm run db:restore      # exact snapshot — or db:migrate + seeds (see SNAPSHOT.md)
+npm run db:restore      # exact snapshot — or db:migrate + db:seed (see SNAPSHOT.md)
 npm run dev             # http://localhost:3000  (admin at /admin)
 ```
+
+Both paths give you the same thing: the schema plus **one admin user and no
+content**. The site starts empty and shows its empty-state messages — that is
+correct, not a broken setup. Content (cardápio, galeria, avaliações, novidades)
+is entered through the admin; nothing seeds it.
 
 ## Workflow
 
@@ -59,7 +64,8 @@ Also set the **Área** field on the board. New issues should use the
 
 ## Conventions cheatsheet
 
-- **i18n:** add every UI string to **both** `src/messages/pt.json` and `en.json`.
+- **i18n:** the site is **Portuguese-only**; every UI string goes in
+  `src/messages/pt.json`. There is no `en.json`.
 - **Validation:** `zod` schemas in `src/lib/validations/*`, reused on client + server.
 - **Data:** read through `src/lib/queries.ts` (cached) / `admin-queries.ts`; write
   through server actions that call `updateTag(...)`.

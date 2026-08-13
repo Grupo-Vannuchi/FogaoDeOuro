@@ -59,19 +59,64 @@ Admin → `Contatos → Instâncias do WhatsApp` (`/admin/leads/whatsapp`):
    `prisma migrate deploy && next build` (see `vercel.json`). Migrations apply
    automatically — author them locally with `prisma migrate dev` first.
 2. Verify the new env vars exist before the build needs them.
-3. Post-deploy: check the security response headers in DevTools → Network
+3. **Create the first admin user — the build does not.** See below; on a brand
+   new database nobody can log in until this is done.
+4. Post-deploy: check the security response headers in DevTools → Network
    (`strict-transport-security`, `x-frame-options`, …) on a real (HTTPS) page.
+
+## Bootstrapping the first admin user
+
+> ⚠️ **The seed does not run on Vercel.** `vercel.json` sets
+> `buildCommand: "npx prisma migrate deploy && next build"` — `prisma db seed`
+> is never invoked, and `migrate deploy` does not seed. A freshly deployed
+> environment has the schema and **zero admin users**. Creating the first one is
+> a manual step.
+
+Run this once, from a machine whose `DATABASE_URL` points at the target
+database (use the direct/session-pooler URL, port 5432):
+
+```bash
+DATABASE_URL="<target DIRECT_URL>" \
+ADMIN_EMAIL="you@example.com" ADMIN_PASSWORD="<strong password>" \
+npm run db:set-admin
+```
+
+`npm run db:set-admin` (`prisma/set-admin.ts`) is the preferred path: it
+**requires** both variables, rejects passwords shorter than 8 characters, and
+deletes the `admin@example.com` placeholder if one exists.
+
+The alternative is a manual `npm run db:seed`, but only with the seed variables
+set explicitly:
+
+```bash
+SEED_ADMIN_EMAIL="you@example.com" SEED_ADMIN_PASSWORD="<strong password>" npm run db:seed
+```
+
+🛑 **Never ship `changeme123`.** `prisma/seed.ts` silently falls back to
+`admin@example.com` / `changeme123` when `SEED_ADMIN_PASSWORD` is unset. Since
+the build never seeds, the only way that password reaches a public environment
+is somebody running `npm run db:seed` by hand against it — so don't, unless
+both variables are set. If it ever happens, rotate immediately with
+`db:set-admin`. Verify before announcing a deploy: log in, and confirm
+`admin@example.com` no longer exists.
+
+Everything else about the site — cardápio, galeria, avaliações, novidades — is
+then entered through the admin panel. A new environment legitimately starts with
+an **empty** public site; that is the expected state, not a failed deploy.
 
 ## Local development
 
 ```bash
 docker compose up -d   # Postgres (container n8x-marketing-db, host port 5433)
 npm install
-npm run db:restore     # exact snapshot, OR db:migrate + seeds (see SNAPSHOT.md)
+npm run db:restore     # exact snapshot, OR db:migrate + db:seed (see SNAPSHOT.md)
 npm run dev            # http://localhost:3000
 ```
 
-Set the official admin: `ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run db:set-admin`.
+Either path leaves you with one admin user and **no content** — the site renders
+its empty states until you add content through `/admin`. Locally the placeholder
+`admin@example.com` / `changeme123` is fine; to set a real one, run
+`ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run db:set-admin`.
 
 ## CSP (pending)
 

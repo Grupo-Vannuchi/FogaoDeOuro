@@ -2,7 +2,8 @@
 # Usage:
 #   docker compose up -d      # start
 #   npm run db:migrate        # apply schema
-#   npm run db:seed           # load demo content + admin user
+#   npm run db:seed           # create the admin user (no content is seeded —
+#                             # the site starts empty on purpose)
 #
 # Fixed project name so the data volume is always `n8x-marketing_agency-pgdata`,
 # regardless of the folder name. Without this, `docker compose up` would derive

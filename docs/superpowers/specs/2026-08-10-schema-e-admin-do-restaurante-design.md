@@ -336,7 +336,7 @@ mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
 | 4 | **RMV** | remover `Service`, `Client`, `Stat`, `TeamMember`, `Project` e tudo que os consome — ✅ concluído |
 | 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` — ✅ concluído |
 | 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` — ✅ concluído |
-| 7 | **UPD** | reescrever os seeds e zerar o banco |
+| 7 | **UPD** | reescrever os seeds e zerar o banco — ✅ concluído |
 
 Os PRs 2 e 3 **criam antes de destruir**: `/gastronomia` e `/galeria` passam a
 ler os models novos enquanto os antigos ainda existem, e só o PR 4 os derruba.

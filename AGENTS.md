@@ -52,7 +52,8 @@ src/
                               validations
   messages/                   pt.json (typed catalog)
   proxy.ts                    Next 16 proxy (next-intl locale negotiation; excludes /api)
-prisma/                       schema.prisma + migrations + seeds + backups/snapshot.sql
+prisma/                       schema.prisma + migrations + seed.ts (admin only)
+                              + backups/snapshot.sql
 docs/                         ARCHITECTURE, RUNBOOK, ADRs, SEO audit, superpowers/specs
 ```
 
@@ -89,9 +90,14 @@ null by hardcoding a number.
 
 - **Serverless connection pool:** in production `DATABASE_URL` uses the Supabase
   pooler (port 6543) with `?pgbouncer=true` — PgBouncer already caps real DB
-  connections. **Do not force `connection_limit=1`** on it: it starves the
-  build's concurrent prerendering (`P2024` pool timeout across the 400+ static
-  pages). `DIRECT_URL` (port 5432) is migrations-only and stays unpooled.
+  connections. **Do not force `connection_limit=1`** on it: a single connection
+  serializes the build's concurrent prerendering and invites a `P2024` pool
+  timeout. (An older version of this rule blamed "400+ static pages" — that
+  number was folklore. `novidades/[slug]/page.tsx` returns `[]` from
+  `generateStaticParams()` on purpose, so article slugs are never prerendered,
+  and the build emits 31 pages. The *rule* still stands; only its justification
+  was inflated — don't read the correction as permission to force the limit.)
+  `DIRECT_URL` (port 5432) is migrations-only and stays unpooled.
 - **Migrations:** `prisma migrate deploy` in CI/prod (the Vercel build runs it);
   `prisma migrate dev` **only** on the local Docker DB (it can reset data).
   Never edit a migration file after it has been applied (checksum break).
