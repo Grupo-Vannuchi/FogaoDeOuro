@@ -139,13 +139,13 @@ export const siteConfig: SiteConfig = {
     email: "fgdeouro3@gmail.com",
     phone: "+55 (13) 3219-1552",
     whatsapp: {
-      // TODO(cliente): número de WhatsApp do restaurante. Enquanto estiver
-      // vazio, `whatsappLink()` devolve null e os CTAs de reserva caem para o
-      // telefone — ver `hasWhatsapp()`.
-      number: "",
-      display: "",
+      // `number` alimenta o link wa.me e por isso é só dígitos, com DDI e sem
+      // pontuação — qualquer "+", parêntese ou hífen quebra o deep link.
+      // `display` é o que a página de contato mostra para o visitante.
+      number: "5513991632985",
+      display: "+55 (13) 99163-2985",
       defaultMessage:
-        "Olá! Gostaria de fazer uma reserva no Fogão de Ouro. Podem me ajudar?",
+        "Olá! Gostaria de reservar uma mesa no Fogão de Ouro. Podem me ajudar?",
     },
     address: {
       street: "Rua Frei Gaspar, 46 — Centro Histórico",
