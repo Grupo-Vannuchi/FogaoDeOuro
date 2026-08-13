@@ -238,11 +238,12 @@ npm run db:dump
 O arquivo deve ter encolhido drasticamente (o antigo tem ~290 KB de conteúdo da agência). Confirme que **não** contém os resíduos do schema velho:
 
 ```bash
-grep -c "CAREER\|portfolio\|company" prisma/backups/snapshot.sql
-grep -c "CREATE TABLE" prisma/backups/snapshot.sql
+grep -c "CAREER" prisma/backups/snapshot.sql          # deve ser 0
+grep -c "portfolio" prisma/backups/snapshot.sql       # deve ser 0
+grep -c "CREATE TABLE" prisma/backups/snapshot.sql    # deve ser 9
 ```
 
-O primeiro deve ser 0. O segundo, 9.
+⚠️ **Não procure por `company`.** Uma versão anterior deste plano juntava as três palavras num `grep` só e exigia 0 — critério errado. `testimonials.company` foi removido, mas **`leads.company` está vivo** (`prisma/schema.prisma:171`): uma consulta de almoço corporativo pode legitimamente citar a empresa. Um dump correto contém `company` duas vezes, e isso é o esperado, não um resíduo.
 
 - [ ] **Step 3: Provar que o snapshot restaura de verdade**
 
@@ -346,7 +347,7 @@ npx playwright test
 - [ ] `npx prisma migrate status` diz em dia, sobre um banco recriado do zero
 - [ ] 9 tabelas; todas as contagens zero exceto `admin_users` = 1 (e `leads`, se o e2e rodou)
 - [ ] As 22 migrações aplicaram numa base vazia sem erro
-- [ ] `prisma/backups/snapshot.sql` regerado, sem `CAREER`/`portfolio`/`company`, e **conferido restaurando**
+- [ ] `prisma/backups/snapshot.sql` regerado, sem `CAREER` nem `portfolio`, e **conferido restaurando** (`company` **deve** aparecer: `leads.company` é coluna viva)
 - [ ] Todas as rotas públicas 200 com o banco vazio, exibindo as mensagens de estado vazio, `MISSING_MESSAGE` = 0
 - [ ] O admin loga e todas as seções abrem vazias sem erro
 - [ ] `SNAPSHOT.md` descreve o estado real e não carrega mais o aviso de desatualizado
