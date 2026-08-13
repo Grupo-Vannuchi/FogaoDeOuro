@@ -175,10 +175,10 @@ model Lead {
   // --- Attribution (how the lead found the site — first-touch, captured client
   // side into sessionStorage and sent with the form). All optional. ---
   referrer    String? // external referrer host (e.g. google.com), "" = direct
-  landingPage String? // first path of the visit (e.g. /informations/agencia-de-seo)
+  landingPage String? // first path of the visit (e.g. /novidades/nova-carta-de-vinhos)
   /// Human label for `landingPage`, resolved + FROZEN at capture (e.g.
-  /// "Informações / Agência de SEO"). Frozen so renaming/deleting content later
-  /// doesn't rewrite historical attribution.
+  /// "Novidades / Nova carta de vinhos"). Frozen so renaming/deleting content
+  /// later doesn't rewrite historical attribution.
   landingLabel String?
   utmSource   String?
   utmMedium   String?

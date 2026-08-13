@@ -28,7 +28,7 @@ up to date immediately after restoring.
 
 **About the `snapshot-2026-06-09` git tag:** it still exists, but it is **stale
 and does not describe this restore point.** It points at commit `4320b52`
-(2026-06-09), 143 commits behind, whose `snapshot.sql` is the old ~302 KB dump
+(2026-06-09), well over a hundred commits behind, whose `snapshot.sql` is the old ~302 KB dump
 of the agency's demo data against a schema that no longer exists. Treat the tag
 as history, not as a restore target; the current restore point is simply the
 committed `snapshot.sql` on `Development`.
