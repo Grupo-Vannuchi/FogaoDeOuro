@@ -129,14 +129,14 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: "Fogão de Ouro",
-  // `legalName` (razão social) ainda não foi fornecida pelo cliente. Deixada de
-  // fora de propósito — ver `src/content/legal.ts`, onde a ausência está
-  // marcada explicitamente.
+  legalName: "FOGÃO DE OURO RESTAURANTE E PIZZARIA LTDA",
   foundedYear: 2001,
   registration: "04.160.109/0001-47",
 
   contact: {
-    email: "fogaodeouro@fogaodeouro.com.br",
+    // Caixa real do restaurante. O endereço no domínio próprio
+    // (@fogaodeouro.com.br) não existe: o domínio ainda não foi comprado.
+    email: "fgdeouro3@gmail.com",
     phone: "+55 (13) 3219-1552",
     whatsapp: {
       // TODO(cliente): número de WhatsApp do restaurante. Enquanto estiver
