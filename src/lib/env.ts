@@ -57,6 +57,20 @@ const serverSchema = z.object({
   // are disabled and the URL fields still work. Never NEXT_PUBLIC — server only.
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_SECRET_KEY: z.string().min(1).optional(),
+  /**
+   * Name of the public Storage bucket the uploads land in. A bucket name is
+   * deployment configuration, not a code constant: each Supabase project can
+   * name it differently, and hardcoding one client's name breaks every other
+   * deployment. Defaults to `media` — the bucket `docs/RUNBOOK.md` tells you
+   * to create — so a setup that follows the runbook needs no configuration at
+   * all. An empty value is treated as unset so a blank line in `.env` falls
+   * back to the default instead of failing the boot.
+   */
+  SUPABASE_BUCKET: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => value || "media"),
 });
 
 const clientSchema = z.object({

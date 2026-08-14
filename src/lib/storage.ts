@@ -10,8 +10,17 @@ import { env } from "@/lib/env";
  * public CDN. Server-only: the secret key never reaches the browser.
  */
 
-/** Public bucket created in the Supabase project (Storage → New bucket). */
-const BUCKET = "media";
+/**
+ * Public bucket created in the Supabase project (Storage → New bucket).
+ * Configurable via `SUPABASE_BUCKET`, defaulting to `media` (see env.ts) —
+ * the bucket name belongs to the deployment, not to the source. Read through a
+ * function, not a module-scope constant, so importing this module never depends
+ * on the env being complete: unconfigured Storage is a supported state
+ * (`isStorageConfigured()`).
+ */
+function bucket(): string {
+  return env.SUPABASE_BUCKET;
+}
 
 /** Per-use processing presets: target size + fit. WebP output for all. */
 export type ImagePreset = "cover" | "gallery" | "avatar";
@@ -41,7 +50,20 @@ function storageBase(): string {
 
 /** Public CDN URL for an object path in the bucket. */
 function publicUrl(path: string): string {
-  return `${storageBase()}/storage/v1/object/public/${BUCKET}/${path}`;
+  return `${storageBase()}/storage/v1/object/public/${bucket()}/${path}`;
+}
+
+/**
+ * Does this failed Storage response mean "that bucket doesn't exist"?
+ *
+ * Supabase answers a missing bucket with **HTTP 400** — the real cause travels
+ * in the body (`{"statusCode":"404","error":"Bucket not found",
+ * "code":"NoSuchBucket"}`), verified against the live project — so the status
+ * alone is not enough. A bare 404 is accepted too: the object endpoint takes
+ * any object name, so only the bucket can be missing from that path.
+ */
+function isMissingBucket(status: number, body: string): boolean {
+  return status === 404 || /NoSuchBucket|Bucket not found/i.test(body);
 }
 
 export type UploadResult =
@@ -78,7 +100,7 @@ export async function processAndUploadImage(
     const envPrefix = process.env.NODE_ENV === "production" ? "" : "dev/";
     const path = `${envPrefix}${cfg.folder}/${randomUUID()}.webp`;
     const res = await fetch(
-      `${storageBase()}/storage/v1/object/${BUCKET}/${path}`,
+      `${storageBase()}/storage/v1/object/${bucket()}/${path}`,
       {
         method: "POST",
         headers: {
@@ -94,6 +116,13 @@ export async function processAndUploadImage(
     if (!res.ok) {
       const body = await res.text().catch(() => "");
       console.error("Supabase upload failed", res.status, body.slice(0, 300));
+      // A missing bucket is the likeliest misconfiguration — `SUPABASE_BUCKET`
+      // naming a bucket the project doesn't have — and it used to reach the
+      // operator as the generic "try again" message, hiding the cause. Give it
+      // its own error key so the admin UI can name it.
+      if (isMissingBucket(res.status, body)) {
+        return { ok: false, error: "bucket_not_found" };
+      }
       return { ok: false, error: `upload_failed_${res.status}` };
     }
     return { ok: true, url: publicUrl(path) };
@@ -110,11 +139,11 @@ export async function processAndUploadImage(
  */
 export async function deleteStoredImage(url: string | null | undefined): Promise<void> {
   if (!url || !isStorageConfigured()) return;
-  const prefix = `${storageBase()}/storage/v1/object/public/${BUCKET}/`;
+  const prefix = `${storageBase()}/storage/v1/object/public/${bucket()}/`;
   if (!url.startsWith(prefix)) return; // not one of ours
   const path = url.slice(prefix.length);
   try {
-    await fetch(`${storageBase()}/storage/v1/object/${BUCKET}/${path}`, {
+    await fetch(`${storageBase()}/storage/v1/object/${bucket()}/${path}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${env.SUPABASE_SECRET_KEY!}`,

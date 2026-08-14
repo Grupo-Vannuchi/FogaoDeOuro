@@ -476,6 +476,7 @@
       "tooLarge": "Imagem muito grande (máx. 15 MB).",
       "notImage": "Selecione um arquivo de imagem.",
       "notConfigured": "Upload indisponível (storage não configurado).",
+      "bucketNotFound": "Bucket não encontrado no storage. Confira o nome do bucket no Supabase (SUPABASE_BUCKET).",
       "error": "Falha no upload. Tente de novo."
     },
     "whatsapp": {

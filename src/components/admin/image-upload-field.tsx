@@ -7,11 +7,17 @@ import { uploadImageAction } from "@/app/actions/upload";
 import type { ImagePreset } from "@/lib/storage";
 import { useTranslations } from "next-intl";
 
-type ErrorKey = "tooLarge" | "notImage" | "notConfigured" | "error";
+type ErrorKey =
+  | "tooLarge"
+  | "notImage"
+  | "notConfigured"
+  | "bucketNotFound"
+  | "error";
 function errorKey(error: string): ErrorKey {
   if (error === "too_large") return "tooLarge";
   if (error === "not_image") return "notImage";
   if (error === "not_configured") return "notConfigured";
+  if (error === "bucket_not_found") return "bucketNotFound";
   return "error";
 }
 

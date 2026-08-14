@@ -20,6 +20,7 @@ the production deploy basics see SNAPSHOT.md too.
 | `WHATSAPP_INBOX_URL` | server | External conversation inbox link (metodon8n / Chatwoot). |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | Vercel (Upstash) | Rate-limit store. Absent locally → in-memory fallback. |
 | `SUPABASE_URL` / `SUPABASE_SECRET_KEY` | server | Storage para o upload de imagem do admin. Sem elas o upload é desabilitado. **Nunca** `NEXT_PUBLIC_*`. |
+| `SUPABASE_BUCKET` | server (opcional) | Nome do bucket público. Padrão `media`. Defina só se o bucket do projeto tiver outro nome — com o nome errado o upload falha e o admin mostra "Bucket não encontrado". |
 
 O template completo, com o porquê de cada uma, está em
 [`.env.example`](../.env.example) — versionado e sem valor nenhum.
@@ -48,6 +49,10 @@ Ordem importa: o banco precisa existir antes do primeiro deploy, porque o
    direta é **IPv6-only** e o build da Vercel não a alcança.
 3. **Storage → New bucket → `media`, público.** Sem ele o upload de imagem do
    admin falha — e é por ali que entram as fotos do cardápio e da galeria.
+   Se o bucket já existir com outro nome, **não renomeie o código**: defina
+   `SUPABASE_BUCKET` com o nome real (diferencia maiúsculas). Com o nome
+   errado o Supabase devolve `Bucket not found` (HTTP 400, `NoSuchBucket`) e o
+   admin avisa "Bucket não encontrado no storage" em vez de uma falha genérica.
 4. **Manter a Data API desabilitada** (*Project Settings → API*). O app fala
    direto por Prisma e não usa RLS; deixar a API ligada expõe as tabelas sem
    política nenhuma protegendo-as.
