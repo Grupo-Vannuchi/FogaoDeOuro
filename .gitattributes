@@ -1,0 +1,39 @@
+# ─── Fim de linha ───────────────────────────────────────────────────────────
+#
+# Este projeto é desenvolvido no Windows com `core.autocrlf=true`, que converte
+# para CRLF no checkout. Para quase todo arquivo isso é inofensivo. Para os dois
+# casos abaixo, não é.
+#
+# ⚠️ As regras deste arquivo NÃO são preferência de estilo. Cada uma conserta
+#    uma falha que já foi medida neste repositório. Não "limpe" nem relaxe.
+
+# ── *.sql: LF obrigatório ───────────────────────────────────────────────────
+#
+# Motivo 1 — o `\r` entra no dado, em silêncio.
+#   A revisão do PR 7 provou, num banco descartável, que um `.sql` conferido
+#   como CRLF injeta um `\r` DENTRO de literal dollar-quoted: o
+#   `position(chr(13) in x)` devolveu 6, ou seja, o carriage return virou parte
+#   do valor gravado. E EOL misto dentro de um bloco `COPY` dá erro duro.
+#   O `prisma/backups/snapshot.sql` de hoje escapa por acidente: não tem `$$`,
+#   `CREATE FUNCTION`, `CREATE TRIGGER`, `E'` nem `\connect`. Uma migração
+#   futura com trigger quebra isso — e sem mensagem de erro nenhuma.
+#
+# Motivo 2 — o Prisma não normaliza fim de linha ao calcular checksum.
+#   Medido em `prisma/migrations/20260602163736_init/migration.sql`: os bytes
+#   CRLF do disco dão `sha256 6967b09f…`; a mesma migração em LF dá
+#   `606f3e1c…`. `migrate deploy` e `migrate status` NÃO conferem o checksum de
+#   migração já aplicada — os dois foram rodados para confirmar. Mas o
+#   `migrate dev` confere, e isso já causou um incidente no PR 4.
+#
+# Esta regra mexe só no fim de linha: o índice do git já guardava LF, então o
+# SQL em si não muda. Editar o CONTEÚDO de uma migração já aplicada continua
+# proibido (quebra de checksum de verdade).
+*.sql text eol=lf
+
+# ── .githooks/: LF obrigatório ──────────────────────────────────────────────
+#
+# Os hooks são scripts de shell executados pelo Git Bash. Um `#!/bin/sh`
+# terminado em `\r` faz o shell procurar o interpretador `/bin/sh\r`, que não
+# existe. O erro resultante fala em arquivo inexistente e aponta para o script,
+# não para o fim de linha — a causa fica invisível.
+.githooks/** text eol=lf
