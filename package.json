@@ -26,9 +26,6 @@
     "db:restore": "docker exec -i n8x-marketing-db psql -U agency -d agency < prisma/backups/snapshot.sql",
     "brand:rasters": "node scripts/build-brand-rasters.mjs"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
     "@hookform/resolvers": "^5.4.0",
