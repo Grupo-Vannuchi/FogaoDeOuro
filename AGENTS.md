@@ -177,6 +177,24 @@ null by hardcoding a number.
 
 - Conventional commits; end the message with
   `Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>` when an agent helped.
+- **A `pre-push` hook runs `npm run typecheck`.** It exists because `pt.json` — the
+  whole UI catalogue in one file — regressed twice, the second time breaking the
+  Vercel deploy, the CI and the E2E suite at once. A clone only gets the hook after
+  `npm install` (that is what points `core.hooksPath` at `.githooks/`), and
+  `core.hooksPath` **replaces `.git/hooks` entirely**, so a new hook must live in
+  `.githooks/` or it never runs. `--no-verify` is the conscious escape hatch.
+- **`git push upstream` is disabled** (`--push` URL set to `no_push`). `upstream` is
+  the agency's repo this project was forked from; a stray push would publish the
+  client's site there. It is *local* config — a fresh clone must re-run
+  `git remote set-url --push upstream no_push`.
+- **The site ships closed to search engines.** `SITE_INDEXABLE` defaults to `false`,
+  and only the exact string `"true"` opens it — see `docs/RUNBOOK.md`. Don't
+  "helpfully" flip the default: while `src/content/legal.ts` still carries a
+  `«PENDENTE»`, an indexed site is a legal problem, not a milestone.
+- **Prisma config lives in `prisma.config.ts`**, not `package.json#prisma` (removed
+  in Prisma 7). ⚠️ Once any Prisma config file exists, the CLI **stops auto-loading
+  `.env`** — the config loads it itself, guarded by `existsSync` so it is a no-op on
+  Vercel and CI, which inject real environment variables.
 - Tasks on the "Desenvolvimento Vannuchi" board use the title format
   `[ÁREA] - verbo + tarefa`, where ÁREA ∈ **CRE** (novo do zero) · **IMP**
   (integrar o que existe) · **UPD** (melhorar o que existe) · **CRX** (corrigir)

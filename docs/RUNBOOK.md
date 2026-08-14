@@ -20,6 +20,7 @@ the production deploy basics see SNAPSHOT.md too.
 | `WHATSAPP_INBOX_URL` | server | External conversation inbox link (metodon8n / Chatwoot). |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | Vercel (Upstash) | Rate-limit store. Absent locally → in-memory fallback. |
 | `SUPABASE_URL` / `SUPABASE_SECRET_KEY` | server | Storage para o upload de imagem do admin. Sem elas o upload é desabilitado. **Nunca** `NEXT_PUBLIC_*`. |
+| `SITE_INDEXABLE` | Vercel + local | **Padrão `false` — o site nasce fechado aos buscadores.** Só a string exata `"true"` abre. Ver "Publicar de verdade", abaixo. |
 | `SUPABASE_BUCKET` | server (opcional) | Nome do bucket público. Padrão `media`. Defina só se o bucket do projeto tiver outro nome — com o nome errado o upload falha e o admin mostra "Bucket não encontrado". |
 
 O template completo, com o porquê de cada uma, está em
@@ -105,6 +106,58 @@ Admin → `Contatos → Instâncias do WhatsApp` (`/admin/leads/whatsapp`):
    new database nobody can log in until this is done.
 4. Post-deploy: check the security response headers in DevTools → Network
    (`strict-transport-security`, `x-frame-options`, …) on a real (HTTPS) page.
+5. **Node:** o `engines` do `package.json` fixa `22.x` de propósito (commit
+   `fa13e96`), e ele bate com o `.nvmrc`, com os dois workflows da CI e com o
+   `@types/node`. A Project Setting da Vercel diz **24.x** e é sobrescrita a cada
+   build, que emite advertência. **Ajuste a Vercel para 22.x** — não mexa no
+   `engines`. Subir para o Node 24 é uma mudança própria, validada.
+
+## Publicar de verdade — `SITE_INDEXABLE`
+
+O site **nasce fechado aos buscadores**. Com a variável ausente ou `"false"`:
+
+- `/robots.txt` devolve `Disallow: /` para todos os agentes, sem `Sitemap:`
+- toda página carrega `<meta name="robots" content="noindex, nofollow">`
+
+Isso é deliberado, e o motivo está no topo de
+[`src/content/legal.ts`](../src/content/legal.ts): **não publicar enquanto houver
+`«PENDENTE»`**. Hoje resta um — o domínio final —, e ele é citado dentro da
+Política de Privacidade e dos Termos. Um site indexado declarando um domínio que
+não existe é pior que um site invisível.
+
+Some aí o fato de que `canonical`, `sitemap` e as imagens de compartilhamento
+apontam para o host configurado em `NEXT_PUBLIC_SITE_URL`. Indexar o
+`.vercel.app` antes do domínio real põe o endereço errado no índice do Google, e
+tirar de lá leva semanas.
+
+**Para abrir**, quando o domínio existir e o conteúdo estiver cadastrado:
+
+1. `SITE_INDEXABLE=true` na Vercel (a string exata — qualquer outro valor derruba
+   o build em vez de abrir o site por engano)
+2. `NEXT_PUBLIC_SITE_URL` no domínio final
+3. Redeploy — as duas são lidas no **build**, não em runtime
+
+Confira depois, no ar: `curl https://<dominio>/robots.txt` tem que trazer as três
+regras e a linha `Sitemap:`, e o HTML não pode mais ter `noindex`.
+
+## Hook de pre-push
+
+`.githooks/pre-push` roda `npm run typecheck` antes de todo push.
+
+Ele existe porque o [`src/messages/pt.json`](../src/messages/pt.json) — o catálogo
+de UI inteiro num arquivo só — já regrediu **duas vezes**. Na segunda, um estado
+antigo do arquivo foi salvo por cima do atual e derrubou o deploy da Vercel, a CI
+e o E2E **ao mesmo tempo**. A detecção nunca faltou: o catálogo é tipado a partir
+do próprio JSON, então consumidor órfão é erro de compilação. O que faltava era
+rodar o typecheck **antes** do push.
+
+Três coisas que um clone novo precisa saber:
+
+- O hook só passa a valer depois de `npm install` — é o `postinstall` que aponta
+  o `core.hooksPath` para `.githooks/`.
+- `core.hooksPath` **substitui o `.git/hooks` inteiro**: hook novo vai em
+  `.githooks/`, ou não roda.
+- `git push --no-verify` pula o hook, quando for uma decisão consciente.
 
 ## Bootstrapping the first admin user
 

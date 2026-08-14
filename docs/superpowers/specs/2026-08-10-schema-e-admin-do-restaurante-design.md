@@ -337,6 +337,11 @@ mais `llms.txt/route.ts`, `llms-full.txt/route.ts`, `experiencia/page.tsx`,
 | 5 | **UPD** | reformar `Testimonial` (§3.7) e limpar `Lead`/`CAREER` — ✅ concluído |
 | 6 | **UPD** | renomear rotas e labels do admin, `/informations` → `/novidades` e os namespaces do `pt.json` — ✅ concluído |
 | 7 | **UPD** | reescrever os seeds e zerar o banco — ✅ concluído |
+| 8 | **CRX** | trava de indexação (`SITE_INDEXABLE`) e higiene de fluxo: push travado para o repo da agência, `.gitattributes`, hook de `pre-push`, `prisma.config.ts` e o bucket do Storage como configuração — ✅ concluído |
+
+O PR 8 não estava previsto neste spec, que terminava no 7. Ele nasceu do primeiro
+deploy: o site ia ao ar indexável, sem conteúdo e com `«PENDENTE»` na política de
+privacidade, e as falhas de processo acumuladas já tinham derrubado o build uma vez.
 
 Os PRs 2 e 3 **criam antes de destruir**: `/gastronomia` e `/galeria` passam a
 ler os models novos enquanto os antigos ainda existem, e só o PR 4 os derruba.
