@@ -22,6 +22,23 @@ const serverSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
+  /**
+   * Search-engine visibility switch. **Defaults to `false` — the site ships
+   * closed.** A forgotten variable must leave the site out of the index, never
+   * in it: a preview deployment indexed under the wrong host takes weeks to
+   * remove. Publishing for real is an explicit `SITE_INDEXABLE=true` plus a
+   * redeploy (both `robots.txt` and the root metadata are baked at build time).
+   *
+   * Parsed as a literal `"true"`/`"false"` string and compared explicitly.
+   * `z.coerce.boolean()` must never be used here: env values are always
+   * strings and `Boolean("false") === true`, which fails in the dangerous
+   * direction — the site would report itself closed while standing wide open.
+   * Any other value is a hard boot error, so a typo can't silently publish.
+   */
+  SITE_INDEXABLE: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
 
   // --- Integrations (optional — degrade gracefully when unset) ---------------
   // Evolution API (WhatsApp) for lead-notification message sends.

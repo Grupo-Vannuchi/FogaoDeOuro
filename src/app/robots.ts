@@ -47,6 +47,20 @@ const trainingScrapers = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
+  /**
+   * Until the site is explicitly published (`SITE_INDEXABLE=true`), shut every
+   * agent out. The site is deployed before it is ready — on a `.vercel.app`
+   * host, with `«PENDENTE»` placeholders still rendering in the legal pages —
+   * and an index entry under the wrong address takes weeks to remove.
+   *
+   * No `sitemap` and no `host` here on purpose: advertising a URL list while
+   * asking not to be crawled is contradictory, and some crawlers fetch the
+   * sitemap regardless of the rules above it.
+   */
+  if (!env.SITE_INDEXABLE) {
+    return { rules: [{ userAgent: "*", disallow: "/" }] };
+  }
+
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: adminPaths },
