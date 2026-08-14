@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# pre-push — roda o typecheck antes de qualquer commit sair para o remoto.
+#
+# ── POR QUE ISTO EXISTE ─────────────────────────────────────────────────────
+#
+# O `src/messages/pt.json` é o catálogo inteiro da UI num arquivo só, e já
+# regrediu DUAS vezes neste projeto. Na segunda (commit `84b8456`) um estado
+# antigo do arquivo foi salvo por cima do atual, revertendo renomeações de
+# chave em silêncio — e derrubou o deploy da Vercel, a CI do GitHub e a suíte
+# E2E ao mesmo tempo.
+#
+# A detecção nunca foi o problema: o `src/global.d.ts` tipa o catálogo a partir
+# do próprio `pt.json`, então um consumidor órfão vira erro de compilação. O
+# que faltou foi RODAR o typecheck antes do push. A CI pegou — depois do push,
+# em três lugares de uma vez.
+#
+# ── POR QUE SÓ O `tsc --noEmit` ─────────────────────────────────────────────
+#
+# Hook lento é hook que todo mundo pula, e hook pulado é pior que hook nenhum.
+# Aqui roda só o typecheck (segundos). `lint`, `test` e `build` continuam na
+# CI, que é onde eles cabem.
+#
+# ── INSTALAÇÃO ──────────────────────────────────────────────────────────────
+#
+# Hooks não são versionados. A ponte é o `core.hooksPath` apontando para
+# `.githooks/`, configurado pelo `postinstall` do `package.json` — num clone
+# novo basta `npm install`. Para conferir:
+#
+#     git config --get core.hooksPath      # deve responder: .githooks
+#
+# ── ⚠️ FIM DE LINHA ─────────────────────────────────────────────────────────
+#
+# Este arquivo TEM que estar em LF, e está coberto por `.githooks/** text
+# eol=lf` no `.gitattributes`. Se um `\r` entrar no `#!/bin/sh`, o shell passa
+# a procurar o interpretador `/bin/sh\r`, que não existe — e a mensagem de erro
+# aponta para o script, não para o fim de linha. A causa fica invisível.
+# Confira com: git ls-files --eol -- .githooks/pre-push
+
+set -u
+
+# O git já executa o hook na raiz do working tree; garantir não custa nada.
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 1
+cd "$repo_root" || exit 1
+
+printf '\n[pre-push] Rodando o typecheck (tsc --noEmit) antes de enviar...\n\n'
+
+if npm run typecheck; then
+  printf '\n[pre-push] Typecheck OK — seguindo com o push.\n\n'
+  exit 0
+fi
+
+cat <<'FIM'
+
+===============================================================================
+  PUSH BLOQUEADO — o typecheck falhou.
+===============================================================================
+
+  Nada foi enviado. Os erros do `tsc` estão logo acima desta mensagem.
+
+  Se algum erro fala de chave de tradução — `useTranslations`, `t("...")`,
+  "Property '...' does not exist on type" — a causa provável é o
+  `src/messages/pt.json`: uma chave foi renomeada, removida, ou o arquivo
+  inteiro foi salvo por cima com um estado antigo. Olhe o diff dele primeiro:
+
+      git diff origin/Development -- src/messages/pt.json
+
+  Para rodar o mesmo check à mão, quantas vezes precisar:
+
+      npm run typecheck
+
+  Se você TEM CERTEZA de que quer enviar assim mesmo (um WIP numa branch sua,
+  por exemplo), o escape consciente é:
+
+      git push --no-verify
+
+  Não use `--no-verify` para enviar à `Development`: a CI vai reprovar do mesmo
+  jeito, só que mais tarde — e em três lugares ao mesmo tempo (Vercel, GitHub
+  Actions e E2E). Foi exatamente assim que este hook nasceu.
+
+===============================================================================
+
+FIM
+
+exit 1

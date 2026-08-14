@@ -6,7 +6,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && (git config core.hooksPath .githooks || exit 0)",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
