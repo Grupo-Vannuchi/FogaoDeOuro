@@ -155,6 +155,29 @@ its empty states until you add content through `/admin`. Locally the placeholder
 `admin@example.com` / `changeme123` is fine; to set a real one, run
 `ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run db:set-admin`.
 
+## Git remotes — disable pushing to `upstream` (every fresh clone)
+
+Run this once, right after cloning:
+
+```bash
+git remote set-url --push upstream no_push
+git remote -v            # the upstream (push) line must read: no_push
+```
+
+**Why.** This repo is a **fork of the N8X Marketing site** (the agency), and
+`upstream` still points at `https://github.com/Grupo-Vannuchi/n8x.git` — the
+agency's own repository — with push enabled by default. A single mistyped
+`git push upstream` would publish **the client's site into the agency's
+repository**: the Fogão de Ouro brand, content and history, in a repo that
+belongs to a different business and has a different audience. The command above
+makes that push fail immediately instead of succeeding quietly. `origin`
+(`Grupo-Vannuchi/FogaoDeOuro`) is untouched and keeps working normally.
+
+⚠️ This lives in `.git/config`, which is **not versioned** — a fresh clone does
+not inherit it, and neither does a second working copy on another machine. It
+has to be re-run per clone. Don't remove it as "leftover config": fetching from
+`upstream` still works, only pushing is blocked, which is exactly the intent.
+
 ## CSP (pending)
 
 Content-Security-Policy is **not** set yet. Adding it requires a nonce middleware
