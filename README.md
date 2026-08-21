@@ -222,18 +222,23 @@ See [`SNAPSHOT.md`](SNAPSHOT.md).
 > the admin. This is deliberate: demo rows would be invented content on a real
 > client's site.
 
-### Logo — delivered
+### Logo — rebranded, August 2026
 
-The client's mark is in. The original lives in `docs/Logos-fogao_de_Ouro/`; the
-cuts the site actually uses are in [`public/brand/`](public/brand/README.md),
-which documents how each one was derived and why.
+The restaurant refreshed its mark: the new logo is purely typographic, and the
+stove is gone. It was delivered as a **raster only**, so the SVGs the site uses
+were traced from it by `scripts/vectorize-logo.mjs` (0.18% pixel error against
+the original). Everything is documented in
+[`public/brand/`](public/brand/README.md).
 
 The short version: the lockup is stacked and nearly square, so the header and the
 admin login use a **wordmark-only** cut, while the footer and the Open Graph card
-carry the complete mark. The lockup's tagline is graphite and only reaches 1.97:1
-on the dark ground, so the dark theme gets a cut with a cream tagline — swapped by
-CSS in `globals.css`, not by Tailwind's `dark:` variant, which would ignore the
-site's `data-theme` toggle.
+carry the complete mark. The lockup's brown tagline is illegible on the OG card's
+graphite ground, so `logo-dark.svg` repaints just that line cream — it is not a
+theme variant, only the source of `lockup.png`.
+
+⚠️ The **favicon is still the old stove**, kept by the client's explicit
+decision: the rebrand ships no compact mark, and stacked type does not survive
+32×32. `public/brand/README.md` explains why not to "fix" it.
 
 `npm run brand:rasters` regenerates the PNGs that `src/app/icon.tsx`,
 `apple-icon.tsx` and `opengraph-image.tsx` embed (satori can't resolve the logo's

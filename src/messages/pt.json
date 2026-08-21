@@ -25,7 +25,7 @@
     "learnMore": "Saiba mais",
     "sendWhatsapp": "Chamar no WhatsApp",
     "backHome": "Voltar para o início",
-    "loading": "Carregando…"
+    "loading": "Carregando"
   },
   "home": {
     "hero": {
@@ -47,11 +47,11 @@
         },
         {
           "title": "O almoço à altura do seu dia.",
-          "subtitle": "Salão amplo, climatizado e silencioso o bastante para a conversa que importa — no coração do Centro Histórico."
+          "subtitle": "Salão amplo, climatizado e silencioso o bastante para a conversa que importa. No coração do Centro Histórico."
         },
         {
           "title": "Guarde um espaço para a sobremesa.",
-          "subtitle": "O pudim de leite que fecha o almoço — do mesmo jeito há {years} anos, no coração do Centro Histórico."
+          "subtitle": "O pudim de leite que fecha o almoço. Do mesmo jeito há {years} anos, no coração do Centro Histórico."
         }
       ]
     },
@@ -72,7 +72,7 @@
     },
     "cta": {
       "title": "O buffet abre às 11h. Recém-servido, fumegante, completo.",
-      "subtitle": "Chegue cedo e almoce com calma — ou venha depois das 13h30 e aproveite o salão tranquilo, com reposição garantida.",
+      "subtitle": "Chegue cedo e almoce com calma. Ou venha depois das 13h30 e aproveite o salão tranquilo, com reposição garantida.",
       "button": "Horários & Reservas"
     }
   },
@@ -85,9 +85,9 @@
       "title": "O que faz o almoço aqui ser diferente",
       "intro": "O ponto de encontro de quem exige excelência no Centro Histórico. Transformamos o seu almoço com um salão acolhedor e <b>100% renovado</b>, acompanhado de uma fartura irresistível:",
       "items": [
-        "Churrasco de verdade — picanha, cupim, maminha e cortes selecionados, fatiados na hora, direto da brasa",
+        "Churrasco de verdade. Picanha, cupim, maminha e cortes selecionados, fatiados na hora, direto da brasa",
         "Peixes e frutos do mar escolhidos a dedo, toda semana, pelo próprio dono da casa",
-        "Ilha de massas preparada na hora, na sua frente — você escolhe a massa, os ingredientes e o molho",
+        "Ilha de massas preparada na hora, na sua frente. Você escolhe a massa, os ingredientes e o molho",
         "Buffet completo com saladas frescas, pratos quentes e variedade que não existe em outro lugar do Centro",
         "Sobremesas e um dos cafés mais elogiados de Santos para fechar",
         "Salão amplo, climatizado e silencioso o bastante para a conversa que importa"
@@ -120,26 +120,26 @@
       "title": "O melhor momento para você",
       "intro": "Servimos de segunda a sexta, das 11h às 15h. Cada horário tem o seu clima:",
       "items": [
-        "11h — buffet recém-montado, tudo fumegante",
-        "11h30 às 13h30 — o pico do Centro, salão cheio e movimentado",
-        "Após 13h30 — salão tranquilo, com reposição garantida"
+        "11h. Buffet recém-montado, tudo fumegante",
+        "11h30 às 13h30. O pico do Centro, salão cheio e movimentado",
+        "Após 13h30. Salão tranquilo, com reposição garantida"
       ],
-      "note": "Chegue cedo e almoce com calma, ou venha no fim do serviço e aproveite o salão mais silencioso — a comida é a mesma do primeiro ao último minuto."
+      "note": "Chegue cedo e almoce com calma, ou venha no fim do serviço e aproveite o salão mais silencioso. A comida é a mesma do primeiro ao último minuto."
     },
     "whyFullService": {
       "title": "A brasa, o mar e a massa. Todos os dias.",
-      "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana — escolhida pessoalmente, toda semana, pelo dono da casa.",
-      "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente. Completam a mesa as saladas frescas, os pratos quentes e as sobremesas: torta holandesa, pudim, petit gâteau — e o café que fecha a sua hora de almoço."
+      "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana, escolhida pessoalmente, toda semana, pelo dono da casa.",
+      "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente. Completam a mesa as saladas frescas, os pratos quentes e as sobremesas: torta holandesa, pudim, petit gâteau. E o café que fecha a sua hora de almoço."
     },
     "contactCta": {
       "title": "Reserve a sua mesa",
       "paragraphs": [
         "Confraternizações de equipe, almoços de diretoria e eventos corporativos, no coração do Centro Histórico. O salão de 180 lugares comporta o seu grupo com conforto.",
-        "Fale com a gente para acertar dia, horário e número de pessoas — e deixe o resto por nossa conta."
+        "Fale com a gente para acertar dia, horário e número de pessoas. E deixe o resto por nossa conta."
       ],
       "tagline": "Tudo isso espera por você a partir das 11h."
     },
-    "disclaimer": "Fogão de Ouro Restaurante — Rua Frei Gaspar, 46, Centro Histórico de Santos/SP. Segunda a sexta, das 11h às 15h. Cartões, VR e VA."
+    "disclaimer": "Fogão de Ouro Restaurante. Rua Frei Gaspar, 46, Centro Histórico de Santos/SP. Segunda a sexta, das 11h às 15h. Cartões, VR e VA."
   },
   "galeria": {
     "title": "Galeria",
@@ -151,7 +151,7 @@
   },
   "gastronomia": {
     "title": "Nossa Gastronomia",
-    "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo — todos os dias.",
+    "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo. Todos os dias.",
     "empty": "Em breve, novidades por aqui.",
     "ctaTitle": "Tudo isso espera por você a partir das 11h.",
     "ctaButton": "Fazer minha reserva",
@@ -175,10 +175,10 @@
     "nextImage": "Próxima imagem",
     "imageCaption": "Imagem ilustrativa de {title}",
     "relatedTitle": "Páginas relacionadas",
-    "regionsTitle": "Regiões que atendemos com {title}:",
     "menuLabel": "Abrir novidades",
     "menuTitle": "Novidades",
-    "menuClose": "Fechar"
+    "menuClose": "Fechar",
+    "visitTitle": "Onde estamos"
   },
   "reservas": {
     "title": "Horários & Reservas",
@@ -213,7 +213,7 @@
   },
   "contact": {
     "title": "Estamos no coração do Centro Histórico",
-    "subtitle": "Rua Frei Gaspar, 46 — a poucos passos da Bolsa do Café. Segunda a sexta, das 11h às 15h.",
+    "subtitle": "Rua Frei Gaspar, 46. A poucos passos da Bolsa do Café. Segunda a sexta, das 11h às 15h.",
     "infoTitle": "Como falar com a gente",
     "route": "Traçar rota",
     "labels": {
@@ -228,9 +228,9 @@
       "phone": "Telefone (opcional)",
       "company": "Empresa (opcional)",
       "message": "Mensagem",
-      "messagePlaceholder": "Conte o que você precisa — reserva, evento, dúvida…",
+      "messagePlaceholder": "Conte o que você precisa. Reserva, evento, dúvida.",
       "submit": "Enviar mensagem",
-      "submitting": "Enviando…",
+      "submitting": "Enviando",
       "success": "Mensagem enviada! Em breve entramos em contato.",
       "error": "Não foi possível enviar agora. Tente novamente ou ligue para a gente."
     }
@@ -242,7 +242,7 @@
     "required": "Campo obrigatório."
   },
   "footer": {
-    "tagline": "Fogão de Ouro Restaurante — no Centro Histórico de Santos.",
+    "tagline": "Fogão de Ouro Restaurante. No Centro Histórico de Santos.",
     "navTitle": "Navegação",
     "contactTitle": "Contato",
     "socialTitle": "Redes",
@@ -266,7 +266,7 @@
       "email": "E-mail",
       "password": "Senha",
       "submit": "Entrar",
-      "submitting": "Entrando…",
+      "submitting": "Entrando",
       "error": "E-mail ou senha inválidos."
     },
     "nav": {
@@ -346,7 +346,7 @@
       "published": "Publicada (visível no site)",
       "create": "Criar novidade",
       "save": "Salvar alterações",
-      "saving": "Salvando…",
+      "saving": "Salvando",
       "cancel": "Cancelar",
       "error": {
         "unauthorized": "Sua sessão expirou. Entre novamente.",
@@ -397,7 +397,7 @@
       "published": "Publicada",
       "available": "Disponível",
       "save": "Salvar",
-      "saving": "Salvando…",
+      "saving": "Salvando",
       "deleteCategoryConfirm": "Apagar \"{name}\"? Os pratos desta categoria também serão apagados.",
       "deleteItemConfirm": "Apagar \"{name}\"?",
       "errorDuplicate": "Já existe um item com esse identificador na URL.",
@@ -424,7 +424,7 @@
       "orderHint": "Números menores aparecem primeiro.",
       "published": "Publicada (visível no site)",
       "save": "Salvar",
-      "saving": "Salvando…",
+      "saving": "Salvando",
       "noCaption": "Sem legenda",
       "deleteConfirm": "Apagar esta foto?",
       "errorUnknown": "Não foi possível salvar. Tente de novo."
@@ -452,12 +452,12 @@
       "source": "Onde foi publicada",
       "sourceHint": "Normalmente \"Google\". É o que aparece junto do link.",
       "sourceUrl": "Link para a avaliação",
-      "sourceUrlHint": "Cole o link direto da avaliação no Google. É ele que deixa a citação verificável — sem ele, a avaliação parece inventada.",
+      "sourceUrlHint": "Cole o link direto da avaliação no Google. É ele que deixa a citação verificável. Sem ele, a avaliação parece inventada.",
       "quote": "Depoimento",
       "published": "Publicado (visível no site)",
       "create": "Adicionar depoimento",
       "save": "Salvar alterações",
-      "saving": "Salvando…",
+      "saving": "Salvando",
       "cancel": "Cancelar",
       "error": {
         "unauthorized": "Sua sessão expirou. Entre novamente.",
@@ -468,7 +468,7 @@
     "upload": {
       "upload": "Enviar imagem",
       "replace": "Trocar imagem",
-      "uploading": "Enviando…",
+      "uploading": "Enviando",
       "remove": "Remover imagem",
       "urlPlaceholder": "ou cole uma URL de imagem",
       "tooLarge": "Imagem muito grande (máx. 15 MB).",
@@ -491,14 +491,14 @@
       "createHint": "Dê um nome e leia o QR Code com o WhatsApp para conectar.",
       "namePlaceholder": "Ex: VENDAS",
       "create": "Criar instância",
-      "creating": "Criando…",
+      "creating": "Criando",
       "createError": "Não foi possível criar a instância.",
       "connectError": "Não foi possível gerar o QR Code.",
       "listTitle": "Instâncias",
       "refresh": "Atualizar",
       "empty": "Nenhuma instância ainda.",
       "badgeDefault": "Padrão",
-      "loadingInstances": "Carregando instâncias…",
+      "loadingInstances": "Carregando instâncias",
       "loadError": "Não foi possível carregar as instâncias. Tente atualizar.",
       "state_open": "Conectada",
       "state_connecting": "Conectando",
@@ -511,7 +511,7 @@
       "scanTitle": "Leia o QR Code",
       "scanHint": "Abra o WhatsApp > Aparelhos conectados e leia o código para conectar \"{name}\".",
       "noQr": "QR Code indisponível. Tente novamente.",
-      "waiting": "Aguardando conexão…",
+      "waiting": "Aguardando conexão",
       "close": "Fechar"
     },
     "leadNotify": {
@@ -519,15 +519,15 @@
       "hint": "Envie todo lead que chegar pelo site para um grupo do WhatsApp do comercial. Escolha a instância e o grupo, ative e salve.",
       "instance": "Instância",
       "group": "Grupo do WhatsApp",
-      "selectInstance": "Selecione a instância…",
-      "selectGroup": "Selecione o grupo…",
-      "loadingInstances": "Carregando instâncias…",
+      "selectInstance": "Selecione a instância",
+      "selectGroup": "Selecione o grupo",
+      "loadingInstances": "Carregando instâncias",
       "instancesError": "Não foi possível carregar as instâncias.",
-      "loadingGroups": "Carregando grupos…",
+      "loadingGroups": "Carregando grupos",
       "groupsError": "Não foi possível carregar os grupos.",
       "enable": "Enviar novos leads automaticamente",
       "save": "Salvar",
-      "saving": "Salvando…",
+      "saving": "Salvando",
       "saved": "Configuração salva.",
       "forward": "Encaminhar",
       "error": {

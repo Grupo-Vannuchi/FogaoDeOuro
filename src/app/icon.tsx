@@ -6,9 +6,11 @@ import { siteConfig } from "@/config/site";
 /**
  * App icon (favicon / browser tab / PWA), generated at build time.
  *
- * The mark is the stove pulled out of the client's lockup — the wordmark is far
- * too wide to survive 32×32. Full-bleed graphite field so Android's maskable
- * crop never bites into transparency.
+ * The mark is the stove pulled out of the client's PREVIOUS lockup. The 2026
+ * rebrand is purely typographic and ships no compact mark, and stacked type does
+ * not survive 32×32 — so the retired stove stays here, by the client's explicit
+ * decision. See `public/brand/README.md` before changing it. Full-bleed graphite
+ * field so Android's maskable crop never bites into transparency.
  *
  * Embedded as a PNG rather than the source SVG because satori cannot resolve
  * the `url(#gradient)` fills the logo is built from. `npm run brand:rasters`

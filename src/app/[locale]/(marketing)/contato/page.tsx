@@ -58,7 +58,7 @@ export default async function ContactPage({
     {
       icon: MapPin,
       label: t("labels.address"),
-      value: `${contact.address.street}, ${contact.address.city} — ${contact.address.region}`,
+      value: `${contact.address.street}, ${contact.address.city}/${contact.address.region}`,
       href: mapsLink,
     },
   ];

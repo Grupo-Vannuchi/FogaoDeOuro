@@ -51,7 +51,7 @@ export default async function OpengraphImage() {
           color: foreground,
         }}
       >
-        <img src={`data:image/png;base64,${lockup}`} width={620} />
+        <img src={`data:image/png;base64,${lockup}`} width={540} />
         <div style={{ display: "flex", fontSize: 34, opacity: 0.85 }}>
           Restaurante no Centro Histórico de {city}/{region}
         </div>

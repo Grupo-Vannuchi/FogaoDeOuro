@@ -139,8 +139,10 @@ export const siteConfig: SiteConfig = {
   registration: "04.160.109/0001-47",
 
   contact: {
-    // Caixa real do restaurante. O endereço no domínio próprio
-    // (@fogaodeouro.com.br) não existe: o domínio ainda não foi comprado.
+    // Caixa real do restaurante. O domínio próprio já está no ar
+    // (www.fogaodeouro.com.br, apontado na Vercel), mas não há caixa postal
+    // criada nele — por isso o contato público segue no Gmail. Trocar assim que
+    // existir um @fogaodeouro.com.br de verdade.
     email: "fgdeouro3@gmail.com",
     phone: "+55 (13) 3219-1552",
     whatsapp: {
@@ -150,10 +152,10 @@ export const siteConfig: SiteConfig = {
       number: "5513991632985",
       display: "+55 (13) 99163-2985",
       defaultMessage:
-        "Olá! Gostaria de reservar uma mesa no Fogão de Ouro. Podem me ajudar?",
+        "Olá! Vim pelo site do Fogão de Ouro e gostaria de reservar uma mesa.",
     },
     address: {
-      street: "Rua Frei Gaspar, 46 — Centro Histórico",
+      street: "Rua Frei Gaspar, 46, Centro Histórico",
       city: "Santos",
       region: "SP",
       country: "Brasil",
@@ -191,7 +193,8 @@ export const siteConfig: SiteConfig = {
    *
    * `dark` is no longer a theme the visitor can reach — the toggle and the
    * `prefers-color-scheme` branch were removed. It stays because the app icons
-   * and the OG card still sit on the graphite, where the lockup was designed to.
+   * and the OG card still sit on the graphite, which is why `logo-dark.svg`
+   * repaints the lockup's tagline cream.
    * Contrast ratios are reproducible via
    * `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
    */

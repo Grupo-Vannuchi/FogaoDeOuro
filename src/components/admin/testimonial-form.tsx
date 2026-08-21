@@ -90,7 +90,7 @@ export function TestimonialForm({
             <Label htmlFor="sourceUrl">{t("sourceUrl")}</Label>
             <Input
               id="sourceUrl"
-              placeholder="https://maps.google.com/…"
+              placeholder="https://maps.google.com/"
               aria-invalid={Boolean(errors.sourceUrl)}
               {...register("sourceUrl")}
             />

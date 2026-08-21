@@ -32,7 +32,7 @@ export async function Footer() {
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
           {/* The footer has the vertical room the header doesn't, so it carries
-              the complete mark — stove and all. */}
+              the complete mark, "RESTAURANTE" line included. */}
           <Logo variant="lockup" />
           <p className="max-w-xs text-sm text-muted-foreground">
             {t("tagline")}
@@ -71,7 +71,7 @@ export async function Footer() {
           >
             {siteConfig.contact.address.street}
             <br />
-            {siteConfig.contact.address.city} — {siteConfig.contact.address.region}
+            {siteConfig.contact.address.city}/{siteConfig.contact.address.region}
           </a>
         </div>
 

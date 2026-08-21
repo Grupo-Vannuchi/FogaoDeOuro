@@ -125,7 +125,7 @@ export function LeadNotifyConfig() {
             {instances.map((i) => (
               <option key={i.name} value={i.name}>
                 {i.name}
-                {i.state !== "open" ? ` — ${t("disconnected")}` : ""}
+                {i.state !== "open" ? ` (${t("disconnected")})` : ""}
               </option>
             ))}
           </select>

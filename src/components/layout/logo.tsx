@@ -4,15 +4,20 @@ import { cn } from "@/lib/utils";
 
 /**
  * Brand mark, linking home. Two cuts of the client's logo, both derived from
- * `docs/Logos-fogao_de_Ouro` — see `public/brand/README.md` for how.
+ * the 2026 rebrand — see `public/brand/README.md` for how.
  *
- *  - `wordmark` (default) — just "Fogão de Ouro", 4.4:1 wide. The full lockup is
- *    stacked and nearly square, so at the header's ~28px the curved
- *    "Restaurante Grill e Café" collapses into a smudge.
- *  - `lockup` — the complete mark, for places with room to breathe.
+ *  - `wordmark` (default) — just "Fogão de Ouro", 1.56:1. Drops the
+ *    "RESTAURANTE" line, which is spaced small caps and only 5% of the lockup's
+ *    height: at any size a header can afford it reads as a smudge.
+ *  - `lockup` — the complete mark, tagline included, for places with room to
+ *    breathe.
+ *
+ * The rebrand is stacked where the old mark was a single line (4.4:1), so the
+ * wordmark rides taller here — 44px in the 64px bar — to keep "de Ouro" legible.
+ * Below ~40px the small "de" closes up.
  *
  * Only the light cut is rendered: the site is light-only, and the lockup's
- * graphite tagline is designed for exactly this cream ground. The dark cut
+ * brown tagline is designed for exactly this cream ground. The dark cut
  * (`/brand/logo-dark.svg`, cream tagline) still ships because `lockup.png` — the
  * OG card, which keeps the graphite ground — is rasterised from it.
  *
@@ -39,16 +44,16 @@ export function Logo({
         <img
           src="/brand/wordmark.svg"
           alt=""
-          width={123}
-          height={28}
-          className="h-7 w-auto"
+          width={69}
+          height={44}
+          className="h-11 w-auto"
         />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element -- see above */
         <img
           src="/brand/logo.svg"
           alt=""
-          width={252}
+          width={199}
           height={144}
           className="h-36 w-auto"
         />
