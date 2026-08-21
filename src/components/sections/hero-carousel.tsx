@@ -117,52 +117,46 @@ export function HeroCarousel({
                   className="absolute inset-0 bg-[radial-gradient(120%_100%_at_80%_20%,var(--color-accent)_0%,transparent_55%),radial-gradient(90%_90%_at_20%_90%,var(--color-brand)_0%,transparent_60%)] opacity-30"
                 />
               )}
-              {/* Readability overlay. Two different problems, so two different gradients.
-              
-                  Mobile: the copy spans the full width, so a left-to-right veil leaves the
-                  end of every line sitting on bare photo — the subtitle was unreadable over
-                  the rotisserie shot. Veils top-to-bottom instead, strongest where the text
-                  is, clearing toward the bottom so the photo still reads.
-              
-                  md+: the copy occupies the left half only, so the veil can be directional
-                  and clear the right edge entirely. That matters here — the brief makes the
-                  food the protagonist, and a flat 30% cream over the whole frame washed the
-                  brasa out to pale yellow. */}
-              <div className="absolute inset-0 bg-gradient-to-b from-background/65 to-background/35 md:bg-gradient-to-r md:from-background md:from-[50%] md:to-transparent" />
+              {/* Readability scrim. The copy sits ON the photo, so the photo has to
+                  stay visible — a cream veil erased it. A dark scrim does the
+                  opposite: it keeps every frame readable and lets the food read
+                  through, which is what the brief asks for.
 
-              <Container className="relative flex h-full max-w-none flex-col items-start justify-center text-left">
-                {/* No celular a copy ocupa a largura toda, entao nao ha metade
-                    livre para a foto: o texto vira um card de creme e a foto
-                    aparece em volta dele. No md+ o card se dissolve e o veu
-                    direcional volta a fazer esse papel. */}
-                <div className="flex flex-col items-start gap-6 rounded-2xl bg-background p-6 md:rounded-none md:bg-transparent md:p-0">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur">
-                    <span className="size-2 animate-pulse rounded-full bg-brand" aria-hidden />
-                    {eyebrow}
-                  </span>
-                  <Heading className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
-                    {slide.title}
-                  </Heading>
-                  <p className="max-w-xl text-pretty text-lg text-muted-foreground">
-                    {slide.subtitle}
-                  </p>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href="/experiencia"
-                      tabIndex={active ? undefined : -1}
-                      className={buttonVariants({ size: "lg", className: "group" })}
-                    >
-                      {primaryCta}
-                      <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                    <Link
-                      href="/contato"
-                      tabIndex={active ? undefined : -1}
-                      className={buttonVariants({ variant: "outline", size: "lg" })}
-                    >
-                      {secondaryCta}
-                    </Link>
-                  </div>
+                  The opacity is not taste. Cream `#EFE9C2` over a scrimmed pixel
+                  needs the scrim >= ~60% black to clear 4.5:1 even where the
+                  photo is pure white (the buffet lamps, the window in the salao).
+                  Mobile keeps that floor across the whole frame because the copy
+                  spans the full width; `md` can fall off to 10% on the right,
+                  where no text lands. */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/65 to-black/75 md:bg-gradient-to-r md:from-black/75 md:from-[45%] md:to-black/10" />
+
+              <Container className="relative flex h-full max-w-none flex-col items-start justify-center gap-6 text-left">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/35 px-4 py-1.5 text-sm font-medium text-[#EFE9C2] backdrop-blur">
+                  <span className="size-2 animate-pulse rounded-full bg-[#E68A08]" aria-hidden />
+                  {eyebrow}
+                </span>
+                <Heading className="max-w-3xl text-balance text-4xl font-bold tracking-tight text-[#EFE9C2] drop-shadow-sm sm:text-6xl">
+                  {slide.title}
+                </Heading>
+                <p className="max-w-xl text-pretty text-lg text-[#EFE9C2]/90">
+                  {slide.subtitle}
+                </p>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/experiencia"
+                    tabIndex={active ? undefined : -1}
+                    className={buttonVariants({ size: "lg", className: "group" })}
+                  >
+                    {primaryCta}
+                    <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    href="/contato"
+                    tabIndex={active ? undefined : -1}
+                    className={buttonVariants({ variant: "outline", size: "lg", className: "border-white/40 text-[#EFE9C2] hover:bg-white/15" })}
+                  >
+                    {secondaryCta}
+                  </Link>
                 </div>
               </Container>
             </div>
@@ -178,7 +172,7 @@ export function HeroCarousel({
                 type="button"
                 onClick={() => go(index - 1)}
                 aria-label={labels.prev}
-                className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background"
+                className="inline-flex size-11 items-center justify-center rounded-full border border-white/30 bg-black/40 text-[#EFE9C2] backdrop-blur transition-colors hover:bg-black/60"
               >
                 <ChevronLeft className="size-6" />
               </button>
@@ -186,7 +180,7 @@ export function HeroCarousel({
                 type="button"
                 onClick={() => go(index + 1)}
                 aria-label={labels.next}
-                className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-background"
+                className="inline-flex size-11 items-center justify-center rounded-full border border-white/30 bg-black/40 text-[#EFE9C2] backdrop-blur transition-colors hover:bg-black/60"
               >
                 <ChevronRight className="size-6" />
               </button>
@@ -209,8 +203,8 @@ export function HeroCarousel({
                     className={cn(
                       "h-2.5 rounded-full transition-all",
                       i === index
-                        ? "w-8 bg-brand"
-                        : "w-2.5 bg-foreground/30 group-hover:bg-foreground/50",
+                        ? "w-8 bg-[#E68A08]"
+                        : "w-2.5 bg-white/40 group-hover:bg-white/70",
                     )}
                   />
                 </button>
