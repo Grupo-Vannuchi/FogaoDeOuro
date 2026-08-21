@@ -121,6 +121,11 @@ export type SiteConfig = {
    */
   servesCuisine: string[];
 
+  /**
+   * The site renders `light` and nothing else — there is no theme switch. `dark`
+   * survives as the graphite ground of the brand assets drawn off-page (app
+   * icons, the OG card), which are not part of the page palette.
+   */
   theme: {
     light: ThemePalette;
     dark: ThemePalette;
@@ -177,14 +182,16 @@ export const siteConfig: SiteConfig = {
   servesCuisine: ["Brasileira", "Churrasco", "Frutos do mar", "Buffet"],
 
   /**
-   * Dark-first, per the client's visual direction: a graphite ground makes the
-   * food photography the protagonist. The four brand colours are amber
-   * (#E68A08 — "Ouro"), ember (#E04F26), warm graphite (#474544) and cream
-   * (#EFE9C2).
+   * The four brand colours are amber (#E68A08 — "Ouro"), ember (#E04F26), warm
+   * graphite (#474544) and cream (#EFE9C2).
    *
-   * The light theme darkens the amber to #8A5206: the pure brand amber over
-   * cream is 2.14:1, which is unreadable. Same hue, darker tone — the practice
-   * of shipping a per-theme brand hex is what the previous brand did too.
+   * `light` is what the site paints, on the cream ground. It darkens the amber
+   * to #8A5206: the pure brand amber over cream is 2.14:1, which is unreadable.
+   * Same hue, darker tone.
+   *
+   * `dark` is no longer a theme the visitor can reach — the toggle and the
+   * `prefers-color-scheme` branch were removed. It stays because the app icons
+   * and the OG card still sit on the graphite, where the lockup was designed to.
    * Contrast ratios are reproducible via
    * `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
    */

@@ -21,8 +21,8 @@ embaixo. Os 54 elementos de desenho se dividem em três blocos contíguos:
 | arquivo | o que é | onde é usado |
 |---|---|---|
 | `wordmark.svg` | elementos 42–53, `viewBox` justo (4.40:1) | header, login do admin |
-| `logo.svg` | lockup completo, cores originais | rodapé — **tema claro** |
-| `logo-dark.svg` | idem, tagline recolorida para o creme `#EFE9C2` | rodapé — **tema escuro** |
+| `logo.svg` | lockup completo, cores originais | rodapé |
+| `logo-dark.svg` | idem, tagline recolorida para o creme `#EFE9C2` | só como origem do `lockup.png` |
 | `symbol.svg` | elementos 1–17, só o fogão | origem dos ícones |
 | `symbol.png` | raster 512px de `symbol.svg` | `src/app/icon.tsx`, `apple-icon.tsx` |
 | `lockup.png` | raster 1000px de `logo-dark.svg` | `src/app/[locale]/opengraph-image.tsx` |
@@ -35,12 +35,14 @@ se o cliente entregar uma logo nova, o recorte precisa ser refeito à mão.
 **Wordmark separado.** O lockup é quase quadrado. No header, que tem 64px de
 altura, a marca inteira caberia com ~28px e a tagline curvada viraria mancha.
 
-**Cut escuro do lockup.** A tagline é grafite `#474544`; sobre o fundo escuro
+**Cut escuro do lockup.** A tagline é grafite `#474544`; sobre o grafite
 `#171615` isso dá **1,97:1** — ilegível. O cut escuro troca só o preenchimento
-dessa linha pelo creme `#EFE9C2` (14,72:1). Nenhum outro elemento muda. A troca
-entre os dois é feita por CSS em `globals.css` (classes `.brand-lockup-*`), e
-**não** pela variante `dark:` do Tailwind, que só enxerga `prefers-color-scheme`
-e ignoraria o botão de tema do site.
+dessa linha pelo creme `#EFE9C2` (14,72:1). Nenhum outro elemento muda.
+
+O site é **só tema claro** e por isso a página nunca renderiza esse cut: o
+rodapé usa sempre o `logo.svg`. Ele continua no repo porque o `lockup.png` — o
+card de OG, que mantém o fundo grafite — é rasterizado a partir dele. Se um dia
+o lockup escuro sumir, o `npm run brand:rasters` quebra junto.
 
 **Símbolo sem a haste.** O fogão se conecta ao "O" de *Ouro* por uma haste curta.
 Ela está dentro do primeiro subpath do contorno, então não dá para removê-la como

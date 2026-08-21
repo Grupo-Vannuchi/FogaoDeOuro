@@ -152,9 +152,13 @@ null by hardcoding a number.
 
 ## Brand & theme
 
-- **Dark-first.** The dark palette sits on bare `:root` in `theme-style.tsx`;
-  light is the variant. `globals.css` mirrors that inversion for the neutral
-  tokens — keep the two files agreeing about which theme is the default.
+- **Light only, no switch.** The light palette sits on bare `:root` in
+  `theme-style.tsx` and `globals.css` does the same for the neutral tokens —
+  there is no `prefers-color-scheme` branch, no `data-theme` attribute and no
+  toggle. Do not add a `dark:` Tailwind variant: it would follow the OS and
+  silently repaint a site that is meant to have one look. `theme.dark` in the
+  config is not a theme — it is the graphite ground of the app icons and the OG
+  card, which are drawn off-page.
 - The four client colours are amber `#E68A08` (brand — the "Ouro"), ember
   `#E04F26` (accent), graphite `#474544` and cream `#EFE9C2`. The **light theme
   darkens the amber to `#8A5206`** because the pure tone over cream is 2.14:1.

@@ -155,26 +155,27 @@ Integration env (all optional — features degrade gracefully when unset):
 
 ### Colours
 
-`src/config/site.ts` → the `theme` object. The site is **dark-first**: the dark
-palette is the default (it sits on bare `:root` in `theme-style.tsx`) and light
-is the variant.
+`src/config/site.ts` → the `theme` object. The site is **light only**: the
+light palette sits on bare `:root` in `theme-style.tsx` and there is no toggle.
+The `dark` palette is kept for the app icons and the OG card, which stay on the
+graphite — it is never painted on the page.
 
 ```ts
 theme: {
-  dark: {                        // o padrão
-    brand: "#E68A08",            // âmbar — o "Ouro" da marca
-    brandForeground: "#171615",  // texto sobre o brand
+  light: {                       // o que o site pinta
+    brand: "#8A5206",            // âmbar escurecido — legível sobre o creme
+    brandForeground: "#ffffff",  // texto sobre o brand
     accent: "#E04F26",           // brasa
-    background: "#171615",       // grafite
-    foreground: "#EFE9C2",       // creme
+    background: "#EFE9C2",       // creme
+    foreground: "#474544",       // grafite
   },
-  light: { /* âmbar escurecido para #8A5206 — ver o comentário no arquivo */ },
+  dark: { /* só os ícones do app e o card de OG — ver o comentário no arquivo */ },
 }
 ```
 
 Change these and the whole site re-colours — no CSS edits needed. The neutral
 tokens (`card`, `muted`, `border`) live in `src/app/globals.css` and are warm on
-purpose; a cool grey reads as dirty against the graphite and the cream.
+purpose; a cool grey reads as dirty against the cream.
 
 Contrast is verifiable: `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
 

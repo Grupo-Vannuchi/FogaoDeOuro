@@ -11,6 +11,11 @@ import { cn } from "@/lib/utils";
  *    "Restaurante Grill e Café" collapses into a smudge.
  *  - `lockup` — the complete mark, for places with room to breathe.
  *
+ * Only the light cut is rendered: the site is light-only, and the lockup's
+ * graphite tagline is designed for exactly this cream ground. The dark cut
+ * (`/brand/logo-dark.svg`, cream tagline) still ships because `lockup.png` — the
+ * OG card, which keeps the graphite ground — is rasterised from it.
+ *
  * Plain `<img>` rather than `next/image`: the optimiser refuses SVG unless
  * `dangerouslyAllowSVG` is set globally, and flipping that on to serve our own
  * static file would loosen the rule for every remote pattern too. An SVG has
@@ -39,31 +44,14 @@ export function Logo({
           className="h-7 w-auto"
         />
       ) : (
-        <>
-          {/*
-            The lockup's tagline is graphite `#474544`, which lands at 1.97:1 on
-            the dark ground — so dark gets a variant with a cream tagline. The
-            swap is CSS, not `dark:`, because Tailwind's variant follows
-            `prefers-color-scheme` and would ignore the site's explicit
-            `data-theme` toggle. Rules live in `globals.css`.
-          */}
-          {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
-          <img
-            src="/brand/logo.svg"
-            alt=""
-            width={252}
-            height={144}
-            className="brand-lockup-light h-36 w-auto"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
-          <img
-            src="/brand/logo-dark.svg"
-            alt=""
-            width={252}
-            height={144}
-            className="brand-lockup-dark h-36 w-auto"
-          />
-        </>
+        /* eslint-disable-next-line @next/next/no-img-element -- see above */
+        <img
+          src="/brand/logo.svg"
+          alt=""
+          width={252}
+          height={144}
+          className="h-36 w-auto"
+        />
       )}
     </Link>
   );

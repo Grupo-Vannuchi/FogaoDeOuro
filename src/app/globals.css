@@ -35,87 +35,20 @@
 
 /*
  * Neutral / UI tokens (not brand-specific). Warm greys, not the stock cool
- * greys: the brand ground is graphite `#171615` (dark) and cream `#EFE9C2`
- * (light), and a blue-leaning neutral reads as dirty against both.
+ * greys: the brand ground is the cream `#EFE9C2`, and a blue-leaning neutral
+ * reads as dirty against it.
  *
- * Dark-first, mirroring `ThemeStyle`: the dark set sits on bare `:root` and the
- * light set is the variant, so the two files can never disagree about which
- * theme is the default.
+ * The site is light-only — one fixed palette, no `prefers-color-scheme` branch
+ * and no `data-theme` override — so these sit on bare `:root`, mirroring
+ * `ThemeStyle`. The two files can never disagree about which theme is in play,
+ * because there is only one.
  */
 :root {
-  --card: #232120;
-  --card-foreground: #efe9c2;
-  --muted: #201e1d;
-  --muted-foreground: #b8b2a6;
-  --border: #474544;
-}
-
-/* Light neutrals. Follow the OS by default, but let an explicit `data-theme`
-   choice win. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --card: #fbf7e6;
-    --card-foreground: #474544;
-    --muted: #e7e0b8;
-    --muted-foreground: #6b6862;
-    --border: #ded7ae;
-  }
-}
-
-:root[data-theme="light"] {
   --card: #fbf7e6;
   --card-foreground: #474544;
   --muted: #e7e0b8;
   --muted-foreground: #6b6862;
   --border: #ded7ae;
-}
-
-:root[data-theme="dark"] {
-  --card: #232120;
-  --card-foreground: #efe9c2;
-  --muted: #201e1d;
-  --muted-foreground: #b8b2a6;
-  --border: #474544;
-}
-
-/*
- * Brand lockup, light/dark cut. The client's mark sets "Restaurante Grill e
- * Café" in graphite `#474544`, which is 1.97:1 on the dark ground — unreadable —
- * so the dark cut recolours that line to the cream `#EFE9C2`. Everything else is
- * identical.
- *
- * Same dark-first cascade as the neutrals above, and deliberately NOT Tailwind's
- * `dark:` variant: that follows `prefers-color-scheme` only, so the site's
- * explicit `data-theme` toggle would leave the wrong cut showing.
- */
-.brand-lockup-light {
-  display: none;
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) .brand-lockup-light {
-    display: block;
-  }
-
-  :root:not([data-theme="dark"]) .brand-lockup-dark {
-    display: none;
-  }
-}
-
-:root[data-theme="light"] .brand-lockup-light {
-  display: block;
-}
-
-:root[data-theme="light"] .brand-lockup-dark {
-  display: none;
-}
-
-:root[data-theme="dark"] .brand-lockup-light {
-  display: none;
-}
-
-:root[data-theme="dark"] .brand-lockup-dark {
-  display: block;
 }
 
 @layer base {
