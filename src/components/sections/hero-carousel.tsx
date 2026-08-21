@@ -117,36 +117,52 @@ export function HeroCarousel({
                   className="absolute inset-0 bg-[radial-gradient(120%_100%_at_80%_20%,var(--color-accent)_0%,transparent_55%),radial-gradient(90%_90%_at_20%_90%,var(--color-brand)_0%,transparent_60%)] opacity-30"
                 />
               )}
-              {/* Readability overlay — strong on the left where the text sits. */}
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30" />
+              {/* Readability overlay. Two different problems, so two different gradients.
+              
+                  Mobile: the copy spans the full width, so a left-to-right veil leaves the
+                  end of every line sitting on bare photo — the subtitle was unreadable over
+                  the rotisserie shot. Veils top-to-bottom instead, strongest where the text
+                  is, clearing toward the bottom so the photo still reads.
+              
+                  md+: the copy occupies the left half only, so the veil can be directional
+                  and clear the right edge entirely. That matters here — the brief makes the
+                  food the protagonist, and a flat 30% cream over the whole frame washed the
+                  brasa out to pale yellow. */}
+              <div className="absolute inset-0 bg-gradient-to-b from-background/65 to-background/35 md:bg-gradient-to-r md:from-background md:from-[50%] md:to-transparent" />
 
-              <Container className="relative flex h-full max-w-none flex-col items-start justify-center gap-6 text-left">
-                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur">
-                  <span className="size-2 animate-pulse rounded-full bg-brand" aria-hidden />
-                  {eyebrow}
-                </span>
-                <Heading className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
-                  {slide.title}
-                </Heading>
-                <p className="max-w-xl text-pretty text-lg text-muted-foreground">
-                  {slide.subtitle}
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href="/experiencia"
-                    tabIndex={active ? undefined : -1}
-                    className={buttonVariants({ size: "lg", className: "group" })}
-                  >
-                    {primaryCta}
-                    <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    href="/contato"
-                    tabIndex={active ? undefined : -1}
-                    className={buttonVariants({ variant: "outline", size: "lg" })}
-                  >
-                    {secondaryCta}
-                  </Link>
+              <Container className="relative flex h-full max-w-none flex-col items-start justify-center text-left">
+                {/* No celular a copy ocupa a largura toda, entao nao ha metade
+                    livre para a foto: o texto vira um card de creme e a foto
+                    aparece em volta dele. No md+ o card se dissolve e o veu
+                    direcional volta a fazer esse papel. */}
+                <div className="flex flex-col items-start gap-6 rounded-2xl bg-background p-6 md:rounded-none md:bg-transparent md:p-0">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur">
+                    <span className="size-2 animate-pulse rounded-full bg-brand" aria-hidden />
+                    {eyebrow}
+                  </span>
+                  <Heading className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+                    {slide.title}
+                  </Heading>
+                  <p className="max-w-xl text-pretty text-lg text-muted-foreground">
+                    {slide.subtitle}
+                  </p>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <Link
+                      href="/experiencia"
+                      tabIndex={active ? undefined : -1}
+                      className={buttonVariants({ size: "lg", className: "group" })}
+                    >
+                      {primaryCta}
+                      <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
+                    <Link
+                      href="/contato"
+                      tabIndex={active ? undefined : -1}
+                      className={buttonVariants({ variant: "outline", size: "lg" })}
+                    >
+                      {secondaryCta}
+                    </Link>
+                  </div>
                 </div>
               </Container>
             </div>

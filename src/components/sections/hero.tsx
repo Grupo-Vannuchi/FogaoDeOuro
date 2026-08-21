@@ -8,16 +8,23 @@ import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carouse
  * fetching from a remote host). One per slide, matched by index to the copy in
  * `home.hero.slides`.
  *
- * ⚠️ EMPTY ON PURPOSE. The client's brief requires 100% authorial photography
- * (close-ups of food on the brasa, the renovated dining room) and none has been
- * delivered yet. Until then the carousel falls back to a brand gradient — stock
- * imagery would misrepresent the restaurant, and the previous brand's photos
- * literally carried its logo in frame.
+ * Authorial photography delivered by the client on 20/08/2026, one per slide and
+ * matched to that slide.s copy: the lunch spread for "a sua melhor experiência do
+ * dia", the rotisserie for "direto da brasa", the dining room for "salão amplo",
+ * the pudim for "guarde um espaço para a sobremesa". No stock imagery — the brief requires the restaurant's own photos, and
+ * the previous brand's shots literally carried its logo in frame.
  *
- * To ship the real photos: drop three WebP files here, keep them roughly the
- * same weight (~100–230 KB), and list them below. Slide 1 is the home page LCP.
+ * Sources were 1600x900 JPEG (323–489 KB), re-encoded to WebP at q=80, which
+ * lands each file in the ~100–230 KB band this carousel budgets for. Keep new
+ * photos in that band: slide 1 is the home page LCP, and a heavy first frame is
+ * paid for on every cold visit.
  */
-const slideImages: string[] = [];
+const slideImages: string[] = [
+  "/hero/slide-1.webp",
+  "/hero/slide-2.webp",
+  "/hero/slide-3.webp",
+  "/hero/slide-4.webp",
+];
 
 export async function Hero() {
   const t = await getTranslations("home.hero");
