@@ -56,14 +56,17 @@ export function InformationCard({
         >
           <Link2 className="size-5" />
         </Link>
-        <button
-          type="button"
-          onClick={() => gallery?.openAt(information.slug)}
-          aria-label={t("viewImage")}
-          className={actionClass}
-        >
-          <ImageIcon className="size-5" />
-        </button>
+        {/* Sem capa não há o que abrir: o lightbox só pagina por quem tem foto. */}
+        {information.image ? (
+          <button
+            type="button"
+            onClick={() => gallery?.openAt(information.slug)}
+            aria-label={t("viewImage")}
+            className={actionClass}
+          >
+            <ImageIcon className="size-5" />
+          </button>
+        ) : null}
       </div>
     </div>
   );

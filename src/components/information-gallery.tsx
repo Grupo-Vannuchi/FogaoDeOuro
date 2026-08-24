@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import Image from "next/image";
@@ -34,15 +35,20 @@ export function InformationGallery({
   children: React.ReactNode;
 }) {
   const t = useTranslations("novidades");
+  /**
+   * Só entra no carrossel quem tem capa: `Information.image` é opcional
+   * (`@default("")`) e um `next/image` com `src=""` quebra o modal em runtime.
+   */
+  const photos = useMemo(() => items.filter((it) => it.image), [items]);
   const [index, setIndex] = useState<number | null>(null);
   const isOpen = index !== null;
 
   const openAt = useCallback(
     (slug: string) => {
-      const i = items.findIndex((it) => it.slug === slug);
+      const i = photos.findIndex((it) => it.slug === slug);
       if (i >= 0) setIndex(i);
     },
-    [items],
+    [photos],
   );
 
   const close = useCallback(() => setIndex(null), []);
@@ -50,9 +56,9 @@ export function InformationGallery({
   const move = useCallback(
     (dir: number) =>
       setIndex((cur) =>
-        cur === null ? cur : (cur + dir + items.length) % items.length,
+        cur === null ? cur : (cur + dir + photos.length) % photos.length,
       ),
-    [items.length],
+    [photos.length],
   );
 
   useEffect(() => {
@@ -71,7 +77,7 @@ export function InformationGallery({
     };
   }, [isOpen, close, move]);
 
-  const current = index !== null ? items[index] : null;
+  const current = index !== null ? photos[index] : null;
 
   const arrowClass =
     "absolute top-1/2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25 focus-visible:bg-white/25 focus-visible:outline-none";
@@ -89,7 +95,7 @@ export function InformationGallery({
           className="fixed inset-0 z-[90] flex items-center justify-center bg-foreground/85 p-4 backdrop-blur-sm"
         >
           <span className="absolute left-4 top-4 text-sm font-medium text-white/90">
-            {index! + 1} / {items.length}
+            {index! + 1} / {photos.length}
           </span>
 
           <button
