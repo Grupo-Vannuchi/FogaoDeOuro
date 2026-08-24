@@ -11,7 +11,18 @@ import type { Locale } from "@/i18n/routing";
 export async function GalleryPreview({ locale }: { locale: Locale }) {
   const t = await getTranslations("home.galeria");
   const tc = await getTranslations("common");
-  const photos = (await getGalleryPhotos(locale)).slice(0, 3);
+  /**
+   * Posições alternadas (2ª, 4ª, 6ª), não as três primeiras: a Experiência e a
+   * /galeria abrem com fotos diferentes, e a ordem cadastrada reserva essas
+   * posições para salão e serviço — uma prévia com três pratos seria só um eco
+   * do topo da galeria. Abaixo de seis fotos o filtro deixaria a seção quase
+   * vazia, então aí vale o começo da lista.
+   */
+  const all = await getGalleryPhotos(locale);
+  const photos = (all.length >= 6 ? all.filter((_, i) => i % 2 === 1) : all).slice(
+    0,
+    3,
+  );
 
   if (photos.length === 0) return null;
 

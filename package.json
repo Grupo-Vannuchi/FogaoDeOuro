@@ -24,7 +24,8 @@
     "db:studio": "prisma studio",
     "db:dump": "docker exec n8x-marketing-db pg_dump -U agency -d agency --clean --if-exists --no-owner --no-privileges > prisma/backups/snapshot.sql",
     "db:restore": "docker exec -i n8x-marketing-db psql -U agency -d agency < prisma/backups/snapshot.sql",
-    "brand:rasters": "node scripts/build-brand-rasters.mjs"
+    "brand:rasters": "node scripts/build-brand-rasters.mjs",
+    "gallery:import": "node scripts/import-gallery-photos.mjs"
   },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
