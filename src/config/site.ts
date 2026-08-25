@@ -103,6 +103,14 @@ export type SiteConfig = {
   };
 
   /**
+   * Link público para avaliar o restaurante no Google. Fica FORA de `social`
+   * de propósito: o rodapé itera aquele objeto para montar os ícones das redes,
+   * e uma chave a mais ali viraria um ícone inexistente. Opcional — quem não
+   * tiver perfil no Google simplesmente não mostra o convite.
+   */
+  reviewUrl?: string;
+
+  /**
    * Default content author (a real person) for Article schema — the E-E-A-T
    * "byline" signal. `url` should be their profile (LinkedIn, etc.).
    */
@@ -166,6 +174,8 @@ export const siteConfig: SiteConfig = {
   social: {
     instagram: "https://instagram.com/fogao.de.ouro",
   },
+
+  reviewUrl: "https://share.google/Q0wQD46CG5ONjDdwB",
 
   nav: [
     { key: "inicio", href: "/" },

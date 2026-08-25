@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { Music2 } from "lucide-react";
+import { Star } from "lucide-react";
 import { Instagram, Linkedin, Facebook } from "@/components/ui/brand-icons";
+import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
 import { Container } from "@/components/ui/container";
@@ -16,6 +18,7 @@ const socialIcons = {
 
 export async function Footer() {
   const t = await getTranslations("footer");
+  const tc = await getTranslations("common");
   const tn = await getTranslations("nav");
   const year = new Date().getFullYear();
 
@@ -94,6 +97,26 @@ export async function Footer() {
               );
             })}
           </div>
+
+          {/* O convite para avaliar mora junto das redes: é o mesmo gesto de
+              "siga / comente", e a coluna tinha um ícone solo ocupando a altura
+              de quatro linhas de menu. Discreto (outline, sm) para não competir
+              com o CTA de reserva do topo. */}
+          {siteConfig.reviewUrl ? (
+            <a
+              href={siteConfig.reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonVariants({
+                variant: "outline",
+                size: "sm",
+                className: "mt-1 w-fit",
+              })}
+            >
+              <Star className="size-4" aria-hidden />
+              {tc("reviewCta")}
+            </a>
+          ) : null}
         </div>
       </Container>
 
