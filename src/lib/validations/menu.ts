@@ -60,8 +60,20 @@ export const menuItemSchema = z.object({
   available: z.boolean(),
   order: z.coerce.number().int().min(0).max(9999),
   tags: z.array(z.string().trim().min(1).max(40)).max(10),
+  /// Texto da página do prato. Mais generoso que a descrição do card, que
+  /// precisa caber na grade sem truncar.
+  descriptionLong: optionalLocalizedText(1200),
+  /// Em que seção do cardápio digital o prato entra.
+  kind: z.enum(["BUFFET", "PASTA", "SHOWCASE"]),
   /// 1 = segunda … 5 = sexta. O restaurante não abre no fim de semana.
-  weekday: z.union([z.coerce.number().int().min(1).max(5), z.null()]),
+  /// Lista vazia = prato permanente, servido todos os dias. Os dias chegam
+  /// desordenados do formulário (a ordem dos checkboxes marcados), então são
+  /// normalizados aqui — a página do prato mostra "Segunda, Quarta e Quinta",
+  /// nunca "Quinta, Segunda e Quarta".
+  weekdays: z
+    .array(z.coerce.number().int().min(1).max(5))
+    .max(5)
+    .transform((days) => [...new Set(days)].sort((a, b) => a - b)),
 });
 
 export type MenuCategoryInput = z.infer<typeof menuCategorySchema>;

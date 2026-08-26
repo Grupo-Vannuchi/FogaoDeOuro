@@ -57,8 +57,19 @@ export type MenuItemView = {
   description: string;
   image: string;
   tags: string[];
-  /** 1 (segunda) a 5 (sexta); null = prato permanente. */
-  weekday: number | null;
+  /** 1 (segunda) a 5 (sexta). Vazio = servido todos os dias. */
+  weekdays: number[];
+  kind: "BUFFET" | "PASTA" | "SHOWCASE";
+};
+
+/**
+ * Um prato com o que só a página dele e o cardápio digital precisam: a
+ * descrição longa e a categoria a que pertence. O card da grade usa
+ * `MenuItemView` e não carrega nada disso.
+ */
+export type DishView = MenuItemView & {
+  descriptionLong: string;
+  category: { slug: string; name: string };
 };
 
 export type MenuCategoryView = {
@@ -183,28 +194,118 @@ export const getMenu = unstable_cache(
       orderBy: { order: "asc" },
       include: {
         items: {
-          where: { available: true },
+          // Só a vitrine: os pratos do cardápio da semana vivem em /cardapio, e
+          // repeti-los aqui faria as duas páginas dizerem a mesma coisa.
+          where: { available: true, kind: "SHOWCASE" },
           orderBy: { order: "asc" },
         },
       },
     });
-    return rows.map((c) => ({
-      id: c.id,
-      slug: c.slug,
-      name: localize(c.name, locale),
-      description: localize(c.description, locale),
-      items: c.items.map((i) => ({
-        id: i.id,
-        slug: i.slug,
-        name: localize(i.name, locale),
-        description: localize(i.description, locale),
-        image: i.image,
-        tags: i.tags,
-        weekday: i.weekday,
-      })),
-    }));
+    return rows
+      .filter((c) => c.items.length > 0)
+      .map((c) => ({
+        id: c.id,
+        slug: c.slug,
+        name: localize(c.name, locale),
+        description: localize(c.description, locale),
+        items: c.items.map((i) => ({
+          id: i.id,
+          slug: i.slug,
+          name: localize(i.name, locale),
+          description: localize(i.description, locale),
+          image: i.image,
+          tags: i.tags,
+          weekdays: i.weekdays,
+          kind: i.kind,
+        })),
+      }));
   },
   ["menu"],
+  { tags: [tags.menu], revalidate },
+);
+
+/**
+ * Mapeia uma linha de `menu_items` (com a categoria incluída) para `DishView`.
+ * Existe para as três consultas do cardápio não repetirem o mesmo `localize`.
+ */
+function toDish(
+  row: {
+    id: string;
+    slug: string;
+    name: unknown;
+    description: unknown;
+    descriptionLong: unknown;
+    image: string;
+    tags: string[];
+    weekdays: number[];
+    kind: "BUFFET" | "PASTA" | "SHOWCASE";
+    category: { slug: string; name: unknown };
+  },
+  locale: Locale,
+): DishView {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: localize(row.name, locale),
+    description: localize(row.description, locale),
+    descriptionLong: localize(row.descriptionLong, locale),
+    image: row.image,
+    tags: row.tags,
+    weekdays: row.weekdays,
+    kind: row.kind,
+    category: {
+      slug: row.category.slug,
+      name: localize(row.category.name, locale),
+    },
+  };
+}
+
+/**
+ * Todos os pratos do buffet disponíveis, de uma vez.
+ *
+ * A página do cardápio filtra por dia no cliente, sem ir ao servidor a cada
+ * troca de aba: são poucas dezenas de itens, e quem escaneia o QR Code na mesa
+ * costuma estar num 4G ruim — uma requisição por dia seria pior que mandar a
+ * semana inteira no primeiro carregamento.
+ */
+export const getBuffetDishes = unstable_cache(
+  async (locale: Locale): Promise<DishView[]> => {
+    const rows = await prisma.menuItem.findMany({
+      where: { available: true, kind: "BUFFET" },
+      orderBy: [{ order: "asc" }, { slug: "asc" }],
+      include: { category: { select: { slug: true, name: true } } },
+    });
+    return rows.map((r) => toDish(r, locale));
+  },
+  ["menu", "buffet"],
+  { tags: [tags.menu], revalidate },
+);
+
+/** As massas, que têm preço próprio e não pertencem ao buffet. */
+export const getPastaDishes = unstable_cache(
+  async (locale: Locale): Promise<DishView[]> => {
+    const rows = await prisma.menuItem.findMany({
+      where: { available: true, kind: "PASTA" },
+      orderBy: [{ order: "asc" }, { slug: "asc" }],
+      include: { category: { select: { slug: true, name: true } } },
+    });
+    return rows.map((r) => toDish(r, locale));
+  },
+  ["menu", "pasta"],
+  { tags: [tags.menu], revalidate },
+);
+
+/** Um prato pelo slug, para a página individual. Null se não existe ou saiu. */
+export const getDishBySlug = unstable_cache(
+  async (slug: string, locale: Locale): Promise<DishView | null> => {
+    const row = await prisma.menuItem.findUnique({
+      where: { slug },
+      include: { category: { select: { slug: true, name: true } } },
+    });
+    if (!row || !row.available) return null;
+    return toDish(row, locale);
+  },
+  ["menu", "dish"],
   { tags: [tags.menu], revalidate },
 );
 
@@ -212,7 +313,10 @@ export const getMenu = unstable_cache(
 export const getMenuCategoryLinks = unstable_cache(
   async (locale: Locale): Promise<{ slug: string; name: string }[]> => {
     const rows = await prisma.menuCategory.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        items: { some: { available: true, kind: "SHOWCASE" } },
+      },
       orderBy: { order: "asc" },
       select: { slug: true, name: true },
     });

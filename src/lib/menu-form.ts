@@ -88,8 +88,10 @@ export type MenuItemFormValues = {
   order: string;
   /** Lista separada por vírgula no formulário; array no banco. */
   tags: string;
-  /** "" = prato permanente; "1".."5" = dia útil fixo. */
-  weekday: string;
+  descriptionLong: LocalizedStrings;
+  kind: "BUFFET" | "PASTA" | "SHOWCASE";
+  /** Um checkbox por dia útil; nenhum marcado = prato permanente. */
+  weekdays: number[];
 };
 
 export function emptyMenuItemForm(categoryId: string): MenuItemFormValues {
@@ -102,7 +104,9 @@ export function emptyMenuItemForm(categoryId: string): MenuItemFormValues {
     available: true,
     order: "0",
     tags: "",
-    weekday: "",
+    descriptionLong: blankLocalized(),
+    kind: "BUFFET",
+    weekdays: [],
   };
 }
 
@@ -115,7 +119,9 @@ type MenuItemRow = {
   available: boolean;
   order: number;
   tags: string[];
-  weekday: number | null;
+  descriptionLong: unknown;
+  kind: "BUFFET" | "PASTA" | "SHOWCASE";
+  weekdays: number[];
 };
 
 export function itemToForm(i: MenuItemRow): MenuItemFormValues {
@@ -128,7 +134,9 @@ export function itemToForm(i: MenuItemRow): MenuItemFormValues {
     available: i.available,
     order: String(i.order),
     tags: i.tags.join(", "),
-    weekday: i.weekday === null ? "" : String(i.weekday),
+    descriptionLong: readLocalized(i.descriptionLong),
+    kind: i.kind,
+    weekdays: i.weekdays,
   };
 }
 
@@ -145,6 +153,10 @@ export function itemFormToInput(values: MenuItemFormValues): MenuItemInput {
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean),
-    weekday: values.weekday.trim() === "" ? null : Number(values.weekday),
+    descriptionLong: trimLocalized(values.descriptionLong),
+    kind: values.kind,
+    // O react-hook-form devolve os checkboxes como string quando o value do
+    // input é string; o Number() aqui evita "1" chegando onde o zod espera 1.
+    weekdays: (values.weekdays ?? []).map(Number),
   };
 }

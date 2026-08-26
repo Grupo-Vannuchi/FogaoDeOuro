@@ -49,22 +49,36 @@ describe("item do cardápio", () => {
     expect(menuItemSchema.safeParse(input).success).toBe(true);
   });
 
-  it("weekday vazio vira null; preenchido vira número", () => {
+  it("sem dia marcado o prato é permanente; marcados viram lista", () => {
     const values = emptyMenuItemForm("cat_1");
     values.slug = "feijoada";
     values.name.pt = "Feijoada";
 
-    expect(itemFormToInput(values).weekday).toBeNull();
+    expect(itemFormToInput(values).weekdays).toEqual([]);
 
-    values.weekday = "3";
-    expect(itemFormToInput(values).weekday).toBe(3);
+    values.weekdays = [3];
+    expect(itemFormToInput(values).weekdays).toEqual([3]);
   });
 
-  it("recusa weekday fora de 1–5 (o restaurante abre de segunda a sexta)", () => {
+  it("guarda vários dias no mesmo prato, ordenados e sem repetir", () => {
+    const values = emptyMenuItemForm("cat_1");
+    values.slug = "frango-grelhado";
+    values.name.pt = "Frango grelhado";
+    // A ordem é a dos checkboxes clicados, e o mesmo dia pode chegar duas vezes
+    // se o formulário for remontado — a página do prato precisa de "Segunda,
+    // Quarta e Quinta", nunca "Quinta, Segunda e Quarta".
+    values.weekdays = [4, 1, 3, 1];
+
+    const parsed = menuItemSchema.safeParse(itemFormToInput(values));
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.weekdays).toEqual([1, 3, 4]);
+  });
+
+  it("recusa dia fora de 1–5 (o restaurante abre de segunda a sexta)", () => {
     const values = emptyMenuItemForm("cat_1");
     values.slug = "x";
     values.name.pt = "X";
-    values.weekday = "6";
+    values.weekdays = [6];
     expect(menuItemSchema.safeParse(itemFormToInput(values)).success).toBe(false);
   });
 
@@ -86,9 +100,11 @@ describe("item do cardápio", () => {
       available: true,
       order: 0,
       tags: ["vegetariano", "leve"],
-      weekday: null,
+      descriptionLong: { pt: "" },
+      kind: "BUFFET",
+      weekdays: [],
     });
     expect(form.tags).toBe("vegetariano, leve");
-    expect(form.weekday).toBe("");
+    expect(form.weekdays).toEqual([]);
   });
 });

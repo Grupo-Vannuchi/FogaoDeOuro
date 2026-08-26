@@ -10,10 +10,10 @@ export async function MenuItemCard({ item }: { item: MenuItemView }) {
   const t = await getTranslations("gastronomia");
   return (
     <article className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-5">
-      {item.weekday !== null ? (
+      {item.weekdays.length > 0 ? (
         <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand">
           <span className="sr-only">{t("weekOfTitle")}: </span>
-          {t(weekdayKeys[item.weekday - 1])}
+          {item.weekdays.map((d) => t(weekdayKeys[d - 1])).join(" · ")}
         </span>
       ) : null}
       {item.image ? (

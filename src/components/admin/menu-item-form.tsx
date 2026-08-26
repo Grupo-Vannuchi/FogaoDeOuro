@@ -107,17 +107,33 @@ export function MenuItemForm({
             <p className="mt-1 text-xs text-muted-foreground">{t("itemTagsHint")}</p>
           </div>
           <div>
-            <Label htmlFor="weekday">{t("itemWeekday")}</Label>
-            <select id="weekday" className={cn(selectStyles)} {...register("weekday")}>
-              <option value="">{t("weekdayNone")}</option>
-              {weekdays.map((n) => (
-                <option key={n} value={n}>
-                  {t(`weekday${n}`)}
-                </option>
-              ))}
+            <Label htmlFor="kind">{t("itemKind")}</Label>
+            <select id="kind" className={cn(selectStyles)} {...register("kind")}>
+              <option value="BUFFET">{t("kindBuffet")}</option>
+              <option value="PASTA">{t("kindPasta")}</option>
+              <option value="SHOWCASE">{t("kindShowcase")}</option>
             </select>
-            <p className="mt-1 text-xs text-muted-foreground">{t("itemWeekdayHint")}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("itemKindHint")}</p>
           </div>
+          <fieldset className="sm:col-span-2">
+            <legend className="mb-2 block text-sm font-medium">
+              {t("itemWeekdays")}
+            </legend>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {weekdays.map((n) => (
+                <label key={n} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    value={n}
+                    className="size-4 accent-brand"
+                    {...register("weekdays")}
+                  />
+                  {t(`weekday${n}`)}
+                </label>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">{t("itemWeekdaysHint")}</p>
+          </fieldset>
           <div>
             <Label htmlFor="order">{t("order")}</Label>
             <Input id="order" type="number" inputMode="numeric" {...register("order")} />
@@ -157,7 +173,25 @@ export function MenuItemForm({
                 aria-invalid={Boolean(errors.description?.[locale])}
                 {...register(`description.${locale}` as const)}
               />
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t("itemDescriptionHint")}
+              </p>
               <FieldError>{errors.description?.[locale]?.message}</FieldError>
+            </div>
+            <div>
+              <Label htmlFor={`descriptionLong-${locale}`}>
+                {t("itemDescriptionLong")}
+              </Label>
+              <Textarea
+                id={`descriptionLong-${locale}`}
+                rows={5}
+                aria-invalid={Boolean(errors.descriptionLong?.[locale])}
+                {...register(`descriptionLong.${locale}` as const)}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t("itemDescriptionLongHint")}
+              </p>
+              <FieldError>{errors.descriptionLong?.[locale]?.message}</FieldError>
             </div>
           </div>
         </fieldset>
