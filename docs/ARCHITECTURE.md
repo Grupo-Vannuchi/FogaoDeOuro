@@ -42,7 +42,7 @@ How the n8x system fits together. For coding conventions see
 
 ## Data model (Prisma — 8 models)
 
-- **Marketing content:** `MenuCategory`, `MenuItem` (o cardápio), `GalleryPhoto`,
+- **Marketing content:** `MenuCategory`, `MenuItem` (os pratos), `GalleryPhoto`,
   `Information`, `Testimonial` — localized JSON fields resolved per request.
   `Testimonial` is a verifiable review (`source`/`sourceUrl` link back to where
   it was posted, e.g. Google) and renders on the page only — it never feeds
@@ -59,6 +59,47 @@ How the n8x system fits together. For coding conventions see
 - **Leads:** `Lead` (contact), `LeadNotificationConfig` (which instance +
   WhatsApp group receives new-lead notifications).
 - **Auth:** `AdminUser` (admin login session).
+
+## Cardápio digital
+
+O QR Code das mesas aponta para **`/cardapio`** — rota curta de propósito:
+endereço longo gera um código mais denso e mais difícil de ler com a câmera.
+
+**Vitrine e cardápio são conteúdos diferentes na mesma tabela.** `MenuItem.kind`
+separa os três papéis:
+
+| `kind` | Onde aparece | Preço |
+| --- | --- | --- |
+| `SHOWCASE` | `/gastronomia` — a vitrine institucional, com foto curada | nenhum |
+| `BUFFET` | `/cardapio`, na aba do dia | da seção: `R$ 105,90/kg` |
+| `PASTA` | `/cardapio`, seção de massas | da seção: `R$ 41,90` |
+
+Sem essa marca as duas páginas mostram a mesma coisa — foi exatamente o que
+aconteceu na carga inicial dos pratos, antes do `SHOWCASE` existir.
+
+**Um prato vale para vários dias.** `MenuItem.weekdays` é uma lista (1 = segunda
+… 5 = sexta); vazia significa permanente, servido todos os dias. Frango grelhado
+sai segunda, quarta e quinta com **um cadastro só** — um por dia significaria
+corrigir a mesma descrição três vezes. Os dias são normalizados na validação,
+então a página do prato lê "Segunda, Quarta e Quinta", nunca fora de ordem.
+
+**Preço nunca no prato.** Os dois valores vivem em `src/config/menu.ts` e são
+sempre atribuídos à seção: o buffet é cobrado pelo peso do que o cliente montar
+e a massa tem valor fechado. Um número no card faria o cliente somar pratos.
+
+**A semana inteira vai no HTML; a troca de dia é local.** Quem escaneia o código
+na mesa costuma estar num 4G ruim, e uma requisição por aba seria pior que
+mandar tudo de uma vez. As grades inativas usam `hidden`, então o navegador nem
+baixa as imagens delas. O dia de hoje vem de `useSyncExternalStore`
+(`components/cardapio/day-tabs.tsx`) e **não** de um efeito: a página é estática,
+e ler o relógio no servidor congelaria "hoje" no momento do build.
+
+**Descrição curta e longa são campos separados** (`description` e
+`descriptionLong`): a curta vai no card e a longa na página do prato. Um campo
+só obrigaria a truncar texto na grade.
+
+Cobertura em `e2e/cardapio.spec.ts` — preço fora do card, troca de dia com uma
+grade por vez, prato multi-dia aparecendo em todos os dias que declara.
 
 ## Lead notification
 
