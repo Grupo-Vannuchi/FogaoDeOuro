@@ -2,7 +2,7 @@ import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Mail, Phone, MessageCircle, MapPin, Star } from "lucide-react";
+import { Mail, Phone, MessageCircle, MapPin, Clock, Star } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/ui/section";
 import { ContactForm } from "@/components/forms/contact-form";
@@ -33,37 +33,60 @@ export default async function ContactPage({
   setRequestLocale(locale);
   const t = await getTranslations("contact");
   const tc = await getTranslations("common");
+  // O horário já existe no catálogo em dois lugares; reaproveitar evita uma
+  // terceira cópia que sairia do ar sozinha na próxima mudança de expediente.
+  const tr = await getTranslations("reservas");
+  const tf = await getTranslations("footer");
   const { contact } = siteConfig;
 
   const whatsapp = whatsappLink();
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`;
 
-  const channels: {
+  type Canal = {
     icon: typeof Mail;
     label: string;
     value: string;
     href?: string;
-  }[] = [
-    { icon: Mail, label: t("labels.email"), value: contact.email, href: `mailto:${contact.email}` },
-    { icon: Phone, label: t("labels.phone"), value: contact.phone, href: phoneLink() },
-    // Only listed once a number exists — see `hasWhatsapp()` in the site config.
-    ...(whatsapp
-      ? [
-          {
-            icon: MessageCircle,
-            label: t("labels.whatsapp"),
-            value: contact.whatsapp.display,
-            href: whatsapp,
-          },
-        ]
-      : []),
-    // O endereço continua clicável e abre o Maps; o mapa embutido saiu daqui
-    // porque o rodapé já carrega um, algumas centenas de pixels abaixo.
+  };
+
+  /**
+   * Dois blocos, agrupados pelo que a pessoa quer fazer: falar com a casa ou
+   * chegar até ela. Quatro cards com uma linha cada ficavam inflados — pouca
+   * informação para muito espaço. Agrupados, cada caixa tem conteúdo de verdade
+   * e o horário entra sem precisar de um card só para ele.
+   */
+  const blocos: { title: string; itens: Canal[] }[] = [
     {
-      icon: MapPin,
-      label: t("labels.address"),
-      value: `${contact.address.street}, ${contact.address.city}/${contact.address.region}`,
-      href: mapsLink,
+      title: t("infoTitle"),
+      itens: [
+        { icon: Mail, label: t("labels.email"), value: contact.email, href: `mailto:${contact.email}` },
+        { icon: Phone, label: t("labels.phone"), value: contact.phone, href: phoneLink() },
+        // Only listed once a number exists — see `hasWhatsapp()` in the site config.
+        ...(whatsapp
+          ? [
+              {
+                icon: MessageCircle,
+                label: t("labels.whatsapp"),
+                value: contact.whatsapp.display,
+                href: whatsapp,
+              },
+            ]
+          : []),
+      ],
+    },
+    {
+      title: t("whereTitle"),
+      itens: [
+        // O endereço continua clicável e abre o Maps; o mapa embutido saiu daqui
+        // porque o rodapé já carrega um, algumas centenas de pixels abaixo.
+        {
+          icon: MapPin,
+          label: t("labels.address"),
+          value: `${contact.address.street}, ${contact.address.city}/${contact.address.region}`,
+          href: mapsLink,
+        },
+        { icon: Clock, label: tr("hoursLabel"), value: tf("hours") },
+      ],
     },
   ];
 
@@ -83,37 +106,44 @@ export default async function ContactPage({
       {/* Os canais viram uma faixa abaixo do formulário: em grade eles ocupam a
           largura inteira, que é justamente o espaço que sobrava. */}
       <Section className="border-t border-border bg-muted/30">
-        <h2 className="text-balance text-center text-2xl font-bold tracking-tight sm:text-3xl">
-          {t("infoTitle")}
-        </h2>
-
-        <ul className="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {channels.map((channel) => (
-            <li
-              key={channel.label}
-              className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-6 text-center"
+        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+          {blocos.map((bloco) => (
+            <div
+              key={bloco.title}
+              className="rounded-2xl border border-border bg-card p-6 sm:p-8"
             >
-              <span className="inline-flex size-11 items-center justify-center rounded-full bg-brand/10 text-brand">
-                <channel.icon className="size-5" aria-hidden />
-              </span>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {channel.label}
-              </p>
-              {channel.href ? (
-                <a
-                  href={channel.href}
-                  target={channel.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  className="text-pretty text-sm transition-colors hover:text-brand"
-                >
-                  {channel.value}
-                </a>
-              ) : (
-                <p className="text-pretty text-sm">{channel.value}</p>
-              )}
-            </li>
+              <h2 className="font-serif text-xl font-bold tracking-tight">
+                {bloco.title}
+              </h2>
+              <ul className="mt-5 flex flex-col gap-4">
+                {bloco.itens.map((item) => (
+                  <li key={item.label} className="flex gap-3">
+                    <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                      <item.icon className="size-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        {item.label}
+                      </p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          target={item.href.startsWith("http") ? "_blank" : undefined}
+                          rel="noopener noreferrer"
+                          className="text-pretty text-sm transition-colors hover:text-brand"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-pretty text-sm">{item.value}</p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <ReserveButton size="lg" />
