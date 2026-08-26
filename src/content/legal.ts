@@ -10,19 +10,20 @@
  * the `/privacidade` and `/termos` pages and their metadata read from here. Update
  * `updated` whenever the text changes.
  *
- * ⚠️ NÃO PUBLICAR ENQUANTO HOUVER `PENDENTE_*` ABAIXO. Estes documentos são a base
- * legal do tratamento de dados (LGPD): publicar com o dado de outra empresa é pior
- * do que publicar em branco, por isso o campo que falta está marcado em vez de
- * preenchido por aproximação. **Só falta o domínio final** — ainda não comprado.
+ * ⚠️ NUNCA preencher um dado destes por aproximação. São a base legal do
+ * tratamento de dados (LGPD), e publicar com o dado de outra empresa é pior do
+ * que publicar em branco — daí o marcador `PENDENTE` existir. **Não há nenhum
+ * pendente hoje.**
  *
  * Razão social, CNPJ e e-mail vieram do cliente em 12/08/2026; os dígitos
- * verificadores do CNPJ foram conferidos. Razão social, CNPJ e e-mail também
+ * verificadores do CNPJ foram conferidos. O domínio foi preenchido em
+ * 26/08/2026, quando o registro já respondia: `fogaodeouro.com.br` devolve 308
+ * para a forma com `www`, então é essa a que entra aqui — um documento legal
+ * que cita um endereço que redireciona convida a discussão sobre qual site é o
+ * "Site" do contrato. Razão social, CNPJ e e-mail também
  * vivem em `src/config/site.ts` (`legalName`, `registration`, `contact.email`),
  * que alimenta o rodapé e o structured data — os dois arquivos precisam concordar.
  */
-
-/** Marca um dado que ainda não foi fornecido pelo cliente. Nunca inventar. */
-const PENDENTE = (campo: string) => `«PENDENTE: ${campo}»`;
 
 /** Controller (data + legal entity) — used across both documents. */
 export const legalEntity = {
@@ -36,7 +37,7 @@ export const legalEntity = {
   // Mesmo endereço do contato geral: o restaurante não tem um encarregado de
   // dados separado, e apontar a LGPD para uma caixa que ninguém lê seria pior.
   privacyEmail: "fgdeouro3@gmail.com",
-  site: PENDENTE("domínio final do site"),
+  site: "www.fogaodeouro.com.br",
 } as const;
 
 export type LegalSection = { heading: string; body: string[] };
@@ -65,7 +66,7 @@ const b = {
 const pt: { terms: LegalDoc; privacy: LegalDoc } = {
   terms: {
     title: "Termos de Uso",
-    updated: "Última atualização: 7 de agosto de 2026",
+    updated: "Última atualização: 26 de agosto de 2026",
     intro: [
       `Estes Termos de Uso ("Termos") regulam o acesso e a utilização do site ${b.site} ("Site"), mantido por ${b.legalName}, nome fantasia ${b.tradeName}, inscrita no CNPJ sob o nº ${b.cnpj}, com sede em ${b.address} ("nós", "nosso" ou "Empresa").`,
       "Ao acessar ou utilizar o Site, você ('Usuário') declara ter lido, compreendido e concordado integralmente com estes Termos. Caso não concorde com qualquer disposição, pedimos que não utilize o Site.",
@@ -194,7 +195,7 @@ const pt: { terms: LegalDoc; privacy: LegalDoc } = {
   },
   privacy: {
     title: "Política de Privacidade",
-    updated: "Última atualização: 7 de agosto de 2026",
+    updated: "Última atualização: 26 de agosto de 2026",
     intro: [
       `Esta Política de Privacidade descreve como ${b.legalName}, nome fantasia ${b.tradeName}, inscrita no CNPJ nº ${b.cnpj}, com sede em ${b.address} ("nós" ou "Empresa"), coleta, utiliza, armazena e protege os dados pessoais dos usuários do site ${b.site} ("Site").`,
       "O tratamento de dados pessoais é realizado em conformidade com a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados — LGPD) e demais normas aplicáveis. Ao utilizar o Site, você declara estar ciente desta Política.",
