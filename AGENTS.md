@@ -42,12 +42,13 @@ bugs they prevent. Follow them.
 ```
 src/
   app/[locale]/(marketing)/   public site: / · /experiencia · /gastronomia ·
-                              /galeria · /reservas · /contato · /novidades ·
-                              /privacy · /terms
+                              /cardapio · /galeria · /reservas · /contato ·
+                              /novidades · /privacy · /terms
   app/[locale]/admin/         login + (dashboard) session-guarded admin
   app/actions/                server actions (whatsapp, auth, …)
   components/                 ui, sections, admin
   config/site.ts              ⭐ white-label brand + theme + opening hours
+  config/menu.ts              ⭐ preços do cardápio, dias da semana, massas
   lib/                        env, prisma, queries (DAL), auth, rate-limit, evolution,
                               validations
   messages/                   pt.json (typed catalog)
@@ -166,9 +167,20 @@ null by hardcoding a number.
   `node docs/superpowers/specs/2026-08-07-palette-contrast.mjs`.
 - Headings are a display serif (Playfair), body is the sans. Set in
   `globals.css` under `@layer base`, scoped to `h1`–`h3`.
-- **No prices anywhere** — the client's direction forbids it, on the page *and*
-  in structured data (`priceRange` is deliberately absent from the `Restaurant`
-  schema, since it would surface in search results).
+- **Preço por seção sim, preço por prato nunca.** A regra mudou em 26/08/2026,
+  a pedido do dono: num restaurante por quilo o valor é a primeira informação
+  que o cliente procura, e escondê-lo atrapalha o negócio. O que vale hoje:
+  - os dois valores vivem em `src/config/menu.ts` — buffet `R$ 105,90/kg` e
+    massas `R$ 41,90` — e aparecem no **cardápio digital** (`/cardapio` e a
+    página de cada prato), sempre atribuídos à seção;
+  - **nenhum prato exibe valor próprio**, nem em card nem em página: o buffet é
+    cobrado pelo peso do que o cliente montar e a massa tem preço fechado.
+    Colocar um número no prato faria o cliente somar pratos;
+  - a vitrine institucional de `/gastronomia` segue **sem preço algum** — ela
+    apresenta a casa, não vende porção;
+  - `priceRange` continua **fora** do `Restaurant` JSON-LD. Isso não é sobre
+    esconder valor: a faixa aparece no resultado de busca como "$$" sem contexto
+    e não substitui o preço real, que o cliente lê no cardápio.
 - **Reviews never enter structured data — permanent rule.** Testimonials render
   on the page (`components/sections/testimonials.tsx`), each one linking to its
   real source via `source`/`sourceUrl`. They must never feed the `Restaurant`
