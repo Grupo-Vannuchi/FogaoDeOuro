@@ -12,7 +12,24 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
   const t = await getTranslations("home.gastronomia");
   const tc = await getTranslations("common");
   const categories = await getMenu(locale);
-  const items = categories.flatMap((category) => category.items).slice(0, 8);
+
+  /**
+   * Um de cada categoria por vez, em rodadas, até fechar oito.
+   *
+   * Concatenar as categorias e cortar os oito primeiros dava a vitrine inteira
+   * de uma categoria só — as três primeiras carnes, depois cinco do buffet, e
+   * nenhuma sobremesa. A seção promete "tudo o que espera por você" e mostrava
+   * um canto só da cozinha. Em rodadas, as oito vagas se distribuem sozinhas e
+   * continuam se distribuindo quando o restaurante trocar as fotos.
+   */
+  const items = [];
+  for (let rodada = 0; items.length < 8; rodada += 1) {
+    const daRodada = categories
+      .map((c) => c.items[rodada])
+      .filter((item) => item !== undefined);
+    if (daRodada.length === 0) break; // acabaram os pratos
+    items.push(...daRodada.slice(0, 8 - items.length));
+  }
 
   if (items.length === 0) return null;
 

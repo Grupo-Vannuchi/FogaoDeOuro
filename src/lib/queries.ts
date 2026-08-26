@@ -196,7 +196,12 @@ export const getMenu = unstable_cache(
         items: {
           // Só a vitrine: os pratos do cardápio da semana vivem em /cardapio, e
           // repeti-los aqui faria as duas páginas dizerem a mesma coisa.
-          where: { available: true, kind: "SHOWCASE" },
+          //
+          // E só com foto. A vitrine existe para mostrar a casa: um card sem
+          // imagem no meio de uma grade de fotos lê como conteúdo faltando, não
+          // como prato. Quem não tem foto continua cadastrado no admin e volta
+          // sozinho assim que ganhar uma — o filtro é de exibição, não de dado.
+          where: { available: true, kind: "SHOWCASE", NOT: { image: "" } },
           orderBy: { order: "asc" },
         },
       },
@@ -315,7 +320,9 @@ export const getMenuCategoryLinks = unstable_cache(
     const rows = await prisma.menuCategory.findMany({
       where: {
         published: true,
-        items: { some: { available: true, kind: "SHOWCASE" } },
+        // Mesma regra da vitrine: categoria cujos pratos não têm foto some da
+        // página, então o link para a âncora dela também sai do menu.
+        items: { some: { available: true, kind: "SHOWCASE", NOT: { image: "" } } },
       },
       orderBy: { order: "asc" },
       select: { slug: true, name: true },
