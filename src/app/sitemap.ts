@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/experiencia",
     "/gastronomia",
+    "/cardapio",
     "/novidades",
     "/galeria",
     "/reservas",

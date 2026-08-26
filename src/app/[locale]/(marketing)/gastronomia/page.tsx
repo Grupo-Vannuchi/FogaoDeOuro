@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { buttonVariants } from "@/components/ui/button";
 import { PageHeader } from "@/components/page-header";
 import { MenuItemCard } from "@/components/menu-item-card";
 import { Reveal } from "@/components/ui/reveal";
@@ -35,6 +37,29 @@ export default async function ServicesPage({
   return (
     <>
       <PageHeader title={t("title")} subtitle={t("subtitle")} />
+
+      {/* Ponte para o cardápio digital — a mesma página do QR Code das mesas.
+          Fica no topo porque quem abre "Nossa Gastronomia" procurando o que é
+          servido hoje deve chegar lá num toque, sem rolar as categorias. */}
+      <Section className="pb-0 sm:pb-0">
+        <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div className="min-w-0">
+            <h2 className="font-serif text-2xl font-bold tracking-tight">
+              {t("menuCtaTitle")}
+            </h2>
+            <p className="mt-1 text-pretty text-muted-foreground">
+              {t("menuCtaText")}
+            </p>
+          </div>
+          <Link
+            href="/cardapio"
+            className={buttonVariants({ size: "lg", className: "shrink-0" })}
+          >
+            {t("menuCtaButton")}
+          </Link>
+        </div>
+      </Section>
+
       {categories.length === 0 ? (
         <Section>
           <p className="text-center text-muted-foreground">{t("empty")}</p>

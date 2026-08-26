@@ -17,6 +17,12 @@ import { siteConfig, type NavKey } from "@/config/site";
 export type DropdownLink = {
   slug: string;
   title: string;
+  /**
+   * Rota própria, quando o item não é uma âncora dentro da página do pai.
+   * O cardápio digital tem página inteira (`/cardapio`); as categorias
+   * continuam sendo âncoras em `/gastronomia`.
+   */
+  href?: string;
 };
 
 export function Header({
@@ -78,7 +84,7 @@ export function Header({
                     {links.map((link) => (
                       <li key={link.slug}>
                         <Link
-                          href={`${item.href}#${link.slug}`}
+                          href={link.href ?? `${item.href}#${link.slug}`}
                           className="block truncate rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                         >
                           {link.title}

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -16,6 +16,7 @@ export default async function MarketingLayout({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
+  const t = await getTranslations("nav");
 
   // The gallery is no longer a top-level menu item, so the header only needs
   // the gastronomy children — one query fewer on every marketing page.
@@ -23,7 +24,12 @@ export default async function MarketingLayout({
     getMenuCategoryLinks(locale),
     getInformations(locale),
   ]);
-  const categoryLinks = categories.map((c) => ({ slug: c.slug, title: c.name }));
+  // O cardápio digital encabeça o dropdown: é a página que o cliente na mesa
+  // procura, e as categorias continuam logo abaixo, como âncoras.
+  const categoryLinks = [
+    { slug: "cardapio", title: t("cardapio"), href: "/cardapio" },
+    ...categories.map((c) => ({ slug: c.slug, title: c.name })),
+  ];
   const informationLinks = informations.map((i) => ({
     slug: i.slug,
     title: i.title,
