@@ -90,8 +90,15 @@ export type MenuItemFormValues = {
   tags: string;
   descriptionLong: LocalizedStrings;
   kind: "BUFFET" | "PASTA" | "SHOWCASE";
-  /** Um checkbox por dia útil; nenhum marcado = prato permanente. */
-  weekdays: number[];
+  /**
+   * Um checkbox por dia útil; nenhum marcado = prato permanente.
+   *
+   * Texto, não número: o react-hook-form marca um grupo de checkboxes
+   * comparando o `value` do input — que o DOM sempre entrega como string —
+   * com o conteúdo do array. Com números aqui, o formulário de edição reabre
+   * com todos os dias desmarcados e salvar transforma o prato em permanente.
+   */
+  weekdays: string[];
 };
 
 export function emptyMenuItemForm(categoryId: string): MenuItemFormValues {
@@ -136,7 +143,7 @@ export function itemToForm(i: MenuItemRow): MenuItemFormValues {
     tags: i.tags.join(", "),
     descriptionLong: readLocalized(i.descriptionLong),
     kind: i.kind,
-    weekdays: i.weekdays,
+    weekdays: i.weekdays.map(String),
   };
 }
 
@@ -155,8 +162,6 @@ export function itemFormToInput(values: MenuItemFormValues): MenuItemInput {
       .filter(Boolean),
     descriptionLong: trimLocalized(values.descriptionLong),
     kind: values.kind,
-    // O react-hook-form devolve os checkboxes como string quando o value do
-    // input é string; o Number() aqui evita "1" chegando onde o zod espera 1.
     weekdays: (values.weekdays ?? []).map(Number),
   };
 }

@@ -56,7 +56,7 @@ describe("item do cardápio", () => {
 
     expect(itemFormToInput(values).weekdays).toEqual([]);
 
-    values.weekdays = [3];
+    values.weekdays = ["3"];
     expect(itemFormToInput(values).weekdays).toEqual([3]);
   });
 
@@ -67,7 +67,7 @@ describe("item do cardápio", () => {
     // A ordem é a dos checkboxes clicados, e o mesmo dia pode chegar duas vezes
     // se o formulário for remontado — a página do prato precisa de "Segunda,
     // Quarta e Quinta", nunca "Quinta, Segunda e Quarta".
-    values.weekdays = [4, 1, 3, 1];
+    values.weekdays = ["4", "1", "3", "1"];
 
     const parsed = menuItemSchema.safeParse(itemFormToInput(values));
     expect(parsed.success).toBe(true);
@@ -78,7 +78,7 @@ describe("item do cardápio", () => {
     const values = emptyMenuItemForm("cat_1");
     values.slug = "x";
     values.name.pt = "X";
-    values.weekdays = [6];
+    values.weekdays = ["6"];
     expect(menuItemSchema.safeParse(itemFormToInput(values)).success).toBe(false);
   });
 
@@ -106,5 +106,26 @@ describe("item do cardápio", () => {
     });
     expect(form.tags).toBe("vegetariano, leve");
     expect(form.weekdays).toEqual([]);
+  });
+
+  it("itemToForm devolve os dias como texto, para os checkboxes marcarem", () => {
+    // O DOM entrega o value do checkbox como string. Com números aqui, o
+    // formulário de edição reabria com todos os dias desmarcados e salvar
+    // transformava o prato em permanente — um dado perdido em silêncio.
+    const form = itemToForm({
+      slug: "frango-grelhado",
+      categoryId: "cat_1",
+      name: { pt: "Frango grelhado" },
+      description: { pt: "" },
+      image: "",
+      available: true,
+      order: 0,
+      tags: [],
+      descriptionLong: { pt: "" },
+      kind: "BUFFET",
+      weekdays: [1, 3, 4],
+    });
+    expect(form.weekdays).toEqual(["1", "3", "4"]);
+    expect(itemFormToInput(form).weekdays).toEqual([1, 3, 4]);
   });
 });
