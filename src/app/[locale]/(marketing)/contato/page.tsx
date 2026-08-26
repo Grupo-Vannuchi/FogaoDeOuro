@@ -35,59 +35,48 @@ export default async function ContactPage({
   const tc = await getTranslations("common");
   // O horário já existe no catálogo em dois lugares; reaproveitar evita uma
   // terceira cópia que sairia do ar sozinha na próxima mudança de expediente.
-  const tr = await getTranslations("reservas");
   const tf = await getTranslations("footer");
   const { contact } = siteConfig;
 
   const whatsapp = whatsappLink();
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`;
 
-  type Canal = {
+  /**
+   * Uma linha por canal, sem caixa. A página já tem os campos do formulário
+   * logo acima, cada um com sua moldura; repetir molduras aqui embaixo fazia a
+   * seção competir com ele em vez de complementá-lo. Fio fino entre as linhas
+   * basta para separar, e o dado ganha o peso que o card tirava dele.
+   */
+  const canais: {
     icon: typeof Mail;
     label: string;
     value: string;
     href?: string;
-  };
-
-  /**
-   * Dois blocos, agrupados pelo que a pessoa quer fazer: falar com a casa ou
-   * chegar até ela. Quatro cards com uma linha cada ficavam inflados — pouca
-   * informação para muito espaço. Agrupados, cada caixa tem conteúdo de verdade
-   * e o horário entra sem precisar de um card só para ele.
-   */
-  const blocos: { title: string; itens: Canal[] }[] = [
+  }[] = [
+    { icon: Mail, label: t("labels.email"), value: contact.email, href: `mailto:${contact.email}` },
+    { icon: Phone, label: t("labels.phone"), value: contact.phone, href: phoneLink() },
+    // Only listed once a number exists — see `hasWhatsapp()` in the site config.
+    ...(whatsapp
+      ? [
+          {
+            icon: MessageCircle,
+            label: t("labels.whatsapp"),
+            value: contact.whatsapp.display,
+            href: whatsapp,
+          },
+        ]
+      : []),
+    // O endereço continua clicável e abre o Maps; o mapa embutido saiu daqui
+    // porque o rodapé já carrega um, algumas centenas de pixels abaixo.
     {
-      title: t("infoTitle"),
-      itens: [
-        { icon: Mail, label: t("labels.email"), value: contact.email, href: `mailto:${contact.email}` },
-        { icon: Phone, label: t("labels.phone"), value: contact.phone, href: phoneLink() },
-        // Only listed once a number exists — see `hasWhatsapp()` in the site config.
-        ...(whatsapp
-          ? [
-              {
-                icon: MessageCircle,
-                label: t("labels.whatsapp"),
-                value: contact.whatsapp.display,
-                href: whatsapp,
-              },
-            ]
-          : []),
-      ],
+      icon: MapPin,
+      label: t("labels.address"),
+      value: `${contact.address.street}, ${contact.address.city}/${contact.address.region}`,
+      href: mapsLink,
     },
-    {
-      title: t("whereTitle"),
-      itens: [
-        // O endereço continua clicável e abre o Maps; o mapa embutido saiu daqui
-        // porque o rodapé já carrega um, algumas centenas de pixels abaixo.
-        {
-          icon: MapPin,
-          label: t("labels.address"),
-          value: `${contact.address.street}, ${contact.address.city}/${contact.address.region}`,
-          href: mapsLink,
-        },
-        { icon: Clock, label: tr("hoursLabel"), value: tf("hours") },
-      ],
-    },
+    // O horário vem do catálogo onde já existia: uma terceira cópia sairia do
+    // ar sozinha na próxima mudança de expediente.
+    { icon: Clock, label: t("labels.hours"), value: tf("hours") },
   ];
 
   return (
@@ -106,43 +95,47 @@ export default async function ContactPage({
       {/* Os canais viram uma faixa abaixo do formulário: em grade eles ocupam a
           largura inteira, que é justamente o espaço que sobrava. */}
       <Section className="border-t border-border bg-muted/30">
-        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
-          {blocos.map((bloco) => (
-            <div
-              key={bloco.title}
-              className="rounded-2xl border border-border bg-card p-6 sm:p-8"
-            >
-              <h2 className="font-serif text-xl font-bold tracking-tight">
-                {bloco.title}
-              </h2>
-              <ul className="mt-5 flex flex-col gap-4">
-                {bloco.itens.map((item) => (
-                  <li key={item.label} className="flex gap-3">
-                    <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                      <item.icon className="size-4" aria-hidden />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        {item.label}
-                      </p>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target={item.href.startsWith("http") ? "_blank" : undefined}
-                          rel="noopener noreferrer"
-                          className="text-pretty text-sm transition-colors hover:text-brand"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-pretty text-sm">{item.value}</p>
-                      )}
+        <div className="mx-auto max-w-3xl">
+          <h2 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">
+            {t("infoTitle")}
+          </h2>
+
+          <ul className="mt-8 border-t border-border">
+            {canais.map((canal) => {
+              const conteudo = (
+                <>
+                  <span className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <canal.icon className="size-4 shrink-0 text-brand" aria-hidden />
+                    {canal.label}
+                  </span>
+                  <span className="text-pretty ps-7 sm:ps-0 sm:text-right">
+                    {canal.value}
+                  </span>
+                </>
+              );
+
+              // A linha inteira é o alvo quando há para onde ir: no celular,
+              // acertar o texto do telefone é mais difícil que acertar a linha.
+              return (
+                <li key={canal.label} className="border-b border-border">
+                  {canal.href ? (
+                    <a
+                      href={canal.href}
+                      target={canal.href.startsWith("http") ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="flex flex-col gap-1 py-4 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-none sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                    >
+                      {conteudo}
+                    </a>
+                  ) : (
+                    <div className="flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                      {conteudo}
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">

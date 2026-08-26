@@ -228,7 +228,8 @@
       "email": "E-mail",
       "phone": "Telefone",
       "whatsapp": "WhatsApp",
-      "address": "Endereço"
+      "address": "Endereço",
+      "hours": "Horário"
     },
     "form": {
       "name": "Nome",
@@ -241,8 +242,7 @@
       "submitting": "Enviando",
       "success": "Mensagem enviada! Em breve entramos em contato.",
       "error": "Não foi possível enviar agora. Tente novamente ou ligue para a gente."
-    },
-    "whereTitle": "Onde estamos"
+    }
   },
   "validation": {
     "nameMin": "Informe seu nome (mín. 2 caracteres).",
