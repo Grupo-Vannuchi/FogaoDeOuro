@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PageHeader } from "@/components/page-header";
+import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -96,6 +97,18 @@ export default async function AboutPage({
             <CheckList items={salaoItems} />
           </div>
         </div>
+
+        {/* A adega fecha o bloco do salão porque é dele que o texto fala — o
+            ambiente. Fica no fim da seção, em faixa larga, para não competir
+            com as duas colunas de texto acima. */}
+        <Image
+          src="/ambiente/vinhos.webp"
+          alt={t("vinhosAlt")}
+          width={1400}
+          height={788}
+          sizes="(min-width: 1280px) 1200px, 100vw"
+          className="mt-14 aspect-[16/9] w-full rounded-2xl object-cover sm:aspect-[21/9]"
+        />
       </Section>
 
       <Section className="border-y border-border bg-muted/30">
