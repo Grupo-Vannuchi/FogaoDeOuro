@@ -13,7 +13,8 @@
     "contato": "Contato",
     "novidades": "Novidades",
     "openMenu": "Abrir menu",
-    "closeMenu": "Fechar menu"
+    "closeMenu": "Fechar menu",
+    "cardapio": "Cardápio"
   },
   "common": {
     "reviewCta": "Deixe sua avaliação aqui",
@@ -162,7 +163,10 @@
     "weekday2": "Terça",
     "weekday3": "Quarta",
     "weekday4": "Quinta",
-    "weekday5": "Sexta"
+    "weekday5": "Sexta",
+    "menuCtaTitle": "Cardápio da semana",
+    "menuCtaText": "Veja os pratos de cada dia, o buffet por quilo e as massas.",
+    "menuCtaButton": "Ver o cardápio"
   },
   "novidades": {
     "title": "Novidades",
@@ -389,9 +393,6 @@
       "itemCategory": "Categoria",
       "itemTags": "Etiquetas",
       "itemTagsHint": "Separe por vírgula: vegetariano, picante",
-      "itemWeekday": "Dia da semana",
-      "itemWeekdayHint": "Só para os pratos fixos de \"A Semana no Fogão\". Deixe em branco se o prato é permanente.",
-      "weekdayNone": "Permanente",
       "weekday1": "Segunda",
       "weekday2": "Terça",
       "weekday3": "Quarta",
@@ -405,7 +406,17 @@
       "deleteCategoryConfirm": "Apagar \"{name}\"? Os pratos desta categoria também serão apagados.",
       "deleteItemConfirm": "Apagar \"{name}\"?",
       "errorDuplicate": "Já existe um item com esse identificador na URL.",
-      "errorUnknown": "Não foi possível salvar. Tente de novo."
+      "errorUnknown": "Não foi possível salvar. Tente de novo.",
+      "itemKind": "Seção do cardápio",
+      "kindBuffet": "Buffet (por quilo)",
+      "kindPasta": "Massas (preço fechado)",
+      "itemKindHint": "Buffet e massas saem no cardápio da semana; a vitrine aparece em Nossa Gastronomia.",
+      "itemWeekdays": "Dias em que é servido",
+      "itemWeekdaysHint": "Marque quantos dias quiser. Nenhum marcado = servido todos os dias.",
+      "itemDescriptionHint": "Uma frase curta. É o que aparece no card do cardápio.",
+      "itemDescriptionLong": "Descrição completa",
+      "itemDescriptionLongHint": "Texto da página do prato. Se ficar vazio, a página usa a descrição curta.",
+      "kindShowcase": "Vitrine (Nossa Gastronomia)"
     },
     "galeria": {
       "title": "Galeria",
@@ -543,5 +554,34 @@
       "disconnected": "desconectada",
       "instanceDisconnected": "Instância desconectada. Conecte-a no painel de WhatsApp e tente de novo."
     }
+  },
+  "cardapio": {
+    "title": "Cardápio da Semana",
+    "subtitle": "As opções preparadas para cada dia, de segunda a sexta.",
+    "metaDescription": "Confira o cardápio da semana do Fogão de Ouro: buffet por quilo e massas, de segunda a sexta, no Centro de Santos.",
+    "buffetLabel": "Buffet por quilo",
+    "buffetNote": "O valor é calculado pelo peso do prato que você montar — não pelo que escolher.",
+    "pastaLabel": "Massas",
+    "pastaNote": "Preço fechado por porção, de segunda a sexta, com diferentes opções de massas e molhos.",
+    "pastaEmpty": "As opções de massas e molhos do dia ficam com a nossa equipe, na ilha de massas.",
+    "pastaShapes": "Massas",
+    "pastaSauces": "Molhos",
+    "daySelectorLabel": "Escolha o dia",
+    "today": "Hoje",
+    "everyday": "Todos os dias",
+    "emptyDay": "Ainda não há pratos cadastrados para este dia.",
+    "empty": "O cardápio da semana ainda não foi publicado.",
+    "seeDish": "Ver o prato",
+    "backToMenu": "Voltar ao cardápio",
+    "availableOn": "Servido às",
+    "availableEveryday": "Servido todos os dias",
+    "categoryLabel": "Categoria",
+    "dishImageAlt": "{name} servido no Fogão de Ouro",
+    "noPhoto": "Foto em breve",
+    "weekday1": "Segunda",
+    "weekday2": "Terça",
+    "weekday3": "Quarta",
+    "weekday4": "Quinta",
+    "weekday5": "Sexta"
   }
 }
