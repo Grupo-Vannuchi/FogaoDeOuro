@@ -60,7 +60,11 @@ export function OrganizationJsonLd() {
     foundingDate: String(foundedYear),
     servesCuisine,
     acceptsReservations: true,
-    menu: `${url}/gastronomia`,
+    // `menu` aponta para o cardápio de verdade, não para a vitrine: o Google
+    // usa esta URL como "o cardápio do restaurante", e /gastronomia apresenta
+    // a casa sem dizer o que é servido hoje. Sem preço aqui — o valor é da
+    // seção e o cliente lê no próprio cardápio.
+    menu: `${url}/cardapio`,
     address: {
       "@type": "PostalAddress",
       streetAddress: contact.address.street,
