@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PageHeader } from "@/components/page-header";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
-import { DishCard } from "@/components/cardapio/dish-card";
+import { DishRow } from "@/components/cardapio/dish-row";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
 import {
@@ -54,10 +54,17 @@ export default async function CardapioPage({
 
   return (
     <>
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      <MenuHero />
 
-      <Section>
-        <PriceCallout />
+      {/* Coluna estreita e centralizada: um cardápio é lido de cima a baixo,
+          não varrido em grade. `max-w-3xl` mantém a linha na faixa confortável
+          de leitura mesmo num monitor largo. */}
+      <Section containerClassName="max-w-3xl">
+        <SectionHeader title={t("title")} subtitle={t("subtitle")} />
+
+        <div className="mt-10">
+          <PriceCallout />
+        </div>
 
         {buffet.length === 0 ? (
           <p className="mt-12 text-center text-muted-foreground">{t("empty")}</p>
@@ -80,16 +87,10 @@ export default async function CardapioPage({
                 return (
                   <ul
                     key={day}
-                    className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+                    className="overflow-hidden rounded-2xl border border-border bg-card"
                   >
-                    {dishes.map((dish, i) => (
-                      <li key={dish.id}>
-                        {/* Só a primeira linha da segunda-feira entra como
-                            prioritária: é o que aparece na tela ao abrir o QR
-                            Code. As demais grades nascem escondidas e o
-                            navegador nem baixa as imagens delas. */}
-                        <DishCard dish={dish} priority={day === 1 && i < 3} />
-                      </li>
+                    {dishes.map((dish) => (
+                      <DishRow key={dish.id} dish={dish} />
                     ))}
                   </ul>
                 );
@@ -103,21 +104,19 @@ export default async function CardapioPage({
       <Section
         id="massas"
         className="border-t border-border bg-muted/30"
+        containerClassName="max-w-3xl"
       >
         {/* O preço vai no próprio título da seção: quem rola até aqui não
             deve precisar voltar ao topo para lembrar quanto custa. */}
         <SectionHeader
           title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
           subtitle={t("pastaNote")}
-          align="left"
         />
 
         {pasta.length > 0 ? (
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
             {pasta.map((dish) => (
-              <li key={dish.id}>
-                <DishCard dish={dish} />
-              </li>
+              <DishRow key={dish.id} dish={dish} />
             ))}
           </ul>
         ) : null}
@@ -154,7 +153,7 @@ export default async function CardapioPage({
             )}
           </div>
         ) : pasta.length === 0 ? (
-          <p className="mt-8 max-w-2xl text-pretty text-muted-foreground">
+          <p className="mt-8 text-pretty text-center text-muted-foreground">
             {t("pastaEmpty")}
           </p>
         ) : null}

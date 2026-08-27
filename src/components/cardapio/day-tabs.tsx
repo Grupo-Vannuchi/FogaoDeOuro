@@ -68,7 +68,7 @@ export function DayTabs({
         aria-label={selectorLabel}
         /* Rola na horizontal no celular pequeno em vez de quebrar em duas
            linhas, que empurraria a grade para fora da primeira tela. */
-        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0"
+        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0"
       >
         {WEEKDAYS.map((day) => {
           const selected = day === active;

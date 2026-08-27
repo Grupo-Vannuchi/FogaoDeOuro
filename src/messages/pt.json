@@ -579,11 +579,11 @@
     "availableEveryday": "Servido todos os dias",
     "categoryLabel": "Categoria",
     "dishImageAlt": "{name} servido no Fogão de Ouro",
-    "noPhoto": "Foto em breve",
     "weekday1": "Segunda",
     "weekday2": "Terça",
     "weekday3": "Quarta",
     "weekday4": "Quinta",
-    "weekday5": "Sexta"
+    "weekday5": "Sexta",
+    "seeDishOf": "Ver os detalhes de {name}"
   }
 }

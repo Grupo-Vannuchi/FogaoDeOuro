@@ -83,17 +83,9 @@ export default async function DishPage({ params }: { params: Promise<Params> }) 
               sizes="(min-width: 1024px) 700px, 100vw"
               className="aspect-[3/2] w-full rounded-2xl object-cover"
             />
-          ) : (
-            <div
-              aria-hidden
-              className="flex aspect-[3/2] w-full flex-col items-center justify-center gap-3 rounded-2xl bg-brand/10 text-brand"
-            >
-              <UtensilsCrossed className="size-10" />
-              <span className="text-sm font-medium">{t("noPhoto")}</span>
-            </div>
-          )}
+          ) : null}
 
-          <p className="mt-8 text-sm font-semibold uppercase tracking-widest text-brand">
+          <p className="mt-8 text-sm font-semibold uppercase tracking-widest text-brand first:mt-0">
             {dish.category.name}
           </p>
           <h1 className="mt-2 text-balance font-serif text-4xl font-bold tracking-tight sm:text-5xl">

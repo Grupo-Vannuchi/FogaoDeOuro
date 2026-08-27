@@ -15,6 +15,19 @@ import { test, expect } from "@playwright/test";
 
 const painelAtivo = '[role="tabpanel"]:not([hidden])';
 
+/**
+ * Aquece as rotas antes dos testes paralelos.
+ *
+ * Localmente a suíte roda contra `next dev`, que compila cada rota no primeiro
+ * acesso. Cinco testes disputando essa compilação faziam um deles estourar o
+ * tempo — e nunca o mesmo, o que denunciava concorrência e não defeito. Uma
+ * requisição a cada rota antes de começar resolve. Em CI, que roda contra o
+ * build de produção, isto é inofensivo.
+ */
+test.beforeAll(async ({ request }) => {
+  await Promise.all([request.get("/cardapio"), request.get("/gastronomia")]);
+});
+
 test("mostra os dois preços e nenhum valor dentro de um card de prato", async ({
   page,
 }) => {
