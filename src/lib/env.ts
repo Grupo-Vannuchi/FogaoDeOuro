@@ -71,6 +71,48 @@ const serverSchema = z.object({
     .trim()
     .optional()
     .transform((value) => value || "media"),
+
+  // --- Instagram (feed da home — server-only) --------------------------------
+  /**
+   * Token da **Instagram API with Instagram Login** (`graph.instagram.com`).
+   *
+   * Nunca `NEXT_PUBLIC`: com o prefixo, o Next embute o valor no JavaScript
+   * que vai para o navegador, e um token de leitura publicado é um token
+   * vazado. Toda chamada à Meta acontece no servidor.
+   *
+   * Ausente = integração desligada. O site continua funcionando e a seção
+   * simplesmente não aparece — é o estado em que o projeto nasce.
+   */
+  INSTAGRAM_ACCESS_TOKEN: z.string().min(1).optional(),
+  /** ID numérico da conta profissional, de `GET /me?fields=id`. */
+  INSTAGRAM_USER_ID: z.string().min(1).optional(),
+  /**
+   * Versão da Graph API. Fixada em vez de "a mais recente" porque a Meta
+   * descontinua versões em janela conhecida: subir a versão passa a ser uma
+   * mudança deliberada, com teste, e não uma quebra numa terça-feira.
+   */
+  INSTAGRAM_API_VERSION: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => value || "v25.0"),
+  /** Quantos posts exibir. Quatro cabem numa linha no desktop. */
+  INSTAGRAM_POST_LIMIT: z.coerce.number().int().min(1).max(24).default(4),
+  /**
+   * App Secret — necessário **apenas** para trocar um token de curta duração
+   * por um de longa (uma vez, por linha de comando). A renovação dos 60 dias
+   * usa só o próprio token. Deixe em branco se você já gerou o token longo.
+   */
+  INSTAGRAM_APP_SECRET: z.string().min(1).optional(),
+  /**
+   * Mostra quadros vazios no lugar do feed, para conferir o layout enquanto as
+   * credenciais não existem. Só tem efeito fora de produção — nunca desenha
+   * post falso no site publicado.
+   */
+  INSTAGRAM_PREVIEW: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
 });
 
 const clientSchema = z.object({

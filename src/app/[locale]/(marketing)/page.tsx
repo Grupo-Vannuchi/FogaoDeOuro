@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/hero";
 import { MenuPreview } from "@/components/sections/menu-preview";
 import { GalleryPreview } from "@/components/sections/gallery-preview";
+import { InstagramFeed } from "@/components/sections/instagram-feed";
 import { Testimonials } from "@/components/sections/testimonials";
 import { CTA } from "@/components/sections/cta";
 import { resolveLocale } from "@/i18n/routing";
@@ -36,6 +37,7 @@ export default async function HomePage({
       <Hero />
       <MenuPreview locale={locale} />
       <GalleryPreview locale={locale} />
+      <InstagramFeed />
       <Testimonials locale={locale} />
       <CTA />
     </>

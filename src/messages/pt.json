@@ -585,5 +585,8 @@
     "weekday4": "Quinta",
     "weekday5": "Sexta",
     "seeDishOf": "Ver os detalhes de {name}"
+  },
+  "instagram": {
+    "follow": "Seguir no Instagram"
   }
 }

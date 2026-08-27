@@ -241,3 +241,117 @@ has to be re-run per clone. Don't remove it as "leftover config": fetching from
 Content-Security-Policy is **not** set yet. Adding it requires a nonce middleware
 (inline JSON-LD + Next hydration scripts) and per-page testing — treat as its own
 task. See ADR-0004 and `security-review`.
+
+## Instagram — ligar o feed da home
+
+A seção existe no código e **nasce desligada**: sem as variáveis, ela não
+renderiza e o site funciona igual. Ligar é preencher variáveis, sem tocar em
+código.
+
+### Qual API, e por quê
+
+**Instagram API with Instagram Login** (`graph.instagram.com`). A Basic Display
+API, que a maioria dos tutoriais ainda ensina, foi **descontinuada pela Meta em
+dezembro de 2024**. Das duas modalidades que restaram, esta é a que **não exige
+Página do Facebook** vinculada — a outra (`Instagram API with Facebook Login`,
+em `graph.facebook.com`) exige. O restaurante quer publicar os próprios posts;
+amarrar isso a uma Página seria uma dependência a mais para quebrar.
+
+Exige **conta profissional** (Business ou Creator). Conta pessoal não é
+suportada — a conversão é gratuita, no app do Instagram.
+
+### Passo a passo na Meta
+
+1. **developers.facebook.com** → *My Apps* → *Create App* → caso de uso
+   **"Other"** → tipo **Business**.
+2. No painel do app, adicione o produto **Instagram** → *API setup with
+   Instagram login*.
+3. Em **Business login settings**, cadastre uma *OAuth redirect URI*. Para uma
+   conta só, `https://www.fogaodeouro.com.br/` serve: o fluxo é feito uma vez,
+   à mão, e a URI só precisa bater com a que você usar na URL de autorização.
+4. Ainda em *API setup*, seção **Generate access tokens**: adicione a conta
+   **@fogao.de.ouro** e clique em *Generate token*. A Meta abre o login do
+   Instagram e devolve um **token de curta duração (1 hora)**.
+   - Peça **apenas** `instagram_business_basic`. Publicação, comentários e
+     mensagens não são necessários para exibir posts.
+5. **Troque por um token longo (60 dias)** — uma vez, no terminal:
+
+   ```
+   curl -s "https://graph.instagram.com/access_token\
+   ?grant_type=ig_exchange_token\
+   &client_secret=SEU_APP_SECRET\
+   &access_token=TOKEN_CURTO"
+   ```
+
+6. **Pegue o ID da conta** com o token longo:
+
+   ```
+   curl -s "https://graph.instagram.com/v25.0/me?fields=id,username\
+   &access_token=TOKEN_LONGO"
+   ```
+
+### Variáveis na Vercel
+
+*Settings → Environments → Production*, todas como **Config** (nunca Secret com
+prefixo público, e nenhuma delas leva `NEXT_PUBLIC_`):
+
+| Variável | Valor |
+| --- | --- |
+| `INSTAGRAM_ACCESS_TOKEN` | o token longo do passo 5 |
+| `INSTAGRAM_USER_ID` | o `id` do passo 6 |
+| `INSTAGRAM_API_VERSION` | `v25.0` (opcional — é o padrão) |
+| `INSTAGRAM_POST_LIMIT` | `4` (opcional — é o padrão) |
+
+`INSTAGRAM_APP_SECRET` só é necessária se você quiser refazer o passo 5 de
+dentro do projeto; para o uso normal pode ficar em branco.
+
+**Precisa de novo deploy**: as variáveis são lidas no servidor a cada
+requisição, mas a Vercel só injeta valores novos num build novo.
+
+### Conferir se funcionou
+
+```
+curl -s https://www.fogaodeouro.com.br/api/instagram/posts
+```
+
+- `{"configured":false,…}` → as variáveis não chegaram ao build
+- `{"configured":true,"count":4,…}` → funcionando
+- `{"configured":true,"count":0,…}` → a Meta recusou; veja os *Runtime Logs* na
+  Vercel, onde a linha `[instagram]` diz o motivo sem expor o token
+
+### Renovar o token — a manutenção real
+
+O token longo vale **60 dias** e **não se renova sozinho**. Renovar é uma
+chamada, com o token atual (não precisa de App Secret):
+
+```
+curl -s "https://graph.instagram.com/refresh_access_token\
+?grant_type=ig_refresh_token&access_token=TOKEN_ATUAL"
+```
+
+Devolve um **token novo** com mais 60 dias. Só funciona se o token tiver ao
+menos 24 horas de vida e **ainda não tiver expirado** — passou do prazo, o
+caminho é refazer os passos 4 e 5.
+
+Copie o token novo para a Vercel e faça deploy. **Coloque um lembrete a cada
+50 dias.** Automatizar isso exigiria guardar o token onde o código possa
+reescrevê-lo (banco ou gerenciador de segredos) mais uma rotina agendada —
+desproporcional para uma conta só. A arquitetura aceita essa evolução: basta
+trocar de onde `env.INSTAGRAM_ACCESS_TOKEN` é lido.
+
+### App Review: quando é preciso
+
+**Não é preciso agora.** *Standard Access* basta enquanto o app só lê a conta
+que você mesmo administra e que está adicionada ao painel do app — que é o caso
+do @fogao.de.ouro.
+
+*Advanced Access* — e portanto **App Review + Verificação de Negócio** — só
+passa a ser exigido se o app for servir contas de terceiros, ou seja, se um dia
+outros restaurantes forem conectar os próprios Instagram por aqui. Aí a Meta
+avalia o app e exige documentação da empresa.
+
+### Limites
+
+A Meta limita as requisições por hora por app. O projeto guarda o resultado por
+**dez minutos** em cache, então o volume não depende do número de visitantes —
+são cerca de seis chamadas por hora, independentemente do movimento.

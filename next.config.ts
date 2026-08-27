@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       // Supabase Storage (admin image uploads) — the project's public bucket.
       { protocol: "https", hostname: "*.supabase.co" },
+      // Instagram media CDN. Só os dois hosts que a Graph API devolve em
+      // `media_url`/`thumbnail_url` — liberar `*.fbcdn.net` inteiro abriria
+      // a otimização de imagem para qualquer conteúdo hospedado pela Meta.
+      { protocol: "https", hostname: "*.cdninstagram.com" },
+      { protocol: "https", hostname: "scontent.cdninstagram.com" },
     ],
   },
 };
