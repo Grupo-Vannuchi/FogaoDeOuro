@@ -1,6 +1,9 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import { env } from "@/lib/env";
+import { toPosts, type RawMedia } from "@/lib/instagram-media";
+
+export type { InstagramPost } from "@/lib/instagram-media";
 
 /**
  * Feed do Instagram — **Instagram API with Instagram Login**.
@@ -30,74 +33,9 @@ import { env } from "@/lib/env";
  * vazia, para o feed sumir em vez de derrubar a home.
  */
 
-/** O que a interface consome. Cru da Graph API não passa daqui. */
-export type InstagramPost = {
-  id: string;
-  /** Legenda; string vazia quando o post não tem. */
-  caption: string;
-  type: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
-  /** Imagem a exibir: a própria, a capa do vídeo ou a primeira do álbum. */
-  image: string;
-  permalink: string;
-  /** ISO — `unstable_cache` serializa o payload, e um Date volta string. */
-  timestamp: string;
-};
-
-/** Formato bruto da Graph API, só com o que pedimos. */
-type RawMedia = {
-  id: string;
-  caption?: string;
-  media_type?: string;
-  media_url?: string;
-  thumbnail_url?: string;
-  permalink?: string;
-  timestamp?: string;
-  children?: { data?: { media_url?: string; thumbnail_url?: string }[] };
-};
-
 /** Está configurado? Usado pela seção para nem renderizar quando não está. */
 export function isInstagramConfigured(): boolean {
   return Boolean(env.INSTAGRAM_ACCESS_TOKEN && env.INSTAGRAM_USER_ID);
-}
-
-/**
- * Escolhe a imagem do card.
- *
- * `media_url` não vem sempre: em VIDEO ele é o arquivo do vídeo (pesado, e não
- * serve de capa) e em CAROUSEL_ALBUM costuma vir ausente — o álbum não tem
- * mídia própria, tem filhos. Daí a ordem: capa do vídeo, primeiro filho do
- * álbum, e só então a mídia direta.
- */
-function coverOf(media: RawMedia): string | null {
-  if (media.media_type === "VIDEO") {
-    return media.thumbnail_url ?? null;
-  }
-  if (media.media_type === "CAROUSEL_ALBUM") {
-    const first = media.children?.data?.[0];
-    return first?.media_url ?? first?.thumbnail_url ?? media.media_url ?? null;
-  }
-  return media.media_url ?? media.thumbnail_url ?? null;
-}
-
-function normalize(media: RawMedia): InstagramPost | null {
-  const image = coverOf(media);
-  // Sem imagem ou sem link não há card possível: o post é descartado em vez de
-  // virar um quadrado quebrado na grade.
-  if (!image || !media.permalink || !media.timestamp) return null;
-
-  const type =
-    media.media_type === "VIDEO" || media.media_type === "CAROUSEL_ALBUM"
-      ? media.media_type
-      : "IMAGE";
-
-  return {
-    id: media.id,
-    caption: media.caption ?? "",
-    type,
-    image,
-    permalink: media.permalink,
-    timestamp: media.timestamp,
-  };
 }
 
 /**
@@ -110,7 +48,7 @@ function logFailure(context: string, detail: string) {
   console.error(`[instagram] ${context}: ${detail.slice(0, 200)}`);
 }
 
-async function fetchPosts(): Promise<InstagramPost[]> {
+async function fetchPosts(): Promise<import("@/lib/instagram-media").InstagramPost[]> {
   const token = env.INSTAGRAM_ACCESS_TOKEN;
   const userId = env.INSTAGRAM_USER_ID;
   if (!token || !userId) return [];
@@ -164,13 +102,7 @@ async function fetchPosts(): Promise<InstagramPost[]> {
       return [];
     }
 
-    return json.data
-      .map(normalize)
-      .filter((post): post is InstagramPost => post !== null)
-      // A Meta já devolve do mais novo para o mais antigo, mas ordenar aqui
-      // torna a garantia nossa em vez de suposição sobre o comportamento dela.
-      .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-      .slice(0, env.INSTAGRAM_POST_LIMIT);
+    return toPosts(json.data, env.INSTAGRAM_POST_LIMIT);
   } catch (error) {
     const motivo =
       error instanceof Error && error.name === "TimeoutError"
@@ -192,7 +124,9 @@ async function fetchPosts(): Promise<InstagramPost[]> {
  * para não renderizar nada.
  */
 export const getInstagramPosts = unstable_cache(
-  async (): Promise<InstagramPost[] | null> => {
+  async (): Promise<
+    import("@/lib/instagram-media").InstagramPost[] | null
+  > => {
     if (!isInstagramConfigured()) return null;
     return fetchPosts();
   },

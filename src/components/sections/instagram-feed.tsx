@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import { Play, Images } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -6,7 +7,11 @@ import { Instagram } from "@/components/ui/brand-icons";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { env } from "@/lib/env";
-import { getInstagramPosts, type InstagramPost } from "@/lib/instagram";
+import {
+  getInstagramPosts,
+  isInstagramConfigured,
+  type InstagramPost,
+} from "@/lib/instagram";
 
 /**
  * As últimas publicações do Instagram, logo abaixo da galeria.
@@ -103,35 +108,70 @@ function PreviewCards({ count }: { count: number }) {
   );
 }
 
+/** A faixa: mesma classe para grade, skeleton e preview, para as três terem
+    exatamente a mesma altura e nada saltar quando o feed chega. */
+const faixa =
+  "-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4";
+
+/**
+ * Busca os posts. Isolado num componente próprio porque é a única parte lenta
+ * da seção — envolvido em `Suspense` pela seção, ele deixa a home aparecer na
+ * hora e chega depois, em vez de segurar a página inteira esperando a Meta.
+ */
+async function FeedGrid() {
+  const posts = await getInstagramPosts();
+  if (posts === null || posts.length === 0) return null;
+
+  return (
+    <ul className={faixa}>
+      {posts.map((post, i) => (
+        <li key={post.id} className="contents">
+          <PostCard post={post} index={i} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Quadrados na mesma proporção dos cards, enquanto a Meta responde. */
+function FeedSkeleton({ count }: { count: number }) {
+  return (
+    <ul className={faixa} aria-hidden>
+      {Array.from({ length: count }, (_, i) => (
+        <li
+          key={i}
+          className={`${cardBase} w-[78%] shrink-0 animate-pulse sm:w-auto`}
+        />
+      ))}
+    </ul>
+  );
+}
+
 export async function InstagramFeed() {
   const t = await getTranslations("instagram");
   const perfil = siteConfig.social.instagram;
   if (!perfil) return null;
 
-  const posts = await getInstagramPosts();
-
   // Fora de produção, com a integração desligada, desenha quadros vazios só
-  // para validar espaçamento e responsividade. Em produção isso nunca acontece:
-  // sem posts, a seção inteira some.
-  const preview = posts === null && env.INSTAGRAM_PREVIEW;
-  if (!preview && (posts === null || posts.length === 0)) return null;
+  // para validar espaçamento e responsividade. Em produção isso nunca acontece.
+  const preview = !isInstagramConfigured() && env.INSTAGRAM_PREVIEW;
+
+  // Decidido aqui, e não dentro do Suspense: sem credenciais a seção não deve
+  // nem piscar um skeleton antes de sumir. `isInstagramConfigured` lê variável
+  // de ambiente, não vai à rede — dá para chamar antes de renderizar.
+  if (!preview && !isInstagramConfigured()) return null;
 
   return (
     <Section className="pt-0">
-      {/* Rola na horizontal com encaixe no celular; grade de quatro no
-          desktop. O `-mx-4 px-4` deixa o primeiro card alinhado à margem do
-          conteúdo e ainda permite que a faixa sangre até a borda da tela. */}
-      <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
-        {preview ? (
+      {preview ? (
+        <ul className={faixa}>
           <PreviewCards count={env.INSTAGRAM_POST_LIMIT} />
-        ) : (
-          posts!.map((post, i) => (
-            <li key={post.id} className="contents">
-              <PostCard post={post} index={i} />
-            </li>
-          ))
-        )}
-      </ul>
+        </ul>
+      ) : (
+        <Suspense fallback={<FeedSkeleton count={env.INSTAGRAM_POST_LIMIT} />}>
+          <FeedGrid />
+        </Suspense>
+      )}
 
       <div className="mt-8 flex justify-center">
         <a
