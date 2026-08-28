@@ -287,7 +287,8 @@
       "cardapio": "Cardápio",
       "galeria": "Galeria",
       "testimonials": "Depoimentos",
-      "signOut": "Sair"
+      "signOut": "Sair",
+      "noticeRegion": "Aviso do painel"
     },
     "dashboard": {
       "title": "Visão geral",
@@ -325,7 +326,11 @@
       "whatsappSent": "✓ WhatsApp",
       "source": "Origem",
       "landedOn": "entrou por",
-      "whatsappLink": "Instâncias do WhatsApp"
+      "whatsappLink": "Instâncias do WhatsApp",
+      "statusError": "Não foi possível mudar a situação. Tente de novo.",
+      "statusSuccess": "Situação atualizada.",
+      "tagsError": "Não foi possível salvar as etiquetas. Tente de novo.",
+      "tagsSuccess": "Etiquetas salvas."
     },
     "novidades": {
       "title": "Novidades",
@@ -364,7 +369,9 @@
         "invalid": "Verifique os campos e tente novamente.",
         "slug_taken": "Esse slug já está em uso. Escolha outro.",
         "unknown": "Algo deu errado. Tente novamente."
-      }
+      },
+      "deleteError": "Não foi possível excluir a novidade. Tente de novo.",
+      "deleteSuccess": "Novidade excluída."
     },
     "cardapio": {
       "title": "Cardápio",
@@ -419,7 +426,11 @@
       "itemDescriptionHint": "Uma frase curta. É o que aparece no card do cardápio.",
       "itemDescriptionLong": "Descrição completa",
       "itemDescriptionLongHint": "Texto da página do prato. Se ficar vazio, a página usa a descrição curta.",
-      "kindShowcase": "Vitrine (Nossa Gastronomia)"
+      "kindShowcase": "Vitrine (Nossa Gastronomia)",
+      "deleteCategoryError": "Não foi possível excluir a categoria. Tente de novo.",
+      "deleteCategorySuccess": "Categoria excluída.",
+      "deleteItemError": "Não foi possível excluir o prato. Tente de novo.",
+      "deleteItemSuccess": "Prato excluído."
     },
     "galeria": {
       "title": "Galeria",
@@ -445,7 +456,9 @@
       "saving": "Salvando",
       "noCaption": "Sem legenda",
       "deleteConfirm": "Apagar esta foto?",
-      "errorUnknown": "Não foi possível salvar. Tente de novo."
+      "errorUnknown": "Não foi possível salvar. Tente de novo.",
+      "deleteError": "Não foi possível excluir a foto. Tente de novo.",
+      "deleteSuccess": "Foto excluída."
     },
     "testimonials": {
       "title": "Depoimentos",
@@ -481,7 +494,9 @@
         "unauthorized": "Sua sessão expirou. Entre novamente.",
         "invalid": "Verifique os campos e tente novamente.",
         "unknown": "Algo deu errado. Tente novamente."
-      }
+      },
+      "deleteError": "Não foi possível excluir o depoimento. Tente de novo.",
+      "deleteSuccess": "Depoimento excluído."
     },
     "upload": {
       "upload": "Enviar imagem",

@@ -1,22 +1,22 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { X, Plus } from "lucide-react";
-import { useRouter } from "@/i18n/navigation";
 import { updateLeadTags } from "@/app/actions/admin";
+import { StatusMessage } from "@/components/ui/status-message";
+import { useAdminAction } from "@/components/admin/use-admin-action";
 
 export function LeadTags({ id, tags }: { id: string; tags: string[] }) {
   const t = useTranslations("admin.leads");
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
   const [value, setValue] = useState("");
+  const { pending, erro, run } = useAdminAction({
+    errorMessage: t("tagsError"),
+    successMessage: t("tagsSuccess"),
+  });
 
   function commit(next: string[]) {
-    startTransition(async () => {
-      await updateLeadTags(id, next);
-      router.refresh();
-    });
+    void run(() => updateLeadTags(id, next));
   }
 
   function addTag(e: React.FormEvent) {
@@ -69,6 +69,7 @@ export function LeadTags({ id, tags }: { id: string; tags: string[] }) {
           <Plus className="size-3.5" />
         </button>
       </form>
+      <StatusMessage tone="error">{erro}</StatusMessage>
     </div>
   );
 }

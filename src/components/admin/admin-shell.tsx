@@ -3,6 +3,7 @@ import { LogOut, ExternalLink } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { AdminNotice } from "@/components/admin/admin-notice";
 import { logout } from "@/app/actions/auth";
 import type { CurrentUser } from "@/lib/auth";
 import type { Locale } from "@/i18n/routing";
@@ -64,7 +65,12 @@ export async function AdminShell({
           </div>
           <AdminNav />
         </header>
-        <main className="flex-1 p-6 sm:p-8">{children}</main>
+        <main className="flex-1 p-6 sm:p-8">
+          {/* A região de aviso mora AQUI, acima do conteúdo: ela precisa
+              sobreviver ao `router.refresh()` que as ações disparam, e o
+              controle que anunciaria some junto com a linha que apagou. */}
+          <AdminNotice>{children}</AdminNotice>
+        </main>
       </div>
     </div>
   );

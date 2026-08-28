@@ -21,6 +21,9 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
 
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -49,6 +52,21 @@
   --muted: #e7e0b8;
   --muted-foreground: #6b6862;
   --border: #ded7ae;
+
+  /*
+   * Cores de resultado de ação. Medidas contra as TRÊS superfícies deste site
+   * (fundo creme, cartão e muted), não herdadas do projeto irmão, que tem
+   * fundo branco e outros números.
+   *
+   * Pior caso de cada uma, sobre o muted: 5,39 / 4,83 / 5,10 — todas acima do
+   * mínimo de 4,5 para texto.
+   *
+   * Os `red-500`, `emerald-600` e `amber-600` do Tailwind, que é o que o painel
+   * usa solto hoje, dão 3,07 / 3,07 / 2,59 sobre o creme: reprovam as três.
+   */
+  --danger: #b3000a;
+  --success: #046c4e;
+  --warning: #8a4b00;
 }
 
 @layer base {
