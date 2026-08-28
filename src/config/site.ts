@@ -71,6 +71,12 @@ export type SiteConfig = {
   foundedYear: number;
   /** Company registration number (Brazil: CNPJ). Optional. */
   registration?: string;
+  /**
+   * Fuso em que o restaurante existe. Toda data mostrada a uma pessoa passa por
+   * `lib/dates.ts`, que o fixa — sem isso o `Intl` formata no fuso do processo,
+   * que na Vercel é UTC e faz o painel discordar da notificação por WhatsApp.
+   */
+  timeZone: string;
 
   contact: {
     email: string;
@@ -145,6 +151,7 @@ export const siteConfig: SiteConfig = {
   legalName: "FOGÃO DE OURO RESTAURANTE E PIZZARIA LTDA",
   foundedYear: 2001,
   registration: "04.160.109/0001-47",
+  timeZone: "America/Sao_Paulo",
 
   contact: {
     // Caixa real do restaurante. O domínio próprio já está no ar

@@ -61,7 +61,11 @@ export function CountUp({
 
   return (
     <span ref={ref}>
-      {display.toLocaleString()}
+      {/* O locale vai explícito. `toLocaleString()` sem argumento usa o do
+          AMBIENTE: no servidor da Vercel isso não é pt-BR, então 1200 sairia
+          "1,200" num site em português — e ainda divergiria do que o navegador
+          desenharia depois, que é erro de hidratação. */}
+      {display.toLocaleString("pt-BR")}
       {suffix}
     </span>
   );

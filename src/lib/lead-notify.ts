@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { sendToGroup } from "@/lib/evolution";
 import { normalizePhoneBR, toWhatsappNumber } from "@/lib/phone";
 import { sourceLabel } from "@/lib/attribution";
+import { restaurantDateFormat } from "@/lib/dates";
 
 /**
  * Pushes a new (or manually forwarded) site lead to the sales WhatsApp group via
@@ -30,10 +31,11 @@ export type LeadForNotify = {
 
 export type NotifyResult = { ok: true } | { ok: false; error: string };
 
-const dateFmt = new Intl.DateTimeFormat("pt-BR", {
+// Esta era a UNICA superficie que ja fixava o fuso, e por isso a que
+// discordava do painel. Agora as duas passam pelo mesmo lugar.
+const dateFmt = restaurantDateFormat("pt-BR", {
   dateStyle: "short",
   timeStyle: "short",
-  timeZone: "America/Sao_Paulo",
 });
 
 /** Build the organized WhatsApp message for a lead: labeled fields, then the

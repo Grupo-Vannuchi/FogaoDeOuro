@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/section";
 import { Instagram } from "@/components/ui/brand-icons";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { restaurantDateFormat } from "@/lib/dates";
 import { env } from "@/lib/env";
 import {
   getInstagramPosts,
@@ -34,11 +35,14 @@ const cardBase =
   "group relative aspect-square shrink-0 overflow-hidden rounded-2xl bg-muted";
 
 function PostCard({ post, index }: { post: InstagramPost; index: number }) {
-  const data = new Date(post.timestamp).toLocaleDateString("pt-BR", {
+  // Pelo ajudante, e nao por `toLocaleDateString`: aquele herda o fuso do
+  // processo, que na Vercel e UTC. Uma publicacao do fim da noite aparecia
+  // com a data do dia seguinte.
+  const data = restaurantDateFormat("pt-BR", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  });
+  }).format(new Date(post.timestamp));
 
   // A legenda vira o texto alternativo quando existe: descreve a imagem melhor
   // do que qualquer rótulo genérico. Sem legenda, a imagem é decorativa e o
