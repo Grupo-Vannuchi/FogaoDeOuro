@@ -8,27 +8,36 @@ import { buttonVariants } from "@/components/ui/button";
 import { getMenu } from "@/lib/queries";
 import type { Locale } from "@/i18n/routing";
 
+/**
+ * Quantos pratos a seção mostra.
+ *
+ * Nove, e não oito, porque a grade tem três colunas: oito deixavam a última
+ * linha pela metade, com um vão à direita que lia como card faltando. Trocar
+ * este número muda a seção inteira — nada mais depende dele.
+ */
+const VAGAS = 9;
+
 export async function MenuPreview({ locale }: { locale: Locale }) {
   const t = await getTranslations("home.gastronomia");
   const tc = await getTranslations("common");
   const categories = await getMenu(locale);
 
   /**
-   * Um de cada categoria por vez, em rodadas, até fechar oito.
-   *
-   * Concatenar as categorias e cortar os oito primeiros dava a vitrine inteira
-   * de uma categoria só — as três primeiras carnes, depois cinco do buffet, e
-   * nenhuma sobremesa. A seção promete "tudo o que espera por você" e mostrava
-   * um canto só da cozinha. Em rodadas, as oito vagas se distribuem sozinhas e
-   * continuam se distribuindo quando o restaurante trocar as fotos.
-   */
+ * Um de cada categoria por vez, em rodadas, até fechar as vagas.
+ *
+ * Concatenar as categorias e cortar os primeiros dava a vitrine inteira de uma
+ * categoria só — as carnes, depois o buffet, e nenhuma sobremesa. A seção
+ * promete "tudo o que espera por você" e mostrava um canto só da cozinha. Em
+ * rodadas, as vagas se distribuem sozinhas e continuam se distribuindo quando
+ * o restaurante trocar as fotos.
+ */
   const items = [];
-  for (let rodada = 0; items.length < 8; rodada += 1) {
+  for (let rodada = 0; items.length < VAGAS; rodada += 1) {
     const daRodada = categories
       .map((c) => c.items[rodada])
       .filter((item) => item !== undefined);
     if (daRodada.length === 0) break; // acabaram os pratos
-    items.push(...daRodada.slice(0, 8 - items.length));
+    items.push(...daRodada.slice(0, VAGAS - items.length));
   }
 
   if (items.length === 0) return null;
