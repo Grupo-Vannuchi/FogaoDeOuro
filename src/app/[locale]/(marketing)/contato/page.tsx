@@ -6,9 +6,16 @@ import { Mail, Phone, MessageCircle, MapPin, Clock, Star } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/ui/section";
 import { ContactForm } from "@/components/forms/contact-form";
+import { MapEmbed } from "@/components/layout/map-embed";
 import { ReserveButton } from "@/components/reserve-button";
 import { buttonVariants } from "@/components/ui/button";
-import { fullAddress, phoneLink, siteConfig, whatsappLink } from "@/config/site";
+import {
+  fullAddress,
+  mapEmbedUrl,
+  phoneLink,
+  siteConfig,
+  whatsappLink,
+} from "@/config/site";
 
 export async function generateMetadata({
   params,
@@ -81,11 +88,26 @@ export default async function ContactPage({
 
   return (
     <>
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      {/* A fachada no cabeçalho: quem abre o contato quer reconhecer a
+          esquina, e o letreiro faz isso melhor que qualquer texto. */}
+      <PageHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        image="/ambiente/fachada.webp"
+        imageAlt={t("headerAlt")}
+      />
 
       {/* O formulário sozinho, em largura de leitura. Ele já era o assunto da
           página; dividir a linha com a coluna de contatos deixava um vão à
           direita assim que o formulário terminava. */}
+      {/* O mapa antes do formulário: quem abre esta página quer saber onde
+          fica antes de escrever. Some do rodapé aqui, para não repetir. */}
+      <Section className="pb-0 sm:pb-0">
+        <div className="mx-auto max-w-3xl">
+          <MapEmbed src={mapEmbedUrl()} title={t("mapTitle")} />
+        </div>
+      </Section>
+
       <Section>
         <div className="mx-auto max-w-2xl">
           <ContactForm />

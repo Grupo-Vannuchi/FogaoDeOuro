@@ -246,7 +246,9 @@
       "submitting": "Enviando",
       "success": "Mensagem enviada! Em breve entramos em contato.",
       "error": "Não foi possível enviar agora. Tente novamente ou ligue para a gente."
-    }
+    },
+    "mapTitle": "Mapa com a localização do Fogão de Ouro",
+    "headerAlt": "Fachada do Fogão de Ouro na esquina da Rua Frei Gaspar, no Centro Histórico de Santos"
   },
   "validation": {
     "nameMin": "Informe seu nome (mín. 2 caracteres).",
