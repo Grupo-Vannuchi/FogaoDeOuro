@@ -63,10 +63,15 @@ export function PageHeader({
               Chegar a 90/82/72 subiria para 8,3:1 e escureceria a comida, que
               é justamente o que a foto veio mostrar. Se trocar a imagem por uma
               mais clara, meça de novo: esconda o texto antes, senão o pixel
-              mais claro medido é a própria letra e a conta sai errada. */}
+              mais claro medido é a própria letra e a conta sai errada.
+
+              No celular o véu é mais fechado e quase uniforme: a copy ocupa a
+              largura inteira, então não existe canto "sem texto" para o
+              gradiente abrir. Com o véu do desktop, a foto da adega deixava o
+              subtítulo em 4,18:1 — abaixo do mínimo. Fechado, passa. */}
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-[#171615]/85 via-[#171615]/70 to-[#171615]/55"
+            className="absolute inset-0 bg-gradient-to-r from-[#171615]/90 via-[#171615]/88 to-[#171615]/85 sm:from-[#171615]/85 sm:via-[#171615]/70 sm:to-[#171615]/55"
           />
         </>
       ) : null}
