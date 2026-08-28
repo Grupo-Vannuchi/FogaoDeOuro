@@ -77,7 +77,10 @@ export default async function ReservasPage({
 
   return (
     <>
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      {/* Faixa na cor da marca: esta página é a que fecha a visita — quem
+          chega aqui vem reservar —, e o creme de sempre a deixava igual às
+          demais. */}
+      <PageHeader title={t("title")} subtitle={t("subtitle")} tone="brand" />
 
       {/* 5.1 — Horários + "melhor momento para você" */}
       <Section>

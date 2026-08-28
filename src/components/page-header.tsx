@@ -26,6 +26,7 @@ export function PageHeader({
   subtitle,
   image,
   imageAlt = "",
+  tone = "default",
 }: {
   title: string;
   subtitle?: string;
@@ -36,14 +37,25 @@ export function PageHeader({
    */
   image?: string;
   imageAlt?: string;
+  /**
+   * Fundo da faixa quando não há foto:
+   *
+   *  - `default` — o creme discreto de sempre, com texto escuro;
+   *  - `brand` — o marrom da marca com texto branco. Usa os tokens, não o
+   *    hexadecimal: se a paleta mudar, a faixa acompanha.
+   *
+   * Ignorado quando há `image` — aí quem manda é o véu sobre a foto.
+   */
+  tone?: "default" | "brand";
 }) {
   const comFoto = Boolean(image);
+  const marca = !comFoto && tone === "brand";
 
   return (
     <div
       className={cn(
         "relative isolate border-b border-border",
-        comFoto ? "overflow-hidden" : "bg-muted/30",
+        comFoto ? "overflow-hidden" : marca ? "bg-brand" : "bg-muted/30",
       )}
     >
       {comFoto ? (
@@ -81,6 +93,7 @@ export function PageHeader({
           className={cn(
             "max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl",
             comFoto && "text-[#EFE9C2]",
+            marca && "text-brand-foreground",
           )}
         >
           {title}
@@ -89,7 +102,11 @@ export function PageHeader({
           <p
             className={cn(
               "mt-4 max-w-2xl text-pretty text-lg",
-              comFoto ? "text-[#EFE9C2]/85" : "text-muted-foreground",
+              comFoto
+                ? "text-[#EFE9C2]/85"
+                : marca
+                  ? "text-brand-foreground/85"
+                  : "text-muted-foreground",
             )}
           >
             {subtitle}

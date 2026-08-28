@@ -103,15 +103,20 @@ export default async function AboutPage({
         </div>
 
         {/* A adega fecha o bloco do salão porque é dele que o texto fala — o
-            ambiente. Fica no fim da seção, em faixa larga, para não competir
-            com as duas colunas de texto acima. */}
+            ambiente.
+
+            Sem `aspect` e sem `object-cover`: a moldura segue a proporção da
+            própria foto. Forçando 21:9 sobre uma foto 16:9, o corte comia
+            justamente o topo das garrafas da prateleira de cima — que é o
+            assunto da imagem. Uma faixa mais larga só valeria com uma foto
+            enquadrada para isso. */}
         <Image
           src="/ambiente/vinhos.webp"
           alt={t("vinhosAlt")}
-          width={1400}
-          height={788}
+          width={1600}
+          height={900}
           sizes="(min-width: 1280px) 1200px, 100vw"
-          className="mt-14 aspect-[16/9] w-full rounded-2xl object-cover sm:aspect-[21/9]"
+          className="mt-14 w-full rounded-2xl"
         />
       </Section>
 
