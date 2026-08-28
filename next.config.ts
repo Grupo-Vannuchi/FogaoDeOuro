@@ -41,7 +41,26 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  /*
+   * O Next envia `X-Powered-By: Next.js` em toda resposta, dizendo a qualquer um
+   * com que tecnologia o site foi feito — o que poupa a primeira metade do
+   * trabalho de quem procura uma falha conhecida de versão.
+   *
+   * ⚠️ A Vercel já removia o cabeçalho na borda, então medindo o site publicado
+   * ele não aparecia e o problema ficava invisível. A proteção vinha da
+   * HOSPEDAGEM, não do código: sair da Vercel a traria de volta sem nada acusar.
+   */
+  poweredByHeader: false,
   images: {
+    /*
+     * AVIF antes de WebP. Sem esta linha o `next/image` serve só WebP; o AVIF
+     * costuma sair 20% a 30% menor na mesma qualidade, e quem não o entende
+     * recebe WebP pela negociação normal de conteúdo — não há a quem
+     * prejudicar. Num site cujo conteúdo é foto de comida, é o ajuste de maior
+     * retorno por linha escrita. A ordem importa: o Next tenta na ordem
+     * declarada.
+     */
+    formats: ["image/avif", "image/webp"],
     // Remote sources used for seeded/demo imagery. Add a client's CDN here.
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
