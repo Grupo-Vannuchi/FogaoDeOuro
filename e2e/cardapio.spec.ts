@@ -69,55 +69,55 @@ test("troca de dia sem recarregar, com uma grade visível por vez", async ({
   await expect(page.locator(`${painelAtivo} li`).first()).toBeVisible();
 });
 
-test("um prato servido em vários dias aparece em todos eles, com um cadastro só", async ({
-  page,
-}) => {
+test("há prato saindo em mais de um dia, com um cadastro só", async ({ page }) => {
   await page.goto("/cardapio");
 
-  // Abre um prato qualquer da segunda e lê os dias que ele declara.
-  await page.getByRole("tab", { name: /^Segunda/ }).click();
-  const primeiro = page.locator(`${painelAtivo} li a`).first();
-  const nome = (await primeiro.locator("h3").innerText()).trim();
-  await primeiro.click();
-
-  await expect(page.getByRole("heading", { level: 1, name: nome })).toBeVisible();
-
-  const corpo = await page.locator("body").innerText();
-  const linhaDias = /Servido às\s*\n?\s*(.+)/.exec(corpo);
-  const dias = linhaDias
-    ? linhaDias[1].split(",").map((d) => d.trim()).filter(Boolean)
-    : [];
-
-  await page.goBack();
-
-  // Cada dia declarado precisa mesmo listar o prato — é isso que distingue um
-  // cadastro com vários dias de três cadastros duplicados.
-  for (const dia of dias) {
+  const nomes: string[] = [];
+  for (const dia of ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"]) {
     await page.getByRole("tab", { name: new RegExp(`^${dia}`) }).click();
-    await expect(page.locator(painelAtivo).getByText(nome, { exact: true })).toBeVisible();
+    nomes.push(
+      ...(await page.locator(`${painelAtivo} li h3`).allInnerTexts()).map((n) =>
+        n.trim(),
+      ),
+    );
   }
+
+  // Mais aparições do que nomes distintos significa prato repetido entre dias.
+  // É o que um cadastro com `weekdays: [1,3,4]` produz — e o que três cadastros
+  // duplicados também produziriam, mas esses o admin não permite criar com o
+  // mesmo slug.
+  const distintos = new Set(nomes);
+  expect(nomes.length).toBeGreaterThan(distintos.size);
 });
 
-test("a página do prato mostra o preço da seção e volta para o cardápio", async ({
+test("nenhum item do cardápio é clicável", async ({ page }) => {
+  await page.goto("/cardapio");
+
+  // Os pratos são informativos: a página individual foi removida, e um link
+  // por item seria promessa de destino que não existe.
+  await expect(page.locator(`${painelAtivo} li a`)).toHaveCount(0);
+  await expect(page.getByText("Ver o prato")).toHaveCount(0);
+
+  // E a rota individual não responde mais.
+  const r = await page.request.get("/cardapio/arroz-branco");
+  expect(r.status()).toBe(404);
+});
+
+test("a seção de massas mostra o passo a passo da ilha, sem listar ingredientes", async ({
   page,
 }) => {
   await page.goto("/cardapio");
-  // Fixar o dia antes de clicar: ao abrir, o servidor entrega segunda e o
-  // navegador troca para hoje ao hidratar. Clicar durante essa troca pega um
-  // card que o React acabou de esconder.
-  await page.getByRole("tab", { name: /^Segunda/ }).click();
-  await page.locator(`${painelAtivo} li a`).first().click();
-  // Sem esperar a rota trocar, o innerText abaixo ainda é o do cardápio — que
-  // tem três "R$" por natureza (buffet, massas no topo, massas no título).
-  await page.waitForURL(/\/cardapio\/.+/);
-  await expect(page.getByRole("link", { name: "Voltar ao cardápio" })).toBeVisible();
 
-  // Um "R$" só na página: o da seção. Dois significaria preço por prato.
-  const ocorrencias = (await page.locator("body").innerText()).match(/R\$/g) ?? [];
-  expect(ocorrencias).toHaveLength(1);
+  await expect(page.getByText("190 gramas")).toBeVisible();
+  await expect(page.getByText("Nhoque de mandioquinha")).toBeVisible();
+  await expect(page.getByText("Bolonhesa")).toBeVisible();
+  await expect(page.getByText("R$ 7,50")).toBeVisible();
+  await expect(page.getByText("R$ 9,50")).toBeVisible();
 
-  await page.getByRole("link", { name: "Voltar ao cardápio" }).click();
-  await expect(page).toHaveURL(/\/cardapio$/);
+  // Os ingredientes mudam toda semana: o cardápio informa quantos, nunca quais.
+  for (const ingrediente of ["Milho verde", "Ervilha", "Alcaparra", "Berinjela"]) {
+    await expect(page.getByText(ingrediente)).toHaveCount(0);
+  }
 });
 
 test("Nossa Gastronomia leva ao cardápio e continua sendo a vitrine", async ({

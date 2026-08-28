@@ -300,20 +300,6 @@ export const getPastaDishes = unstable_cache(
   { tags: [tags.menu], revalidate },
 );
 
-/** Um prato pelo slug, para a página individual. Null se não existe ou saiu. */
-export const getDishBySlug = unstable_cache(
-  async (slug: string, locale: Locale): Promise<DishView | null> => {
-    const row = await prisma.menuItem.findUnique({
-      where: { slug },
-      include: { category: { select: { slug: true, name: true } } },
-    });
-    if (!row || !row.available) return null;
-    return toDish(row, locale);
-  },
-  ["menu", "dish"],
-  { tags: [tags.menu], revalidate },
-);
-
 /** Só o que o dropdown de "Nossa Gastronomia" precisa. */
 export const getMenuCategoryLinks = unstable_cache(
   async (locale: Locale): Promise<{ slug: string; name: string }[]> => {

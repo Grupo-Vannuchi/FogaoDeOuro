@@ -36,7 +36,14 @@ export default async function ServicesPage({
 
   return (
     <>
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      {/* A foto do buffet no cabeçalho: a página fala de comida, e a faixa
+          era só texto sobre fundo liso. */}
+      <PageHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        image="/ambiente/buffet.webp"
+        imageAlt={t("headerAlt")}
+      />
 
       {/* Ponte para o cardápio digital — a mesma página do QR Code das mesas.
           Fica no topo porque quem abre "Nossa Gastronomia" procurando o que é

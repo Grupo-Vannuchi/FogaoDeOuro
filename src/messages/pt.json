@@ -44,7 +44,7 @@
           "subtitle": "Há {years} anos, transformamos o seu almoço em um momento irresistível e inesquecível. Um ambiente acolhedor e premium, onde a suculência das carnes nobres e o nosso atendimento impecável esperam por você."
         },
         {
-          "title": "Picanha no ponto, direto da brasa.",
+          "title": "Carnes no ponto, direto da brasa.",
           "subtitle": "Cortes selecionados fatiados na hora, peixes nobres e a ilha de massas preparada na sua frente. O churrasco que fez a fama da casa."
         },
         {
@@ -122,11 +122,11 @@
       "title": "O melhor momento para você",
       "intro": "Servimos de segunda a sexta, das 11h às 15h. Cada horário tem o seu clima:",
       "items": [
-        "11h. Buffet recém-montado, tudo fumegante",
-        "11h30 às 13h30. Para garantir o buffet completo e a melhor mesa da casa",
-        "Após 13h30. Ambiente calmo e aconchegante, no ritmo do seu almoço"
+        "11h às 12h. Buffet recém-posto e mesa à escolha",
+        "12h às 13h. O horário de pico, salão cheio e movimentado",
+        "13h às 14h30. Salão mais tranquilo, no ritmo do seu almoço"
       ],
-      "note": "Chegue cedo e almoce com calma ou venha no fim do serviço e aproveite o salão mais silencioso. A comida é a mesma do primeiro ao último minuto."
+      "note": "O salão enche entre meio-dia e uma da tarde. Chegue antes das 12h ou depois das 13h e você almoça com mais calma — a comida é a mesma do primeiro ao último minuto."
     },
     "whyFullService": {
       "title": "A brasa, o mar e a massa. Todos os dias.",
@@ -167,7 +167,8 @@
     "weekday5": "Sexta",
     "menuCtaTitle": "Cardápio da semana",
     "menuCtaText": "Veja os pratos de cada dia, o buffet por quilo e as massas.",
-    "menuCtaButton": "Ver o cardápio"
+    "menuCtaButton": "Ver o cardápio",
+    "headerAlt": "Travessas de saladas e legumes no buffet do Fogão de Ouro"
   },
   "novidades": {
     "title": "Novidades",
@@ -195,18 +196,18 @@
     "salaoAlt": "Salão do Fogão de Ouro com painel de mosaico, mesas de madeira e adega ao fundo",
     "bestTime": [
       {
-        "when": "11h",
-        "what": "Buffet recém-montado, tudo fumegante.",
+        "when": "11h às 12h",
+        "what": "Buffet recém-posto e mesa à escolha.",
         "alt": "Buffet de saladas e pratos frios recém-montado no Fogão de Ouro"
       },
       {
-        "when": "11h30 às 13h30",
-        "what": "Para garantir o buffet completo e a melhor mesa da casa.",
+        "when": "12h às 13h",
+        "what": "O horário de pico: salão cheio e movimentado.",
         "alt": "Cliente servindo-se no buffet quente do Fogão de Ouro"
       },
       {
-        "when": "Após 13h30",
-        "what": "Ambiente calmo e aconchegante, no ritmo do seu almoço.",
+        "when": "13h às 14h30",
+        "what": "Salão mais tranquilo, no ritmo do seu almoço.",
         "alt": "Salão do Fogão de Ouro tranquilo, com mesas postas"
       }
     ],
@@ -565,26 +566,24 @@
     "buffetNote": "O valor é calculado pelo peso do prato que você montar — não pelo que escolher.",
     "pastaLabel": "Massas",
     "pastaNote": "Preço fechado por porção, de segunda a sexta, com diferentes opções de massas e molhos.",
-    "pastaEmpty": "As opções de massas e molhos do dia ficam com a nossa equipe, na ilha de massas.",
-    "pastaShapes": "Massas",
+    "pastaShapes": "Escolha a massa",
     "pastaSauces": "Molhos",
     "daySelectorLabel": "Escolha o dia",
     "today": "Hoje",
     "everyday": "Todos os dias",
     "emptyDay": "Ainda não há pratos cadastrados para este dia.",
     "empty": "O cardápio da semana ainda não foi publicado.",
-    "seeDish": "Ver o prato",
-    "backToMenu": "Voltar ao cardápio",
-    "availableOn": "Servido às",
-    "availableEveryday": "Servido todos os dias",
-    "categoryLabel": "Categoria",
-    "dishImageAlt": "{name} servido no Fogão de Ouro",
     "weekday1": "Segunda",
     "weekday2": "Terça",
     "weekday3": "Quarta",
     "weekday4": "Quinta",
     "weekday5": "Sexta",
-    "seeDishOf": "Ver os detalhes de {name}"
+    "pastaBuild": "Monte a sua massa",
+    "pastaPortion": "Tamanho único",
+    "pastaPreparation": "Preparo",
+    "pastaIngredients": "Ingredientes",
+    "pastaIngredientsNote": "Até {n} ingredientes, escolhidos na hora com a nossa equipe.",
+    "pastaExtras": "Para acompanhar"
   },
   "instagram": {
     "follow": "Seguir no Instagram"

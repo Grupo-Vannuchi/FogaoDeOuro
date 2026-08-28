@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { cn } from "@/lib/utils";
 
 /**
  * Faixa de título do topo das páginas internas.
@@ -22,18 +24,64 @@ import { Container } from "@/components/ui/container";
 export function PageHeader({
   title,
   subtitle,
+  image,
+  imageAlt = "",
 }: {
   title: string;
   subtitle?: string;
+  /**
+   * Foto de fundo, opcional. Com ela, a faixa inverte as cores: véu escuro por
+   * cima da imagem e texto em creme. Sem ela, nada muda — as outras páginas
+   * continuam com o fundo claro de sempre.
+   */
+  image?: string;
+  imageAlt?: string;
 }) {
+  const comFoto = Boolean(image);
+
   return (
-    <div className="border-b border-border bg-muted/30">
-      <Container className="py-16 sm:py-20">
-        <h1 className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
+    <div
+      className={cn(
+        "relative isolate border-b border-border",
+        comFoto ? "overflow-hidden" : "bg-muted/30",
+      )}
+    >
+      {comFoto ? (
+        <>
+          <Image
+            src={image!}
+            alt={imageAlt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          {/* Véu suficiente para o texto claro passar em qualquer ponto da
+              foto — buffet tem áreas muito claras (louça branca, arroz) onde
+              um overlay leve deixaria o título ilegível. */}
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-[#171615]/85 via-[#171615]/70 to-[#171615]/55"
+          />
+        </>
+      ) : null}
+
+      <Container className="relative py-16 sm:py-20">
+        <h1
+          className={cn(
+            "max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl",
+            comFoto && "text-[#EFE9C2]",
+          )}
+        >
           {title}
         </h1>
         {subtitle ? (
-          <p className="mt-4 max-w-2xl text-pretty text-lg text-muted-foreground">
+          <p
+            className={cn(
+              "mt-4 max-w-2xl text-pretty text-lg",
+              comFoto ? "text-[#EFE9C2]/85" : "text-muted-foreground",
+            )}
+          >
             {subtitle}
           </p>
         ) : null}

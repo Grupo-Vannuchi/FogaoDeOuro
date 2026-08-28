@@ -57,15 +57,46 @@ export function isWeekday(value: number): value is Weekday {
 }
 
 /**
- * Tipos de massa e molhos da ilha de massas.
+ * Como se monta um prato na ilha de massas — do cardápio impresso da casa,
+ * entregue em 28/08/2026.
  *
- * Vazio de propósito: o cliente ainda não enviou a lista, e inventar sabor de
- * molho num cardápio é o tipo de erro que chega à mesa. Enquanto as duas listas
- * estiverem vazias, a seção de massas mostra apenas o preço e a explicação do
- * serviço — nenhuma grade vazia aparece. Basta preencher aqui para as duas
- * listas voltarem a renderizar.
+ * **Os ingredientes não entram aqui de propósito.** Eles mudam toda semana,
+ * conforme o que chega, e uma lista impressa no site vira promessa que a
+ * cozinha não consegue cumprir num dia de entrega ruim. O cardápio informa
+ * quantos o cliente escolhe, não quais — que é exatamente como o cardápio de
+ * papel faz.
+ *
+ * Trocar qualquer coisa aqui muda a página; nenhum destes textos está escrito
+ * dentro de componente.
  */
-export const pastaChoices: { shapes: string[]; sauces: string[] } = {
-  shapes: [],
-  sauces: [],
-};
+export const pastaChoices = {
+  /** Porção única — não há meia nem dobrada. */
+  portion: "190 gramas",
+  /** Os formatos disponíveis, na ordem do cardápio impresso. */
+  shapes: [
+    "Nhoque de mandioquinha",
+    "Nhoque de batata",
+    "Gravata",
+    "Cappelletti de carne ou frango",
+    "Penne integral",
+    "Espaguete",
+    "Ravioli verde de quatro queijos",
+    "Ravioli de queijo",
+    "Talharim",
+    "Penne",
+  ],
+  /** Base do preparo, escolhida na hora. */
+  preparation: ["Azeite ou manteiga", "Cebola e alho"],
+  /** Quantos ingredientes entram — nunca quais. */
+  ingredientLimit: 5,
+  sauces: ["Sugo", "Branco", "Bolonhesa", "4 queijos", "Funghi", "Pesto"],
+  /**
+   * Acompanhamentos com preço próprio — a única exceção à regra de que preço é
+   * da seção. São adicionais cobrados por unidade, não pratos do buffet, e o
+   * cardápio impresso os lista com valor.
+   */
+  extras: [
+    { name: "Filé de frango", weight: "110 gramas", price: 7.5 },
+    { name: "Bife de alcatra", weight: "120 gramas", price: 9.5 },
+  ],
+} as const;

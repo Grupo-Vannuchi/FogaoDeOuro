@@ -4,14 +4,10 @@ import { Section, SectionHeader } from "@/components/ui/section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
 import { DishRow } from "@/components/cardapio/dish-row";
+import { PastaBuilder } from "@/components/cardapio/pasta-builder";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
-import {
-  WEEKDAYS,
-  formatBRL,
-  menuPricing,
-  pastaChoices,
-} from "@/config/menu";
+import { WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 
@@ -113,6 +109,8 @@ export default async function CardapioPage({
           subtitle={t("pastaNote")}
         />
 
+        {/* Pratos de massa cadastrados no admin, quando houver. O passo a
+            passo abaixo é o serviço da ilha e vem do cardápio impresso. */}
         {pasta.length > 0 ? (
           <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
             {pasta.map((dish) => (
@@ -121,42 +119,7 @@ export default async function CardapioPage({
           </ul>
         ) : null}
 
-        {/* As listas de massas e molhos vivem em `config/menu.ts` e hoje estão
-            vazias — o cliente ainda não passou os nomes. Enquanto estiverem,
-            não se renderiza grade vazia: mostra-se o que é verdade. */}
-        {pastaChoices.shapes.length > 0 || pastaChoices.sauces.length > 0 ? (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {(
-              [
-                ["pastaShapes", pastaChoices.shapes],
-                ["pastaSauces", pastaChoices.sauces],
-              ] as const
-            ).map(([key, list]) =>
-              list.length > 0 ? (
-                <div
-                  key={key}
-                  className="rounded-2xl border border-border bg-card p-6"
-                >
-                  <h3 className="font-serif text-lg font-bold">{t(key)}</h3>
-                  <ul className="mt-3 flex flex-wrap gap-2">
-                    {list.map((item) => (
-                      <li
-                        key={item}
-                        className="rounded-full bg-muted px-3 py-1 text-sm text-muted-foreground"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null,
-            )}
-          </div>
-        ) : pasta.length === 0 ? (
-          <p className="mt-8 text-pretty text-center text-muted-foreground">
-            {t("pastaEmpty")}
-          </p>
-        ) : null}
+        <PastaBuilder />
       </Section>
     </>
   );
