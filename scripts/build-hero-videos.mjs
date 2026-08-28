@@ -31,7 +31,10 @@ const VIDEOS = [
     note: "frigideira flambando — slide 1",
   },
   {
-    file: "WhatsApp Video 2026-08-28 at 10.01.45.mp4",
+    // Segunda entrega do mesmo plano, em 1920x1080 contra os 1024x576 da
+    // primeira. Vale a troca: o hero ocupa a largura da tela, e o vídeo antigo
+    // era esticado bem além da resolução nativa.
+    file: "IMG_4902.MOV",
     out: "slide-2",
     note: "carnes girando na rotisseria — slide 2",
   },

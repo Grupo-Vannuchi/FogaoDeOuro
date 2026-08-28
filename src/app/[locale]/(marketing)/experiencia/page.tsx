@@ -71,9 +71,13 @@ export default async function AboutPage({
 
   return (
     <>
+      {/* O salão no cabeçalho: a página inteira fala do ambiente, e a faixa
+          era texto sobre fundo liso. A foto é o próprio assunto do texto. */}
       <PageHeader
         title={t("title")}
         subtitle={t("subtitle", { foundedYear: siteConfig.foundedYear })}
+        image="/ambiente/salao-adega.webp"
+        imageAlt={t("headerAlt")}
       />
 
       <Section>
