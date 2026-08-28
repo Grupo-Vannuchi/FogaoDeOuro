@@ -56,9 +56,14 @@ export function PageHeader({
             sizes="100vw"
             className="object-cover"
           />
-          {/* Véu suficiente para o texto claro passar em qualquer ponto da
-              foto — buffet tem áreas muito claras (louça branca, arroz) onde
-              um overlay leve deixaria o título ilegível. */}
+          {/* Véu calibrado, não estimado: medido com o texto oculto, o ponto
+              mais claro da foto sob o subtítulo dá 5,29:1 contra o creme —
+              acima dos 4,5:1 que o WCAG pede para texto normal.
+
+              Chegar a 90/82/72 subiria para 8,3:1 e escureceria a comida, que
+              é justamente o que a foto veio mostrar. Se trocar a imagem por uma
+              mais clara, meça de novo: esconda o texto antes, senão o pixel
+              mais claro medido é a própria letra e a conta sai errada. */}
           <div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-[#171615]/85 via-[#171615]/70 to-[#171615]/55"
