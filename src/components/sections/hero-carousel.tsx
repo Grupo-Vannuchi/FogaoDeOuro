@@ -15,6 +15,12 @@ export type HeroSlide = {
    * photo — a generic stock image would misrepresent the restaurant.
    */
   image?: string;
+  /**
+   * Vídeo de fundo, quando o slide tem um. Toca mudo, em laço, por cima do
+   * `image`, que serve de pôster — assim o hero pinta com a imagem e o vídeo
+   * entra quando estiver pronto, em vez de deixar um retângulo preto.
+   */
+  video?: string;
   title: string;
   subtitle: string;
 };
@@ -54,6 +60,11 @@ export function HeroCarousel({
   // LCP image during the critical initial load. Flipped on right after mount —
   // long before autoplay (6s) or any user interaction needs them.
   const [deferredReady, setDeferredReady] = useState(false);
+  /**
+   * Respeita "reduzir movimento" do sistema. Começa `false` para o servidor e
+   * o cliente renderizarem igual; o efeito abaixo liga quando é seguro.
+   */
+  const [motionOk, setMotionOk] = useState(false);
 
   const go = useCallback(
     (n: number) => setIndex((n + count) % count),
@@ -63,6 +74,14 @@ export function HeroCarousel({
   useEffect(() => {
     const id = window.requestAnimationFrame(() => setDeferredReady(true));
     return () => window.cancelAnimationFrame(id);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setMotionOk(!mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   // Autoplay (skipped when paused, single-slide, or reduced-motion is on).
@@ -102,14 +121,38 @@ export function HeroCarousel({
             >
               {slide.image ? (
                 (i === 0 || deferredReady) && (
-                  <Image
-                    src={slide.image}
-                    alt=""
-                    fill
-                    priority={i === 0}
-                    sizes="100vw"
-                    className="object-cover"
-                  />
+                  <>
+                    <Image
+                      src={slide.image}
+                      alt=""
+                      fill
+                      priority={i === 0}
+                      sizes="100vw"
+                      className="object-cover"
+                    />
+                    {/* O vídeo cobre a imagem quando existe. A imagem continua
+                        embaixo e é ela o elemento de maior pintura: o hero não
+                        espera o vídeo para aparecer.
+
+                        Só monta depois do primeiro quadro (`deferredReady`),
+                        inclusive no slide 1 — baixar vídeo durante a pintura
+                        inicial é exatamente o que atrasa a home no 4G. E só
+                        quando o visitante não pediu menos movimento: para quem
+                        pediu, a foto basta e o laço infinito seria hostil. */}
+                    {slide.video && deferredReady && motionOk ? (
+                      <video
+                        src={slide.video}
+                        poster={slide.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload={i === 0 ? "auto" : "none"}
+                        aria-hidden
+                        className="absolute inset-0 size-full object-cover"
+                      />
+                    ) : null}
+                  </>
                 )
               ) : (
                 <div
