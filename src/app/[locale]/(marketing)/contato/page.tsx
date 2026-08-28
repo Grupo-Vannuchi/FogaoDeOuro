@@ -123,7 +123,7 @@ export default async function ContactPage({
                       href={canal.href}
                       target={canal.href.startsWith("http") ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className="flex flex-col gap-1 py-4 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-none sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                      className="flex flex-col gap-1 py-4 transition-colors hover:text-brand focus-visible:text-brand sm:flex-row sm:items-center sm:justify-between sm:gap-6"
                     >
                       {conteudo}
                     </a>

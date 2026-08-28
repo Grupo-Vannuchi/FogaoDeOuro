@@ -92,9 +92,30 @@
   }
 
   /* Visible, brand-coloured focus ring for keyboard users. */
+  /*
+   * Anel de foco do teclado — DUPLO, e isso é medição, não enfeite.
+   *
+   * Era um contorno só, na cor da marca. A marca também é cor de FUNDO: sobre
+   * um botão primário, marca sobre marca dá 1,00:1, e o contorno existia sem
+   * ninguém ver onde estava. Critério WCAG 1.4.11 pede 3:1.
+   *
+   * ⚠️ A saída do projeto irmão não serve aqui, e o teste é que mostrou. Lá
+   * bastou trocar o contorno por `--foreground`. Neste site NÃO existe cor
+   * única que passe: a marca (#8A5206) e o accent (#E04F26) são tons médios,
+   * então um contorno escuro reprova sobre eles (1,49 e 2,41) e um claro
+   * reprova sobre o fundo creme. Copiar teria trocado um defeito por outro.
+   *
+   * O contorno fica na cor do texto e a folga, adjacente, na cor do fundo.
+   * Sobre superfície clara some a folga e aparece o contorno; sobre superfície
+   * escura ou saturada, o contrário. Basta uma das duas alcançar 3:1. Pior
+   * caso medido: 3,22 no tema claro (sobre o accent) e 4,57 no escuro.
+   *
+   * Guardado por `test/o-anel-de-foco-e-visivel-em-toda-superficie.test.ts`.
+   */
   :focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-foreground);
     outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-background);
   }
 }
 

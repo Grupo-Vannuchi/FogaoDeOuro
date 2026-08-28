@@ -82,7 +82,7 @@ export function DayTabs({
               aria-controls={`painel-${day}`}
               onClick={() => setPicked(day)}
               className={cn(
-                "inline-flex h-11 shrink-0 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                "inline-flex h-11 shrink-0 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors",
                 selected
                   ? "border-brand bg-brand text-brand-foreground"
                   : "border-border bg-card text-muted-foreground hover:border-brand hover:text-brand",

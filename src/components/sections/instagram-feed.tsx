@@ -54,7 +54,7 @@ function PostCard({ post, index }: { post: InstagramPost; index: number }) {
       href={post.permalink}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${cardBase} w-[78%] snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:w-auto`}
+      className={`${cardBase} w-[78%] snap-start sm:w-auto`}
     >
       <Image
         src={post.image}
