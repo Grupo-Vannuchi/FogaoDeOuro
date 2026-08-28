@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { InformationView } from "@/lib/queries";
+import { useModalFocus } from "@/components/use-modal-focus";
 
 /**
  * Shared lightbox carousel for the information cover images. A single modal lives
@@ -61,21 +62,30 @@ export function InformationGallery({
     [photos.length],
   );
 
+  /*
+   * `role="dialog"` + `aria-modal="true"` são uma PROMESSA à tecnologia
+   * assistiva: a de que o resto da página está inerte enquanto isto estiver
+   * aberto. Este componente declarava as duas coisas e não movia o foco, o que
+   * torna a promessa falsa — o cursor ficava atrás do véu, a tabulação passeava
+   * pela página escondida, e o fechar/anterior/próxima eram inalcançáveis por
+   * teclado.
+   *
+   * O Escape e a trava de rolagem já existiam e continuam, agora vindos do
+   * mesmo lugar que o resto. As três que faltavam — o foco entrar, ficar preso,
+   * e voltar para quem abriu — vêm do gancho.
+   */
+  const dialogRef = useModalFocus({ open: isOpen, onClose: close });
+
+  // As setas ficam à parte: são navegação DESTE carrossel, não gestão de foco.
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-      else if (e.key === "ArrowLeft") move(-1);
+      if (e.key === "ArrowLeft") move(-1);
       else if (e.key === "ArrowRight") move(1);
     };
     document.addEventListener("keydown", onKey);
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = previous;
-    };
-  }, [isOpen, close, move]);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [isOpen, move]);
 
   const current = index !== null ? photos[index] : null;
 
@@ -88,6 +98,7 @@ export function InformationGallery({
 
       {current ? (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={current.title}
