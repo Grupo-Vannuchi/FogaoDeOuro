@@ -585,8 +585,8 @@
     "buffetNote": "O valor é calculado pelo peso do prato que você montar — não pelo que escolher.",
     "pastaLabel": "Massas",
     "pastaNote": "Preço fechado por porção, de segunda a sexta, com diferentes opções de massas e molhos.",
-    "pastaShapes": "Escolha a massa",
-    "pastaSauces": "Molhos",
+    "pastaShapes": "A massa",
+    "pastaSauces": "O molho",
     "daySelectorLabel": "Escolha o dia",
     "today": "Hoje",
     "everyday": "Todos os dias",
@@ -598,11 +598,10 @@
     "weekday4": "Quinta",
     "weekday5": "Sexta",
     "pastaBuild": "Monte a sua massa",
-    "pastaPortion": "Tamanho único",
-    "pastaPreparation": "Preparo",
+    "pastaPreparation": "O preparo",
     "pastaIngredients": "Ingredientes",
-    "pastaIngredientsNote": "Até {n} ingredientes, escolhidos na hora com a nossa equipe.",
-    "pastaExtras": "Para acompanhar"
+    "pastaExtras": "Para acompanhar",
+    "pastaPortionNote": "Porção de {portion} · até {n} ingredientes escolhidos na hora com a nossa equipe."
   },
   "instagram": {
     "follow": "Seguir no Instagram"
