@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,12 @@ export function GalleryPhotoForm({
   const t = useTranslations("admin.galeria");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  /*
+   * A contrapartida de trocar `disabled` por `aria-disabled` no botão: o clique
+   * continua chegando durante o envio. Sem esta guarda, dois cliques viram dois
+   * registros iguais.
+   */
+  const enviando = useRef(false);
 
   const {
     register,
@@ -41,24 +47,41 @@ export function GalleryPhotoForm({
     formState: { errors, isSubmitting },
   } = useForm<GalleryPhotoFormValues>({ defaultValues });
 
+  /*
+   * ⚠️ O `try/catch` é o caso em que a ação NÃO CHEGA A RESPONDER — rede caída,
+   * servidor reiniciando, publicação no meio da requisição. A resposta
+   * `{ ok: false }` já era tratada; esta não era. Sem o `catch`,
+   * `setServerError` nunca roda: o react-hook-form devolve `isSubmitting` a
+   * false no seu próprio `finally` e RELANÇA, então o botão destrava e a tela
+   * não muda em nada. Quem estava cadastrando conclui que salvou, sai da tela,
+   * e o registro não existe.
+   */
   async function onSubmit(values: GalleryPhotoFormValues) {
-    setServerError(null);
-    const input = photoFormToInput(values);
-    const result: GalleryActionResult =
-      mode === "edit" && photoId
-        ? await updateGalleryPhoto(photoId, input)
-        : await createGalleryPhoto(input);
+    if (enviando.current) return;
+    enviando.current = true;
+    try {
+      setServerError(null);
+      const input = photoFormToInput(values);
+      const result: GalleryActionResult =
+        mode === "edit" && photoId
+          ? await updateGalleryPhoto(photoId, input)
+          : await createGalleryPhoto(input);
 
-    if (result.ok) {
-      router.push("/admin/galeria");
-      router.refresh();
-    } else {
+      if (result.ok) {
+        router.push("/admin/galeria");
+        router.refresh();
+      } else {
+        setServerError(t("errorUnknown"));
+      }
+    } catch {
       setServerError(t("errorUnknown"));
+    } finally {
+      enviando.current = false;
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8" noValidate>
+    <form onSubmit={(evento) => handleSubmit(onSubmit)(evento)} className="flex flex-col gap-8" noValidate>
       {/* Basics */}
       <fieldset className="rounded-xl border border-border bg-card p-5">
         <legend className="px-1 text-sm font-semibold">{t("sectionBasics")}</legend>
@@ -110,13 +133,13 @@ export function GalleryPhotoForm({
       </fieldset>
 
       {serverError ? (
-        <p role="alert" className="text-sm text-red-500">
+        <p role="alert" className="text-sm text-danger">
           {serverError}
         </p>
       ) : null}
 
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" size="lg" disabled={isSubmitting}>
+        <Button type="submit" size="lg" aria-disabled={isSubmitting}>
           {isSubmitting ? t("saving") : t("save")}
         </Button>
         <Link

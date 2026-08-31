@@ -4,8 +4,15 @@ import { cn } from "@/lib/utils";
 type Variant = "primary" | "outline" | "ghost" | "accent";
 type Size = "sm" | "md" | "lg";
 
+/*
+ * As variantes `aria-disabled:*` existem porque os formulários do painel usam
+ * `aria-disabled` em vez de `disabled` durante o envio: no Chrome, desabilitar
+ * o elemento que tem o foco joga o foco no `<body>`, e a pessoa perde o lugar
+ * no instante do clique. Sem estas duas classes o botão continuaria com
+ * aparência de clicável enquanto salva.
+ */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:pointer-events-none disabled:opacity-60 aria-disabled:pointer-events-none aria-disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-brand-foreground hover:opacity-90",

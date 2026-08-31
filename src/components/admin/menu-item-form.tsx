@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,12 @@ export function MenuItemForm({
   const tv = useTranslations("validation");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  /*
+   * A contrapartida de trocar `disabled` por `aria-disabled` no botão: o clique
+   * continua chegando durante o envio. Sem esta guarda, dois cliques viram dois
+   * registros iguais.
+   */
+  const enviando = useRef(false);
 
   const {
     register,
@@ -48,28 +54,45 @@ export function MenuItemForm({
     formState: { errors, isSubmitting },
   } = useForm<MenuItemFormValues>({ defaultValues });
 
+  /*
+   * ⚠️ O `try/catch` é o caso em que a ação NÃO CHEGA A RESPONDER — rede caída,
+   * servidor reiniciando, publicação no meio da requisição. A resposta
+   * `{ ok: false }` já era tratada; esta não era. Sem o `catch`,
+   * `setServerError` nunca roda: o react-hook-form devolve `isSubmitting` a
+   * false no seu próprio `finally` e RELANÇA, então o botão destrava e a tela
+   * não muda em nada. Quem estava cadastrando conclui que salvou, sai da tela,
+   * e o registro não existe.
+   */
   async function onSubmit(values: MenuItemFormValues) {
-    setServerError(null);
-    const input = itemFormToInput(values);
-    const result: MenuActionResult =
-      mode === "edit" && itemId
-        ? await updateMenuItem(itemId, input)
-        : await createMenuItem(input);
+    if (enviando.current) return;
+    enviando.current = true;
+    try {
+      setServerError(null);
+      const input = itemFormToInput(values);
+      const result: MenuActionResult =
+        mode === "edit" && itemId
+          ? await updateMenuItem(itemId, input)
+          : await createMenuItem(input);
 
-    if (result.ok) {
-      router.push("/admin/cardapio");
-      router.refresh();
-    } else if (result.error === "duplicate") {
-      setServerError(t("errorDuplicate"));
-    } else {
+      if (result.ok) {
+        router.push("/admin/cardapio");
+        router.refresh();
+      } else if (result.error === "duplicate") {
+        setServerError(t("errorDuplicate"));
+      } else {
+        setServerError(t("errorUnknown"));
+      }
+    } catch {
       setServerError(t("errorUnknown"));
+    } finally {
+      enviando.current = false;
     }
   }
 
   const required = { required: tv("required") };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8" noValidate>
+    <form onSubmit={(evento) => handleSubmit(onSubmit)(evento)} className="flex flex-col gap-8" noValidate>
       {/* Basics */}
       <fieldset className="rounded-xl border border-border bg-card p-5">
         <legend className="px-1 text-sm font-semibold">{t("sectionBasics")}</legend>
@@ -207,13 +230,13 @@ export function MenuItemForm({
       </fieldset>
 
       {serverError ? (
-        <p role="alert" className="text-sm text-red-500">
+        <p role="alert" className="text-sm text-danger">
           {serverError}
         </p>
       ) : null}
 
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" size="lg" disabled={isSubmitting}>
+        <Button type="submit" size="lg" aria-disabled={isSubmitting}>
           {isSubmitting ? t("saving") : t("save")}
         </Button>
         <Link
