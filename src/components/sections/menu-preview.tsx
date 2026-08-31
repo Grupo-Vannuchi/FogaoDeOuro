@@ -52,7 +52,7 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
           align="left"
         />
         <Link
-          href="/gastronomia"
+          href="/cardapio"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
           {tc("viewAllMenu")}

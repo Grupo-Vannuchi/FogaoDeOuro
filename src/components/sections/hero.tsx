@@ -20,25 +20,28 @@ import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carouse
  * paid for on every cold visit.
  */
 const slideImages: string[] = [
-  // Os dois primeiros são os pôsteres dos vídeos: o quadro tem de ser do
-  // próprio vídeo, senão o hero "pula" de uma cena para outra ao começar.
-  "/hero/slide-1-poster.webp",
+  // Slide 1 é foto: a flambada parada, com as tigelas de ingredientes ao lado,
+  // mostra a ilha inteira — o vídeo que estava aqui era um plano fechado e
+  // escuro, onde só se via a chama.
+  "/hero/slide-1.webp",
+  // O do slide 2 é o pôster do vídeo: o quadro tem de ser do próprio vídeo,
+  // senão o hero "pula" de uma cena para outra ao começar.
   "/hero/slide-2-poster.webp",
   "/hero/slide-3.webp",
   "/hero/slide-4.webp",
 ];
 
 /**
- * Vídeo de fundo dos dois primeiros slides, casado por índice com a copy.
+ * Vídeo de fundo, casado por índice com a copy. Só o slide 2 tem.
  *
- * O cliente filmou a frigideira flambando e as carnes girando na rotisseria em
- * 28/08 — movimento que uma foto não entrega. Os slides 3 e 4 seguem em foto:
- * salão e sobremesa são cenas paradas, e vídeo ali só custaria banda.
+ * As carnes girando na rotisseria são movimento que foto não entrega. Os
+ * demais são cenas paradas — flambada, salão e sobremesa —, e vídeo ali só
+ * custaria banda.
  *
  * A imagem do mesmo índice vira o pôster, e é ela quem pinta primeiro.
  */
 const slideVideos: (string | undefined)[] = [
-  "/hero/slide-1.mp4",
+  undefined,
   "/hero/slide-2.mp4",
   undefined,
   undefined,

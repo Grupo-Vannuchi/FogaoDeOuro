@@ -19,6 +19,10 @@ import { siteConfig } from "@/config/site";
  *
  * O horário entra logo abaixo porque é a segunda pergunta de quem está na mesa
  * — e vem do catálogo onde já existe, sem virar mais uma cópia.
+ *
+ * O fundo é a foto do buffet que abria a antiga vitrine: quando ela saiu do
+ * site, a imagem veio para cá. Faz mais sentido do que o salão — quem abre esta
+ * página quer ver comida, não mesa posta.
  */
 export async function MenuHero() {
   const t = await getTranslations("footer");
@@ -26,7 +30,7 @@ export async function MenuHero() {
   return (
     <section className="relative isolate overflow-hidden">
       <Image
-        src="/ambiente/salao.webp"
+        src="/ambiente/buffet.webp"
         alt=""
         fill
         priority

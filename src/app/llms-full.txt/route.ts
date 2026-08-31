@@ -41,7 +41,7 @@ function menuCategoryBlock(category: MenuCategoryView): string {
   );
   return block(
     category.name,
-    `/gastronomia#${category.slug}`,
+    "/cardapio",
     category.description,
     dishes,
   );

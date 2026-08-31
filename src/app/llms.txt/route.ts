@@ -28,7 +28,7 @@ export async function GET(): Promise<Response> {
     ),
     line(
       "Nossa Gastronomia",
-      "/gastronomia",
+      "/cardapio",
       "Churrasco na brasa, peixes, ilha de massas e o buffet completo",
     ),
     line("Galeria", "/galeria", "Fotos do salão e dos pratos"),
@@ -44,7 +44,7 @@ export async function GET(): Promise<Response> {
   try {
     const categories = await getMenu(defaultLocale);
     menu = categories.map((c) =>
-      line(c.name, `/gastronomia#${c.slug}`, c.description),
+      line(c.name, "/cardapio", c.description),
     );
   } catch {
     // Database unavailable — ship the core pages only.

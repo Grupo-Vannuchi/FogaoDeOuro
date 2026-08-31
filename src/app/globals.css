@@ -69,6 +69,21 @@
   --warning: #8a4b00;
 }
 
+/*
+ * Esconde a barra de rolagem sem tirar a rolagem.
+ *
+ * Para carrosséis que deslizam com `scroll-snap`: a barra aparece por baixo das
+ * fotos e suja a borda de quem está no desktop, enquanto o próprio conteúdo já
+ * diz que dá para deslizar (as setas e as bolinhas). Só isso — nunca em algo
+ * onde a barra seja a única pista de que há mais conteúdo.
+ */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

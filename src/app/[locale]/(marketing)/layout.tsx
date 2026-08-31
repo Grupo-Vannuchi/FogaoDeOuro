@@ -4,7 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsappButton } from "@/components/layout/whatsapp-button";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/json-ld";
-import { getInformations, getMenuCategoryLinks } from "@/lib/queries";
+import { getInformations } from "@/lib/queries";
 import { resolveLocale } from "@/i18n/routing";
 
 export default async function MarketingLayout({
@@ -16,20 +16,13 @@ export default async function MarketingLayout({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
+
   const t = await getTranslations("nav");
 
-  // The gallery is no longer a top-level menu item, so the header only needs
-  // the gastronomy children — one query fewer on every marketing page.
-  const [categories, informations] = await Promise.all([
-    getMenuCategoryLinks(locale),
-    getInformations(locale),
-  ]);
-  // O cardápio digital encabeça o dropdown: é a página que o cliente na mesa
-  // procura, e as categorias continuam logo abaixo, como âncoras.
-  const categoryLinks = [
-    { slug: "cardapio", title: t("cardapio"), href: "/cardapio" },
-    ...categories.map((c) => ({ slug: c.slug, title: c.name })),
-  ];
+  // Sem o dropdown de categorias, o cabeçalho não precisa mais delas — uma
+  // consulta a menos em toda página do site.
+  const informations = await getInformations(locale);
+
   const informationLinks = informations.map((i) => ({
     slug: i.slug,
     title: i.title,
@@ -58,7 +51,7 @@ export default async function MarketingLayout({
       >
         {t("skipToContent")}
       </a>
-      <Header serviceLinks={categoryLinks} informationLinks={informationLinks} />
+      <Header informationLinks={informationLinks} />
       {/* `tabIndex={-1}` deixa o alvo receber foco por programa (o salto do
           link acima) sem entrar na ordem de tabulação. Sem ele o navegador
           rola até a âncora mas o foco continua no link: o Tab seguinte volta

@@ -17,19 +17,13 @@ import { siteConfig, type NavKey } from "@/config/site";
 export type DropdownLink = {
   slug: string;
   title: string;
-  /**
-   * Rota própria, quando o item não é uma âncora dentro da página do pai.
-   * O cardápio digital tem página inteira (`/cardapio`); as categorias
-   * continuam sendo âncoras em `/gastronomia`.
-   */
+  /** Rota própria, quando o item não é uma âncora dentro da página do pai. */
   href?: string;
 };
 
 export function Header({
-  serviceLinks = [],
   informationLinks = [],
 }: {
-  serviceLinks?: DropdownLink[];
   informationLinks?: InformationLink[];
 }) {
   const t = useTranslations("nav");
@@ -38,13 +32,12 @@ export function Header({
   const [openKey, setOpenKey] = useState<NavKey | null>(null);
 
   /**
-   * Per-nav-key child links that turn an item into a dropdown. Only
-   * "Nossa Gastronomia" has children; the gallery lives inside "A Experiência"
-   * and is not a top-level menu item, per the client's navigation.
+   * Itens do menu com filhos. Ficou vazio quando "Nossa Gastronomia" saiu do
+   * site: as categorias eram âncoras dentro daquela página, e o cardápio é uma
+   * página só. A estrutura fica porque o menu volta a ter filhos assim que
+   * outra seção precisar — e sem ela o componente precisaria de duas versões.
    */
-  const dropdowns: Partial<Record<NavKey, DropdownLink[]>> = {
-    gastronomia: serviceLinks,
-  };
+  const dropdowns: Partial<Record<NavKey, DropdownLink[]>> = {};
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">

@@ -308,7 +308,9 @@ export const getMenuCategoryLinks = unstable_cache(
         published: true,
         // Mesma regra da vitrine: categoria cujos pratos não têm foto some da
         // página, então o link para a âncora dela também sai do menu.
-        items: { some: { available: true, kind: "SHOWCASE", NOT: { image: "" } } },
+        items: {
+          some: { available: true, kind: "SHOWCASE", NOT: { image: "" } },
+        },
       },
       orderBy: { order: "asc" },
       select: { slug: true, name: true },

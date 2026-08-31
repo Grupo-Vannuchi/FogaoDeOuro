@@ -23,13 +23,14 @@ import { execFileSync } from "node:child_process";
 
 const OUT = join("public", "hero");
 
-/** Cada vídeo casado com o slide que ele ilustra. */
+/**
+ * Cada vídeo casado com o slide que ele ilustra.
+ *
+ * O slide 1 saiu daqui: a flambada voltou a ser foto. O plano filmado era
+ * fechado e escuro — só a chama —, enquanto a foto mostra a ilha inteira, com
+ * as tigelas de ingredientes ao lado.
+ */
 const VIDEOS = [
-  {
-    file: "WhatsApp Video 2026-08-28 at 10.01.47.mp4",
-    out: "slide-1",
-    note: "frigideira flambando — slide 1",
-  },
   {
     // Segunda entrega do mesmo plano, em 1920x1080 contra os 1024x576 da
     // primeira. Vale a troca: o hero ocupa a largura da tela, e o vídeo antigo

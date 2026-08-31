@@ -29,9 +29,13 @@ type BestTime = { when: string; what: string; alt: string };
 /**
  * Uma foto de ambiente por faixa de horário, casada por índice com `bestTime`
  * no catálogo — mesmo pareamento que o hero faz entre foto e copy. A escolha
- * ilustra o que o texto promete: buffet cheio às 11h, gente se servindo no
- * pico, salão vazio depois das 13h30. Trocar a ordem aqui sem trocar lá
- * desencontra imagem e legenda.
+ * ilustra o que o texto promete: as travessas intactas e as mesas livres às
+ * 11h, o salão em serviço no pico, o salão vazio depois das 13h30. Trocar a
+ * ordem aqui sem trocar lá desencontra imagem e legenda.
+ *
+ * Nenhuma delas mostra pegador ou alguém se servindo: a foto do pico era um
+ * par de mãos com a pinça sobre a travessa, e o utensílio roubava a cena que
+ * a legenda descreve, que é o salão.
  */
 const slotImages = [
   "/ambiente/horario-11h.webp",
@@ -133,13 +137,31 @@ export default async function ReservasPage({
         </div>
       </Section>
 
-      {/* 5.2 — Reservas para grupos e eventos */}
-      <Section className="border-y border-border bg-muted/30">
+      {/* 5.2 — Reservas para grupos e eventos.
+           A seção fala do salão, então o salão é o fundo. A foto entra por trás
+           do conteúdo com `fill`: o `Container` não é posicionado, então ela se
+           resolve contra a `<section>`, que ganhou `relative` — e sangra de
+           ponta a ponta em vez de respeitar as margens do texto.
+           `alt=""` porque é decoração: o texto ao lado já diz "salão de 180
+           lugares", e um leitor de tela repetindo isso só atrapalha. */}
+      <Section className="relative isolate overflow-hidden border-y border-border">
+        <Image
+          src="/ambiente/salao-eventos.webp"
+          alt=""
+          fill
+          loading="lazy"
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        {/* O véu não é estética: sem ele o texto claro cai sobre a parede
+            creme da foto e o contraste despenca. O tom é o mesmo dos
+            cabeçalhos das outras páginas. */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[#171615]/80" />
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {t("groupsTitle")}
           </h2>
-          <p className="mt-5 text-pretty text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-5 text-pretty text-lg leading-relaxed text-white/85">
             {t("groupsCopy")}
           </p>
           <div className="mt-8 flex justify-center">

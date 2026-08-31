@@ -27,14 +27,14 @@ export type ThemePalette = {
 export type NavKey =
   | "inicio"
   | "experiencia"
-  | "gastronomia"
+  | "cardapio"
   | "reservas"
   | "contato";
 
 export type NavItem = {
   /** Translation key under the `nav` namespace. */
   key: NavKey;
-  /** Route relative to the locale root, e.g. "/gastronomia". */
+  /** Route relative to the locale root, e.g. "/cardapio". */
   href: string;
 };
 
@@ -187,7 +187,7 @@ export const siteConfig: SiteConfig = {
   nav: [
     { key: "inicio", href: "/" },
     { key: "experiencia", href: "/experiencia" },
-    { key: "gastronomia", href: "/gastronomia" },
+    { key: "cardapio", href: "/cardapio" },
     { key: "reservas", href: "/reservas" },
     { key: "contato", href: "/contato" },
   ],
