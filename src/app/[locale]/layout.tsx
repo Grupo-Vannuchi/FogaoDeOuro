@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import {
-  getTranslations,
-  setRequestLocale,
-} from "next-intl/server";
+import { getMessages } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ThemeStyle } from "@/components/theme-style";
 import { siteConfig } from "@/config/site";
@@ -89,6 +87,23 @@ export default async function LocaleLayout({
   // Enables static rendering for this locale (next-intl).
   setRequestLocale(locale);
 
+  /*
+   * Sem a prop `messages`, o `NextIntlClientProvider` serializa o CATALOGO
+   * INTEIRO no payload de toda pagina. A namespace `admin` sao 10.815 bytes —
+   * 45% do catalogo — de textos de login, erros do Evolution, confirmacoes de
+   * exclusao e dicas de campo do cardapio. Baixados por quem so quer ver o
+   * cardapio, e de novo a cada navegacao interna.
+   *
+   * Nao e problema de seguranca: sao rotulos, nao dados. E peso morto, e num
+   * site de restaurante quem paga e o celular de quem esta parado na calcada
+   * decidindo onde almocar.
+   *
+   * O painel recebe o catalogo completo nos proprios provedores dele.
+   */
+  const mensagensPublicas = Object.fromEntries(
+    Object.entries(await getMessages()).filter(([chave]) => chave !== "admin"),
+  );
+
   return (
     <html
       lang={locale}
@@ -98,7 +113,9 @@ export default async function LocaleLayout({
         <ThemeStyle />
       </head>
       <body className="flex min-h-full flex-col">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={mensagensPublicas}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

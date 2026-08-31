@@ -1,4 +1,5 @@
-import { setRequestLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { resolveLocale } from "@/i18n/routing";
@@ -22,8 +23,12 @@ export default async function AdminLayout({
   const user = await requireAdmin(locale);
 
   return (
-    <AdminShell user={user} locale={locale}>
-      {children}
-    </AdminShell>
+    /* O catalogo completo entra AQUI, e nao na raiz: o layout de locale manda
+       so a parte publica, para o visitante nao baixar os textos do painel. */
+    <NextIntlClientProvider messages={await getMessages()}>
+      <AdminShell user={user} locale={locale}>
+        {children}
+      </AdminShell>
+    </NextIntlClientProvider>
   );
 }
