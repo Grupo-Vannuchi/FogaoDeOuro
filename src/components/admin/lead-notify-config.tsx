@@ -135,7 +135,7 @@ export function LeadNotifyConfig() {
               {t("loadingInstances")}
             </p>
           ) : instStatus === "error" ? (
-            <p className="mt-1 text-xs text-amber-600">{t("instancesError")}</p>
+            <p className="mt-1 text-xs text-warning">{t("instancesError")}</p>
           ) : null}
         </div>
 
@@ -161,7 +161,7 @@ export function LeadNotifyConfig() {
               {t("loadingGroups")}
             </p>
           ) : groupStatus === "error" ? (
-            <p className="mt-1 text-xs text-amber-600">
+            <p className="mt-1 text-xs text-warning">
               {instanceDisconnected ? t("instanceDisconnected") : t("groupsError")}
             </p>
           ) : null}
@@ -183,7 +183,7 @@ export function LeadNotifyConfig() {
             <span
               className={cn(
                 "text-xs",
-                notice === t("saved") ? "text-emerald-600" : "text-red-500",
+                notice === t("saved") ? "text-success" : "text-danger",
               )}
             >
               {notice}

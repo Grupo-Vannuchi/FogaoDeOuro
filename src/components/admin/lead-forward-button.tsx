@@ -44,13 +44,13 @@ export function LeadForwardButton({ id }: { id: string }) {
         {state === "sending" ? (
           <Loader2 className="size-4 animate-spin" />
         ) : state === "sent" ? (
-          <Check className="size-4 text-emerald-600" />
+          <Check className="size-4 text-success" />
         ) : (
           <Send className="size-4" />
         )}
         {t("forward")}
       </button>
-      {err ? <span className="text-xs text-red-500">{err}</span> : null}
+      {err ? <span className="text-xs text-danger">{err}</span> : null}
     </div>
   );
 }

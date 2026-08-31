@@ -57,7 +57,7 @@ export default async function AdminInformationsPage({
                       className={cn(
                         "rounded-full px-2 py-0.5 text-xs font-medium",
                         information.published
-                          ? "bg-emerald-500/10 text-emerald-600"
+                          ? "bg-success/10 text-success"
                           : "bg-muted text-muted-foreground",
                       )}
                     >

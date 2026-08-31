@@ -54,7 +54,7 @@ export default async function AdminCardapioPage({
                       className={cn(
                         "rounded-full px-2 py-0.5 text-xs font-medium",
                         category.published
-                          ? "bg-emerald-500/10 text-emerald-600"
+                          ? "bg-success/10 text-success"
                           : "bg-muted text-muted-foreground",
                       )}
                     >
@@ -99,7 +99,7 @@ export default async function AdminCardapioPage({
                             className={cn(
                               "rounded-full px-2 py-0.5 text-xs font-medium",
                               item.available
-                                ? "bg-emerald-500/10 text-emerald-600"
+                                ? "bg-success/10 text-success"
                                 : "bg-muted text-muted-foreground",
                             )}
                           >

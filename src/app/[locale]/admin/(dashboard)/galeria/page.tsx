@@ -53,7 +53,7 @@ export default async function AdminGaleriaPage({
                   className={cn(
                     "rounded-full px-2 py-0.5 text-xs font-medium",
                     photo.published
-                      ? "bg-emerald-500/10 text-emerald-600"
+                      ? "bg-success/10 text-success"
                       : "bg-muted text-muted-foreground",
                   )}
                 >
