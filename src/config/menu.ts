@@ -197,8 +197,16 @@ export const drinkGroups = [
  *  SOBREMESAS
  * ─────────────────────────────────────────────────────────────────────────
  *
- * Transcritas do cardápio impresso da casa, fotografado em 31/08/2026, na
- * ordem em que aparecem lá.
+ * Transcritas do cardápio impresso da casa, fotografado em 31/08/2026.
+ *
+ * **A ordem não é mais a do impresso**, e por um motivo que só existe aqui: a
+ * lista tem foto em toda linha. No papel, petit gâteau e brownie vêm colados —
+ * e as duas fotos são bolo escuro com bola de sorvete, quase indistinguíveis
+ * uma da outra. O mesmo vale para as duas gelatinas, que são potes coloridos.
+ * Empilhadas, o par lê como imagem repetida, não como duas sobremesas.
+ *
+ * Os dois pares ficam a quatro linhas ou mais de distância. Ao mexer nesta
+ * lista, manter essa separação — ela é o motivo da ordem.
  *
  * **Elas não entram no preço por quilo.** Cada uma tem valor próprio, como as
  * bebidas — a seção dizia o contrário até esta transcrição chegar, e dizer que
@@ -244,27 +252,16 @@ export const desserts: readonly Dessert[] = [
     photo: "/sobremesas/salada-de-frutas.webp",
   },
   {
-    name: "Gelatina",
-    note: "120 ml · limão, morango ou uva",
-    price: 3.5,
-    photo: "/sobremesas/gelatina.webp",
-  },
-  {
-    name: "Gelatina zero",
-    note: "Morango ou uva",
-    price: 4.0,
-    photo: "/sobremesas/gelatina-zero.webp",
-  },
-  {
     name: "Mousse de chocolate",
     note: "Chocolate meio amargo",
     price: 16.0,
     photo: "/sobremesas/mousse-de-chocolate.webp",
   },
   {
-    name: "Creme de papaia com cassis",
-    price: 18.0,
-    photo: "/sobremesas/creme-de-papaia.webp",
+    name: "Gelatina",
+    note: "120 ml · limão, morango ou uva",
+    price: 3.5,
+    photo: "/sobremesas/gelatina.webp",
   },
   {
     name: "Petit gateau com sorvete",
@@ -273,10 +270,20 @@ export const desserts: readonly Dessert[] = [
     photo: "/sobremesas/petit-gateau.webp",
   },
   {
-    name: "Brownie com sorvete",
-    note: "Sorvete de creme ou flocos",
-    price: 20.0,
-    photo: "/sobremesas/brownie.webp",
+    name: "Creme de papaia com cassis",
+    price: 18.0,
+    photo: "/sobremesas/creme-de-papaia.webp",
+  },
+  {
+    name: "Torta holandesa",
+    price: 16.0,
+    photo: "/sobremesas/torta-holandesa.webp",
+  },
+  {
+    name: "Gelatina zero",
+    note: "Morango ou uva",
+    price: 4.0,
+    photo: "/sobremesas/gelatina-zero.webp",
   },
   {
     name: "Pudim",
@@ -285,14 +292,15 @@ export const desserts: readonly Dessert[] = [
     photo: "/sobremesas/pudim.webp",
   },
   {
-    name: "Torta holandesa",
-    price: 16.0,
-    photo: "/sobremesas/torta-holandesa.webp",
-  },
-  {
     name: "Torta de limão",
     price: 16.0,
     photo: "/sobremesas/torta-de-limao.webp",
+  },
+  {
+    name: "Brownie com sorvete",
+    note: "Sorvete de creme ou flocos",
+    price: 20.0,
+    photo: "/sobremesas/brownie.webp",
   },
 ];
 

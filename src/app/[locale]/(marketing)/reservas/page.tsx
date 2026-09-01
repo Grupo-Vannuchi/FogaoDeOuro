@@ -140,7 +140,10 @@ export default async function ReservasPage({
       </Section>
 
       {/* 5.2 — Reservas para grupos e eventos.
-           A seção fala do salão, então o salão é o fundo. A foto entra por trás
+           A seção fala do salão, então o salão é o fundo — e o fundo precisa
+           mostrar MESAS. O recorte anterior caía no bambu e numa parede vazia:
+           sob o véu virava uma planta escura à esquerda e nada à direita, e o
+           título "180 lugares" ficava sobre um vazio que o desmentia. A foto entra por trás
            do conteúdo com `fill`: o `Container` não é posicionado, então ela se
            resolve contra a `<section>`, que ganhou `relative` — e sangra de
            ponta a ponta em vez de respeitar as margens do texto.

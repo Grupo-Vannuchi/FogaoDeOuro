@@ -84,12 +84,18 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
         {passos.map((passo, i) => {
           const ultimo = i === passos.length - 1;
           return (
-            <li key={passo.titulo} className="flex gap-4 sm:gap-5">
-              {/* Coluna do número. A linha é `flex-1`: ela estica até o
-                  próximo círculo sozinha, sem altura fixa que desalinhe
-                  quando as etiquetas quebram em mais linhas. */}
-              <div className="flex flex-col items-center" aria-hidden>
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-card font-serif text-sm font-bold tabular-nums text-brand sm:size-10 sm:text-base">
+            <li key={passo.titulo} className="flex sm:gap-5">
+              {/* A trilha só existe a partir de `sm`. No celular ela custava
+                  52px de recuo (círculo de 36 + vão de 16) em cada linha da
+                  lista, numa tela de 390px — um quarto da largura gasto para
+                  desenhar uma calha vazia. Ali o número passa a ficar na mesma
+                  linha do título e o card ocupa a coluna inteira.
+
+                  A linha vertical é `flex-1`: estica até o próximo círculo
+                  sozinha, sem altura fixa que desalinhe quando as opções
+                  quebram em mais linhas. */}
+              <div className="hidden flex-col items-center sm:flex" aria-hidden>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-card font-serif text-base font-bold tabular-nums text-brand">
                   {i + 1}
                 </span>
                 {ultimo ? null : (
@@ -97,10 +103,18 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
                 )}
               </div>
 
-              {/* `min-w-0` para as etiquetas quebrarem em vez de empurrar a
+              {/* `min-w-0` para as opções quebrarem em vez de empurrar a
                   coluna do número para fora. */}
               <div className={`min-w-0 flex-1 pt-1.5 ${ultimo ? "" : "pb-9"}`}>
-                <h4 className="font-serif text-lg font-bold leading-snug sm:text-xl">
+                <h4 className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug sm:text-xl">
+                  {/* O mesmo número da trilha, na versão de celular. Some em
+                      `sm`, onde o círculo da calha assume. */}
+                  <span
+                    aria-hidden
+                    className="flex size-7 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-card text-sm tabular-nums text-brand sm:hidden"
+                  >
+                    {i + 1}
+                  </span>
                   {passo.titulo}
                 </h4>
                 {passo.opcoes ? (
@@ -108,7 +122,7 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
                     {passo.opcoes.map((opcao) => (
                       <li
                         key={opcao}
-                        className="border-b border-border px-5 py-4 last:border-b-0 sm:px-6"
+                        className="border-b border-border px-4 py-4 last:border-b-0 sm:px-6"
                       >
                         <p className="font-serif text-base font-bold leading-snug sm:text-lg">
                           {opcao}
