@@ -27,15 +27,17 @@ export async function generateMetadata({
 type BestTime = { when: string; what: string; alt: string };
 
 /**
- * Uma foto de ambiente por faixa de horário, casada por índice com `bestTime`
- * no catálogo — mesmo pareamento que o hero faz entre foto e copy. A escolha
- * ilustra o que o texto promete: as travessas intactas e as mesas livres às
- * 11h, o salão em serviço no pico, o salão vazio depois das 13h30. Trocar a
- * ordem aqui sem trocar lá desencontra imagem e legenda.
+ * Uma foto por faixa de horário, casada por índice com `bestTime` no catálogo
+ * — mesmo pareamento que o hero faz entre foto e copy. Trocar a ordem aqui sem
+ * trocar lá desencontra imagem e legenda.
  *
- * Nenhuma delas mostra pegador ou alguém se servindo: a foto do pico era um
- * par de mãos com a pinça sobre a travessa, e o utensílio roubava a cena que
- * a legenda descreve, que é o salão.
+ * As três são de famílias diferentes de propósito: um prato, as travessas do
+ * buffet e o salão. Antes, duas delas eram linhas de travessa esverdeadas e a
+ * fileira lia como a mesma foto repetida.
+ *
+ * Nenhuma mostra pegador ou alguém se servindo: a foto do pico era um par de
+ * mãos com a pinça sobre a travessa, e o utensílio roubava a cena que a
+ * legenda descreve, que é o salão.
  */
 const slotImages = [
   "/ambiente/horario-11h.webp",

@@ -65,7 +65,7 @@ export function isWeekday(value: number): value is Weekday {
  * dia da semana. O carrossel ilustra a ilha, não a lista de segunda-feira.
  *
  * A escolha é por massas visivelmente diferentes entre si — nhoque ao sugo,
- * talharim ao molho branco e penne ao sugo. Três fotos do mesmo penne
+ * ravioli ao molho branco e penne ao sugo. Três fotos do mesmo penne
  * venderiam a ilha como se ela tivesse uma opção só.
  *
  * `name` alimenta o texto alternativo de cada slide; sem ele os três leriam
@@ -74,8 +74,8 @@ export function isWeekday(value: number): value is Weekday {
 export const pastaPhotos = [
   { photo: "/massas/nhoque-ao-sugo.webp", name: "Nhoque ao sugo" },
   {
-    photo: "/massas/talharim-ao-molho-branco.webp",
-    name: "Talharim ao molho branco",
+    photo: "/massas/ravioli-ao-molho-branco.webp",
+    name: "Ravioli ao molho branco",
   },
   { photo: "/massas/penne-ao-sugo.webp", name: "Penne ao sugo" },
 ] as const;
@@ -295,3 +295,25 @@ export const desserts: readonly Dessert[] = [
     photo: "/sobremesas/torta-de-limao.webp",
   },
 ];
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ *  CARTA DE VINHOS
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * **Vazia de propósito, e não por esquecimento.** O cardápio impresso
+ * fotografado em 31/08 não trazia vinho nenhum com preço — só a cerveja. A
+ * seção existe, com a foto e a estrutura prontas; assim que os rótulos e os
+ * valores chegarem, é só preencher esta lista e a tabela aparece sozinha.
+ *
+ * Enquanto estiver vazia, a seção mostra a foto e a linha de apoio, sem
+ * inventar rótulo nem preço.
+ */
+export type Wine = {
+  name: string;
+  /** Uva, país ou o que o rótulo destaca. */
+  note?: string;
+  price: number;
+};
+
+export const wines: readonly Wine[] = [];

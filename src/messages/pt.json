@@ -617,7 +617,10 @@
     "drinksCoffeeWater": "Café e água",
     "drinksSodasBeer": "Refrigerantes e cerveja",
     "dessertsTakeaway": "Embalagem para viagem da salada de frutas: R$ 2,00.",
-    "dessertsImageAlt": "A vitrine de sobremesas do Fogão de Ouro"
+    "winesLabel": "Carta de vinhos",
+    "winesNote": "Tintos, brancos e espumantes para acompanhar o almoço.",
+    "winesImageAlt": "Garrafa de vinho na mesa do Fogão de Ouro, com a adega ao fundo",
+    "winesPending": "Consulte os rótulos disponíveis com a nossa equipe."
   },
   "instagram": {
     "follow": "Seguir no Instagram"

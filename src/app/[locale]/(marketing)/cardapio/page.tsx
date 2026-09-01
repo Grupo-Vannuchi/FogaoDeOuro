@@ -8,6 +8,7 @@ import { DishRow } from "@/components/cardapio/dish-row";
 import { PastaBuilder } from "@/components/cardapio/pasta-builder";
 import { DrinkList } from "@/components/cardapio/drink-list";
 import { DessertList } from "@/components/cardapio/dessert-list";
+import { WineList } from "@/components/cardapio/wine-list";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
 import { pastaPhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
@@ -142,20 +143,6 @@ export default async function CardapioPage({
           subtitle={t("dessertsNote")}
           align="left"
         />
-        {/* A vitrine abre a seção, como a foto do prato abre as massas: mesma
-            faixa 16/9, mesmo canto arredondado. O arquivo já vem cortado
-            nessa proporção — deixar o `object-cover` recortar no navegador
-            cortava a vitrine pelas pontas. */}
-        <Image
-          src="/ambiente/sobremesas.webp"
-          alt={t("dessertsImageAlt")}
-          width={1600}
-          height={900}
-          loading="lazy"
-          sizes="(min-width: 1280px) 768px, 100vw"
-          className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover"
-        />
-
         <DessertList />
       </Section>
 
@@ -172,6 +159,27 @@ export default async function CardapioPage({
           align="left"
         />
         <DrinkList />
+      </Section>
+
+      {/* Carta de vinhos: seção própria porque o vinho não é bebida de balcão
+          — tem rótulo, safra e uma escolha por trás. A lista está vazia até os
+          rótulos chegarem; a foto e a estrutura já esperam por eles. */}
+      <Section containerClassName="max-w-3xl">
+        <SectionHeader
+          title={t("winesLabel")}
+          subtitle={t("winesNote")}
+          align="left"
+        />
+        <Image
+          src="/bebidas/carta-de-vinhos.webp"
+          alt={t("winesImageAlt")}
+          width={1600}
+          height={900}
+          loading="lazy"
+          sizes="(min-width: 1280px) 768px, 100vw"
+          className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover"
+        />
+        <WineList />
       </Section>
     </>
   );
