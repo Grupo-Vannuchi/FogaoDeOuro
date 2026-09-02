@@ -309,19 +309,55 @@ export const desserts: readonly Dessert[] = [
  *  CARTA DE VINHOS
  * ─────────────────────────────────────────────────────────────────────────
  *
- * **Vazia de propósito, e não por esquecimento.** O cardápio impresso
- * fotografado em 31/08 não trazia vinho nenhum com preço — só a cerveja. A
- * seção existe, com a foto e a estrutura prontas; assim que os rótulos e os
- * valores chegarem, é só preencher esta lista e a tabela aparece sozinha.
+ * Transcrita da carta impressa fotografada em 02/09. A casa serve **duas
+ * linhas** — uma nacional e uma importada —, e cada uma é vendida em mais de
+ * uma dose. Por isso o vinho não cabe no formato das bebidas, de um nome para
+ * um preço: aqui um rótulo tem vários preços, e é a dose que os separa.
  *
- * Enquanto estiver vazia, a seção mostra a foto e a linha de apoio, sem
- * inventar rótulo nem preço.
+ * Os dois preços de garrafa vêm de etiqueta adesiva colada por cima da carta,
+ * ilegível na foto — foram confirmados pelo dono em 02/09, não lidos da
+ * imagem. Se a etiqueta mudar de novo, é aqui que se atualiza.
  */
-export type Wine = {
-  name: string;
-  /** Uva, país ou o que o rótulo destaca. */
-  note?: string;
+export type WineServing = {
+  /** A dose, como está impressa: "Taça", "½ Taça", "Garrafa". */
+  label: string;
+  /** Volume da dose, quando a carta traz. Fica sob o nome, como nas bebidas. */
+  volume?: string;
   price: number;
 };
 
-export const wines: readonly Wine[] = [];
+export type Wine = {
+  name: string;
+  /** Nacional ou importado — o que a carta impressa destaca. */
+  note?: string;
+  /** Os rótulos servidos sob esta linha, quando são mais de um. */
+  labels?: readonly string[];
+  servings: readonly WineServing[];
+};
+
+export const wines: readonly Wine[] = [
+  {
+    name: "Del Grano",
+    note: "Nacional",
+    servings: [
+      { label: "Taça", volume: "175 ml", price: 17.5 },
+      { label: "½ Taça", volume: "87,5 ml", price: 14.0 },
+      { label: "Garrafa", price: 60.0 },
+    ],
+  },
+  {
+    name: "Block",
+    note: "Importado",
+    labels: [
+      "Segredo do Abade",
+      "Carménère",
+      "Cabernet Sauvignon",
+      "Sauvignon Blanc 3 Medalhas",
+    ],
+    servings: [
+      { label: "Taça", volume: "175 ml", price: 19.5 },
+      { label: "½ Taça", volume: "87,5 ml", price: 16.0 },
+      { label: "Garrafa", price: 75.0 },
+    ],
+  },
+];
