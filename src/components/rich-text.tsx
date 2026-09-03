@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Link } from "@/i18n/navigation";
+import { siteConfig, whatsappLink, fullAddress } from "@/config/site";
 
 /**
  * Lightweight, dependency-free renderer for the lightly-marked-up text stored in
@@ -18,10 +19,101 @@ import { Link } from "@/i18n/navigation";
  *   `**bold**`                  → <strong>
  *   `*italic*` / `_italic_`     → <em>
  *   `[label](/path)`            → localized <Link> (internal) or <a> (external)
+ *
+ * Além disso, o número de WhatsApp e o endereço da casa viram link sozinhos
+ * onde quer que apareçam escritos — ver `AUTO_LINKS`.
  */
 
 const INLINE =
   /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*|_([^_]+)_/g;
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * Trechos que viram link automaticamente, sem markdown no texto.
+ *
+ * **Por que automático e não `[texto](url)` gravado no banco.** Este conteúdo é
+ * editado pelo restaurante, e o próprio texto de hoje avisa que vai ser
+ * reescrito. Markdown colado na linha some na primeira reescrita, e a URL
+ * gravada junto envelhece calada quando o endereço ou a mensagem padrão mudam
+ * em `config/site.ts`. Aqui o dono do dado continua sendo o `siteConfig`: quem
+ * escrever "Rua Frei Gaspar, 46" numa novidade nova ganha o mapa de graça.
+ *
+ * Ordem importa — o endereço longo vem antes do curto, senão o curto casa
+ * primeiro e o resto do endereço fica de fora do link.
+ */
+const { address, whatsapp } = siteConfig.contact;
+const zap = whatsappLink();
+
+const AUTO_LINKS: { pattern: string; href: string }[] = [
+  {
+    pattern: `${address.street}, ${address.city}, ${address.region}`,
+    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`,
+  },
+  {
+    pattern: address.street,
+    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`,
+  },
+  ...(zap
+    ? [
+        { pattern: whatsapp.display, href: zap },
+        // Sem o DDI: é como o número costuma aparecer escrito no meio de uma
+        // frase, e cai no mesmo link com a mesma mensagem já preenchida.
+        { pattern: whatsapp.display.replace(/^\+55\s*/, ""), href: zap },
+      ]
+    : []),
+];
+
+const AUTO = new RegExp(
+  AUTO_LINKS.map(({ pattern }) => `(${escapeRe(pattern)})`).join("|"),
+  "g",
+);
+
+const linkClass = "font-medium text-brand underline-offset-4 hover:underline";
+
+/**
+ * Transforma endereço e WhatsApp em link dentro de um trecho de texto puro.
+ * Roda só sobre o que sobrou fora do markdown, para não quebrar um
+ * `[label](url)` que já cite o endereço no rótulo.
+ */
+function autoLink(text: string, keyBase: string): React.ReactNode[] {
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let key = 0;
+
+  for (const match of text.matchAll(AUTO)) {
+    const start = match.index ?? 0;
+    if (start > lastIndex) {
+      nodes.push(
+        <Fragment key={`${keyBase}-t${key++}`}>
+          {text.slice(lastIndex, start)}
+        </Fragment>,
+      );
+    }
+    // O índice do grupo que casou diz qual link usar.
+    const hit = match.slice(1).findIndex((g) => g !== undefined);
+    nodes.push(
+      <a
+        key={`${keyBase}-a${key++}`}
+        href={AUTO_LINKS[hit].href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+      >
+        {match[0]}
+      </a>,
+    );
+    lastIndex = start + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(
+      <Fragment key={`${keyBase}-t${key++}`}>{text.slice(lastIndex)}</Fragment>,
+    );
+  }
+
+  return nodes;
+}
 
 /** Parse inline emphasis/links within a single block of text. */
 function renderInline(text: string): React.ReactNode[] {
@@ -33,7 +125,9 @@ function renderInline(text: string): React.ReactNode[] {
     const start = match.index ?? 0;
     if (start > lastIndex) {
       nodes.push(
-        <Fragment key={key++}>{text.slice(lastIndex, start)}</Fragment>,
+        <Fragment key={key++}>
+          {autoLink(text.slice(lastIndex, start), `i${key}`)}
+        </Fragment>,
       );
     }
 
@@ -78,7 +172,11 @@ function renderInline(text: string): React.ReactNode[] {
   }
 
   if (lastIndex < text.length) {
-    nodes.push(<Fragment key={key++}>{text.slice(lastIndex)}</Fragment>);
+    nodes.push(
+      <Fragment key={key++}>
+        {autoLink(text.slice(lastIndex), `i${key}`)}
+      </Fragment>,
+    );
   }
 
   return nodes;
