@@ -47,12 +47,13 @@ const IMAGES = [
     width: 800,
     note: "servindo-se no buffet — 11h30 às 13h30",
   },
-  {
-    file: "WhatsApp Image 2026-08-24 at 10.48.17 (2).jpeg",
-    out: "horario-13h30.webp",
-    width: 800,
-    note: "salão · luminárias — após 13h30",
-  },
+  // O card das 13h e o fundo da seção de eventos saíram deste lote. A foto do
+  // salão dos fundos pegava a porta do banheiro e foi vetada pelo cliente, e
+  // ela servia aos dois lugares. As substitutas vieram do Storage, não da pasta
+  // de originais, e este script NÃO as regenera:
+  //   • `picanha-na-brasa.webp` 800×450 — card das 13h
+  //   • `salao-mesas.webp`   1800×561 — fundo da seção de eventos
+  // Ambas cortadas de arquivos 1600×900 do bucket.
 ];
 
 const dir = process.argv[2];

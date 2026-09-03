@@ -31,18 +31,19 @@ type BestTime = { when: string; what: string; alt: string };
  * — mesmo pareamento que o hero faz entre foto e copy. Trocar a ordem aqui sem
  * trocar lá desencontra imagem e legenda.
  *
- * As três são de famílias diferentes de propósito: um prato, as travessas do
- * buffet e o salão. Antes, duas delas eram linhas de travessa esverdeadas e a
- * fileira lia como a mesma foto repetida.
+ * A do card das 13h era o salão visto de um ângulo que pegava a porta do
+ * banheiro ao fundo — o cliente vetou.
  *
- * Nenhuma mostra pegador ou alguém se servindo: a foto do pico era um par de
- * mãos com a pinça sobre a travessa, e o utensílio roubava a cena que a
- * legenda descreve, que é o salão.
+ * A substituta não podia ser outro buffet (o card do meio já é um) nem outro
+ * salão: o do topo da página e o do fundo da seção de eventos já ocupam essa
+ * família, e uma terceira sala na mesma rolagem lê como repetição. Sobra a
+ * carne, que ainda não aparece em lugar nenhum daqui — e a fileira fica prato,
+ * buffet, carne, que é também a ordem em que se monta o prato.
  */
 const slotImages = [
   "/ambiente/horario-11h.webp",
   "/ambiente/horario-11h30.webp",
-  "/ambiente/horario-13h30.webp",
+  "/ambiente/picanha-na-brasa.webp",
 ];
 
 /** One line of the "practical information" list. */
@@ -141,9 +142,13 @@ export default async function ReservasPage({
 
       {/* 5.2 — Reservas para grupos e eventos.
            A seção fala do salão, então o salão é o fundo — e o fundo precisa
-           mostrar MESAS. O recorte anterior caía no bambu e numa parede vazia:
-           sob o véu virava uma planta escura à esquerda e nada à direita, e o
-           título "180 lugares" ficava sobre um vazio que o desmentia. A foto entra por trás
+           mostrar MESAS. Já queimamos dois recortes aqui: o do bambu, que sob o
+           véu virava uma planta escura à esquerda e nada à direita, e o do
+           salão dos fundos, vetado pelo cliente por mostrar a porta do banheiro.
+           Este é o salão comprido, com as fileiras de mesas e a prateleira de
+           vinhos — o único enquadramento do acervo que sustenta "180 lugares".
+           Contraste medido sob o véu: 14,9:1 no título, 10,5:1 no parágrafo, e
+           9,7:1 no pior ponto da faixa onde o texto cai. A foto entra por trás
            do conteúdo com `fill`: o `Container` não é posicionado, então ela se
            resolve contra a `<section>`, que ganhou `relative` — e sangra de
            ponta a ponta em vez de respeitar as margens do texto.
@@ -151,7 +156,7 @@ export default async function ReservasPage({
            lugares", e um leitor de tela repetindo isso só atrapalha. */}
       <Section className="relative isolate overflow-hidden border-y border-border">
         <Image
-          src="/ambiente/salao-eventos.webp"
+          src="/ambiente/salao-mesas.webp"
           alt=""
           fill
           loading="lazy"
