@@ -41,19 +41,48 @@ describe("escolha da capa", () => {
         ...base,
         media_type: "CAROUSEL_ALBUM",
         // Repare: sem `media_url` — é assim que a Meta costuma devolver.
-        children: { data: [{ media_url: "1.jpg" }, { media_url: "2.jpg" }] },
+        children: {
+          data: [
+            { media_type: "IMAGE", media_url: "1.jpg" },
+            { media_type: "IMAGE", media_url: "2.jpg" },
+          ],
+        },
       }),
     ).toBe("1.jpg");
   });
 
   it("carrossel cujo primeiro item é vídeo cai na miniatura dele", () => {
+    // O fixture PRECISA trazer `media_url` junto: é assim que a Meta responde
+    // para uma criança de vídeo, e sem ele este teste passava por acidente —
+    // não havia .mp4 para o código escolher errado.
+    const capa = coverOf({
+      ...base,
+      media_type: "CAROUSEL_ALBUM",
+      children: {
+        data: [
+          {
+            media_type: "VIDEO",
+            media_url: "primeiro-item.mp4",
+            thumbnail_url: "capa-do-video.jpg",
+          },
+          { media_type: "IMAGE", media_url: "2.jpg" },
+        ],
+      },
+    });
+    expect(capa).toBe("capa-do-video.jpg");
+    expect(capa).not.toBe("primeiro-item.mp4");
+  });
+
+  it("carrossel que começa por vídeo sem miniatura não serve o .mp4", () => {
+    // Sem miniatura, a criança de vídeo não vira capa de jeito nenhum: cair
+    // no `media_url` dela seria mandar megabytes de vídeo para uma <img>.
     expect(
       coverOf({
         ...base,
         media_type: "CAROUSEL_ALBUM",
-        children: { data: [{ thumbnail_url: "capa-do-video.jpg" }] },
+        children: { data: [{ media_type: "VIDEO", media_url: "so-video.mp4" }] },
       }),
-    ).toBe("capa-do-video.jpg");
+    ).toBeNull();
   });
 
   it("devolve null quando não há imagem utilizável", () => {

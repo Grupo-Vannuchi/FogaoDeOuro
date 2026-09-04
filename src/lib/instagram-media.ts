@@ -29,7 +29,14 @@ export type RawMedia = {
   thumbnail_url?: string;
   permalink?: string;
   timestamp?: string;
-  children?: { data?: { media_url?: string; thumbnail_url?: string }[] };
+  children?: {
+    data?: {
+      /** Sem isto não dá para saber se a criança é vídeo — ver `coverOf`. */
+      media_type?: string;
+      media_url?: string;
+      thumbnail_url?: string;
+    }[];
+  };
 };
 
 /**
@@ -42,6 +49,9 @@ export type RawMedia = {
  *    `thumbnail_url`.
  *  - **CAROUSEL_ALBUM** — o álbum não tem mídia própria, tem filhos. A Meta
  *    costuma devolver `media_url` ausente, e a capa é a primeira criança.
+ *    **A criança repete a armadilha do pai**: quando ela é vídeo, o
+ *    `media_url` dela também é o .mp4. Um carrossel que começa por vídeo é
+ *    comum, e é por isso que pedimos `media_type` dentro de `children`.
  *  - **IMAGE** — o caminho simples.
  */
 export function coverOf(media: RawMedia): string | null {
@@ -50,7 +60,13 @@ export function coverOf(media: RawMedia): string | null {
   }
   if (media.media_type === "CAROUSEL_ALBUM") {
     const first = media.children?.data?.[0];
-    return first?.media_url ?? first?.thumbnail_url ?? media.media_url ?? null;
+    // Mesma regra do pai, um nível abaixo. Sem `thumbnail_url`, a criança de
+    // vídeo não vira capa: cair no `media_url` dela seria servir o .mp4.
+    const capa =
+      first?.media_type === "VIDEO"
+        ? first.thumbnail_url
+        : (first?.media_url ?? first?.thumbnail_url);
+    return capa ?? media.media_url ?? null;
   }
   return media.media_url ?? media.thumbnail_url ?? null;
 }

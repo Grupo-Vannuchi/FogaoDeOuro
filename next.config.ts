@@ -72,11 +72,22 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       // Supabase Storage (admin image uploads) — the project's public bucket.
       { protocol: "https", hostname: "*.supabase.co" },
-      // Instagram media CDN. Só os dois hosts que a Graph API devolve em
-      // `media_url`/`thumbnail_url` — liberar `*.fbcdn.net` inteiro abriria
-      // a otimização de imagem para qualquer conteúdo hospedado pela Meta.
+      // Instagram media CDN. A Meta serve a mesma mídia por dois domínios e
+      // alterna entre eles sem aviso: `scontent-<pop>.cdninstagram.com` e
+      // `instagram.f<pop>.fna.fbcdn.net`. Faltava o segundo, e sem ele o
+      // otimizador responde 400 — o card viria quebrado sem nada explicando.
+      //
+      // `instagram.*.fbcdn.net` em vez de `*.fbcdn.net` de propósito: o `*` do
+      // Next casa ponto (o matcher é picomatch sobre o hostname, onde não há
+      // barra), então o padrão largo liberaria QUALQUER conteúdo hospedado
+      // pela Meta na nossa rota de otimização. Verificado com o matcher real:
+      // `instagram.*.fbcdn.net` casa `instagram.fgru1-1.fna.fbcdn.net` e
+      // recusa `scontent.xx.fbcdn.net`.
+      //
+      // `scontent.cdninstagram.com` não precisa de linha própria: o padrão
+      // acima já o cobre.
       { protocol: "https", hostname: "*.cdninstagram.com" },
-      { protocol: "https", hostname: "scontent.cdninstagram.com" },
+      { protocol: "https", hostname: "instagram.*.fbcdn.net" },
     ],
   },
 };

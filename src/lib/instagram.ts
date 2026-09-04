@@ -61,8 +61,10 @@ async function fetchPosts(): Promise<import("@/lib/instagram-media").InstagramPo
     "thumbnail_url",
     "permalink",
     "timestamp",
-    // Capa do carrossel: o álbum não tem mídia própria.
-    "children{media_url,thumbnail_url}",
+    // Capa do carrossel: o álbum não tem mídia própria. `media_type` da
+    // criança não é enfeite — sem ele, um carrossel que começa por vídeo
+    // entrega o .mp4 como capa (ver `coverOf`).
+    "children{media_type,media_url,thumbnail_url}",
   ].join(",");
 
   const url = new URL(
