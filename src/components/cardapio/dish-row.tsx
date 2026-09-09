@@ -49,7 +49,11 @@ export function DishRow({
       ) : null}
       {/* `min-w-0` para o texto quebrar em vez de empurrar a foto para fora. */}
       <div className="min-w-0 flex-1 self-center">
-        <h3 className="flex items-center gap-2 font-serif text-base font-bold leading-snug sm:text-lg">
+        {/* Um degrau acima do que era (`base`/`lg`), a pedido do cliente em
+            09/09. Este cardápio é lido em pé, no celular, com o QR Code
+            escaneado na mesa — e a gótica dos títulos pede mais corpo que a
+            serifada anterior para o nome do prato sair de relance. */}
+        <h3 className="flex items-center gap-2 font-serif text-lg font-bold leading-snug sm:text-xl">
           {/* O símbolo antes do nome, não depois: numa lista escaneada de
               cima a baixo, o marcador só serve se estiver na margem, sempre na
               mesma coluna. Depois do nome ele flutuaria numa posição
@@ -66,7 +70,7 @@ export function DishRow({
           {dish.name}
         </h3>
         {dish.description ? (
-          <p className="mt-1 text-pretty text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-1 text-pretty text-base leading-relaxed text-muted-foreground">
             {dish.description}
           </p>
         ) : null}
