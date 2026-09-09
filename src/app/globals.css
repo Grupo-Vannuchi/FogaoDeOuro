@@ -97,9 +97,13 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Serif display for headings, sans for body — the client's typographic
-     direction. Scoped to h1–h3 so small UI headings (h4+ in cards, admin
-     forms) stay on the sans and keep their density. */
+  /* A gótica da fachada nos títulos, sans no corpo. Limitada a h1–h3 de
+     propósito: os títulos pequenos de interface (h4 para baixo, formulários do
+     painel) ficam na sans e mantêm a densidade — uma gótica num rótulo de
+     campo seria decoração no lugar onde se precisa ler rápido.
+
+     Ver `src/app/[locale]/layout.tsx` para a escolha da fonte e o motivo de
+     não ser uma Fraktur literal. */
   h1,
   h2,
   h3 {

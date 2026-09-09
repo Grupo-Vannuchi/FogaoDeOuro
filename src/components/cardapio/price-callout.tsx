@@ -43,7 +43,12 @@ export async function PriceCallout({ compact = false }: { compact?: boolean }) {
           </span>
           <div className="min-w-0">
             <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
-            <p className="font-serif text-2xl font-bold tabular-nums text-brand">
+            {/* Um degrau abaixo do que era (`text-2xl`), a pedido do cliente
+                em 09/09: o número gritava mais alto que o nome do que se está
+                comprando. Continua em serifa, negrito e na cor da marca — ele
+                segue sendo a primeira coisa que se acha no card, só não é mais
+                a primeira coisa que se vê na página. */}
+            <p className="font-serif text-xl font-bold tabular-nums text-brand">
               {card.price}
             </p>
             {compact ? null : (

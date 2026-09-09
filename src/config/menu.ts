@@ -37,6 +37,24 @@ export const WEEKDAYS = [1, 2, 3, 4, 5] as const;
 
 export type Weekday = (typeof WEEKDAYS)[number];
 
+/**
+ * A categoria cujos pratos ganham o símbolo de massa no cardápio da semana.
+ *
+ * O símbolo é um pedido do cliente (09/09): dentro de uma lista de vinte e
+ * poucos pratos por dia, a massa desaparecia. Marcá-la deixa a linha
+ * encontrável de relance.
+ *
+ * **Cuidado ao trocar o ícone.** Estes pratos são do buffet e entram no preço
+ * por quilo; a ilha de massas tem valor fechado e é outra seção. Repetir aqui
+ * o talher cruzado do card de preço da ilha faria a linha prometer o preço
+ * errado — que é o mal-entendido que `PriceCallout` existe para evitar. Daí o
+ * trigo: marca o tipo de comida sem se confundir com o serviço.
+ *
+ * O slug vem do admin. Se alguém renomear a categoria por lá, o símbolo some
+ * sozinho — some o enfeite, não a lista.
+ */
+export const PASTA_CATEGORY_SLUG = "massas-e-risotos";
+
 export const weekdaySlugs: Record<Weekday, string> = {
   1: "segunda",
   2: "terca",

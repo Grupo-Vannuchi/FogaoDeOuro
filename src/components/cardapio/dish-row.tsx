@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { Wheat } from "lucide-react";
 import type { DishView } from "@/lib/queries";
+import { PASTA_CATEGORY_SLUG } from "@/config/menu";
 
 /**
  * Uma linha do cardápio: nome, descrição, fio fino embaixo.
@@ -30,6 +32,7 @@ export function DishRow({
   imageAlt?: string;
 }) {
   const foto = imageAlt && dish.image ? { src: dish.image, alt: imageAlt } : null;
+  const eMassa = dish.category.slug === PASTA_CATEGORY_SLUG;
 
   return (
     <li className="flex gap-4 border-b border-border px-5 py-4 last:border-b-0 sm:gap-5 sm:px-6">
@@ -46,7 +49,20 @@ export function DishRow({
       ) : null}
       {/* `min-w-0` para o texto quebrar em vez de empurrar a foto para fora. */}
       <div className="min-w-0 flex-1 self-center">
-        <h3 className="font-serif text-base font-bold leading-snug sm:text-lg">
+        <h3 className="flex items-center gap-2 font-serif text-base font-bold leading-snug sm:text-lg">
+          {/* O símbolo antes do nome, não depois: numa lista escaneada de
+              cima a baixo, o marcador só serve se estiver na margem, sempre na
+              mesma coluna. Depois do nome ele flutuaria numa posição
+              diferente a cada linha e deixaria de ser encontrável.
+              O nome da categoria vem do admin e é o rótulo lido em voz alta —
+              não invento texto para um ícone cujo significado o restaurante
+              define. */}
+          {eMassa ? (
+            <>
+              <Wheat className="size-4 shrink-0 text-brand" aria-hidden />
+              <span className="sr-only">{dish.category.name}:</span>
+            </>
+          ) : null}
           {dish.name}
         </h3>
         {dish.description ? (

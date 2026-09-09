@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Wheat } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
@@ -102,19 +103,40 @@ export default async function CardapioPage({
         )}
       </Section>
 
-      {/* Massas: seção própria porque o preço é outro. */}
+      {/* Massas: seção própria porque o preço é outro — e a única faixa da
+          página com a cor da marca, a pedido do cliente em 09/09.
+
+          A ilha é o que a casa tem de mais próprio: massa feita na frente do
+          cliente, cobrada à parte. No cinza das outras seções ela lia como
+          mais um bloco do cardápio, e quem rolava rápido passava direto. O
+          faixa clara com borda da marca e o selo de trigo dão a ela o peso que
+          o cinza tirava, sem precisar de fonte maior nem de caixa alta.
+
+          **A faixa CLAREIA, e isso é medição, não gosto.** A primeira versão
+          tingia o fundo com a cor da marca. Medido: `text-muted-foreground`
+          já vive em 4,52:1 sobre o creme da página — quase sem folga sobre o
+          mínimo de 4,5 —, e qualquer tinta escurecendo a faixa derrubava o
+          texto de apoio para 3,94:1. Com `bg-card` o mesmo texto sobe para
+          5,17:1 e o título para 8,88:1, e a seção continua sendo a única
+          faixa destacada da página. Escurecer aqui custa legibilidade;
+          clarear não custa nada. */}
       <Section
         id="massas"
-        className="border-t border-border bg-muted/30"
+        className="border-y-2 border-brand/30 bg-card"
         containerClassName="max-w-3xl"
       >
-        {/* O preço vai no próprio título da seção: quem rola até aqui não
-            deve precisar voltar ao topo para lembrar quanto custa. */}
-        <SectionHeader
-          title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
-          subtitle={t("pastaNote")}
-          align="left"
-        />
+        <div className="flex flex-col items-start gap-5">
+          <span className="inline-flex size-12 items-center justify-center rounded-full bg-brand/15 text-brand">
+            <Wheat className="size-6" aria-hidden />
+          </span>
+          {/* O preço vai no próprio título da seção: quem rola até aqui não
+              deve precisar voltar ao topo para lembrar quanto custa. */}
+          <SectionHeader
+            title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
+            subtitle={t("pastaNote")}
+            align="left"
+          />
+        </div>
 
         {/* Pratos de massa cadastrados no admin, quando houver. O passo a
             passo abaixo é o serviço da ilha e vem do cardápio impresso. */}

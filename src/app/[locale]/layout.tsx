@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Grenze_Gotisch } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -17,14 +17,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 /**
- * Display face for headings — the client's direction asks for "serifada
- * elegante nos títulos + sans limpa no corpo". Self-hosted by `next/font`, so
- * it costs no extra connection and can't shift layout (`display: swap` plus a
- * matched fallback metric are handled by Next).
+ * A tipografia dos títulos, tirada da própria fachada.
+ *
+ * O letreiro da Rua Frei Gaspar é uma **Textura** — a gótica de traço reto e
+ * terminais em losango. O cliente pediu, em 09/09, que o site falasse a mesma
+ * língua da placa que a pessoa vê antes de entrar. Saiu a Playfair, que era
+ * uma serifada elegante e genérica; entra uma gótica.
+ *
+ * **Por que Grenze Gotisch e não uma Fraktur literal.** As Frakturas do
+ * catálogo (UnifrakturMaguntia, UnifrakturCook) são as mais parecidas com a
+ * placa, e as duas têm **um peso só**. Este projeto usa negrito em quase todo
+ * título — com uma fonte de peso único, o navegador sintetiza o negrito
+ * engordando o desenho, e o resultado é uma letra borrada em vez de forte.
+ * A Grenze Gotisch tem a escala inteira, de 100 a 900, e mantém o ar gótico
+ * com contraforma aberta o bastante para sobreviver ao nome de um prato no
+ * celular.
+ *
+ * Trocar por uma Fraktur literal é mudar esta linha e mais nada — a variável
+ * que o resto do projeto consome continua a mesma.
+ *
+ * Servida pelo próprio domínio via `next/font`: não custa conexão nova e não
+ * empurra o layout (`display: swap` e a métrica de fallback são do Next).
  */
-const playfair = Playfair_Display({
-  // Not `--font-serif`: that name is the Tailwind theme token in globals.css,
-  // and pointing it at itself would be circular.
+const displayFont = Grenze_Gotisch({
+  // Não `--font-serif`: esse nome é o token do tema no globals.css, e apontá-lo
+  // para si mesmo seria circular.
   variable: "--font-serif-display",
   subsets: ["latin"],
   display: "swap",
@@ -107,7 +124,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable} ${displayFont.variable} h-full`}
     >
       <head>
         <ThemeStyle />
