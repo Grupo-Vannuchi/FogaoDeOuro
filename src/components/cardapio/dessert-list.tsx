@@ -39,11 +39,15 @@ export async function DessertList() {
               ) : null}
               {/* `min-w-0` para o nome quebrar em vez de empurrar o preço. */}
               <div className="min-w-0 flex-1">
-                <h3 className="font-serif text-base font-bold leading-snug sm:text-lg">
+                {/* Mesmo corpo do `DishRow` e da trilha das massas: as três
+                    listas dividem a mesma página, e a sobremesa menor que o
+                    buffet leria como seção de segunda classe. Se um mudar,
+                    mudam os três. */}
+                <h3 className="font-serif text-lg font-bold leading-snug sm:text-xl">
                   {sobremesa.name}
                 </h3>
                 {sobremesa.note ? (
-                  <p className="mt-1 text-pretty text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-1 text-pretty text-base leading-relaxed text-muted-foreground">
                     {sobremesa.note}
                   </p>
                 ) : null}
