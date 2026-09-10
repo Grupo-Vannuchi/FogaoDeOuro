@@ -25,7 +25,7 @@ export function InformationMenu({ links }: { links: InformationLink[] }) {
       <Link
         href="/novidades"
         aria-label={t("menuLabel")}
-        className="inline-flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground group-focus-within:text-foreground"
+        className="inline-flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-brand group-focus-within:text-foreground"
       >
         <Menu className="size-6" />
       </Link>
@@ -40,7 +40,7 @@ export function InformationMenu({ links }: { links: InformationLink[] }) {
                 <li key={link.slug}>
                   <Link
                     href={`/novidades/${link.slug}`}
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-brand"
                   >
                     <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
                       <Icon name={link.icon} className="size-4" />

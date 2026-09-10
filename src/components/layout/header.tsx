@@ -21,6 +21,29 @@ export type DropdownLink = {
   href?: string;
 };
 
+/**
+ * O link do menu principal, num lugar só — ele aparece em três formas (item
+ * simples, item com filhos e item do menu de mão) e as três precisam envelhecer
+ * juntas.
+ *
+ * **Cor de repouso `foreground`, e não `muted-foreground`.** O menu é o
+ * caminho do visitante pelo site; em cinza claro ele lia como legenda, não como
+ * navegação.
+ *
+ * **Hover no `brand`** — o marrom `#8A5206` do tema, o mesmo que o rodapé já
+ * usa nos ícones sociais. Nenhum tom novo entra por aqui.
+ *
+ * `duration-300` porque o padrão do Tailwind (150ms) num texto que só muda de
+ * cor lê como piscada. O dobro do tempo é o que faz a passagem parecer
+ * intencional.
+ *
+ * O corpo cresce só a partir de `lg`: entre 768px e 1024px os cinco itens mais
+ * o logo e o botão já ocupam a barra inteira, e um degrau a mais ali quebraria
+ * a linha.
+ */
+const navLinkClass =
+  "text-sm font-medium text-foreground transition-colors duration-300 hover:text-brand lg:text-base";
+
 export function Header({
   informationLinks = [],
 }: {
@@ -53,11 +76,7 @@ export function Header({
 
             if (links.length === 0) {
               return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
+                <Link key={item.key} href={item.href} className={navLinkClass}>
                   {t(item.key)}
                 </Link>
               );
@@ -67,7 +86,7 @@ export function Header({
               <div key={item.key} className="group relative">
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground group-focus-within:text-foreground"
+                  className={`inline-flex items-center gap-1 ${navLinkClass} group-focus-within:text-brand`}
                 >
                   {t(item.key)}
                   <ChevronDown className="size-4 transition-transform group-hover:rotate-180" />
@@ -78,7 +97,7 @@ export function Header({
                       <li key={link.slug}>
                         <Link
                           href={link.href ?? `${item.href}#${link.slug}`}
-                          className="block truncate rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                          className="block truncate rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-brand"
                         >
                           {link.title}
                         </Link>
@@ -121,7 +140,7 @@ export function Header({
                     key={item.key}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-2 py-2.5 text-base font-medium hover:bg-muted"
+                    className="rounded-md px-2 py-2.5 text-base font-medium transition-colors duration-300 hover:bg-muted hover:text-brand"
                   >
                     {t(item.key)}
                   </Link>
@@ -136,7 +155,7 @@ export function Header({
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className="flex-1 rounded-md px-2 py-2.5 text-base font-medium hover:bg-muted"
+                      className="flex-1 rounded-md px-2 py-2.5 text-base font-medium transition-colors duration-300 hover:bg-muted hover:text-brand"
                     >
                       {t(item.key)}
                     </Link>
@@ -163,7 +182,7 @@ export function Header({
                           <Link
                             href={`${item.href}#${link.slug}`}
                             onClick={() => setOpen(false)}
-                            className="block truncate rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                            className="block truncate rounded-md px-2 py-2 text-sm text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-brand"
                           >
                             {link.title}
                           </Link>
@@ -185,7 +204,7 @@ export function Header({
                       <Link
                         href={`/novidades/${link.slug}`}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                        className="flex items-center gap-3 rounded-md px-2 py-2 text-sm text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-brand"
                       >
                         <Icon name={link.icon} className="size-4 shrink-0" />
                         <span className="truncate">{link.title}</span>
