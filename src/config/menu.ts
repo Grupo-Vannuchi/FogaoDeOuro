@@ -99,6 +99,23 @@ export const pastaPhotos = [
 ] as const;
 
 /**
+ * As fotos da carta de vinhos, na ordem em que deslizam.
+ *
+ * A adega abre porque responde a primeira pergunta — se a casa tem vinho de
+ * verdade —, e as duas garrafas vêm depois, uma tinta e uma branca, que é a
+ * escolha que o cliente faz na mesa.
+ *
+ * `altKey` e não `name`, como nas massas: aqui a alternativa textual descreve
+ * a cena, não um prato, e cada uma precisa da sua — três slides com o mesmo
+ * texto não dizem nada a quem usa leitor de tela.
+ */
+export const winePhotos = [
+  { photo: "/ambiente/vinhos.webp", altKey: "winesImageAlt" },
+  { photo: "/bebidas/vinho-tinto.webp", altKey: "wineRedAlt" },
+  { photo: "/bebidas/vinho-branco.webp", altKey: "wineWhiteAlt" },
+] as const;
+
+/**
  * Como se monta um prato na ilha de massas — do cardápio impresso da casa,
  * entregue em 28/08/2026.
  *

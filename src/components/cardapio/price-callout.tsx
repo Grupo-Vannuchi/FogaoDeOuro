@@ -51,6 +51,14 @@ export async function PriceCallout({ compact = false }: { compact?: boolean }) {
             <p className="font-serif text-xl font-bold tabular-nums text-brand">
               {card.price}
             </p>
+            {/* Colado no número, a pedido do cliente em 10/09. Estava embaixo
+                dos dois cards e passava como rodapé do bloco; aqui a ressalva
+                fica onde ela vale, e o olho que leu o valor lê a condição no
+                mesmo movimento. Repetida nos dois porque são duas contas
+                diferentes — o quilo e a porção fechada. */}
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {t("subjectToChange")}
+            </p>
             {compact ? null : (
               <p className="mt-1 text-pretty text-sm text-muted-foreground">
                 {card.note}

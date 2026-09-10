@@ -10,6 +10,9 @@ import { formatBRL, wines } from "@/config/menu";
  * linhas; enfileirar "Del Grano taça" e "Del Grano meia taça" como itens
  * irmãos leria como dois vinhos diferentes.
  *
+ * As fotos ficam num carrossel acima (`WinePhotos`), não aqui: preço se lê em
+ * lista, comparando as doses de um rótulo lado a lado, e foto se vê deslizando.
+ *
  * Quando não há rótulo cadastrado, sai só a linha de apoio. Uma moldura vazia
  * no lugar da lista leria como conteúdo que falhou ao carregar, e não como uma
  * carta que ainda não foi digitada.

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Wheat } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
@@ -10,9 +9,10 @@ import { PastaBuilder } from "@/components/cardapio/pasta-builder";
 import { DrinkList } from "@/components/cardapio/drink-list";
 import { DessertList } from "@/components/cardapio/dessert-list";
 import { WineList } from "@/components/cardapio/wine-list";
+import { WinePhotos } from "@/components/cardapio/wine-photos";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
-import { pastaPhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
+import { pastaPhotos, winePhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 
@@ -61,8 +61,14 @@ export default async function CardapioPage({
           não varrido em grade. `max-w-3xl` mantém a linha na faixa confortável
           de leitura mesmo num monitor largo. */}
       <Section containerClassName="max-w-3xl">
-        <SectionHeader title={t("title")} subtitle={t("subtitle")} />
+        <SectionHeader
+          title={t("title")}
+          subtitle={t("subtitle")}
+          size="lg"
+        />
 
+        {/* O "Sujeito a alterações." mora dentro do `PriceCallout`, colado em
+            cada preço — não aqui embaixo, onde lia como rodapé do bloco. */}
         <div className="mt-10">
           <PriceCallout />
         </div>
@@ -125,7 +131,11 @@ export default async function CardapioPage({
         className="border-y-2 border-brand/30 bg-card"
         containerClassName="max-w-3xl"
       >
-        <div className="flex flex-col items-start gap-5">
+        {/* Centralizado, a pedido do cliente em 10/09 — é a única seção da
+            página assim, e é o que a separa das listas que vêm antes e depois.
+            O `items-center` precisa vir daqui: o `SectionHeader` centraliza o
+            próprio texto, mas o selo de trigo é irmão dele, não filho. */}
+        <div className="flex flex-col items-center gap-5 text-center">
           <span className="inline-flex size-12 items-center justify-center rounded-full bg-brand/15 text-brand">
             <Wheat className="size-6" aria-hidden />
           </span>
@@ -134,7 +144,7 @@ export default async function CardapioPage({
           <SectionHeader
             title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
             subtitle={t("pastaNote")}
-            align="left"
+            size="lg"
           />
         </div>
 
@@ -163,7 +173,7 @@ export default async function CardapioPage({
         <SectionHeader
           title={t("dessertsLabel")}
           subtitle={t("dessertsNote")}
-          align="left"
+          size="lg"
         />
         <DessertList />
       </Section>
@@ -178,28 +188,36 @@ export default async function CardapioPage({
         <SectionHeader
           title={t("drinksLabel")}
           subtitle={t("drinksNote")}
-          align="left"
+          size="lg"
         />
         <DrinkList />
       </Section>
 
       {/* Carta de vinhos: seção própria porque o vinho não é bebida de balcão
-          — tem rótulo, safra e uma escolha por trás. A lista está vazia até os
-          rótulos chegarem; a foto e a estrutura já esperam por eles. */}
+          — tem rótulo, safra e uma escolha por trás.
+
+          Carrossel no lugar da foto única: uma garrafa sozinha mostrava um
+          rótulo, e a carta tem dois. As fotos deslizam; os preços continuam em
+          lista logo abaixo, que é onde se comparam as três doses de um mesmo
+          rótulo. */}
       <Section containerClassName="max-w-3xl">
         <SectionHeader
           title={t("winesLabel")}
           subtitle={t("winesNote")}
-          align="left"
+          size="lg"
         />
-        <Image
-          src="/bebidas/carta-de-vinhos.webp"
-          alt={t("winesImageAlt")}
-          width={1600}
-          height={900}
-          loading="lazy"
-          sizes="(min-width: 1280px) 768px, 100vw"
-          className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover"
+        <WinePhotos
+          photos={winePhotos.map((f) => ({
+            image: f.photo,
+            alt: t(f.altKey),
+          }))}
+          labels={{
+            carousel: t("winesCarousel"),
+            prev: t("winesPrev"),
+            next: t("winesNext"),
+            /* `{n}` literal: quem numera é o carrossel, no clique. */
+            goTo: t("winesGoTo", { n: "{n}" }),
+          }}
         />
         <WineList />
       </Section>

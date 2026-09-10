@@ -620,7 +620,15 @@
     "winesLabel": "Carta de vinhos",
     "winesNote": "Uma linha nacional e uma importada, em taça, meia taça ou garrafa.",
     "winesImageAlt": "Garrafa de vinho na mesa do Fogão de Ouro, com a adega ao fundo",
-    "winesPending": "Consulte os rótulos disponíveis com a nossa equipe."
+    "winesPending": "Consulte os rótulos disponíveis com a nossa equipe.",
+    "subjectToChange": "Sujeito a alterações.",
+    "winesCarousel": "Carta de vinhos",
+    "winesPrev": "Rótulo anterior",
+    "winesNext": "Próximo rótulo",
+    "winesGoTo": "Ir para o rótulo {n}",
+    "winesCounter": "{n} de {total}",
+    "wineRedAlt": "Garrafa de vinho tinto sobre a mesa do Fogão de Ouro",
+    "wineWhiteAlt": "Garrafa de vinho branco sobre a mesa do Fogão de Ouro"
   },
   "instagram": {
     "follow": "Seguir no Instagram"

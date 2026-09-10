@@ -26,6 +26,7 @@ import { siteConfig } from "@/config/site";
  */
 export async function MenuHero() {
   const t = await getTranslations("footer");
+  const tc = await getTranslations("cardapio");
 
   return (
     <section className="relative isolate overflow-hidden">
@@ -58,6 +59,13 @@ export async function MenuHero() {
         />
         <p className="text-sm font-medium uppercase tracking-widest text-[#EFE9C2]/80 sm:text-base">
           {t("hours")}
+        </p>
+        {/* A ressalva mora aqui em cima porque é onde ela ainda é aviso: dita
+            depois da lista, viraria desculpa. Fica um degrau abaixo do horário
+            em corpo e em opacidade — quem procura o cardápio passa direto, e
+            quem estranhar um prato encontra a explicação já lida. */}
+        <p className="text-xs tracking-wide text-[#EFE9C2]/60">
+          {tc("subjectToChange")}
         </p>
       </Container>
     </section>
