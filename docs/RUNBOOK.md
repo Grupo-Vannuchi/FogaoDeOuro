@@ -242,6 +242,46 @@ Content-Security-Policy is **not** set yet. Adding it requires a nonce middlewar
 (inline JSON-LD + Next hydration scripts) and per-page testing — treat as its own
 task. See ADR-0004 and `security-review`.
 
+## Carga em massa no banco — o cache não sabe
+
+**Escrever direto no banco não invalida o cache por tag.** É a armadilha que
+custou caro em 10/09/2026: 100 páginas de `/novidades` entraram por
+`scripts/import-informations.mjs`, responderam HTTP 200 na hora, e o
+`sitemap.xml` seguiu mostrando as 12 URLs antigas.
+
+O motivo: as páginas e o sitemap são servidos por `unstable_cache` com a tag
+`informations`, e quem expira essa tag é o `updateTag` das ações do admin
+(`src/app/actions/informations.ts`). Um script roda fora do runtime do Next e
+não tem como chamá-lo.
+
+### Depois de qualquer script que escreva em `Information`, `MenuItem` ou `GalleryPhoto`
+
+Faça **uma** destas três:
+
+1. **Deploy de produção** — reconstrói tudo na hora. É o caminho normal, porque
+   em geral a carga vem junto de código novo.
+2. **Salvar qualquer registro pelo `/admin`** — a ação chama `updateTag` e
+   expira a tag inteira, não só aquele registro.
+3. **Esperar até 24 horas** — `CONTENT_REVALIDATE_SECONDS` vira sozinho.
+
+### Como saber que está pendente
+
+O `import-informations.mjs` confere sozinho: no fim, ele lê o `sitemap.xml` de
+produção e diz quantas páginas ainda não estão listadas. Se `NEXT_PUBLIC_SITE_URL`
+apontar para `localhost`, ele pula a checagem e avisa.
+
+À mão, a qualquer momento:
+
+```bash
+curl -s https://www.fogaodeouro.com.br/sitemap.xml | grep -c "<loc>"
+```
+
+O número tem de bater com 9 páginas fixas + as novidades publicadas.
+
+**O mesmo vale para o `llms.txt`**, que também sai de `getMenu()` cacheado —
+carga nova de cardápio sem invalidação deixa a lista antiga no ar para os
+robôs de IA.
+
 ## Instagram — ligar o feed da home
 
 A seção existe no código e **nasce desligada**: sem as variáveis, ela não

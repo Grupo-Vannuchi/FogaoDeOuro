@@ -151,6 +151,47 @@ null by hardcoding a number.
   keeps its JSON shape — there is just one key in it now. ICU braces in stored
   copy that should render literally must be escaped: `'{NOME}'`.
 
+## SEO e busca por IA — skill: `seo`
+
+Este site vive de busca local: "restaurante por quilo em Santos" traz mais gente
+à mesa do que qualquer outra coisa que a gente escreva. Antes de mexer em
+título, meta, schema, sitemap, `robots.txt`, `llms.txt` ou nas páginas de
+`/novidades`, **invoque a skill `seo`** — ela tem os gates atualizados
+(comprimento mínimo, tipos de schema vivos e depreciados, limiares de Core Web
+Vitals) e scripts que medem em vez de supor.
+
+Auditoria completa: peça `seo audit https://www.fogaodeouro.com.br`. Ela sempre
+produz `FULL-AUDIT-REPORT.md` e `ACTION-PLAN.md`.
+
+**A skill não mora neste repositório** — está no escopo de usuário
+(`~/.claude/skills/seo`) e vale para todos os projetos da casa. Copiá-la para cá
+versionaria 149 arquivos de terceiro que atualizam por fora e ninguém revisaria.
+
+### Regras que já custaram caro aqui
+
+- **`FAQPage` é restrito** a órgãos públicos e saúde desde 2023, e **`HowTo`
+  foi removido** em 2023. Não sugerir nenhum dos dois.
+- **INP, nunca FID.** O FID saiu em setembro de 2024.
+- **Páginas de localidade:** aviso em 30, parada dura em 50 — e o gate exige
+  presença real do negócio no local. Hoje são 28.
+- **Publicar em lote pede espera.** Depois de subir 50 a 100 páginas, monitorar
+  indexação por 2 a 4 semanas antes do próximo lote.
+- **Carga direta no banco não invalida cache.** O sitemap e o `llms.txt` são
+  cacheados por tag; um script que escreve em `Information` sem chamar
+  `updateTag(tags.informations)` deixa as páginas novas fora do sitemap. Já
+  aconteceu com as 100 de 10/09.
+
+### `llms.txt` é conteúdo, não configuração
+
+A seção `## Fatos` de `src/app/llms.txt/route.ts` existe para ser **citada
+verbatim** por um modelo que responde "onde almoçar no Centro de Santos". Cada
+linha é uma frase fechada com um número dentro, e os valores vêm de
+`config/menu.ts` e `config/site.ts` — nunca digitados ali.
+
+As linhas negativas ("não abre no fim de semana", "não tem estacionamento") são
+tão importantes quanto as positivas: sem elas o modelo preenche a lacuna com o
+que é comum no ramo e manda alguém almoçar aqui num domingo.
+
 ## Brand & theme
 
 - **Light only, no switch.** The light palette sits on bare `:root` in
