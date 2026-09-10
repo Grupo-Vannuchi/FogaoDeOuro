@@ -65,8 +65,8 @@
     },
     "galeria": {
       "eyebrow": "Galeria",
-      "title": "O salão e a mesa",
-      "subtitle": "Ambiente renovado e os rechauds quentinhos a partir das 11h esperando por você."
+      "title": "O que sai do buffet",
+      "subtitle": "Carnes na brasa, massas feitas na hora e os rechauds quentinhos a partir das 11h."
     },
     "testimonials": {
       "eyebrow": "Avaliações do Google · 4,5 ★",
@@ -148,7 +148,7 @@
   },
   "galeria": {
     "title": "Galeria",
-    "subtitle": "O salão renovado, a brasa e a mesa posta.",
+    "subtitle": "A brasa, o buffet e as sobremesas que fecham o almoço.",
     "empty": "Em breve, novas fotos por aqui.",
     "photoAlt": "Foto do Fogão de Ouro",
     "ctaTitle": "Quer ver de perto?",
