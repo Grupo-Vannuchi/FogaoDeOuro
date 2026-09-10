@@ -6,7 +6,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PageHeader } from "@/components/page-header";
-import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -102,22 +101,12 @@ export default async function AboutPage({
           </div>
         </div>
 
-        {/* A adega fecha o bloco do salão porque é dele que o texto fala — o
-            ambiente.
-
-            Sem `aspect` e sem `object-cover`: a moldura segue a proporção da
-            própria foto. Forçando 21:9 sobre uma foto 16:9, o corte comia
-            justamente o topo das garrafas da prateleira de cima — que é o
-            assunto da imagem. Uma faixa mais larga só valeria com uma foto
-            enquadrada para isso. */}
-        <Image
-          src="/ambiente/vinhos.webp"
-          alt={t("vinhosAlt")}
-          width={1600}
-          height={900}
-          sizes="(min-width: 1280px) 1200px, 100vw"
-          className="mt-14 w-full rounded-2xl"
-        />
+        {/* Aqui havia a foto da adega, retirada a pedido do cliente em
+            10/09. Não entrou nada no lugar de propósito: ela era um bloco
+            solto no fim da seção, e tirar um bloco fecha o vão sozinho — o
+            respiro que sobra é o `py` da própria `Section`. A página continua
+            com imagem no cabeçalho e na seção seguinte, então o texto não fica
+            sem pausa. */}
       </Section>
 
       <Section className="border-y border-border bg-muted/30">
