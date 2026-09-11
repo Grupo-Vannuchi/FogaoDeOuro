@@ -141,20 +141,58 @@ export default async function ReservasPage({
       </Section>
 
       {/* 5.2 — Reservas para grupos e eventos.
+
            A seção fala do salão, então o salão é o fundo — e o fundo precisa
-           mostrar MESAS. Já queimamos dois recortes aqui: o do bambu, que sob o
-           véu virava uma planta escura à esquerda e nada à direita, e o do
-           salão dos fundos, vetado pelo cliente por mostrar a porta do banheiro.
-           Este é o salão comprido, com as fileiras de mesas e a prateleira de
-           vinhos — o único enquadramento do acervo que sustenta "180 lugares".
-           Contraste medido sob o véu: 14,9:1 no título, 10,5:1 no parágrafo, e
-           9,7:1 no pior ponto da faixa onde o texto cai. A foto entra por trás
-           do conteúdo com `fill`: o `Container` não é posicionado, então ela se
-           resolve contra a `<section>`, que ganhou `relative` — e sangra de
-           ponta a ponta em vez de respeitar as margens do texto.
+           mostrar MESAS. Três recortes já caíram aqui: o do bambu, que sob o
+           véu virava uma planta escura à esquerda e nada à direita; o do salão
+           dos fundos, vetado pelo cliente por mostrar a porta do banheiro; e o
+           salão comprido, trocado em 11/09 por uma foto nova do cliente.
+
+           Esta é a foto de 11/09, **inteira, sem recorte prévio**. A primeira
+           tentativa entregou uma tira de 1800×561 já cortada — e a seção corta
+           de novo, com `object-cover`. Corte duplo sobra um pedaço espremido
+           do meio, que não lembra em nada a foto original: o cliente olhou o
+           localhost e disse, com razão, que a imagem não tinha trocado. Ela
+           tinha; estava irreconhecível.
+
+           Agora o arquivo é o 16:9 completo e quem enquadra é só o
+           `object-cover`, uma vez.
+
+           O `min-h` existe pelo mesmo motivo: com a altura padrão a faixa
+           ficava em ~390px e mostrava uma tira. **É `min-h` e não `py` de
+           propósito** — a primeira tentativa passou `py-28 sm:py-40` e não
+           surtiu efeito nenhum, porque o `Section` já traz `sm:py-section` e
+           o `twMerge` não reconhece o espaçamento customizado `section` como
+           classe de padding: não desempata, e as duas sobrevivem. `min-h` não
+           colide com nada. O `flex items-center` centraliza o conteúdo na
+           altura nova.
+
+           **Contraste medido no composto renderizado**, com o texto escondido
+           e amostrando a cor que sobra sob as pontas e o meio de cada linha:
+           10,6:1 em 1920, 10,5:1 em 1440 e 7,9:1 em 390 — os três bem acima
+           do mínimo de 4,5.
+
+           **E a medição tem de ser feita com o cache de imagens limpo.** O
+           Next guarda as versões otimizadas em `.next/dev/cache/images`, e
+           trocar o arquivo em `public/` NÃO invalida essas entradas. Cheguei
+           a conferir por `curl` em `w=1920`, que tinha sido regerada, e dei o
+           assunto por encerrado — enquanto a página pedia `w=3840`, que
+           continuava servindo o recorte antigo. Eram 80 entradas velhas. Quem
+           trocar uma imagem aqui: `rm -rf .next/dev/cache/images` antes de
+           olhar, senão você mede a versão errada e acredita nela.
+
+           Os números da foto anterior eram outros, e os do véu chapado
+           também. Quem trocar a imagem ou mexer no gradiente tem de medir de
+           novo, não herdar estes.
+
+           A foto entra por trás do conteúdo com `fill`: o `Container` não é
+           posicionado, então ela se resolve contra a `<section>`, que ganhou
+           `relative` — e sangra de ponta a ponta em vez de respeitar as
+           margens do texto.
+
            `alt=""` porque é decoração: o texto ao lado já diz "salão de 180
            lugares", e um leitor de tela repetindo isso só atrapalha. */}
-      <Section className="relative isolate overflow-hidden border-y border-border">
+      <Section className="relative isolate flex min-h-[30rem] items-center overflow-hidden border-y border-border sm:min-h-[36rem]">
         <Image
           src="/ambiente/salao-mesas.webp"
           alt=""
@@ -164,14 +202,35 @@ export default async function ReservasPage({
           className="-z-20 object-cover"
         />
         {/* O véu não é estética: sem ele o texto claro cai sobre a parede
-            creme da foto e o contraste despenca. O tom é o mesmo dos
-            cabeçalhos das outras páginas. */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[#171615]/80" />
+            creme da foto e o contraste despenca.
+
+            Era `bg-[#171615]/80` chapado, e a 80% ele engolia a foto inteira —
+            trocar a imagem não mudava nada na tela, que foi exatamente a
+            reclamação de 11/09: "a imagem não está nem no localhost". Ela
+            estava; não dava para ver.
+
+            Agora é gradiente horizontal: 78% na faixa central, onde o texto
+            cai, e 40% nas laterais, onde não há texto nenhum. O contraste no
+            miolo fica igual ao de antes e a foto reaparece nas bordas.
+
+            A rampa termina aos 22% de propósito. A coluna de texto é
+            `max-w-3xl` centralizada e chega a 23% da largura num monitor
+            comum; se a rampa subisse mais para dentro, a primeira letra do
+            parágrafo cairia na parte clara. Quem alargar a coluna precisa
+            puxar esses 22% para fora. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(23,22,21,0.40) 0%, rgba(23,22,21,0.78) 22%, rgba(23,22,21,0.78) 78%, rgba(23,22,21,0.40) 100%)",
+          }}
+        />
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {t("groupsTitle")}
           </h2>
-          <p className="mt-5 text-pretty text-lg leading-relaxed text-white/85">
+          <p className="mt-5 text-pretty text-lg leading-relaxed text-white">
             {t("groupsCopy")}
           </p>
           <div className="mt-8 flex justify-center">
