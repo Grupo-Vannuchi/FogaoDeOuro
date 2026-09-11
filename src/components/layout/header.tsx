@@ -42,7 +42,7 @@ export type DropdownLink = {
  * a linha.
  */
 const navLinkClass =
-  "text-sm font-medium text-foreground transition-colors duration-300 hover:text-brand lg:text-base";
+  "text-sm font-bold text-foreground transition-colors duration-300 hover:text-brand lg:text-base";
 
 export function Header({
   informationLinks = [],
@@ -140,7 +140,7 @@ export function Header({
                     key={item.key}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-2 py-2.5 text-base font-medium transition-colors duration-300 hover:bg-muted hover:text-brand"
+                    className="rounded-md px-2 py-2.5 text-base font-bold transition-colors duration-300 hover:bg-muted hover:text-brand"
                   >
                     {t(item.key)}
                   </Link>
@@ -155,7 +155,7 @@ export function Header({
                     <Link
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className="flex-1 rounded-md px-2 py-2.5 text-base font-medium transition-colors duration-300 hover:bg-muted hover:text-brand"
+                      className="flex-1 rounded-md px-2 py-2.5 text-base font-bold transition-colors duration-300 hover:bg-muted hover:text-brand"
                     >
                       {t(item.key)}
                     </Link>

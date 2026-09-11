@@ -29,7 +29,16 @@ export async function Footer() {
   const mapSrc = mapEmbedUrl();
 
   return (
-    <footer className="mt-auto border-t border-border bg-muted/30">
+    // O tom era `bg-muted/30`, translúcido, e isso só funcionava enquanto toda
+    // página tinha o creme atrás. O cardápio ganhou uma arte de fundo, e 30%
+    // de opacidade deixava o couro escuro dela atravessar: a tagline e a linha
+    // do CNPJ sumiam.
+    //
+    // `color-mix` em sRGB devolve exatamente a cor que `bg-muted/30` compunha
+    // sobre o creme, então o rodapé continua idêntico em todas as outras
+    // páginas — a diferença é que agora é opaco e não depende do que está
+    // atrás.
+    <footer className="mt-auto border-t border-border bg-[color-mix(in_srgb,var(--muted)_30%,var(--background))]">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
           {/* The footer has the vertical room the header doesn't, so it carries
