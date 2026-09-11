@@ -93,7 +93,13 @@ export function DayTabs({
                 <span
                   className={cn(
                     "rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
-                    selected ? "bg-brand-foreground/20" : "bg-brand/10 text-brand",
+                    /* Era `/20`, e o branco por cima dava 4,10:1 — abaixo do
+                       mínimo de 4,5, num texto de 10px. Quanto mais clara a
+                       chapa, menos ela contrasta com o branco que carrega:
+                       `/20` rgb(161,117,56) 4,10 ❌ · `/15` 4,57 (raspando)
+                       · `/10` rgb(150,99,31) 5,12 ✅. O chip continua visível
+                       contra o marrom da aba. */
+                    selected ? "bg-brand-foreground/10" : "bg-brand/10 text-brand",
                   )}
                 >
                   {todayLabel}

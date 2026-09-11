@@ -47,6 +47,41 @@ const HEADER_SIZES = {
   },
 } as const;
 
+/**
+ * As cores do cabeçalho, por tipo de superfície.
+ *
+ * `claro` é o do site inteiro e não mudou: herda `foreground` no título e usa
+ * `muted-foreground` no apoio.
+ *
+ * `escuro` existe para as faixas marrons do cardápio, tiradas da peça
+ * impressa da casa. Sobre o couro (#5E2B1F–#7F3923), contraste das cores
+ * SÓLIDAS, que é o piso — o apoio é pintado a 90% e fica um pouco abaixo:
+ *   • branco #ffffff ....... 11,41 / 8,36  ✅ título
+ *   • creme  #EFE9C2 .......  9,29 / 6,81  ✅ apoio
+ *
+ * O que vale é a medição do composto renderizado, não esta tabela: varrendo
+ * `/cardapio` inteira em 1920, 1440 e 390, o pior texto da página fica em
+ * 4,71:1, e nenhum reprova.
+ *
+ * A sobrancelha não usa `text-brand` aqui porque o marrom da marca sobre o
+ * couro é marrom sobre marrom. Vira creme, como o apoio.
+ *
+ * O apoio usa creme e não branco de propósito: dois brancos empilhados apagam
+ * a hierarquia entre título e subtítulo.
+ */
+const HEADER_TONES = {
+  claro: {
+    eyebrow: "text-brand",
+    title: "",
+    subtitle: "text-muted-foreground",
+  },
+  escuro: {
+    eyebrow: "text-background/90",
+    title: "text-white",
+    subtitle: "text-background/90",
+  },
+} as const;
+
 /** Standard eyebrow / title / subtitle header used at the top of sections. */
 export function SectionHeader({
   eyebrow,
@@ -54,6 +89,7 @@ export function SectionHeader({
   subtitle,
   align = "center",
   size = "md",
+  tone = "claro",
   className,
 }: {
   eyebrow?: string;
@@ -61,9 +97,11 @@ export function SectionHeader({
   subtitle?: string;
   align?: "center" | "left";
   size?: keyof typeof HEADER_SIZES;
+  tone?: keyof typeof HEADER_TONES;
   className?: string;
 }) {
   const corpo = HEADER_SIZES[size];
+  const cor = HEADER_TONES[tone];
 
   return (
     <Reveal
@@ -74,7 +112,12 @@ export function SectionHeader({
       )}
     >
       {eyebrow ? (
-        <span className="text-sm font-semibold uppercase tracking-widest text-brand">
+        <span
+          className={cn(
+            "text-sm font-semibold uppercase tracking-widest",
+            cor.eyebrow,
+          )}
+        >
           {eyebrow}
         </span>
       ) : null}
@@ -82,6 +125,7 @@ export function SectionHeader({
         className={cn(
           "max-w-2xl text-balance font-bold tracking-tight",
           corpo.title,
+          cor.title,
         )}
       >
         {title}
@@ -89,8 +133,9 @@ export function SectionHeader({
       {subtitle ? (
         <p
           className={cn(
-            "max-w-xl text-pretty text-muted-foreground",
+            "max-w-xl text-pretty",
             corpo.subtitle,
+            cor.subtitle,
           )}
         >
           {subtitle}
