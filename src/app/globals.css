@@ -50,7 +50,29 @@
   --card: #fbf7e6;
   --card-foreground: #474544;
   --muted: #e7e0b8;
-  --muted-foreground: #6b6862;
+  /*
+   * Escurecido de `#6b6862` em 10/09, e o motivo é medição, não gosto.
+   *
+   * Este site tem TRÊS superfícies claras, e o valor antigo reprovava numa
+   * delas. Contraste de `muted-foreground` sobre cada uma:
+   *
+   *                        antes   agora
+   *   `card`    #fbf7e6 ... 5,17    5,84  ✅
+   *   fundo     #EFE9C2 ... 4,52    5,11  ✅  passava raspando
+   *   `muted`   #e7e0b8 ... 4,17    4,71  ❌→✅
+   *
+   * `bg-muted text-muted-foreground` não é combinação teórica: é o par dos
+   * selos de status do painel (`admin/cardapio`, `galeria`, `leads`) e do item
+   * inativo na navegação das novidades. Esse texto ficava a 4,17:1, abaixo do
+   * mínimo de 4,5 — e ficava assim desde que os tokens foram escritos.
+   *
+   * Só apareceu agora porque o valor vivia a dois centésimos da linha no fundo
+   * creme: bastou olhar para uma superfície um pouco mais escura para ele cair.
+   *
+   * Continua claramente mais claro que `foreground` #474544 (4,71 contra 7,15
+   * sobre `muted`): a hierarquia entre título e texto de apoio permanece.
+   */
+  --muted-foreground: #636059;
   --border: #ded7ae;
 
   /*
