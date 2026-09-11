@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Wheat } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section";
@@ -11,10 +12,9 @@ import { PastaBuilder } from "@/components/cardapio/pasta-builder";
 import { DrinkList } from "@/components/cardapio/drink-list";
 import { DessertList } from "@/components/cardapio/dessert-list";
 import { WineList } from "@/components/cardapio/wine-list";
-import { WinePhotos } from "@/components/cardapio/wine-photos";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
-import { pastaPhotos, winePhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
+import { pastaPhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 
@@ -217,29 +217,23 @@ export default async function CardapioPage({
             tone="escuro"
           />
         </MenuHeading>
-        {/* O carrossel, com os dois rótulos que a casa serve.
+        {/* Uma foto da carta, no lugar do carrossel.
 
-            Chegou a virar uma imagem única em 11/09 — um recorte de taça,
-            garrafa e barril — e o cliente pediu de volta as fotos das
-            garrafas. Fazem mais sentido: são o Longitud Block 4 Carménère e o
-            Block 6 Sauvignon Blanc, fotografados na mesa daqui, e o rótulo é
-            o que o cliente na mesa procura. A foto genérica de adega que
-            abria o carrossel saiu junto.
+            O carrossel mostrava duas garrafas, uma por slide. Esta imagem traz
+            três rótulos de uma vez — Segredo do Abade, a Carménère e a
+            Sauvignon Blanc 3 Medalhas —, que é quase a lista inteira do
+            importado, sem exigir que ninguém deslize.
 
-            Os preços continuam em lista logo abaixo, que é onde se comparam
-            as três doses de um mesmo rótulo. */}
-        <WinePhotos
-          photos={winePhotos.map((f) => ({
-            image: f.photo,
-            alt: t(f.altKey),
-          }))}
-          labels={{
-            carousel: t("winesCarousel"),
-            prev: t("winesPrev"),
-            next: t("winesNext"),
-            /* `{n}` literal: quem numera é o carrossel, no clique. */
-            goTo: t("winesGoTo", { n: "{n}" }),
-          }}
+            `object-cover` no quadro 16:9, igual às fotos das bebidas: a foto
+            tem fundo real, não é recorte. */}
+        <Image
+          src="/bebidas/carta-de-vinhos.webp"
+          alt={t("winesPhotoAlt")}
+          width={1600}
+          height={900}
+          loading="lazy"
+          sizes="(min-width: 1280px) 768px, 100vw"
+          className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover"
         />
         <WineList />
       </MenuPanel>

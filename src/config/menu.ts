@@ -101,22 +101,6 @@ export const pastaPhotos = [
 ] as const;
 
 /**
- * As duas garrafas da carta, na ordem em que deslizam.
- *
- * Eram três até 11/09 — havia uma foto da adega antes das garrafas. O cliente
- * tirou: a adega mostra vinho genérico, e o que a casa vende são estes dois
- * rótulos. Um slide que não é nenhum dos dois só adia a informação.
- *
- * `altKey` e não `name`, como nas massas: aqui a alternativa textual descreve
- * a cena, não um prato, e cada uma precisa da sua — dois slides com o mesmo
- * texto não dizem nada a quem usa leitor de tela.
- */
-export const winePhotos = [
-  { photo: "/bebidas/vinho-tinto.webp", altKey: "wineRedAlt" },
-  { photo: "/bebidas/vinho-branco.webp", altKey: "wineWhiteAlt" },
-] as const;
-
-/**
  * Como se monta um prato na ilha de massas — do cardápio impresso da casa,
  * entregue em 28/08/2026.
  *

@@ -11,9 +11,12 @@ import { formatBRL, wines } from "@/config/menu";
  * irmãos leria como dois vinhos diferentes.
  *
  * A imagem fica acima, na página, e não aqui: preço se lê em lista, comparando
- * as doses de um mesmo rótulo lado a lado. Era um carrossel de três fotos até
- * 11/09, quando o cliente trocou por um recorte único de taça, garrafa e
- * barril — ele representa a carta inteira sem exigir que ninguém deslize.
+ * as doses de um mesmo rótulo lado a lado.
+ *
+ * Ela mudou três vezes em 11/09 — carrossel de três fotos, depois de duas,
+ * depois um recorte de taça e barril — e parou numa foto só, com as três
+ * garrafas do importado lado a lado. É quase a lista inteira de `labels` numa
+ * imagem, sem exigir que ninguém deslize.
  *
  * Quando não há rótulo cadastrado, sai só a linha de apoio. Uma moldura vazia
  * no lugar da lista leria como conteúdo que falhou ao carregar, e não como uma

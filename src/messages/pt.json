@@ -619,12 +619,7 @@
     "drinksSodasBeerAlt": "Copo de refrigerante de cola com gelo, no instante do respingo",
     "dessertsTakeaway": "Embalagem para viagem da salada de frutas: R$ 2,00.",
     "winesLabel": "Carta de vinhos",
-    "winesCarousel": "Carta de vinhos",
-    "winesPrev": "Rótulo anterior",
-    "winesNext": "Próximo rótulo",
-    "winesGoTo": "Ir para o rótulo {n}",
-    "wineRedAlt": "Garrafa do Longitud Block 4 Carménère sobre a mesa do Fogão de Ouro",
-    "wineWhiteAlt": "Garrafa do Longitud Block 6 Sauvignon Blanc sobre a mesa do Fogão de Ouro",
+    "winesPhotoAlt": "Três garrafas da carta sobre a mesa de madeira: Segredo do Abade, a Carménère chilena e a Sauvignon Blanc 3 Medalhas, com taças ao lado",
     "winesNote": "Uma linha nacional e uma importada, em taça, meia taça ou garrafa.",
     "winesPending": "Consulte os rótulos disponíveis com a nossa equipe.",
     "subjectToChange": "Sujeito a alterações."
