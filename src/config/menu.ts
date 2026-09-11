@@ -82,15 +82,17 @@ export function isWeekday(value: number): value is Weekday {
  * nhoque ou um talharim era preciso existir um prato com aquele nome e aquele
  * dia da semana. O carrossel ilustra a ilha, não a lista de segunda-feira.
  *
- * A escolha é por massas visivelmente diferentes entre si — nhoque ao sugo,
- * ravioli ao molho branco e penne ao sugo. Três fotos do mesmo penne
- * venderiam a ilha como se ela tivesse uma opção só.
+ * A escolha é por massas visivelmente diferentes entre si — ravioli ao molho
+ * branco e penne ao sugo. Duas fotos do mesmo penne venderiam a ilha como se
+ * ela tivesse uma opção só.
+ *
+ * Eram três até 11/09; o cliente tirou a do nhoque ao sugo. Sobraram um
+ * recheado e um seco, que ainda cobrem os dois extremos do que a ilha faz.
  *
  * `name` alimenta o texto alternativo de cada slide; sem ele os três leriam
  * igual para quem usa leitor de tela.
  */
 export const pastaPhotos = [
-  { photo: "/massas/nhoque-ao-sugo.webp", name: "Nhoque ao sugo" },
   {
     photo: "/massas/ravioli-ao-molho-branco.webp",
     name: "Ravioli ao molho branco",
@@ -99,18 +101,17 @@ export const pastaPhotos = [
 ] as const;
 
 /**
- * As fotos da carta de vinhos, na ordem em que deslizam.
+ * As duas garrafas da carta, na ordem em que deslizam.
  *
- * A adega abre porque responde a primeira pergunta — se a casa tem vinho de
- * verdade —, e as duas garrafas vêm depois, uma tinta e uma branca, que é a
- * escolha que o cliente faz na mesa.
+ * Eram três até 11/09 — havia uma foto da adega antes das garrafas. O cliente
+ * tirou: a adega mostra vinho genérico, e o que a casa vende são estes dois
+ * rótulos. Um slide que não é nenhum dos dois só adia a informação.
  *
  * `altKey` e não `name`, como nas massas: aqui a alternativa textual descreve
- * a cena, não um prato, e cada uma precisa da sua — três slides com o mesmo
+ * a cena, não um prato, e cada uma precisa da sua — dois slides com o mesmo
  * texto não dizem nada a quem usa leitor de tela.
  */
 export const winePhotos = [
-  { photo: "/ambiente/vinhos.webp", altKey: "winesImageAlt" },
   { photo: "/bebidas/vinho-tinto.webp", altKey: "wineRedAlt" },
   { photo: "/bebidas/vinho-branco.webp", altKey: "wineWhiteAlt" },
 ] as const;
@@ -186,6 +187,12 @@ export const drinkGroups = [
   {
     /** O rótulo do grupo é UI e vem do catálogo; os nomes das bebidas, não. */
     labelKey: "drinksJuices",
+    /**
+     * Recorte com fundo transparente, e é isso que decide o `object-contain`
+     * lá na lista: `cover` cortaria o copo pelas bordas.
+     */
+    photo: "/bebidas/suco.webp",
+    altKey: "drinksJuicesAlt",
     items: [
       { name: "Suco natural", volume: "300 ml", price: 12.0 },
       { name: "Suco de polpa", volume: "300 ml", price: 10.9 },
@@ -197,6 +204,12 @@ export const drinkGroups = [
     ],
   },
   {
+    /*
+     * Sem foto, e isso é decisão, não esquecimento. O recorte que veio no
+     * pacote de 11/09 tinha a xícara encostada na borda do quadro: 85% da
+     * silhueta direita era parede reta, e a xícara saía fatiada. Grupo sem
+     * foto lê como grupo sem foto; xícara cortada lê como site quebrado.
+     */
     labelKey: "drinksCoffeeWater",
     items: [
       { name: "Café expresso", volume: "50 ml", price: 7.0 },
@@ -208,6 +221,8 @@ export const drinkGroups = [
   },
   {
     labelKey: "drinksSodasBeer",
+    photo: "/bebidas/refrigerante.webp",
+    altKey: "drinksSodasBeerAlt",
     items: [
       { name: "Refrigerante", volume: "200 ml", price: 5.6 },
       { name: "Refrigerante zero", volume: "200 ml", price: 5.6 },
@@ -224,6 +239,13 @@ export const drinkGroups = [
   },
 ] as const satisfies readonly {
   labelKey: string;
+  /**
+   * Recorte com fundo transparente, no mesmo quadro 16:9 do carrossel de
+   * vinhos. Opcional: um grupo entra no cardápio antes de existir foto boa
+   * dele, e é melhor não ter foto do que ter uma ruim.
+   */
+  photo?: string;
+  altKey?: string;
   items: readonly Drink[];
 }[];
 

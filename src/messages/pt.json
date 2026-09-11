@@ -615,19 +615,19 @@
     "drinksJuices": "Sucos",
     "drinksCoffeeWater": "Café e água",
     "drinksSodasBeer": "Refrigerantes e cerveja",
+    "drinksJuicesAlt": "Três copos de suco natural — amarelo, laranja e vermelho — com metades de limão e folhas de hortelã",
+    "drinksSodasBeerAlt": "Copo de refrigerante de cola com gelo, no instante do respingo",
     "dessertsTakeaway": "Embalagem para viagem da salada de frutas: R$ 2,00.",
     "winesLabel": "Carta de vinhos",
-    "winesNote": "Uma linha nacional e uma importada, em taça, meia taça ou garrafa.",
-    "winesImageAlt": "Garrafa de vinho na mesa do Fogão de Ouro, com a adega ao fundo",
-    "winesPending": "Consulte os rótulos disponíveis com a nossa equipe.",
-    "subjectToChange": "Sujeito a alterações.",
     "winesCarousel": "Carta de vinhos",
     "winesPrev": "Rótulo anterior",
     "winesNext": "Próximo rótulo",
     "winesGoTo": "Ir para o rótulo {n}",
-    "winesCounter": "{n} de {total}",
-    "wineRedAlt": "Garrafa de vinho tinto sobre a mesa do Fogão de Ouro",
-    "wineWhiteAlt": "Garrafa de vinho branco sobre a mesa do Fogão de Ouro"
+    "wineRedAlt": "Garrafa do Longitud Block 4 Carménère sobre a mesa do Fogão de Ouro",
+    "wineWhiteAlt": "Garrafa do Longitud Block 6 Sauvignon Blanc sobre a mesa do Fogão de Ouro",
+    "winesNote": "Uma linha nacional e uma importada, em taça, meia taça ou garrafa.",
+    "winesPending": "Consulte os rótulos disponíveis com a nossa equipe.",
+    "subjectToChange": "Sujeito a alterações."
   },
   "instagram": {
     "follow": "Seguir no Instagram"
