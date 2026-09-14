@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 /**
  * O fundo da página do cardápio: quase preto, com uma chama em S atravessando
  * — núcleo creme quente, quase branco, bordas em laranja forte, dissolvendo
@@ -44,6 +46,14 @@
  *     (`menu-section.tsx`) — o título da seção virou texto solto, creme,
  *     sobre este fundo. Ver "v12" abaixo para a técnica, as cores finais e a
  *     verificação de rolagem que uma chama com núcleo claro obriga.
+ *
+ * 13. **A imagem que o cliente mandou**, em vez de mais uma recriação. As
+ *     versões 11 e 12 aproximaram em CSS referências que ele enviou como
+ *     imagem — e cada aproximação virava uma referência nova. O método era o
+ *     problema, não o desenho: imagem colada no chat não chega como arquivo,
+ *     então eu vinha desenhando de memória o que ele já tinha pronto. Em
+ *     14/09 ele salvou o arquivo e a aproximação deixou de ser necessária.
+ *     Ver "v13" mais abaixo.
  *
  * ── Por que "sem forma reconhecível" venceu (histórico da v10) ────────────
  *
@@ -238,31 +248,54 @@
  * aqui porque este arquivo era o único lugar que ainda explicava por que ela
  * existia.
  *
+ * ── v13: a imagem do cliente, e por que ela encerra o ciclo ───────────────
+ *
+ * Doze versões, e onze delas foram eu desenhando em CSS uma referência que o
+ * cliente tinha mandado como imagem. **Imagem colada no chat não vira arquivo
+ * no disco** — eu só a via. Então cada versão era uma aproximação de memória,
+ * não batia, e ele mandava outra referência. O ciclo não era de gosto: era de
+ * método.
+ *
+ * Em 14/09 ele salvou o arquivo em Downloads, e a aproximação deixou de ser
+ * necessária. `public/cardapio/fundo-curvas.webp`: 1200×1789, 20 KB.
+ *
+ * **A origem é retrato (736×1097) e a tela do desktop é paisagem.** Com
+ * `object-cover`, num monitor 1440×900 aparece a faixa central da imagem, não
+ * ela inteira — o enquadramento no desktop não é o que se vê no celular. Foi
+ * exatamente esse recorte que derrubou as versões 4 e 7; aqui ele é aceitável
+ * porque a imagem é gradiente liso: não há assunto para cortar fora, só
+ * curvas que continuam curvas em qualquer faixa.
+ *
+ * Ampliada de 736 para 1200 de largura a caminho do WebP. Ampliar costuma
+ * borrar, mas um gradiente suave não tem aresta para borrar — e sem a
+ * ampliação o desktop pediria quase o dobro da resolução da origem.
+ *
+ * ── O contraste foi medido na imagem, não estimado ────────────────────────
+ *
+ * Varrendo o arquivo inteiro pixel a pixel, o ponto mais claro é
+ * `rgb(135,81,45)`. Sobre ele:
+ *   • texto creme `#EFE9C2` .... 5,27:1  ✅
+ *   • texto branco `#ffffff` .... 6,47:1  ✅
+ *
+ * É o PIOR caso da imagem toda, não uma amostra — por isso esta versão
+ * dispensa véu por cima, ao contrário da v4, que precisou corrigir o rodapé
+ * translúcido. Se alguém trocar a imagem, refaça esta varredura: o texto
+ * solto desta página é claro, e uma imagem com qualquer região clara o apaga.
+ *
  * `aria-hidden` porque é decoração pura, sem nada para um leitor de tela
  * anunciar. `pointer-events-none` para não roubar clique de nada que esteja
  * por cima. `-z-10` para ficar atrás do conteúdo da página.
  */
 export function MenuBackdrop() {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10"
-      style={{
-        backgroundColor: "#0B0503",
-        // Ordem importa: a primeira camada fica na frente. N1 e N2 (o
-        // núcleo creme, colado nas bordas — ver o docblock) vêm primeiro
-        // para nunca ficarem encobertos pelas cinco elipses P0–P4 (o corpo
-        // laranja da chama) que vêm atrás deles.
-        backgroundImage: [
-          "radial-gradient(6% 6% at 1.5% 78%, #F7E2C0 0%, rgba(247,226,192,0.72) 22%, rgba(247,226,192,0) 42%)",
-          "radial-gradient(6% 6% at 98.5% 26%, #F7E2C0 0%, rgba(247,226,192,0.72) 22%, rgba(247,226,192,0) 42%)",
-          "radial-gradient(105% 58% at 8% 114%, #FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%)",
-          "radial-gradient(88% 46% at 18% 80%, #FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%)",
-          "radial-gradient(60% 30% at 48% 54%, #FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%)",
-          "radial-gradient(82% 40% at 76% 30%, #FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%)",
-          "radial-gradient(96% 50% at 92% -6%, #FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%)",
-        ].join(", "),
-      }}
-    />
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+      <Image
+        src="/cardapio/fundo-curvas.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover"
+      />
+    </div>
   );
 }
