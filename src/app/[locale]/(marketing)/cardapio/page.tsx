@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Wheat } from "lucide-react";
-import { SectionHeader } from "@/components/ui/section";
-import { MenuBackdrop } from "@/components/cardapio/menu-backdrop";
-import { MenuPanel, MenuHeading } from "@/components/cardapio/menu-panel";
+import { MenuSection } from "@/components/cardapio/menu-section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
 import { DishRow } from "@/components/cardapio/dish-row";
+import { PastaCarousel } from "@/components/cardapio/pasta-carousel";
 import { PastaBuilder } from "@/components/cardapio/pasta-builder";
-import { DrinkList } from "@/components/cardapio/drink-list";
+import { DrinkGroupList } from "@/components/cardapio/drink-list";
 import { DessertList } from "@/components/cardapio/dessert-list";
 import { WineList } from "@/components/cardapio/wine-list";
 import { PriceCallout } from "@/components/cardapio/price-callout";
 import { getBuffetDishes, getPastaDishes } from "@/lib/queries";
-import { pastaPhotos, WEEKDAYS, formatBRL, menuPricing } from "@/config/menu";
+import {
+  pastaPhotos,
+  drinkGroups,
+  WEEKDAYS,
+  formatBRL,
+  menuPricing,
+} from "@/config/menu";
 import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 
@@ -59,37 +62,16 @@ export default async function CardapioPage({
     <>
       <MenuHero />
 
-
-      {/* As fitas da peça nos cantos, creme no miolo. Fica atrás de tudo e não
-          rola: quem rola é o conteúdo, como folha sobre a mesa. */}
-      <MenuBackdrop />
-
-
-      {/* As seções respiram direto sobre a arte, sem cartão em volta — o
-          cliente pediu algo mais natural, e moldura sobre fundo texturizado
-          empilha caixa dentro de caixa. Quem tem superfície própria são as
-          listas. A coluna estreita continua: cardápio é lido de cima a baixo,
-          e `max-w-3xl` mantém a linha na faixa confortável. */}
-      <MenuPanel>
-        <MenuHeading>
-          <SectionHeader
-            title={t("title")}
-            subtitle={t("subtitle")}
-            size="lg"
-            tone="escuro"
-          />
-        </MenuHeading>
-
-        {/* O "Sujeito a alterações." mora dentro do `PriceCallout`, colado em
-            cada preço — não aqui embaixo, onde lia como rodapé do bloco. */}
+      {/* 1 — O buffet do dia. Sem foto: são dezenas de pratos que mudam toda
+             semana, e nenhuma imagem representa "quarta-feira". A curva vira
+             divisória e a seção abre direto no letreiro. */}
+      <MenuSection title={t("title")} subtitle={t("subtitle")}>
         <div className="mt-10">
           <PriceCallout />
         </div>
 
         {buffet.length === 0 ? (
-          <p className="mt-12 text-center text-muted-foreground">
-            {t("empty")}
-          </p>
+          <p className="mt-12 text-center text-muted-foreground">{t("empty")}</p>
         ) : (
           <div className="mt-12">
             <DayTabs
@@ -120,42 +102,29 @@ export default async function CardapioPage({
             </DayTabs>
           </div>
         )}
-      </MenuPanel>
+      </MenuSection>
 
-      {/* Massas: seção própria porque o preço é outro, e a única da página com
-          selo, a pedido do cliente em 09/09.
-
-          A ilha é o que a casa tem de mais próprio: massa feita na frente do
-          cliente, cobrada à parte. Sem marcação ela lia como mais um bloco do
-          cardápio, e quem rolava rápido passava direto.
-
-          **O destaque nunca foi tinta atrás de texto, e isso é medição.** Uma
-          versão de 09/09 tingia a faixa com a cor da marca e derrubava o texto
-          de apoio de 4,52:1 para 3,94:1. O que distingue esta seção é o selo de
-          trigo e o alinhamento centralizado — não o fundo. */}
-      <MenuPanel id="massas">
-        {/* Centralizado, a pedido do cliente em 10/09 — é a única seção da
-            página assim, e é o que a separa das listas que vêm antes e depois.
-            O `items-center` precisa vir daqui: o `SectionHeader` centraliza o
-            próprio texto, mas o selo de trigo é irmão dele, não filho. */}
-        <div className="flex flex-col items-center gap-5 text-center">
-          <span className="inline-flex size-12 items-center justify-center rounded-full bg-brand/15 text-brand">
-            <Wheat className="size-6" aria-hidden />
-          </span>
-          {/* O preço vai no próprio título da seção: quem rola até aqui não
-              deve precisar voltar ao topo para lembrar quanto custa. */}
-          <MenuHeading>
-            <SectionHeader
-              title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
-              subtitle={t("pastaNote")}
-              size="lg"
-              tone="escuro"
-            />
-          </MenuHeading>
-        </div>
-
-        {/* Pratos de massa cadastrados no admin, quando houver. O passo a
-            passo abaixo é o serviço da ilha e vem do cardápio impresso. */}
+      {/* 2 — A ilha de massas. Quem sangra aqui é o carrossel: a ilha tem mais
+             de um formato, e uma foto só a venderia como se tivesse um. */}
+      <MenuSection
+        id="massas"
+        bleed={
+          <PastaCarousel
+            photos={pastaPhotos.map((f) => ({
+              image: f.photo,
+              alt: t("dishImageAlt", { name: f.name }),
+            }))}
+            labels={{
+              carousel: t("pastaCarousel"),
+              prev: t("pastaPrevPhoto"),
+              next: t("pastaNextPhoto"),
+              goTo: t("pastaGoToPhoto", { n: "{n}" }),
+            }}
+          />
+        }
+        title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
+        subtitle={t("pastaNote")}
+      >
         {pasta.length > 0 ? (
           <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
             {pasta.map((dish) => (
@@ -164,79 +133,56 @@ export default async function CardapioPage({
           </ul>
         ) : null}
 
-        <PastaBuilder
-          photos={pastaPhotos.map((f) => ({
-            image: f.photo,
-            alt: t("dishImageAlt", { name: f.name }),
-          }))}
-        />
-      </MenuPanel>
+        <PastaBuilder />
+      </MenuSection>
 
-      {/* Sobremesas: sempre disponíveis, não pertencem a um dia. Entram no
-          preço do buffet — são servidas no mesmo balcão —, então a seção não
-          repete valor nenhum. */}
-      <MenuPanel>
-        <MenuHeading>
-          <SectionHeader
-            title={t("dessertsLabel")}
-            subtitle={t("dessertsNote")}
-            size="lg"
-            tone="escuro"
-          />
-        </MenuHeading>
+      {/* 3 — Sobremesas. */}
+      <MenuSection
+        photo={{
+          src: "/sobremesas/petit-gateau-largo.webp",
+          alt: t("dessertsPhotoAlt"),
+        }}
+        title={t("dessertsLabel")}
+        subtitle={t("dessertsNote")}
+      >
         <DessertList />
-      </MenuPanel>
+      </MenuSection>
 
-      {/* Bebidas: a segunda seção com preço por item, junto das proteínas da
-          ilha. Fecha a página porque é o que se pede por último. */}
-      <MenuPanel id="bebidas">
-        <MenuHeading>
-          <SectionHeader
-            title={t("drinksLabel")}
-            subtitle={t("drinksNote")}
-            size="lg"
-            tone="escuro"
-          />
-        </MenuHeading>
-        <DrinkList />
-      </MenuPanel>
+      {/* 4, 5 e 6 — Uma seção por grupo de bebida, como no impresso: cada
+             página de lá é um grupo, com sua foto e seu letreiro.
 
-      {/* Carta de vinhos: seção própria porque o vinho não é bebida de balcão
-          — tem rótulo, safra e uma escolha por trás.
+             A âncora `bebidas` fica no primeiro grupo. Nada no site aponta
+             para ela, mas link externo indexado não aparece numa busca do
+             repositório, e manter o `id` custa zero. */}
+      {drinkGroups.map((grupo, i) => {
+        const foto = "photo" in grupo ? grupo.photo : undefined;
+        const alt = "altKey" in grupo ? grupo.altKey : undefined;
+        return (
+          <MenuSection
+            key={grupo.labelKey}
+            id={i === 0 ? "bebidas" : undefined}
+            photo={foto && alt ? { src: foto, alt: t(alt) } : undefined}
+            title={t(grupo.labelKey)}
+            /* A ressalva de que bebida não entra no quilo vale para os três
+               grupos, e repeti-la em cada um viraria ruído. Fica no primeiro. */
+            subtitle={i === 0 ? t("drinksNote") : undefined}
+          >
+            <DrinkGroupList group={grupo} />
+          </MenuSection>
+        );
+      })}
 
-          Carrossel no lugar da foto única: uma garrafa sozinha mostrava um
-          rótulo, e a carta tem dois. As fotos deslizam; os preços continuam em
-          lista logo abaixo, que é onde se comparam as três doses de um mesmo
-          rótulo. */}
-      <MenuPanel>
-        <MenuHeading>
-          <SectionHeader
-            title={t("winesLabel")}
-            subtitle={t("winesNote")}
-            size="lg"
-            tone="escuro"
-          />
-        </MenuHeading>
-        {/* Uma foto da carta, no lugar do carrossel.
-
-            O carrossel mostrava duas garrafas, uma por slide. Esta imagem traz
-            três rótulos de uma vez — Segredo do Abade, a Carménère e a
-            Sauvignon Blanc 3 Medalhas —, que é quase a lista inteira do
-            importado, sem exigir que ninguém deslize.
-
-            `object-cover` no quadro 16:9, igual às fotos das bebidas: a foto
-            tem fundo real, não é recorte. */}
-        <Image
-          src="/bebidas/carta-de-vinhos.webp"
-          alt={t("winesPhotoAlt")}
-          width={1600}
-          height={900}
-          loading="lazy"
-          sizes="(min-width: 1280px) 768px, 100vw"
-          className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover"
-        />
+      {/* 7 — A carta de vinhos. */}
+      <MenuSection
+        photo={{
+          src: "/bebidas/carta-de-vinhos.webp",
+          alt: t("winesPhotoAlt"),
+        }}
+        title={t("winesLabel")}
+        subtitle={t("winesNote")}
+      >
         <WineList />
-      </MenuPanel>
+      </MenuSection>
     </>
   );
 }

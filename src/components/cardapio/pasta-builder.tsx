@@ -1,9 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { formatBRL, pastaChoices } from "@/config/menu";
-import {
-  PastaCarousel,
-  type PastaPhoto,
-} from "@/components/cardapio/pasta-carousel";
 
 /**
  * Como se monta um prato na ilha de massas.
@@ -14,8 +10,9 @@ import {
  *
  * ── A composição ──────────────────────────────────────────────────────────
  *
- * A foto do prato abre a seção em faixa larga; abaixo dela, uma trilha
- * numerada com a linha ligando um passo ao seguinte. A trilha não é enfeite:
+ * O carrossel de fotos não mora mais aqui: ele subiu para o `bleed` da
+ * `MenuSection` da ilha e sangra no topo da página. O que resta é a trilha
+ * numerada, com a linha ligando um passo ao seguinte. A trilha não é enfeite:
  * ela desenha o que a seção está dizendo, que é uma ordem, e sobrevive ao
  * celular sem virar outra coisa — no desktop e no telefone continua a mesma
  * coluna, só muda a largura das etiquetas.
@@ -35,15 +32,12 @@ import {
  * O alinhamento é à esquerda de ponta a ponta. Centralizado, o título flutuava
  * sobre uma lista que começa na margem e o olho voltava ao centro a cada bloco.
  *
- * As imagens vêm do banco (`getPastaPhotos`), não de `public`: são pratos da
- * casa, e trocá-las no admin troca os slides.
- *
  * Os ingredientes aparecem como quantidade, nunca como lista: mudam toda
  * semana, e um nome impresso no site vira promessa que a cozinha não cumpre num
  * dia de entrega ruim. Mesma decisão do cardápio impresso. Por isso o passo 4 é
  * o único sem etiquetas — a frase é o conteúdo.
  */
-export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
+export async function PastaBuilder() {
   const t = await getTranslations("cardapio");
 
   /** Cada passo traz etiquetas **ou** uma nota — nunca os dois. */
@@ -59,20 +53,6 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
 
   return (
     <div className="mt-10">
-      {photos.length > 0 ? (
-        <PastaCarousel
-          photos={photos}
-          labels={{
-            carousel: t("pastaCarousel"),
-            prev: t("pastaPrevPhoto"),
-            next: t("pastaNextPhoto"),
-            // O rótulo de cada bolinha é montado no cliente, que não tem o
-            // catálogo: mandamos o molde e ele troca o {n}.
-            goTo: t("pastaGoToPhoto", { n: "{n}" }),
-          }}
-        />
-      ) : null}
-
       <h3 className="mt-10 font-serif text-2xl font-bold tracking-tight sm:text-3xl">
         {t("pastaBuild")}
       </h3>
