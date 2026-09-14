@@ -162,6 +162,11 @@ export default async function CardapioPage({
             key={grupo.labelKey}
             id={i === 0 ? "bebidas" : undefined}
             photo={foto && alt ? { src: foto, alt: t(alt) } : undefined}
+            /* Sucos e Refrigerantes e cerveja: o arquivo é recorte com fundo
+               transparente, não fotografia — `photoFit="framed"` evita que o
+               `object-cover` do modo padrão corte o copo. Só tem efeito
+               quando `photo` também existe. */
+            photoFit="framed"
             title={t(grupo.labelKey)}
             /* A ressalva de que bebida não entra no quilo vale para os três
                grupos, e repeti-la em cada um viraria ruído. Fica no primeiro. */

@@ -72,6 +72,28 @@ function Pilula({ children }: { children: React.ReactNode }) {
  * `bleed` é a alternativa à foto, para a seção de massas: lá quem sangra é o
  * carrossel. Passar os dois é erro de uso; `photo` vence.
  *
+ * Isto presume **fotografia de verdade**: a imagem inteira é cena, e
+ * `object-cover` só escolhe o enquadramento — nunca corta o assunto. É o caso
+ * de `/bebidas/carta-de-vinhos.webp` e `/sobremesas/petit-gateau-largo.webp`.
+ *
+ * ── Emoldurar (`photoFit="framed"`) ──────────────────────────────────────
+ *
+ * `/bebidas/suco.webp` e `/bebidas/refrigerante.webp` não são fotografia de
+ * verdade: são **recortes com fundo transparente**, montados num quadro 16:9
+ * com respiro nas bordas. Sangrar um recorte com `object-cover` corta e
+ * amplia — o copo virou um close gigante ocupando a tela, e foi isso que o
+ * cliente recusou em 14/09.
+ *
+ * `photoFit="framed"` existe para esse caso. A foto entra DENTRO do
+ * `Container` (a mesma coluna do texto), num quadro `aspect-[16/9] w-full
+ * rounded-2xl` com `object-contain` — que preserva o recorte inteiro em vez
+ * de cortá-lo. Como está dentro da coluna, ela vem depois da pílula do
+ * título, não antes; a curva não sabe (nem precisa saber) qual dos dois modos
+ * a seção usa e continua exatamente onde está.
+ *
+ * O padrão é `"bleed"`: é o que a maioria das seções — fotografia de verdade
+ * — quer. `photoFit` só importa quando `photo` também é passado.
+ *
  * ── Sem foto, a curva fica ───────────────────────────────────────────────
  *
  * Duas seções não têm foto (Cardápio da Semana e Café e água). A curva
@@ -86,6 +108,7 @@ function Pilula({ children }: { children: React.ReactNode }) {
 export function MenuSection({
   id,
   photo,
+  photoFit = "bleed",
   bleed,
   title,
   subtitle,
@@ -93,6 +116,13 @@ export function MenuSection({
 }: {
   id?: string;
   photo?: { src: string; alt: string };
+  /**
+   * `"bleed"` (padrão) para fotografia de verdade, de ponta a ponta. `"framed"`
+   * para recorte com fundo transparente, emoldurado dentro da coluna. Veja o
+   * docblock da função — os dois tratamentos existem porque as duas fontes de
+   * imagem pedem o oposto uma da outra.
+   */
+  photoFit?: "bleed" | "framed";
   bleed?: React.ReactNode;
   title: string;
   subtitle?: string;
@@ -100,7 +130,7 @@ export function MenuSection({
 }) {
   return (
     <section id={id} className="scroll-mt-24 pb-12 sm:pb-16">
-      {photo ? (
+      {photo && photoFit !== "framed" ? (
         <div className="relative h-[42vw] max-h-80 min-h-40 w-full">
           <Image
             src={photo.src}
@@ -130,6 +160,18 @@ export function MenuSection({
             </p>
           ) : null}
         </div>
+        {photo && photoFit === "framed" ? (
+          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              loading="lazy"
+              sizes="100vw"
+              className="object-contain"
+            />
+          </div>
+        ) : null}
         {children}
       </Container>
     </section>

@@ -1,5 +1,4 @@
-import { drinkGroups } from "@/config/menu";
-import { MenuLine } from "@/components/cardapio/menu-line";
+import { drinkGroups, formatBRL } from "@/config/menu";
 
 /**
  * A lista de um grupo de bebidas.
@@ -14,9 +13,26 @@ import { MenuLine } from "@/components/cardapio/menu-line";
  * Agora a página monta uma `MenuSection` por grupo, e o que sobra aqui é a
  * lista. Título e foto são responsabilidade da seção.
  *
- * O volume vai como observação do `MenuLine`, e é ele que distingue duas
- * linhas homônimas: refrigerante de 200 ml e de 350 ml são itens diferentes,
- * com preços diferentes.
+ * ── Mesmo cartão do buffet, não mais o `MenuLine` ─────────────────────────
+ *
+ * Até 14/09 esta lista usava o `MenuLine`: nome em caixa alta laranja, fio
+ * pontilhado, solta sobre o creme. O cliente recusou — os pratos do dia, na
+ * mesma página, são um cartão `bg-card` com divisórias e nome em `font-serif`
+ * (a gótica), e a bebida parecia de outro site.
+ *
+ * Agora a lista copia a superfície e a tipografia do buffet: mesmo `<ul>`
+ * (`overflow-hidden rounded-2xl border border-border bg-card`) e mesma linha
+ * de `DishRow` (`src/components/cardapio/dish-row.tsx`) — nome em
+ * `font-serif`, observação em `text-muted-foreground` embaixo.
+ *
+ * **O preço entra na observação, não numa coluna própria.** É aqui que a
+ * bebida diverge do prato: o prato do buffet não tem preço de linha (é por
+ * quilo), a bebida tem, e ele vira parte do texto de apoio — "300 ml · R$
+ * 12,00". Sem volume (`volume` é string vazia, como no café com leite), a
+ * observação é só o preço: "R$ 7,00".
+ *
+ * `MenuLine` não é apagado por isto — sobremesas, vinhos e adicionais ainda
+ * vão usá-lo numa tarefa seguinte.
  */
 export function DrinkGroupList({
   group,
@@ -24,14 +40,21 @@ export function DrinkGroupList({
   group: (typeof drinkGroups)[number];
 }) {
   return (
-    <ul className="mt-10 divide-y divide-border">
+    <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
       {group.items.map((bebida) => (
-        <MenuLine
+        <li
           key={`${bebida.name}-${bebida.volume}`}
-          name={bebida.name}
-          price={bebida.price}
-          note={bebida.volume || undefined}
-        />
+          className="border-b border-border px-5 py-4 last:border-b-0 sm:px-6"
+        >
+          <h3 className="font-serif text-lg font-bold leading-snug sm:text-xl">
+            {bebida.name}
+          </h3>
+          <p className="mt-1 text-pretty text-base leading-relaxed text-muted-foreground">
+            {bebida.volume
+              ? `${bebida.volume} · ${formatBRL(bebida.price)}`
+              : formatBRL(bebida.price)}
+          </p>
+        </li>
       ))}
     </ul>
   );
