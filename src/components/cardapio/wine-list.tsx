@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { formatBRL, wines } from "@/config/menu";
+import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * A carta de vinhos.
@@ -26,8 +27,13 @@ export async function WineList() {
   const t = await getTranslations("cardapio");
 
   if (wines.length === 0) {
+    // Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas em
+    // laranja): não há `bg-card` aqui, e `--foreground` reprova nas três
+    // superfícies do fundo novo (ver o docblock de `MenuBackdrop`, seção
+    // "v15"). `TEXTO_SOLTO_APOIO`, como o resto do texto de apoio solto da
+    // página.
     return (
-      <p className="mt-6 max-w-xl text-pretty text-muted-foreground">
+      <p className="mt-6 max-w-xl text-pretty" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("winesPending")}
       </p>
     );
@@ -37,22 +43,32 @@ export async function WineList() {
     <div className="mt-10 flex flex-col gap-10">
       {wines.map((vinho) => (
         <div key={vinho.name}>
-          <h3 className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-serif text-xl font-bold tracking-tight sm:text-2xl">
+          {/* Rótulo e nota (safra/uva) soltos sobre o fundo — `TEXTO_SOLTO` e
+              `TEXTO_SOLTO_APOIO`, mesmo motivo do estado vazio acima. */}
+          <h3
+            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-serif text-xl font-bold tracking-tight sm:text-2xl"
+            style={{ color: TEXTO_SOLTO }}
+          >
             {vinho.name}
             {vinho.note ? (
-              <span className="font-sans text-sm font-medium tracking-normal text-muted-foreground">
+              <span
+                className="font-sans text-sm font-medium tracking-normal"
+                style={{ color: TEXTO_SOLTO_APOIO }}
+              >
                 {vinho.note}
               </span>
             ) : null}
           </h3>
 
           {vinho.labels ? (
-            <p className="mt-2 text-pretty text-sm text-muted-foreground">
+            <p className="mt-2 text-pretty text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
               {vinho.labels.join(" · ")}
             </p>
           ) : null}
 
-          <ul className="mt-4 overflow-hidden rounded-2xl border border-border bg-card">
+          {/* `text-card-foreground`: sem isto o texto herdaria o creme de
+              cima e sumiria sobre o próprio `bg-card` creme. */}
+          <ul className="mt-4 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
             {vinho.servings.map((dose) => (
               <li
                 key={dose.label}

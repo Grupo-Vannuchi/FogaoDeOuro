@@ -60,8 +60,8 @@
     },
     "gastronomia": {
       "eyebrow": "A experiência",
-      "title": "Tudo o que espera por você",
-      "subtitle": "churrasco na brasa, peixes nobres, massas na hora e um buffet que não existe igual no Centro."
+      "title": "Uma experiência completa à sua espera",
+      "subtitle": "Churrasco na brasa, peixes selecionados, massas preparadas na hora e um buffet completo, com sabores que fazem daqui uma experiência única no Centro."
     },
     "galeria": {
       "eyebrow": "Galeria",
@@ -604,6 +604,7 @@
     "pastaImageAlt": "Massa ao molho branco servida no Fogão de Ouro",
     "dessertsLabel": "Sobremesas",
     "dessertsNote": "Cobradas à parte: não entram no preço por quilo.",
+    "dessertsPhotoAlt": "Petit gâteau de chocolate com sorvete de creme e calda, servido no salão do Fogão de Ouro",
     "dishImageAlt": "{name}, no Fogão de Ouro",
     "pastaIngredientsNote": "Até {n} escolhidos na hora, entre os disponíveis no dia.",
     "pastaCarousel": "Fotos das massas",

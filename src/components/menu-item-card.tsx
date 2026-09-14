@@ -5,7 +5,24 @@ import type { MenuItemView } from "@/lib/queries";
 /** 1 = segunda … 5 = sexta — indexado por `weekday - 1` para o rótulo traduzido. */
 const weekdayKeys = ["weekday1", "weekday2", "weekday3", "weekday4", "weekday5"] as const;
 
-/** Card de um prato. Sem preço: o cliente não publica valores. */
+/**
+ * Card de um prato. Sem preço: o cliente não publica valores.
+ *
+ * ── Só a foto ─────────────────────────────────────────────────────────────
+ *
+ * O nome e a descrição saíram a pedido do cliente em 14/09: na vitrine da home
+ * ele quer a comida, não a legenda. A frase do prato repetia o que a foto já
+ * mostra, e três parágrafos lado a lado pesavam mais que as três imagens.
+ *
+ * **O nome não se perdeu.** Ele continua no `alt` da imagem, que é a versão do
+ * card para quem não vê a tela — e é por isso que o `alt` aqui é o nome do
+ * prato, e não uma descrição da cena. Tirar o `h3` sem esse cuidado deixaria a
+ * vitrine inteira muda no leitor de tela.
+ *
+ * O selo de dia da semana e as etiquetas continuam: são dado, não frase. Os
+ * três destaques fixos não têm nenhum dos dois, mas o rodízio que preenche o
+ * resto da vitrine pode trazer.
+ */
 export async function MenuItemCard({ item }: { item: MenuItemView }) {
   const t = await getTranslations("gastronomia");
   return (
@@ -25,12 +42,6 @@ export async function MenuItemCard({ item }: { item: MenuItemView }) {
           className="h-40 w-full rounded-lg object-cover"
         />
       ) : null}
-      <div className="flex flex-col gap-1.5">
-        <h3 className="font-serif text-lg font-bold">{item.name}</h3>
-        {item.description ? (
-          <p className="text-sm text-muted-foreground">{item.description}</p>
-        ) : null}
-      </div>
       {item.tags.length > 0 ? (
         <ul className="mt-auto flex flex-wrap gap-1.5">
           {item.tags.map((tag) => (

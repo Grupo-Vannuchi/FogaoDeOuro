@@ -1,7 +1,19 @@
 /**
- * O fundo da página do cardápio: fitas curvas nas bordas, creme no miolo.
+ * O fundo da página do cardápio: papel kraft, duas formas laranja arredondadas
+ * sobrepostas, e uma lente mais saturada onde elas se cruzam — nascida da
+ * sobreposição, não desenhada à mão. Ver "v15" abaixo para a técnica e os
+ * valores finais; as quatorze versões anteriores (e por que cada uma foi
+ * recusada, ou substituída por um pedido novo do cliente) ficam registradas a
+ * seguir, como memória do projeto — é essa memória que evita repetir a
+ * décima sexta tentativa já testada e recusada.
  *
- * ── Nove versões, e o que cada uma ensinou ────────────────────────────────
+ * ⚠️ Este cabeçalho descreve só a versão ATUAL (v15). Ele ficou descrevendo a
+ * v12 (a chama em S) por duas versões inteiras: a v13 trocou o fundo por uma
+ * imagem e a v14 reescreveu a função inteira sem nunca ir ao ar, e nenhuma
+ * das duas voltou aqui para atualizar o resumo. Se você mudar o fundo de
+ * novo, atualize este parágrafo também, não só a seção "vN" no fim da lista.
+ *
+ * ── Catorze versões, e o que cada uma ensinou ─────────────────────────────
  *
  * 1. SVG esticado com viewBox quadrado — `preserveAspectRatio="none"` **achata
  *    o ângulo**, e as diagonais viraram faixas verticais.
@@ -16,192 +28,548 @@
  * 8. Faixas diagonais repetidas por toda a página: obrigavam cartão creme em
  *    volta de cada seção, porque texto escuro sobre #FB6B3A dá **2,17:1** e
  *    "Nacional" e "Importado" sumiam — medido, tela a tela.
- * 9. Esta: as fitas nítidas da versão 6, com a sombra fraca.
+ * 9. Fitas nítidas nos quatro cantos (a da versão 6, com a sombra fraca):
+ *    ficou pronta neste arquivo, mas nunca chegou a ser montada na página —
+ *    em 14/09 o cliente viu quatro variações novas na tela e escolheu uma
+ *    delas antes de esta ir ao ar.
+ * 10. Esta: uma vinheta radial só, sem canto, sem fita, sem forma
+ *     reconhecível — creme no centro, esquentando para o couro nas bordas.
+ *     Entre as quatro variações mostradas em 14/09, foi a que o cliente
+ *     escolheu.
+ * 11. Fundo escuro, curvas orgânicas fluindo — pedido novo do cliente em
+ *     14/09, não mais correção do mesmo pedido. Até a v10 a pergunta sempre
+ *     foi "que textura pôr sobre o creme claro do site"; esta inverte a
+ *     pergunta: base escura (quase-preto amarronzado no topo, faixa
+ *     laranja/âmbar cruzando na diagonal, marrom profundo, curva clara em
+ *     creme embaixo), como papel de parede. Três faixas diagonais
+ *     empilhadas. Ver "v11" abaixo para a técnica e as cores.
+ * 12. Esta: o cliente viu a v11 montada — fundo escuro, três faixas
+ *     diagonais — e pediu mais simples: uma chama só, orgânica, em forma de
+ *     S, em vez de faixas paralelas. Núcleo claro, quente, quase
+ *     branco-creme; bordas em laranja forte; dissolve no preto. Junto veio o
+ *     pedido de tirar a `CurvaLaranja` e a `Pilula` de cada seção
+ *     (`menu-section.tsx`) — o título da seção virou texto solto, creme,
+ *     sobre este fundo. Ver "v12" abaixo para a técnica, as cores finais e a
+ *     verificação de rolagem que uma chama com núcleo claro obriga.
  *
- * ── Por que as fitas, e não faixas atravessando ───────────────────────────
+ * 13. **A imagem que o cliente mandou**, em vez de mais uma recriação. As
+ *     versões 11 e 12 aproximaram em CSS referências que ele enviou como
+ *     imagem — e cada aproximação virava uma referência nova. O método era o
+ *     problema, não o desenho: imagem colada no chat não chega como arquivo,
+ *     então eu vinha desenhando de memória o que ele já tinha pronto. Em
+ *     14/09 ele salvou o arquivo e a aproximação deixou de ser necessária.
+ *     Ver "v13" mais abaixo.
+ * 14. O banho de terracota: pedido novo do cliente em 14/09, um banho macio e
+ *     quase uniforme, sem forma. A terracota exata da referência (clara/média)
+ *     não sustentava texto nenhum — 2,79:1 contra o creme, o mesmo problema de
+ *     tom médio que já tinha derrubado a v8. Corrigida descendo um degrau de
+ *     valor mantendo o matiz. Nunca foi ao ar: ficou pronta neste arquivo, sem
+ *     commit, quando o cliente trocou de novo o pedido para o papel kraft com
+ *     formas em laranja (v15) — mesmo padrão da versão 9, que também ficou
+ *     pronta e nunca chegou a ser montada. Ver "v14" abaixo.
+ * 15. Esta: papel kraft com duas formas laranja arredondadas sobrepostas, e
+ *     uma lente mais saturada nascendo sozinha da sobreposição. Ver "v15"
+ *     abaixo.
  *
- * As fitas moram nos CANTOS. A coluna de leitura é `max-w-3xl` e
- * centralizada, então o texto cai sempre no creme do meio — e é por isso que
- * esta versão não precisa de cartão em volta de cada seção, ao contrário da
- * versão 8. Quem alargar a coluna perde essa garantia e precisa medir de novo.
+ * ── Por que "sem forma reconhecível" venceu (histórico da v10) ────────────
  *
- * ── As cores, amostradas do arquivo do cliente ────────────────────────────
+ * Toda versão anterior tinha uma forma que dava para apontar e nomear —
+ * círculo (v3), faixa (v8), fita (v5, v6, v9) — e nomear a forma foi
+ * exatamente a queixa que derrubou cada uma: "parece uma mancha", "parece um
+ * círculo", "muito escuro, muito feio". Um gradiente radial simples,
+ * centrado na página e bem mais largo que alto (`120% 90%`), não desenha
+ * contorno nenhum para o olho seguir — só esquenta o canto e esfria para o
+ * centro. Não existia versão 11 óbvia *para esta pergunta* — mas em 14/09 o
+ * cliente trocou a pergunta (fundo escuro, não mais textura sobre o creme), e
+ * a v11 responde a essa pergunta nova, não a esta. Ver a seção "v11" abaixo.
  *
- *   laranja ..... #FB6B3A → #EE5C2C   (medido em dois blocos da arte)
- *   couro ....... #5E2B1F → #7F3923   (sombra → parte iluminada)
- *   filete ...... #FB6B3A, traço fino contornando o couro
+ * ── A cor, amostrada do impresso ──────────────────────────────────────────
  *
- * O filete é caminho aberto à parte, e não `stroke` no caminho fechado: no
- * fechado ele correria também pelas bordas da moldura.
+ * `rgb(126,57,35)` é `#7E3923` — o couro da arte impressa do cliente, a
+ * mesma pele de couro que aparecia na `Pilula` de `menu-section.tsx`
+ * (`#7F3923`/`#5E2B1F`, removida na v12 — ver abaixo) e que vestia as fitas
+ * da versão 9, amostrada de novo direto do arquivo do cliente. O hex sai um
+ * dígito diferente do da `Pilula` porque é outro ponto do couro na arte, não
+ * o mesmo valor duplicado com erro de digitação — não "corrija" um para
+ * bater com o outro. A cor não é escolha livre; é amostra. (A v12 abandona
+ * este marrom por completo — ver "v12" abaixo.)
  *
- * ── O `min-w` é do tamanho do celular, não do desktop ─────────────────────
+ * ── Por que esta versão não pede a calibração por largura de tela ────────
  *
- * Ele existe para a fita não sumir em tela estreita, e foi apertado duas
- * vezes por MEDIÇÃO, não por gosto:
+ * As fitas da versão 9 tinham `min-w` por SVG, calibrado em pixel
+ * (420px → 260px → 180px, cada aperto por medição de contraste em retrato)
+ * porque cada canto era uma forma de tamanho fixo que ou sumia ou invadia a
+ * coluna de leitura dependendo da largura da tela. O gradiente radial daqui
+ * é só porcentagem da própria caixa (`120% 90% at 50% 40%`): a proporção não
+ * muda com a largura da tela, e por isso esta versão não herda aquela
+ * calibração — mas também não foi remedida em retrato. Quem notar o couro
+ * chegando perto de texto num celular precisa medir de novo, do zero.
  *
- *   420px — maior que os 390px de um celular comum. A fita atravessava a tela
- *           e a linha de uvas do vinho caía a 4,44:1.
- *   260px — melhor, mas a fita ainda alcançava a coluna: "Adicione uma
- *           proteína" caía a 3,40:1 sobre o laranja, no retrato.
- *   180px — a fita fica no canto e o texto no creme.
+ * ── v11: fundo escuro, curvas orgânicas fluindo ───────────────────────────
  *
- * Quem mexer aqui precisa medir no retrato, não no desktop — e medindo o
- * composto renderizado, com a trava de que o ponto amostrado pertence ao
- * elemento medido. Sem essa trava a varredura acusa dezenas de falsos
- * positivos e esconde o verdadeiro.
+ * O pedido do cliente em 14/09: base escura, quase preta e amarronzada no
+ * topo; uma faixa curva em laranja/âmbar cruzando na diagonal; marrom
+ * profundo; e uma curva clara em creme na parte de baixo — curvas largas e
+ * suaves, sem aresta, "como um gradiente de papel de parede". Em CSS, não em
+ * imagem: imagem é o que já travou uma troca de foto neste projeto (licença
+ * de terceiro) e é o que a v4/v7 tentaram e recuaram — e CSS escala para
+ * qualquer proporção de tela sem recorte, o que uma imagem não faz.
+ *
+ * **Técnica.** Uma cor de base escura (`backgroundColor`) mais três
+ * `radial-gradient` elípticos enormes empilhados em `backgroundImage`, cada
+ * um centrado parcialmente FORA da caixa (posição `at` abaixo de 0% ou acima
+ * de 100%). Só o arco visível de cada elipse entra na tela — sem centro,
+ * sem contorno fechado para o olho seguir, o mesmo motivo que fez a vinheta
+ * da v10 vencer as fitas com forma reconhecível (v3, v5, v6, v9). A diferença
+ * é que aqui as "bordas" da vinheta viraram o design inteiro: três arcos
+ * diagonais, não um brilho centrado.
+ *
+ * As cores, de cima para baixo / de trás para frente do empilhamento:
+ *
+ * - Base (`backgroundColor`): `#2A1109` — escurecido do couro `#5E2B1F` a
+ *   pedido do brief ("para o quase-preto do topo, escureça o couro"). Sem
+ *   nenhum radial por cima, é o que sobra no topo e nos cantos — o
+ *   "quase-preto amarronzado" pedido nasce por ausência, não por mais uma
+ *   camada.
+ * - Laranja (frente): `#FB6B3A`, elipse larga e baixa (`170% 42%`) centrada
+ *   perto do topo direito (`78% 6%`) — o arco desce e cruza a tela na
+ *   diagonal, a faixa que o cliente pediu.
+ * - Marrom profundo (meio): `#7E3923` — o couro claro da `Pilula`, aqui como
+ *   camada, não como pílula — elipse grande (`165% 58%`) centrada em
+ *   `58% 64%`.
+ * - Creme (trás): `#EFE9C2`, o `--background` do tema — elipse centrada
+ *   BAIXO da caixa (`28% 122%`) e deslocada à esquerda, então só uma lasca
+ *   do arco toca o canto inferior. Deliberadamente pequena: `--background`
+ *   também é a cor que o texto solto da página passou a usar (ver a
+ *   consequência abaixo), e um creme dominando a faixa de baixo apagaria
+ *   esse texto contra o próprio fundo.
+ *
+ * Todos os valores em `%`, herdado da v10: a proporção não muda com a
+ * largura da tela, então não pede a calibração por pixel que a v9 exigia
+ * (ver acima). `fixed` (não `absolute`) também herdado da v10 — o fundo
+ * acompanha a janela, não o documento, e por isso todo texto que passa por
+ * cima dele, rolando, cruza as quatro faixas em algum momento. Substituída
+ * pela v12 em 14/09 — ver abaixo.
+ *
+ * ── v12: fundo quase preto, uma chama em S ────────────────────────────────
+ *
+ * O cliente viu a v11 montada (fundo escuro, três faixas diagonais — laranja,
+ * marrom, creme) e pediu mais simples: uma chama só, orgânica, em forma de
+ * S — sobe da parte de baixo à esquerda, curva, sai em cima à direita.
+ * Núcleo claro, quente, quase branco-creme; bordas em laranja forte;
+ * dissolve no preto. Nada de faixas paralelas — uma forma só, fluida, como
+ * fogo visto de perto. Junto veio o pedido de tirar a `CurvaLaranja` e a
+ * `Pilula` de cada seção (`menu-section.tsx`) — o título da seção virou
+ * texto solto sobre este fundo (ver "a consequência obrigatória" e "a curva
+ * laranja de cada seção" abaixo).
+ *
+ * **Técnica.** A mesma da v11 e da v10: `backgroundColor` escuro mais
+ * `radial-gradient`s elípticos grandes empilhados em `backgroundImage`, cada
+ * um centrado total ou parcialmente FORA da caixa — ela já provou escalar
+ * para qualquer proporção de tela sem recorte. O que muda é a composição:
+ * em vez de três arcos diagonais cobrindo a largura inteira da tela, duas
+ * famílias de elipse. O CORPO (laranja) traça o caminho em S: cinco elipses
+ * grandes, cada uma centrada total ou parcialmente fora da caixa, do canto
+ * inferior-esquerdo ao superior-direito:
+ *
+ *   P0  `105% 58%` at `8% 114%`    base, fora da caixa — só o arco de cima entra
+ *   P1  `88% 46%`  at `18% 80%`    subindo, ainda à esquerda
+ *   P2  `60% 30%`  at `48% 54%`    cintura do S, cruza o centro da tela
+ *   P3  `82% 40%`  at `76% 30%`    subindo à direita
+ *   P4  `96% 50%`  at `92% -6%`    saída, fora da caixa — só o arco de baixo entra
+ *
+ * Todas em `#FB6B3A 0%, rgba(251,107,58,0.85) 30%, rgba(251,107,58,0) 58%`.
+ * O NÚCLEO (creme, `#F7E2C0 0%, rgba(247,226,192,0.72) 22%, rgba(247,226,192,0)
+ * 42%`) não segue os cinco pontos do corpo — está deliberadamente desacoplado
+ * deles, por um motivo de legibilidade que precisa de conta feita, não de
+ * olhômetro; ver "por que o núcleo mora na borda" abaixo. São só dois
+ * pontos, pequenos (`6% 6%`), colados nas bordas esquerda e direita da tela:
+ *
+ *   N1  `6% 6%` at `1.5% 78%`   glint perto da base, braço esquerdo do S
+ *   N2  `6% 6%` at `98.5% 26%`  glint perto da saída, braço direito do S
+ *
+ * `backgroundColor: #0B0503` — quase preto, não preto puro, para não achatar
+ * a profundidade onde nenhuma elipse alcança. Empilhamento (primeira camada
+ * na frente, mesma regra herdada da v10/v11): N1 e N2 vêm primeiro no array,
+ * depois as cinco elipses do corpo (P0–P4) atrás delas — assim o núcleo
+ * nunca fica encoberto pelo laranja onde as duas camadas se sobrepõem.
+ *
+ * **Por que o núcleo mora na borda.** A coluna de leitura (`max-w-3xl`,
+ * `Container` em `menu-section.tsx`, `px-5`/`px-8` de gutter) fica
+ * centralizada na página. Em 1440px ela ocupa ≈`336px`–`1104px` (a faixa
+ * `23%`–`77%` da tela) — sobra bastante gutter dos dois lados. Em 390px o
+ * gutter é só o `px-5` (20px): a coluna ocupa `20px`–`370px`, ou seja quase
+ * a tela inteira (`5%`–`95%`). Como o fundo é `fixed` (herdado da v10/v11 —
+ * ver "por que esta versão não pede calibração" acima), texto solto cruza
+ * TODA posição vertical da tela em algum momento da rolagem — cada título e
+ * cada parágrafo soltos varrem de `y=0` a `y=100%` conforme a página rola,
+ * então a defesa contra sobreposição só pode ser horizontal; não existe
+ * altura "segura". Com só 20px de gutter em 390px, não há espaço para
+ * um núcleo de tamanho "normal" (o tamanho que o corpo laranja usa) caber
+ * fora da coluna nas duas larguras ao mesmo tempo — por isso N1 e N2 são
+ * pequenos (`6%` da largura da tela) e colados no 1,5% mais próximo de cada
+ * borda, não nos mesmos pontos do caminho do corpo. Medido (script em
+ * `.superpowers/sdd/task-fundo-chama-report.md`): em 390px o núcleo visível
+ * (até a parada de opacidade zero) vai de `0,9px` a `10,8px` (N1) e de
+ * `379,2px` a `389,1px` (N2) — a coluna começa em `20px` e termina em
+ * `370px`, sobrando **9,2px** de folga dos dois lados. Em 1440px a folga
+ * passa de `280px`. O corpo laranja (não é "a parte clara") pode cruzar a
+ * coluna livremente — a régua do cliente é só sobre o núcleo.
+ *
+ * Verificado com Playwright, rolando a página inteira em 390px e 1440px —
+ * ver `.superpowers/sdd/task-fundo-chama-report.md` para os comandos, os
+ * elementos medidos e as capturas. Se alguém redesenhar as elipses, repita a
+ * verificação: um núcleo reposicionado sem medir contra a coluna de leitura
+ * nas duas larguras é a mesma aposta que a v11 já deixava sem garantia (ver
+ * acima) — só que agora o risco é o oposto (núcleo claro apagando texto
+ * claro, não fundo escuro apagando texto escuro).
+ *
+ * ── A consequência obrigatória: texto solto e cartões ─────────────────────
+ *
+ * Fundo escuro quebra `--foreground` (`#474544`, quase preto) — ilegível
+ * sobre o preto de base e sobre o laranja da chama. A correção, criada na
+ * v11 e mantida na v12, tem duas metades — nenhuma neste arquivo:
+ *
+ * 1. Texto solto (fora de qualquer `bg-card`) virou `text-background` /
+ *    `text-background/70` — na v12 isso passou a incluir também os TÍTULOS
+ *    de `MenuSection` (a `Pilula` que os envolvia, opaca, foi removida nesta
+ *    versão — ver "a curva laranja de cada seção" abaixo), além dos
+ *    subtítulos já convertidos na v11, títulos e notas da ilha de massas em
+ *    `pasta-builder.tsx`, rótulo e uvas do vinho em `wine-list.tsx`, a nota
+ *    de sobremesas para viagem em `dessert-list.tsx`, os estados vazios do
+ *    buffet em `page.tsx`.
+ * 2. As superfícies `bg-card` (cream, fixas, não mudam com este fundo)
+ *    ganharam `text-card-foreground` para não herdar o texto claro de cima e
+ *    sumir creme-sobre-creme — ver cada arquivo para a lista.
+ *
+ * O texto claro (`text-background`, creme) tem o problema oposto sobre o
+ * núcleo da chama: creme sobre creme some. Como o título deixou de ter uma
+ * pílula opaca atrás dele na v12, ele passou a correr esse risco em
+ * qualquer seção — é por isso que o núcleo evita a coluna de leitura por
+ * construção (ver "v12" acima), e não por ajuste de cor: escurecer o texto
+ * não era a saída disponível (ver "v12" acima, "a régua do cliente").
+ *
+ * Se este fundo voltar a ser claro algum dia, as mudanças acima precisam
+ * reverter junto — não são independentes desta troca.
+ *
+ * **Aconteceu: a v15 é clara** (papel kraft, não mais preto), e a reversão
+ * está feita — ver "v15" abaixo, que lista os mesmos arquivos desta vez
+ * voltando de `text-background` para o quase-preto `#1A110C`.
+ *
+ * ── A curva laranja de cada seção (removida na v12) ───────────────────────
+ *
+ * `CurvaLaranja`, que vivia em `menu-section.tsx`, nasceu como fronteira de
+ * uma foto que sangrava — a foto parou de sangrar em 14/09, e a curva ficou
+ * como um segundo motivo laranja na página, ao lado do arco desta v11/v12.
+ * Nesta tarefa (v12) o cliente decidiu: removida por completo, componente e
+ * todos os usos, junto com o teste que a travava
+ * (`test/a-curva-laranja-nunca-carrega-texto.test.tsx`, apagado com
+ * `git rm` — sem o componente, não sobrava objeto para testar). Registrado
+ * aqui porque este arquivo era o único lugar que ainda explicava por que ela
+ * existia.
+ *
+ * ── v13: a imagem do cliente, e por que ela encerra o ciclo ───────────────
+ *
+ * Doze versões, e onze delas foram eu desenhando em CSS uma referência que o
+ * cliente tinha mandado como imagem. **Imagem colada no chat não vira arquivo
+ * no disco** — eu só a via. Então cada versão era uma aproximação de memória,
+ * não batia, e ele mandava outra referência. O ciclo não era de gosto: era de
+ * método.
+ *
+ * Em 14/09 ele salvou o arquivo em Downloads, e a aproximação deixou de ser
+ * necessária. `public/cardapio/fundo-curvas.webp`: 1200×1789, 20 KB.
+ *
+ * **A origem é retrato (736×1097) e a tela do desktop é paisagem.** Com
+ * `object-cover`, num monitor 1440×900 aparece a faixa central da imagem, não
+ * ela inteira — o enquadramento no desktop não é o que se vê no celular. Foi
+ * exatamente esse recorte que derrubou as versões 4 e 7; aqui ele é aceitável
+ * porque a imagem é gradiente liso: não há assunto para cortar fora, só
+ * curvas que continuam curvas em qualquer faixa.
+ *
+ * Ampliada de 736 para 1200 de largura a caminho do WebP. Ampliar costuma
+ * borrar, mas um gradiente suave não tem aresta para borrar — e sem a
+ * ampliação o desktop pediria quase o dobro da resolução da origem.
+ *
+ * ── O contraste foi medido na imagem, não estimado ────────────────────────
+ *
+ * Varrendo o arquivo inteiro pixel a pixel, o ponto mais claro é
+ * `rgb(135,81,45)`. Sobre ele:
+ *   • texto creme `#EFE9C2` .... 5,27:1  ✅
+ *   • texto branco `#ffffff` .... 6,47:1  ✅
+ *
+ * É o PIOR caso da imagem toda, não uma amostra — por isso esta versão
+ * dispensa véu por cima, ao contrário da v4, que precisou corrigir o rodapé
+ * translúcido. Se alguém trocar a imagem, refaça esta varredura: o texto
+ * solto desta página é claro, e uma imagem com qualquer região clara o apaga.
+ *
+ * ── v14: o banho de terracota, e o degrau que ele teve de descer ──────────
+ *
+ * Referência do cliente em 14/09: um banho macio de terracota, quase uniforme,
+ * sem forma — o oposto de tudo que veio antes, que sempre tinha uma figura
+ * para apontar.
+ *
+ * **O matiz é o da referência; o valor não.** Medido contra o texto creme
+ * `#EFE9C2`, que é o que esta página usa no texto solto desde a v11:
+ *
+ *   terracota clara  #C87553 .... 2,79:1  ❌
+ *   terracota média  #B5563A .... 3,93:1  ❌
+ *   terracota escura #9A4530 .... 5,23:1  ✅
+ *   ferrugem         #8A3B2A .... 6,24:1  ✅
+ *   ferrugem funda   #6E2E20 .... 8,24:1  ✅
+ *
+ * A terracota da referência cai na faixa clara/média, e **tom médio não
+ * sustenta texto nenhum** — nem claro nem escuro, porque fica longe dos dois
+ * extremos. É a mesma parede do laranja `#FB6B3A` (2,17:1) que derrubou a v8.
+ *
+ * Por isso esta versão desce um degrau de valor mantendo o matiz: `#9A4530` no
+ * ponto mais claro do banho, `#6E2E20` nas bordas. O pior contraste da página
+ * passa a ser 5,23:1 em vez de 2,79.
+ *
+ * Quem quiser a terracota exata da referência precisa mudar OUTRA coisa junto:
+ * ou o texto solto ganha superfície própria, ou a página inteira muda de
+ * estratégia de cor. Só clarear o fundo apaga o texto.
+ *
+ * Nunca foi montada na página: antes deste commit o cliente trocou o pedido
+ * de novo, para o papel kraft com formas em laranja da v15 abaixo. Fica
+ * registrada pelo mesmo motivo que a v9 (as fitas dos quatro cantos) ficou —
+ * é trabalho já testado e recusado (ou substituído), e refazê-lo do zero sem
+ * saber disso é o erro que este arquivo existe para prevenir.
+ *
+ * ── v15: papel kraft, duas formas em laranja, e a lente que a sobreposição desenha sozinha ──
+ *
+ * Referência do cliente em 14/09, a terceira do dia: uma base de papel kraft
+ * (bege-amarronzado, grão de papel visível) com duas grandes formas
+ * arredondadas em laranja sobrepostas, e uma lente mais saturada exatamente
+ * onde elas se cruzam.
+ *
+ * **A lente não é uma terceira forma desenhada.** É `mixBlendMode: "multiply"`
+ * nas duas formas laranja, empilhadas sobre o kraft: onde só uma forma cobre,
+ * o kraft multiplica por ela uma vez; onde as duas se sobrepõem, multiplica
+ * duas vezes seguidas — e a região fica sozinha mais escura e mais saturada,
+ * sem precisar de um terceiro elemento apontando "aqui é a lente". Tentar
+ * desenhar essa região à mão seria repetir o erro que a v13 resolveu do lado
+ * da imagem: aproximar de memória algo que a composição já resolve sozinha.
+ *
+ * **O grão do papel** é um `<svg>` inline com `feTurbulence` (ruído fractal,
+ * `type="fractalNoise"`) mais `feColorMatrix` (satura para cinza, senão o
+ * ruído também teria matiz aleatório e empurraria a cor medida para fora do
+ * previsto) por cima de tudo, em opacidade baixa (`0.05`) com
+ * `mixBlendMode: "overlay"`. Zero requisição — é `<filter>`, não arquivo — e
+ * discreto de propósito: grão, não chiado. Descartei textura em PNG/WebP
+ * porque a v13 já mostrou o preço de imagem aqui (recorte de retrato vs.
+ * paisagem) e um ruído fractal não tem enquadramento para cortar.
+ *
+ * ── A crise de contraste, e por que ela obriga a inverter o texto de novo ──
+ *
+ * Desde a v11 o texto solto desta página é `text-background` (creme,
+ * `#EFE9C2`) porque o fundo era escuro. O kraft e o laranja são CLAROS — o
+ * creme sobre eles é quase o mesmo problema que o preto original tinha sobre
+ * o creme do site: pouco contraste, na direção oposta.
+ *
+ * Medido contra os três tons do fundo novo — o pior caso de cada candidato,
+ * não uma amostra otimista:
+ *
+ * | candidato                | kraft `#C6A173` | laranja (1 forma) | lente (2 formas) |
+ * |---------------------------|-----------------|-------------------|------------------|
+ * | creme `#EFE9C2` (o de antes) | 1,96 ❌      | 2,73 ❌           | 2,72 ❌          |
+ * | `--foreground` `#474544`  | 3,97 ❌         | 2,84 ❌           | 2,85 ❌          |
+ * | branco                     | 2,40 ❌         | 3,36 ❌           | 3,34 ❌          |
+ * | quase-preto `#1A110C`     | **7,74 ✅**     | **7,22 ✅**       | **6,74 ✅**      |
+ *
+ * **Só o quase-preto passa nos três.** Nem o creme que a página usa desde a
+ * v11, nem o `--foreground` normal do tema (cinza escuro demais para este
+ * fundo — dá certo sobre o creme do site, não sobre kraft nem laranja).
+ *
+ * A conversão de texto solto para `text-background` feita na v11 e ampliada
+ * na v12 (ver "a consequência obrigatória" acima) é desfeita agora, em
+ * sentido contrário. Os mesmos lugares que a v11/v12 listaram voltam, desta
+ * vez para `#1A110C`:
+ *
+ * - Títulos e subtítulos de `MenuSection` (`menu-section.tsx`).
+ * - Títulos e notas da ilha de massas em `pasta-builder.tsx`.
+ * - Rótulo e linha de uvas do vinho em `wine-list.tsx`.
+ * - Nota de sobremesas para viagem em `dessert-list.tsx`.
+ * - Estados vazios do buffet em `page.tsx`.
+ *
+ * O texto de apoio (antes `text-background/70`) vira `#2A1B10` — um tom um
+ * degrau mais claro que o título, mas ainda escuro o bastante para passar no
+ * pior caso (a lente): 6,03:1 medido, contra o mínimo de 4,5. Não é opacidade
+ * sobre o quase-preto: clarear um texto ESCURO com opacidade, sobre um fundo
+ * CLARO, empurra a cor em direção ao fundo e reduz o contraste — o oposto do
+ * que acontecia na v11/v12, onde o texto era claro sobre fundo escuro e a
+ * opacidade escurecia na direção certa. Por isso é uma cor sólida nova, não
+ * `text-foreground/70` nem `#1A110C` com alfa.
+ *
+ * `bg-card` não muda: já fixa `text-card-foreground`, e essa correção não
+ * depende da cor do fundo por trás — continua certa com o kraft embaixo.
+ *
+ * ── Por que a forma não é tão vívida quanto o laranja `#DE6B32` puro ───────
+ *
+ * As formas usam `#DE6B32` a 8% de intensidade, não opacas. Multiplicar o
+ * laranja opaco contra o kraft já dá 3,18:1 numa camada só — reprova; e
+ * multiplicar o laranja opaco contra ele mesmo, na lente, dá 2,18:1 —
+ * reprova bem pior. É o mesmo aprendizado da v14, uma seção acima: tom
+ * "correto" na referência às vezes não sustenta texto nenhum, e a saída é
+ * descer um degrau de valor mantendo o matiz — aqui, o degrau é intensidade,
+ * não hex. Baixar para 8% deixa a lente e as formas claras o bastante para o
+ * quase-preto passar com folga sem perder o matiz laranja nem a diferença
+ * visível entre kraft → forma → lente.
+ *
+ * ── A armadilha: `opacity` não sobrevive à própria varredura ───────────────
+ *
+ * A primeira tentativa desta versão usava `style={{ opacity: 0.08 }}` nas
+ * duas formas — CSS válido, `mixBlendMode` funcionando, tudo certo no
+ * navegador. A varredura de contraste (ver `.superpowers/sdd/task-fundo-
+ * kraft-report.md`) reprovou catastroficamente mesmo assim: pior caso
+ * medido, **1,08:1**. A causa não era a cor — era o script de varredura.
+ * Ele injeta `*, *::before, *::after { opacity: 1 !important }` de propósito
+ * (para congelar animações de entrada antes de fotografar), e uma regra de
+ * folha de estilo com `!important` VENCE `style=""` sem `!important` — então
+ * a varredura, sem querer, acendia as duas formas em 100% de força antes de
+ * medir. O usuário real nunca vê isso; só a varredura via.
+ *
+ * A saída: alfa embutido na COR (`rgba(222, 107, 50, 0.08)` via `comAlfa()`),
+ * não na propriedade `opacity`. Não existe `background-color: … !important`
+ * na regra da varredura, então o alfa sobrevive a ela — e o resultado visual
+ * no navegador é idêntico, porque `opacity` e alfa de cor entram na mesma
+ * fórmula de composição (`Cb·(1-α) + α·multiply(Cb,Cs)`); só o CAMINHO para
+ * chegar no alfa muda. O grão de papel tinha o mesmo risco (`opacity: 0.05`
+ * no `<svg>`) e ganhou o mesmo tratamento: `feFuncA` dentro do próprio
+ * filtro, alfa cozinhado no pixel antes de qualquer CSS externo tocar o
+ * elemento. Se alguém voltar a usar `opacity` num destes dois lugares, ou
+ * atualiza a varredura para não forçá-la, ou vai repetir esta reprova.
+ *
+ * `public/cardapio/fundo-curvas.webp` (a imagem da v13) fica onde está,
+ * sem uso: o cliente pode querer voltar a ela, e o arquivo não custa nada
+ * parado no disco.
+ *
+ * `aria-hidden` porque é decoração pura, sem nada para um leitor de tela
+ * anunciar. `pointer-events-none` para não roubar clique de nada que esteja
+ * por cima. `-z-10` para ficar atrás do conteúdo da página.
  */
+
+/**
+ * As duas cores do texto solto desta página (fora de qualquer `bg-card`),
+ * exportadas daqui porque este arquivo é a fonte da medição — ver "v15"
+ * acima para a tabela completa. `menu-section.tsx`, `pasta-builder.tsx`,
+ * `wine-list.tsx`, `dessert-list.tsx` e a página do cardápio importam estas
+ * duas em vez de repetir o hex: uma cópia divergente aqui seria uma cor não
+ * medida, exatamente o que este arquivo existe para evitar.
+ */
+export const TEXTO_SOLTO = "#1A110C";
+/** Texto de apoio (era `text-background/70`) — 6,03:1 contra a lente, o pior caso. Ver "v15" acima. */
+export const TEXTO_SOLTO_APOIO = "#2A1B10";
+
+/** Papel kraft: base do fundo — 7,74:1 contra `#1A110C`, o melhor caso da tabela em "v15" acima. */
+const KRAFT = "#C6A173";
+
+/** Laranja das duas formas — ver "v15" acima para por que elas não são opacas. */
+const LARANJA = "#DE6B32";
+
+/**
+ * Intensidade de CADA forma no `mixBlendMode: "multiply"`. Onde as duas se
+ * sobrepõem, o kraft multiplica pelo laranja duas vezes seguidas — a lente
+ * nasce sozinha desse empilhamento, não é uma cor escolhida à parte.
+ *
+ * ⚠️ Isto é alfa embutido na COR (`rgba(...)`), não a propriedade CSS
+ * `opacity`. A varredura de contraste (`.superpowers/sdd/task-fundo-kraft-
+ * report.md`, seção "a varredura") zera toda `transition`/`animation` e força
+ * `opacity: 1 !important` em `*` — para congelar animações de entrada antes
+ * de medir, não para decoração de fundo. Uma primeira versão desta forma
+ * usava `style={{ opacity: 0.08 }}`, e essa regra global SOBRESCREVIA o
+ * `opacity` inline (uma regra de folha de estilo com `!important` vence
+ * `style=""` sem `!important`), acendendo as formas em 100% de força — o
+ * multiply dobrado da lente contra o laranja quase opaco reprovava
+ * catastroficamente (pior caso medido: 1,08:1). `background-color` com alfa
+ * não tem esse problema: não existe propriedade `background-color: 1
+ * !important` na regra, então o alfa sobrevive. Troque para `opacity` de
+ * novo só se também atualizar a varredura para não forçá-lo — senão o fundo
+ * vai parecer bom no navegador e reprovar na medição, ou pior, o contrário.
+ */
+const INTENSIDADE_FORMA = 0.08;
+
+/** `#RRGGBB` + alfa (0–1) → `rgba(r,g,b,a)`. Ver o aviso em `INTENSIDADE_FORMA`. */
+function comAlfa(hex: string, alfa: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alfa})`;
+}
+
+/**
+ * As duas formas, arredondadas e assimétricas (não círculos perfeitos) para
+ * não repetir a queixa "parece um círculo" que derrubou a v3 — ali o problema
+ * era ser a única leitura possível da forma; aqui é só textura de fundo atrás
+ * de papel kraft, então a semelhança importa menos, mas o raio orgânico
+ * (`border-radius` em oito valores) custa zero a mais e evita a leitura
+ * geométrica de propósito.
+ *
+ * `vmax` (não `vw`/`vh` isolado, e não pixel — ver "por que esta versão não
+ * pede calibração por largura de tela" acima, a mesma lição da v10/v11):
+ * cobre a tela inteira em qualquer proporção, retrato ou paisagem, sem a
+ * calibração por breakpoint que a v9 precisou.
+ */
+const FORMAS: {
+  top: string;
+  left: string;
+  size: string;
+  radius: string;
+}[] = [
+  {
+    top: "28%",
+    left: "22%",
+    size: "92vmax",
+    radius: "42% 58% 63% 37% / 41% 45% 55% 59%",
+  },
+  {
+    top: "68%",
+    left: "74%",
+    size: "88vmax",
+    radius: "60% 40% 35% 65% / 55% 62% 38% 45%",
+  },
+];
+
 export function MenuBackdrop() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      style={{ backgroundColor: KRAFT }}
     >
-      {/* Canto superior esquerdo: couro atrás, laranja à frente, deslocados —
-          é o que dá a sensação de camadas da arte, em vez de mancha só. */}
-      <svg
-        viewBox="0 0 600 420"
-        className="absolute -left-[12vw] -top-[10vw] w-[62vw] min-w-[180px]"
-      >
-        <defs>
-          <linearGradient id="couro-1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#5E2B1F" />
-            <stop offset="100%" stopColor="#7F3923" />
-          </linearGradient>
-          <linearGradient id="laranja-1" x1="0" y1="0" x2="0.9" y2="1">
-            <stop offset="0%" stopColor="#FB6B3A" />
-            <stop offset="100%" stopColor="#EE5C2C" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0,0 L600,0 C440,70 330,190 210,300 C140,364 72,400 0,424 Z"
-          fill="url(#couro-1)"
+      {FORMAS.map((forma, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            top: forma.top,
+            left: forma.left,
+            width: forma.size,
+            height: forma.size,
+            borderRadius: forma.radius,
+            backgroundColor: comAlfa(LARANJA, INTENSIDADE_FORMA),
+            mixBlendMode: "multiply",
+            transform: "translate(-50%, -50%)",
+          }}
         />
-        <path
-          d="M600,0 C440,70 330,190 210,300 C140,364 72,400 0,424"
-          fill="none"
-          stroke="#FB6B3A"
-          strokeWidth="7"
-        />
-        <path
-          d="M0,66 C120,52 230,120 352,34 L470,0 C356,118 252,224 150,318 C100,364 52,394 0,416 Z"
-          fill="url(#laranja-1)"
-        />
+      ))}
+
+      {/* Grão de papel: feTurbulence + feColorMatrix (satura para cinza) por
+          cima de tudo, baixíssima opacidade. Ver "v15" acima para o porquê.
+          O alfa baixo é `feFuncA` (linear, `slope=0.05`) DENTRO do filtro, não
+          `style={{ opacity: 0.05 }}` no `<svg>` — mesmo motivo do aviso em
+          `INTENSIDADE_FORMA`: uma regra externa com `opacity: 1 !important`
+          apagaria o `opacity` do elemento, mas não alcança o alfa que o
+          próprio filtro já cozinhou no pixel. */}
+      <svg aria-hidden className="absolute inset-0 h-full w-full" style={{ mixBlendMode: "overlay" }}>
+        <filter id="menu-backdrop-grao">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves={2} stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.05" intercept="0" />
+          </feComponentTransfer>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#menu-backdrop-grao)" />
       </svg>
-
-      {/* Canto superior direito: só couro, e menor — divide o topo com o
-          cabeçalho pregado, e duas fitas fortes ali brigavam com o menu. */}
-      <svg
-        viewBox="0 0 460 380"
-        className="absolute -right-[10vw] -top-[6vw] w-[46vw] min-w-[140px]"
-      >
-        <defs>
-          <linearGradient id="couro-2" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#5E2B1F" />
-            <stop offset="100%" stopColor="#7F3923" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M460,0 L460,380 C392,330 330,256 286,178 C236,90 150,34 0,4 Z"
-          fill="url(#couro-2)"
-        />
-        <path
-          d="M460,380 C392,330 330,256 286,178 C236,90 150,34 0,4"
-          fill="none"
-          stroke="#FB6B3A"
-          strokeWidth="7"
-        />
-      </svg>
-
-      {/* Canto inferior esquerdo: espelha o superior direito, para a página
-          fechar com o mesmo peso com que abre. */}
-      <svg
-        viewBox="0 0 460 380"
-        className="absolute -left-[10vw] -bottom-[6vw] w-[46vw] min-w-[140px]"
-      >
-        <defs>
-          <linearGradient id="couro-3" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stopColor="#5E2B1F" />
-            <stop offset="100%" stopColor="#7F3923" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0,380 L0,0 C68,50 130,124 174,202 C224,290 310,346 460,376 Z"
-          fill="url(#couro-3)"
-        />
-        <path
-          d="M0,0 C68,50 130,124 174,202 C224,290 310,346 460,376"
-          fill="none"
-          stroke="#FB6B3A"
-          strokeWidth="7"
-        />
-      </svg>
-
-      {/* Canto inferior direito: o par do superior esquerdo, na diagonal. */}
-      <svg
-        viewBox="0 0 600 420"
-        className="absolute -right-[12vw] -bottom-[10vw] w-[62vw] min-w-[180px]"
-      >
-        <defs>
-          <linearGradient id="laranja-2" x1="1" y1="1" x2="0.1" y2="0">
-            <stop offset="0%" stopColor="#FB6B3A" />
-            <stop offset="100%" stopColor="#EE5C2C" />
-          </linearGradient>
-          <linearGradient id="couro-4" x1="1" y1="1" x2="0" y2="0">
-            <stop offset="0%" stopColor="#5E2B1F" />
-            <stop offset="100%" stopColor="#7F3923" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M600,420 L0,420 C160,350 270,230 390,120 C460,56 528,20 600,-4 Z"
-          fill="url(#couro-4)"
-        />
-        <path
-          d="M0,420 C160,350 270,230 390,120 C460,56 528,20 600,-4"
-          fill="none"
-          stroke="#FB6B3A"
-          strokeWidth="7"
-        />
-        <path
-          d="M600,354 C480,368 370,300 248,386 L130,420 C244,302 348,196 450,102 C500,56 548,26 600,4 Z"
-          fill="url(#laranja-2)"
-        />
-      </svg>
-
-      {/*
-        Duas camadas, e a ordem importa.
-
-        **A sombra**, primeiro: escurecimento largo e fraco logo fora da área
-        de leitura, na cor do couro. Existe porque só o véu lia como halo
-        esbranquiçado — véu de creme desbotando sobre fita saturada CLAREIA
-        onde deveria escurecer.
-
-        O pico é 0,12 de alfa, e isso foi calibrado olhando: uma tentativa com
-        0,62 desenhou um anel escuro em volta do texto, que parecia um túnel.
-        Sombra que se nota deixou de ser sombra e virou moldura — que é
-        exatamente o que esta página não pode ter.
-
-        **O véu**, por cima: creme colado no centro, transparente nas bordas.
-        É ele que permite manter as fitas nítidas e na cor cheia sem custar
-        legibilidade.
-
-        Os raios vêm da largura da coluna: `max-w-3xl` centralizado ocupa de
-        23% a 77% da tela num monitor comum, e o trecho opaco cobre de 19% a
-        81%. Quem alargar a coluna precisa refazer esta conta.
-      */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(58% 80% at 50% 50%, rgba(62,28,14,0) 0%, rgba(62,28,14,0) 58%, rgba(62,28,14,0.12) 76%, rgba(62,28,14,0.05) 90%, rgba(62,28,14,0) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(52% 72% at 50% 50%, var(--background) 0%, var(--background) 52%, transparent 78%)",
-        }}
-      />
     </div>
   );
 }

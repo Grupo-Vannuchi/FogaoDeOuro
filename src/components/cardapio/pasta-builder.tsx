@@ -1,9 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { formatBRL, pastaChoices } from "@/config/menu";
-import {
-  PastaCarousel,
-  type PastaPhoto,
-} from "@/components/cardapio/pasta-carousel";
+import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * Como se monta um prato na ilha de massas.
@@ -14,8 +11,11 @@ import {
  *
  * ── A composição ──────────────────────────────────────────────────────────
  *
- * A foto do prato abre a seção em faixa larga; abaixo dela, uma trilha
- * numerada com a linha ligando um passo ao seguinte. A trilha não é enfeite:
+ * O carrossel de fotos não mora mais aqui: ele abre a `MenuSection` da ilha,
+ * dentro da coluna de leitura (até 14/09 ele sangrava de ponta a ponta — o
+ * cliente recusou o sangramento na página inteira, não só nesta seção). O
+ * que resta é a trilha numerada, com a linha ligando um passo ao seguinte. A
+ * trilha não é enfeite:
  * ela desenha o que a seção está dizendo, que é uma ordem, e sobrevive ao
  * celular sem virar outra coisa — no desktop e no telefone continua a mesma
  * coluna, só muda a largura das etiquetas.
@@ -35,15 +35,12 @@ import {
  * O alinhamento é à esquerda de ponta a ponta. Centralizado, o título flutuava
  * sobre uma lista que começa na margem e o olho voltava ao centro a cada bloco.
  *
- * As imagens vêm do banco (`getPastaPhotos`), não de `public`: são pratos da
- * casa, e trocá-las no admin troca os slides.
- *
  * Os ingredientes aparecem como quantidade, nunca como lista: mudam toda
  * semana, e um nome impresso no site vira promessa que a cozinha não cumpre num
  * dia de entrega ruim. Mesma decisão do cardápio impresso. Por isso o passo 4 é
  * o único sem etiquetas — a frase é o conteúdo.
  */
-export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
+export async function PastaBuilder() {
   const t = await getTranslations("cardapio");
 
   /** Cada passo traz etiquetas **ou** uma nota — nunca os dois. */
@@ -59,24 +56,18 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
 
   return (
     <div className="mt-10">
-      {photos.length > 0 ? (
-        <PastaCarousel
-          photos={photos}
-          labels={{
-            carousel: t("pastaCarousel"),
-            prev: t("pastaPrevPhoto"),
-            next: t("pastaNextPhoto"),
-            // O rótulo de cada bolinha é montado no cliente, que não tem o
-            // catálogo: mandamos o molde e ele troca o {n}.
-            goTo: t("pastaGoToPhoto", { n: "{n}" }),
-          }}
-        />
-      ) : null}
-
-      <h3 className="mt-10 font-serif text-2xl font-bold tracking-tight sm:text-3xl">
+      {/* Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas
+          em laranja) — `TEXTO_SOLTO`/`TEXTO_SOLTO_APOIO`, não `--foreground`/
+          `text-muted-foreground`: reprovam nas três superfícies do fundo
+          novo (ver o docblock de `MenuBackdrop`, seção "v15"). Nada aqui mora
+          dentro de um `bg-card`. */}
+      <h3
+        className="mt-10 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+        style={{ color: TEXTO_SOLTO }}
+      >
         {t("pastaBuild")}
       </h3>
-      <p className="mt-2 max-w-xl text-pretty text-muted-foreground">
+      <p className="mt-2 max-w-xl text-pretty" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("pastaPortionNote", { portion: pastaChoices.portion })}
       </p>
 
@@ -94,6 +85,11 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
                   A linha vertical é `flex-1`: estica até o próximo círculo
                   sozinha, sem altura fixa que desalinhe quando as opções
                   quebram em mais linhas. */}
+              {/* Os dois círculos numerados abaixo (`sm` e celular) são
+                  `bg-card` sem `text-card-foreground`, ao contrário dos
+                  outros desta página: já fixam a própria cor (`text-brand`)
+                  em vez de herdá-la, então empilhar `text-card-foreground`
+                  no mesmo elemento seria conflito, não reforço. */}
               <div className="hidden flex-col items-center sm:flex" aria-hidden>
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-card font-serif text-base font-bold tabular-nums text-brand">
                   {i + 1}
@@ -106,7 +102,10 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
               {/* `min-w-0` para as opções quebrarem em vez de empurrar a
                   coluna do número para fora. */}
               <div className={`min-w-0 flex-1 pt-1.5 ${ultimo ? "" : "pb-9"}`}>
-                <h4 className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug sm:text-xl">
+                <h4
+                  className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug sm:text-xl"
+                  style={{ color: TEXTO_SOLTO }}
+                >
                   {/* O mesmo número da trilha, na versão de celular. Some em
                       `sm`, onde o círculo da calha assume. */}
                   <span
@@ -118,7 +117,11 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
                   {passo.titulo}
                 </h4>
                 {passo.opcoes ? (
-                  <ul className="mt-4 overflow-hidden rounded-2xl border border-border bg-card">
+                  // `text-card-foreground`: fundo escuro na v11 inverteu o
+                  // texto solto para creme (ver `h4`/`h3` acima) — sem isto o
+                  // nome de cada opção herdaria esse creme e sumiria sobre o
+                  // próprio `bg-card` creme.
+                  <ul className="mt-4 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
                     {passo.opcoes.map((opcao) => (
                       <li
                         key={opcao}
@@ -135,7 +138,10 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
                     ))}
                   </ul>
                 ) : (
-                  <p className="mt-2 text-pretty leading-relaxed text-muted-foreground">
+                  <p
+                    className="mt-2 text-pretty leading-relaxed"
+                    style={{ color: TEXTO_SOLTO_APOIO }}
+                  >
                     {passo.nota}
                   </p>
                 )}
@@ -147,10 +153,13 @@ export async function PastaBuilder({ photos }: { photos: PastaPhoto[] }) {
 
       {/* A exceção à regra de "preço é da seção": estes são adicionais
           cobrados por unidade, e o cardápio impresso os lista com valor. */}
-      <h3 className="mt-12 font-serif text-2xl font-bold tracking-tight sm:text-3xl">
+      <h3
+        className="mt-12 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+        style={{ color: TEXTO_SOLTO }}
+      >
         {t("pastaExtras")}
       </h3>
-      <ul className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
+      <ul className="mt-6 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
         {pastaChoices.extras.map((extra) => (
           <li
             key={extra.name}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { desserts, formatBRL } from "@/config/menu";
+import { TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * As sobremesas, com preço por item.
@@ -18,7 +19,10 @@ export async function DessertList() {
 
   return (
     <>
-      <ul className="mt-8 overflow-hidden rounded-2xl border border-border bg-card">
+      {/* `text-card-foreground`: fundo escuro da v11 inverteu o texto solto da
+          página para creme — sem isto o nome/nota de cada sobremesa herdaria
+          esse creme e sumiria sobre o próprio `bg-card` creme. */}
+      <ul className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
         {desserts.map((sobremesa) => {
           const foto = sobremesa.photo;
           return (
@@ -59,7 +63,11 @@ export async function DessertList() {
           );
         })}
       </ul>
-      <p className="mt-4 text-sm text-muted-foreground">
+      {/* Fora do `<ul>`, solta sobre o fundo v15 (papel kraft + formas em
+          laranja) — `TEXTO_SOLTO_APOIO`, não `text-muted-foreground`: este
+          reprova nas três superfícies do fundo novo (ver o docblock de
+          `MenuBackdrop`, seção "v15"). */}
+      <p className="mt-4 text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("dessertsTakeaway")}
       </p>
     </>
