@@ -10,9 +10,11 @@ import { formatBRL, pastaChoices } from "@/config/menu";
  *
  * ── A composição ──────────────────────────────────────────────────────────
  *
- * O carrossel de fotos não mora mais aqui: ele subiu para o `bleed` da
- * `MenuSection` da ilha e sangra no topo da página. O que resta é a trilha
- * numerada, com a linha ligando um passo ao seguinte. A trilha não é enfeite:
+ * O carrossel de fotos não mora mais aqui: ele abre a `MenuSection` da ilha,
+ * dentro da coluna de leitura (até 14/09 ele sangrava de ponta a ponta — o
+ * cliente recusou o sangramento na página inteira, não só nesta seção). O
+ * que resta é a trilha numerada, com a linha ligando um passo ao seguinte. A
+ * trilha não é enfeite:
  * ela desenha o que a seção está dizendo, que é uma ordem, e sobrevive ao
  * celular sem virar outra coisa — no desktop e no telefone continua a mesma
  * coluna, só muda a largura das etiquetas.

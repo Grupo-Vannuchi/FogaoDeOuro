@@ -58,33 +58,18 @@ describe("MenuSection", () => {
   });
 
   /**
-   * `photoFit` distingue fotografia de verdade (sangra, `object-cover`) de
-   * recorte com fundo transparente (emoldura, `object-contain`). Os dois
-   * testes abaixo travam as duas pontas: o padrão continua sangrando fora da
-   * coluna, e `"framed"` entra dentro dela sem cortar a imagem.
+   * O sangramento (`photoFit="bleed"`, foto de ponta a ponta fora da coluna
+   * com `object-cover`) existiu até 14/09 e foi recusado: em `/cardapio` o
+   * corte comia informação — sumiam a uva e a safra do rótulo do vinho
+   * Longitud, e cortava o prato da foto de sobremesas. Só sobrou o modo
+   * emoldurado, e este é o único teste de foto que resta: a imagem entra
+   * dentro da coluna de leitura (`.max-w-3xl`), inteira, sem cortar nada.
    */
-  it("no modo padrão (bleed), a foto sangra fora da coluna com object-cover", () => {
-    const { container } = render(
-      <MenuSection
-        title="Vinhos"
-        photo={{ src: "/bebidas/carta-de-vinhos.webp", alt: "Carta de vinhos" }}
-      >
-        <p>conteúdo</p>
-      </MenuSection>,
-    );
-    const foto = screen.getByAltText("Carta de vinhos");
-    expect(foto).toHaveClass("object-cover");
-    expect(foto).not.toHaveClass("object-contain");
-    expect(foto.closest(".max-w-3xl")).toBeNull();
-    expect(container.querySelectorAll("img")).toHaveLength(1);
-  });
-
-  it("no modo framed, a foto entra dentro da coluna com object-contain", () => {
+  it("a foto entra emoldurada, dentro da coluna, sem cortar a imagem", () => {
     const { container } = render(
       <MenuSection
         title="Sucos"
         photo={{ src: "/bebidas/suco.webp", alt: "Copo de suco" }}
-        photoFit="framed"
       >
         <p>conteúdo</p>
       </MenuSection>,

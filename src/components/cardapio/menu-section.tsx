@@ -53,56 +53,51 @@ function Pilula({ children }: { children: React.ReactNode }) {
 /**
  * Uma seção do cardápio com a anatomia de uma página da peça impressa:
  *
- *     ████ foto sangrando, de ponta a ponta ████
  *     ╲________ curva laranja _________________
  *              ╭──────────────╮
  *              │  Sobremesas  │
  *              ╰──────────────╯
  *              subtítulo centrado
  *
+ *              foto emoldurada, se existir
  *              conteúdo, na coluna de leitura
  *
- * ── Sangrar ──────────────────────────────────────────────────────────────
+ * ── Sangrar existiu, e foi recusado ───────────────────────────────────────
  *
- * A foto vai até a borda da tela, sem margem nem canto arredondado. É o que a
- * peça faz e é o que separa "site com as cores do cardápio" de "cardápio na
- * tela". Por isso ela fica FORA do `Container` — quem entra na coluna é só o
- * conteúdo.
+ * Até 14/09 esta seção tinha dois modos: `photoFit="bleed"` (foto de ponta a
+ * ponta, fora do `Container`, `object-cover`) para fotografia de verdade, e
+ * `photoFit="framed"` (dentro da coluna, `object-contain`) para recorte com
+ * fundo transparente. O cliente viu a página montada e recusou o
+ * sangramento inteiro — não só o gosto: em `/cardapio` o corte comia
+ * informação. A foto sangrando da carta de vinhos cortava o rótulo do
+ * Longitud — sumiam a uva e a safra, que são exatamente o que o cliente quer
+ * ler antes de escolher a garrafa — e a foto sangrando das sobremesas cortava
+ * o prato do petit gateau. `object-cover` de ponta a ponta escolhe o
+ * enquadramento cortando o que não cabe, e às vezes o que não cabe é
+ * informação que a foto existe para mostrar.
  *
- * `bleed` é a alternativa à foto, para a seção de massas: lá quem sangra é o
- * carrossel. Passar os dois é erro de uso; `photo` vence.
+ * Por isso só sobrou um caminho: a foto sempre emoldurada, sempre dentro do
+ * `Container`, sempre `object-contain`. Não tente reintroduzir o sangramento
+ * para "fotografia de verdade" — o corte que perdeu o rótulo do Longitud é o
+ * motivo, e ele não depende de a foto ser recorte ou fotografia.
  *
- * Isto presume **fotografia de verdade**: a imagem inteira é cena, e
- * `object-cover` só escolhe o enquadramento — nunca corta o assunto. É o caso
- * de `/bebidas/carta-de-vinhos.webp` e `/sobremesas/petit-gateau-largo.webp`.
+ * ── A foto, quando existe ─────────────────────────────────────────────────
  *
- * ── Emoldurar (`photoFit="framed"`) ──────────────────────────────────────
+ * Entra DENTRO do `Container` (a mesma coluna do texto), num quadro
+ * `aspect-[16/9] w-full rounded-2xl` com `object-contain` — que preserva a
+ * imagem inteira em vez de cortá-la. Como está dentro da coluna, ela vem
+ * depois da pílula do título, não antes; a curva não sabe (nem precisa saber)
+ * se a seção tem foto e continua exatamente onde está.
  *
- * `/bebidas/suco.webp` e `/bebidas/refrigerante.webp` não são fotografia de
- * verdade: são **recortes com fundo transparente**, montados num quadro 16:9
- * com respiro nas bordas. Sangrar um recorte com `object-cover` corta e
- * amplia — o copo virou um close gigante ocupando a tela, e foi isso que o
- * cliente recusou em 14/09.
- *
- * `photoFit="framed"` existe para esse caso. A foto entra DENTRO do
- * `Container` (a mesma coluna do texto), num quadro `aspect-[16/9] w-full
- * rounded-2xl` com `object-contain` — que preserva o recorte inteiro em vez
- * de cortá-lo. Como está dentro da coluna, ela vem depois da pílula do
- * título, não antes; a curva não sabe (nem precisa saber) qual dos dois modos
- * a seção usa e continua exatamente onde está.
- *
- * O padrão é `"bleed"`: é o que a maioria das seções — fotografia de verdade
- * — quer. `photoFit` só importa quando `photo` também é passado.
- *
- * Os dois modos também levam `sizes` diferentes no `<Image>`, e não por
- * acaso: `bleed` ocupa a tela inteira (`sizes="100vw"`), `framed` fica preso
- * à coluna dentro do `Container` (`max-w-3xl`, 768px). Dar `100vw` para o
- * emoldurado mentiria a largura para o navegador e baixaria um arquivo maior
- * do que o exibido.
+ * `sizes="(min-width: 1280px) 768px, 100vw"` porque a foto fica presa à
+ * coluna dentro do `Container` (`max-w-3xl`, 768px) — dar `100vw` mentiria a
+ * largura para o navegador e baixaria um arquivo maior do que o exibido.
  *
  * ── Sem foto, a curva fica ───────────────────────────────────────────────
  *
- * Duas seções não têm foto (Cardápio da Semana e Café e água). A curva
+ * Duas seções não têm foto (Cardápio da Semana e Café e água), e a ilha de
+ * massas troca a foto por um carrossel dentro dos `children` (ver
+ * `pasta-carousel.tsx`) em vez de usar a prop `photo`. Nos três casos a curva
  * continua e vira divisória: é ela que liga a seção à peça impressa.
  *
  * ── A regra dura ─────────────────────────────────────────────────────────
@@ -114,43 +109,18 @@ function Pilula({ children }: { children: React.ReactNode }) {
 export function MenuSection({
   id,
   photo,
-  photoFit = "bleed",
-  bleed,
   title,
   subtitle,
   children,
 }: {
   id?: string;
   photo?: { src: string; alt: string };
-  /**
-   * `"bleed"` (padrão) para fotografia de verdade, de ponta a ponta. `"framed"`
-   * para recorte com fundo transparente, emoldurado dentro da coluna. Veja o
-   * docblock da função — os dois tratamentos existem porque as duas fontes de
-   * imagem pedem o oposto uma da outra.
-   */
-  photoFit?: "bleed" | "framed";
-  bleed?: React.ReactNode;
   title: string;
   subtitle?: string;
   children: React.ReactNode;
 }) {
   return (
     <section id={id} className="scroll-mt-24 pb-12 sm:pb-16">
-      {photo && photoFit !== "framed" ? (
-        <div className="relative h-[42vw] max-h-80 min-h-40 w-full">
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            loading="lazy"
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-      ) : (
-        bleed
-      )}
-
       <CurvaLaranja />
 
       <Container className="max-w-3xl">
@@ -166,7 +136,7 @@ export function MenuSection({
             </p>
           ) : null}
         </div>
-        {photo && photoFit === "framed" ? (
+        {photo ? (
           <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl">
             <Image
               src={photo.src}

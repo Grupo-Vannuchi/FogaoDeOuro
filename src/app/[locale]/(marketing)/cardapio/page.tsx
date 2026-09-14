@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { MenuBackdrop } from "@/components/cardapio/menu-backdrop";
 import { MenuSection } from "@/components/cardapio/menu-section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
@@ -60,6 +61,11 @@ export default async function CardapioPage({
 
   return (
     <>
+      {/* Decorativo, fixo, atrás de tudo — não entra na ordem de leitura nem
+          na de tabulação. Ver o docblock de `MenuBackdrop` para o porquê da
+          vinheta e o histórico das nove tentativas anteriores. */}
+      <MenuBackdrop />
+
       <MenuHero />
 
       {/* 1 — O buffet do dia. Sem foto: são dezenas de pratos que mudam toda
@@ -104,11 +110,15 @@ export default async function CardapioPage({
         )}
       </MenuSection>
 
-      {/* 2 — A ilha de massas. Quem sangra aqui é o carrossel: a ilha tem mais
-             de um formato, e uma foto só a venderia como se tivesse um. */}
+      {/* 2 — A ilha de massas. O carrossel entra na coluna de leitura, como
+             qualquer foto de seção: a ilha tem mais de um formato, e uma foto
+             só a venderia como se tivesse um. */}
       <MenuSection
         id="massas"
-        bleed={
+        title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
+        subtitle={t("pastaNote")}
+      >
+        <div className="mt-8">
           <PastaCarousel
             photos={pastaPhotos.map((f) => ({
               image: f.photo,
@@ -121,10 +131,8 @@ export default async function CardapioPage({
               goTo: t("pastaGoToPhoto", { n: "{n}" }),
             }}
           />
-        }
-        title={`${t("pastaLabel")} — ${formatBRL(menuPricing.pasta)}`}
-        subtitle={t("pastaNote")}
-      >
+        </div>
+
         {pasta.length > 0 ? (
           <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
             {pasta.map((dish) => (
@@ -162,11 +170,6 @@ export default async function CardapioPage({
             key={grupo.labelKey}
             id={i === 0 ? "bebidas" : undefined}
             photo={foto && alt ? { src: foto, alt: t(alt) } : undefined}
-            /* Sucos e Refrigerantes e cerveja: o arquivo é recorte com fundo
-               transparente, não fotografia — `photoFit="framed"` evita que o
-               `object-cover` do modo padrão corte o copo. Só tem efeito
-               quando `photo` também existe. */
-            photoFit="framed"
             title={t(grupo.labelKey)}
             /* A ressalva de que bebida não entra no quilo vale para os três
                grupos, e repeti-la em cada um viraria ruído. Fica no primeiro. */

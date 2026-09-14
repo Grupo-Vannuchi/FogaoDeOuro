@@ -31,8 +31,11 @@ import { drinkGroups, formatBRL } from "@/config/menu";
  * 12,00". Sem volume (`volume` é string vazia, como no café com leite), a
  * observação é só o preço: "R$ 7,00".
  *
- * `MenuLine` não é apagado por isto — sobremesas, vinhos e adicionais ainda
- * vão usá-lo numa tarefa seguinte.
+ * `MenuLine` não foi apagado por isto — sobremesas e vinhos ganhariam o mesmo
+ * cartão numa tarefa seguinte, cada um com sua própria variação (miniatura +
+ * preço à direita). O cliente recusou o fio pontilhado por completo em 14/09,
+ * sem exceção para nenhuma seção, e o componente foi removido: não sobrou
+ * consumidor para ele.
  */
 export function DrinkGroupList({
   group,
