@@ -94,6 +94,12 @@ function Pilula({ children }: { children: React.ReactNode }) {
  * O padrão é `"bleed"`: é o que a maioria das seções — fotografia de verdade
  * — quer. `photoFit` só importa quando `photo` também é passado.
  *
+ * Os dois modos também levam `sizes` diferentes no `<Image>`, e não por
+ * acaso: `bleed` ocupa a tela inteira (`sizes="100vw"`), `framed` fica preso
+ * à coluna dentro do `Container` (`max-w-3xl`, 768px). Dar `100vw` para o
+ * emoldurado mentiria a largura para o navegador e baixaria um arquivo maior
+ * do que o exibido.
+ *
  * ── Sem foto, a curva fica ───────────────────────────────────────────────
  *
  * Duas seções não têm foto (Cardápio da Semana e Café e água). A curva
@@ -167,7 +173,7 @@ export function MenuSection({
               alt={photo.alt}
               fill
               loading="lazy"
-              sizes="100vw"
+              sizes="(min-width: 1280px) 768px, 100vw"
               className="object-contain"
             />
           </div>
