@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { MenuBackdrop } from "@/components/cardapio/menu-backdrop";
+import { MenuBackdrop, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 import { MenuSection } from "@/components/cardapio/menu-section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
@@ -63,9 +63,10 @@ export default async function CardapioPage({
     <>
       {/* Decorativo, fixo, atrás de tudo — não entra na ordem de leitura nem
           na de tabulação. Ver o docblock de `MenuBackdrop` para o porquê do
-          fundo escuro (v11) e o histórico das dez tentativas anteriores —
-          é também de lá que vem a obrigação de inverter o texto solto desta
-          página para creme e fixar os `bg-card` com `text-card-foreground`. */}
+          fundo (papel kraft + formas em laranja, v15) e o histórico das
+          quatorze tentativas anteriores — é também de lá que vem a obrigação
+          de inverter o texto solto desta página para quase-preto e fixar os
+          `bg-card` com `text-card-foreground`. */}
       <MenuBackdrop />
 
       <MenuHero />
@@ -78,11 +79,15 @@ export default async function CardapioPage({
           <PriceCallout />
         </div>
 
-        {/* Estados vazios soltos sobre o fundo escuro da v11 (`MenuBackdrop`) —
-            `text-background/70`, não `text-muted-foreground`: nenhum dos dois
-            mora dentro de um `bg-card`. */}
+        {/* Estados vazios soltos sobre o fundo v15 (`MenuBackdrop`, papel
+            kraft + formas em laranja) — `TEXTO_SOLTO_APOIO`, não
+            `text-muted-foreground`: nenhum dos dois mora dentro de um
+            `bg-card`, e `text-muted-foreground` não foi medido contra este
+            fundo. */}
         {buffet.length === 0 ? (
-          <p className="mt-12 text-center text-background/70">{t("empty")}</p>
+          <p className="mt-12 text-center" style={{ color: TEXTO_SOLTO_APOIO }}>
+            {t("empty")}
+          </p>
         ) : (
           <div className="mt-12">
             <DayTabs
@@ -94,7 +99,7 @@ export default async function CardapioPage({
                 const dishes = dishesOf(day);
                 if (dishes.length === 0) {
                   return (
-                    <p key={day} className="text-center text-background/70">
+                    <p key={day} className="text-center" style={{ color: TEXTO_SOLTO_APOIO }}>
                       {t("emptyDay")}
                     </p>
                   );

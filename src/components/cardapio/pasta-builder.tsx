@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { formatBRL, pastaChoices } from "@/config/menu";
+import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * Como se monta um prato na ilha de massas.
@@ -55,13 +56,18 @@ export async function PastaBuilder() {
 
   return (
     <div className="mt-10">
-      {/* Texto solto sobre o fundo escuro da v11 (`MenuBackdrop`) — `text-background`
-          e a variante `/70`, não `--foreground`/`text-muted-foreground`. Nada
-          aqui mora dentro de um `bg-card`. */}
-      <h3 className="mt-10 font-serif text-2xl font-bold tracking-tight text-background sm:text-3xl">
+      {/* Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas
+          em laranja) — `TEXTO_SOLTO`/`TEXTO_SOLTO_APOIO`, não `--foreground`/
+          `text-muted-foreground`: reprovam nas três superfícies do fundo
+          novo (ver o docblock de `MenuBackdrop`, seção "v15"). Nada aqui mora
+          dentro de um `bg-card`. */}
+      <h3
+        className="mt-10 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+        style={{ color: TEXTO_SOLTO }}
+      >
         {t("pastaBuild")}
       </h3>
-      <p className="mt-2 max-w-xl text-pretty text-background/70">
+      <p className="mt-2 max-w-xl text-pretty" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("pastaPortionNote", { portion: pastaChoices.portion })}
       </p>
 
@@ -96,7 +102,10 @@ export async function PastaBuilder() {
               {/* `min-w-0` para as opções quebrarem em vez de empurrar a
                   coluna do número para fora. */}
               <div className={`min-w-0 flex-1 pt-1.5 ${ultimo ? "" : "pb-9"}`}>
-                <h4 className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug text-background sm:text-xl">
+                <h4
+                  className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug sm:text-xl"
+                  style={{ color: TEXTO_SOLTO }}
+                >
                   {/* O mesmo número da trilha, na versão de celular. Some em
                       `sm`, onde o círculo da calha assume. */}
                   <span
@@ -129,7 +138,10 @@ export async function PastaBuilder() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="mt-2 text-pretty leading-relaxed text-background/70">
+                  <p
+                    className="mt-2 text-pretty leading-relaxed"
+                    style={{ color: TEXTO_SOLTO_APOIO }}
+                  >
                     {passo.nota}
                   </p>
                 )}
@@ -141,7 +153,10 @@ export async function PastaBuilder() {
 
       {/* A exceção à regra de "preço é da seção": estes são adicionais
           cobrados por unidade, e o cardápio impresso os lista com valor. */}
-      <h3 className="mt-12 font-serif text-2xl font-bold tracking-tight text-background sm:text-3xl">
+      <h3
+        className="mt-12 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+        style={{ color: TEXTO_SOLTO }}
+      >
         {t("pastaExtras")}
       </h3>
       <ul className="mt-6 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">

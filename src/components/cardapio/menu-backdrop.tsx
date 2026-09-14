@@ -1,14 +1,19 @@
-import Image from "next/image";
-
 /**
- * O fundo da página do cardápio: quase preto, com uma chama em S atravessando
- * — núcleo creme quente, quase branco, bordas em laranja forte, dissolvendo
- * no preto. Ver "v12" abaixo para a técnica e os valores finais; as onze
- * versões anteriores (e por que cada uma foi recusada) ficam registradas a
+ * O fundo da página do cardápio: papel kraft, duas formas laranja arredondadas
+ * sobrepostas, e uma lente mais saturada onde elas se cruzam — nascida da
+ * sobreposição, não desenhada à mão. Ver "v15" abaixo para a técnica e os
+ * valores finais; as quatorze versões anteriores (e por que cada uma foi
+ * recusada, ou substituída por um pedido novo do cliente) ficam registradas a
  * seguir, como memória do projeto — é essa memória que evita repetir a
- * décima terceira tentativa já testada e recusada.
+ * décima sexta tentativa já testada e recusada.
  *
- * ── Doze versões, e o que cada uma ensinou ────────────────────────────────
+ * ⚠️ Este cabeçalho descreve só a versão ATUAL (v15). Ele ficou descrevendo a
+ * v12 (a chama em S) por duas versões inteiras: a v13 trocou o fundo por uma
+ * imagem e a v14 reescreveu a função inteira sem nunca ir ao ar, e nenhuma
+ * das duas voltou aqui para atualizar o resumo. Se você mudar o fundo de
+ * novo, atualize este parágrafo também, não só a seção "vN" no fim da lista.
+ *
+ * ── Catorze versões, e o que cada uma ensinou ─────────────────────────────
  *
  * 1. SVG esticado com viewBox quadrado — `preserveAspectRatio="none"` **achata
  *    o ângulo**, e as diagonais viraram faixas verticais.
@@ -54,6 +59,17 @@ import Image from "next/image";
  *     então eu vinha desenhando de memória o que ele já tinha pronto. Em
  *     14/09 ele salvou o arquivo e a aproximação deixou de ser necessária.
  *     Ver "v13" mais abaixo.
+ * 14. O banho de terracota: pedido novo do cliente em 14/09, um banho macio e
+ *     quase uniforme, sem forma. A terracota exata da referência (clara/média)
+ *     não sustentava texto nenhum — 2,79:1 contra o creme, o mesmo problema de
+ *     tom médio que já tinha derrubado a v8. Corrigida descendo um degrau de
+ *     valor mantendo o matiz. Nunca foi ao ar: ficou pronta neste arquivo, sem
+ *     commit, quando o cliente trocou de novo o pedido para o papel kraft com
+ *     formas em laranja (v15) — mesmo padrão da versão 9, que também ficou
+ *     pronta e nunca chegou a ser montada. Ver "v14" abaixo.
+ * 15. Esta: papel kraft com duas formas laranja arredondadas sobrepostas, e
+ *     uma lente mais saturada nascendo sozinha da sobreposição. Ver "v15"
+ *     abaixo.
  *
  * ── Por que "sem forma reconhecível" venceu (histórico da v10) ────────────
  *
@@ -236,6 +252,10 @@ import Image from "next/image";
  * Se este fundo voltar a ser claro algum dia, as mudanças acima precisam
  * reverter junto — não são independentes desta troca.
  *
+ * **Aconteceu: a v15 é clara** (papel kraft, não mais preto), e a reversão
+ * está feita — ver "v15" abaixo, que lista os mesmos arquivos desta vez
+ * voltando de `text-background` para o quase-preto `#1A110C`.
+ *
  * ── A curva laranja de cada seção (removida na v12) ───────────────────────
  *
  * `CurvaLaranja`, que vivia em `menu-section.tsx`, nasceu como fronteira de
@@ -282,20 +302,274 @@ import Image from "next/image";
  * translúcido. Se alguém trocar a imagem, refaça esta varredura: o texto
  * solto desta página é claro, e uma imagem com qualquer região clara o apaga.
  *
+ * ── v14: o banho de terracota, e o degrau que ele teve de descer ──────────
+ *
+ * Referência do cliente em 14/09: um banho macio de terracota, quase uniforme,
+ * sem forma — o oposto de tudo que veio antes, que sempre tinha uma figura
+ * para apontar.
+ *
+ * **O matiz é o da referência; o valor não.** Medido contra o texto creme
+ * `#EFE9C2`, que é o que esta página usa no texto solto desde a v11:
+ *
+ *   terracota clara  #C87553 .... 2,79:1  ❌
+ *   terracota média  #B5563A .... 3,93:1  ❌
+ *   terracota escura #9A4530 .... 5,23:1  ✅
+ *   ferrugem         #8A3B2A .... 6,24:1  ✅
+ *   ferrugem funda   #6E2E20 .... 8,24:1  ✅
+ *
+ * A terracota da referência cai na faixa clara/média, e **tom médio não
+ * sustenta texto nenhum** — nem claro nem escuro, porque fica longe dos dois
+ * extremos. É a mesma parede do laranja `#FB6B3A` (2,17:1) que derrubou a v8.
+ *
+ * Por isso esta versão desce um degrau de valor mantendo o matiz: `#9A4530` no
+ * ponto mais claro do banho, `#6E2E20` nas bordas. O pior contraste da página
+ * passa a ser 5,23:1 em vez de 2,79.
+ *
+ * Quem quiser a terracota exata da referência precisa mudar OUTRA coisa junto:
+ * ou o texto solto ganha superfície própria, ou a página inteira muda de
+ * estratégia de cor. Só clarear o fundo apaga o texto.
+ *
+ * Nunca foi montada na página: antes deste commit o cliente trocou o pedido
+ * de novo, para o papel kraft com formas em laranja da v15 abaixo. Fica
+ * registrada pelo mesmo motivo que a v9 (as fitas dos quatro cantos) ficou —
+ * é trabalho já testado e recusado (ou substituído), e refazê-lo do zero sem
+ * saber disso é o erro que este arquivo existe para prevenir.
+ *
+ * ── v15: papel kraft, duas formas em laranja, e a lente que a sobreposição desenha sozinha ──
+ *
+ * Referência do cliente em 14/09, a terceira do dia: uma base de papel kraft
+ * (bege-amarronzado, grão de papel visível) com duas grandes formas
+ * arredondadas em laranja sobrepostas, e uma lente mais saturada exatamente
+ * onde elas se cruzam.
+ *
+ * **A lente não é uma terceira forma desenhada.** É `mixBlendMode: "multiply"`
+ * nas duas formas laranja, empilhadas sobre o kraft: onde só uma forma cobre,
+ * o kraft multiplica por ela uma vez; onde as duas se sobrepõem, multiplica
+ * duas vezes seguidas — e a região fica sozinha mais escura e mais saturada,
+ * sem precisar de um terceiro elemento apontando "aqui é a lente". Tentar
+ * desenhar essa região à mão seria repetir o erro que a v13 resolveu do lado
+ * da imagem: aproximar de memória algo que a composição já resolve sozinha.
+ *
+ * **O grão do papel** é um `<svg>` inline com `feTurbulence` (ruído fractal,
+ * `type="fractalNoise"`) mais `feColorMatrix` (satura para cinza, senão o
+ * ruído também teria matiz aleatório e empurraria a cor medida para fora do
+ * previsto) por cima de tudo, em opacidade baixa (`0.05`) com
+ * `mixBlendMode: "overlay"`. Zero requisição — é `<filter>`, não arquivo — e
+ * discreto de propósito: grão, não chiado. Descartei textura em PNG/WebP
+ * porque a v13 já mostrou o preço de imagem aqui (recorte de retrato vs.
+ * paisagem) e um ruído fractal não tem enquadramento para cortar.
+ *
+ * ── A crise de contraste, e por que ela obriga a inverter o texto de novo ──
+ *
+ * Desde a v11 o texto solto desta página é `text-background` (creme,
+ * `#EFE9C2`) porque o fundo era escuro. O kraft e o laranja são CLAROS — o
+ * creme sobre eles é quase o mesmo problema que o preto original tinha sobre
+ * o creme do site: pouco contraste, na direção oposta.
+ *
+ * Medido contra os três tons do fundo novo — o pior caso de cada candidato,
+ * não uma amostra otimista:
+ *
+ * | candidato                | kraft `#C6A173` | laranja (1 forma) | lente (2 formas) |
+ * |---------------------------|-----------------|-------------------|------------------|
+ * | creme `#EFE9C2` (o de antes) | 1,96 ❌      | 2,73 ❌           | 2,72 ❌          |
+ * | `--foreground` `#474544`  | 3,97 ❌         | 2,84 ❌           | 2,85 ❌          |
+ * | branco                     | 2,40 ❌         | 3,36 ❌           | 3,34 ❌          |
+ * | quase-preto `#1A110C`     | **7,74 ✅**     | **7,22 ✅**       | **6,74 ✅**      |
+ *
+ * **Só o quase-preto passa nos três.** Nem o creme que a página usa desde a
+ * v11, nem o `--foreground` normal do tema (cinza escuro demais para este
+ * fundo — dá certo sobre o creme do site, não sobre kraft nem laranja).
+ *
+ * A conversão de texto solto para `text-background` feita na v11 e ampliada
+ * na v12 (ver "a consequência obrigatória" acima) é desfeita agora, em
+ * sentido contrário. Os mesmos lugares que a v11/v12 listaram voltam, desta
+ * vez para `#1A110C`:
+ *
+ * - Títulos e subtítulos de `MenuSection` (`menu-section.tsx`).
+ * - Títulos e notas da ilha de massas em `pasta-builder.tsx`.
+ * - Rótulo e linha de uvas do vinho em `wine-list.tsx`.
+ * - Nota de sobremesas para viagem em `dessert-list.tsx`.
+ * - Estados vazios do buffet em `page.tsx`.
+ *
+ * O texto de apoio (antes `text-background/70`) vira `#2A1B10` — um tom um
+ * degrau mais claro que o título, mas ainda escuro o bastante para passar no
+ * pior caso (a lente): 6,03:1 medido, contra o mínimo de 4,5. Não é opacidade
+ * sobre o quase-preto: clarear um texto ESCURO com opacidade, sobre um fundo
+ * CLARO, empurra a cor em direção ao fundo e reduz o contraste — o oposto do
+ * que acontecia na v11/v12, onde o texto era claro sobre fundo escuro e a
+ * opacidade escurecia na direção certa. Por isso é uma cor sólida nova, não
+ * `text-foreground/70` nem `#1A110C` com alfa.
+ *
+ * `bg-card` não muda: já fixa `text-card-foreground`, e essa correção não
+ * depende da cor do fundo por trás — continua certa com o kraft embaixo.
+ *
+ * ── Por que a forma não é tão vívida quanto o laranja `#DE6B32` puro ───────
+ *
+ * As formas usam `#DE6B32` a 8% de intensidade, não opacas. Multiplicar o
+ * laranja opaco contra o kraft já dá 3,18:1 numa camada só — reprova; e
+ * multiplicar o laranja opaco contra ele mesmo, na lente, dá 2,18:1 —
+ * reprova bem pior. É o mesmo aprendizado da v14, uma seção acima: tom
+ * "correto" na referência às vezes não sustenta texto nenhum, e a saída é
+ * descer um degrau de valor mantendo o matiz — aqui, o degrau é intensidade,
+ * não hex. Baixar para 8% deixa a lente e as formas claras o bastante para o
+ * quase-preto passar com folga sem perder o matiz laranja nem a diferença
+ * visível entre kraft → forma → lente.
+ *
+ * ── A armadilha: `opacity` não sobrevive à própria varredura ───────────────
+ *
+ * A primeira tentativa desta versão usava `style={{ opacity: 0.08 }}` nas
+ * duas formas — CSS válido, `mixBlendMode` funcionando, tudo certo no
+ * navegador. A varredura de contraste (ver `.superpowers/sdd/task-fundo-
+ * kraft-report.md`) reprovou catastroficamente mesmo assim: pior caso
+ * medido, **1,08:1**. A causa não era a cor — era o script de varredura.
+ * Ele injeta `*, *::before, *::after { opacity: 1 !important }` de propósito
+ * (para congelar animações de entrada antes de fotografar), e uma regra de
+ * folha de estilo com `!important` VENCE `style=""` sem `!important` — então
+ * a varredura, sem querer, acendia as duas formas em 100% de força antes de
+ * medir. O usuário real nunca vê isso; só a varredura via.
+ *
+ * A saída: alfa embutido na COR (`rgba(222, 107, 50, 0.08)` via `comAlfa()`),
+ * não na propriedade `opacity`. Não existe `background-color: … !important`
+ * na regra da varredura, então o alfa sobrevive a ela — e o resultado visual
+ * no navegador é idêntico, porque `opacity` e alfa de cor entram na mesma
+ * fórmula de composição (`Cb·(1-α) + α·multiply(Cb,Cs)`); só o CAMINHO para
+ * chegar no alfa muda. O grão de papel tinha o mesmo risco (`opacity: 0.05`
+ * no `<svg>`) e ganhou o mesmo tratamento: `feFuncA` dentro do próprio
+ * filtro, alfa cozinhado no pixel antes de qualquer CSS externo tocar o
+ * elemento. Se alguém voltar a usar `opacity` num destes dois lugares, ou
+ * atualiza a varredura para não forçá-la, ou vai repetir esta reprova.
+ *
+ * `public/cardapio/fundo-curvas.webp` (a imagem da v13) fica onde está,
+ * sem uso: o cliente pode querer voltar a ela, e o arquivo não custa nada
+ * parado no disco.
+ *
  * `aria-hidden` porque é decoração pura, sem nada para um leitor de tela
  * anunciar. `pointer-events-none` para não roubar clique de nada que esteja
  * por cima. `-z-10` para ficar atrás do conteúdo da página.
  */
+
+/**
+ * As duas cores do texto solto desta página (fora de qualquer `bg-card`),
+ * exportadas daqui porque este arquivo é a fonte da medição — ver "v15"
+ * acima para a tabela completa. `menu-section.tsx`, `pasta-builder.tsx`,
+ * `wine-list.tsx`, `dessert-list.tsx` e a página do cardápio importam estas
+ * duas em vez de repetir o hex: uma cópia divergente aqui seria uma cor não
+ * medida, exatamente o que este arquivo existe para evitar.
+ */
+export const TEXTO_SOLTO = "#1A110C";
+/** Texto de apoio (era `text-background/70`) — 6,03:1 contra a lente, o pior caso. Ver "v15" acima. */
+export const TEXTO_SOLTO_APOIO = "#2A1B10";
+
+/** Papel kraft: base do fundo — 7,74:1 contra `#1A110C`, o melhor caso da tabela em "v15" acima. */
+const KRAFT = "#C6A173";
+
+/** Laranja das duas formas — ver "v15" acima para por que elas não são opacas. */
+const LARANJA = "#DE6B32";
+
+/**
+ * Intensidade de CADA forma no `mixBlendMode: "multiply"`. Onde as duas se
+ * sobrepõem, o kraft multiplica pelo laranja duas vezes seguidas — a lente
+ * nasce sozinha desse empilhamento, não é uma cor escolhida à parte.
+ *
+ * ⚠️ Isto é alfa embutido na COR (`rgba(...)`), não a propriedade CSS
+ * `opacity`. A varredura de contraste (`.superpowers/sdd/task-fundo-kraft-
+ * report.md`, seção "a varredura") zera toda `transition`/`animation` e força
+ * `opacity: 1 !important` em `*` — para congelar animações de entrada antes
+ * de medir, não para decoração de fundo. Uma primeira versão desta forma
+ * usava `style={{ opacity: 0.08 }}`, e essa regra global SOBRESCREVIA o
+ * `opacity` inline (uma regra de folha de estilo com `!important` vence
+ * `style=""` sem `!important`), acendendo as formas em 100% de força — o
+ * multiply dobrado da lente contra o laranja quase opaco reprovava
+ * catastroficamente (pior caso medido: 1,08:1). `background-color` com alfa
+ * não tem esse problema: não existe propriedade `background-color: 1
+ * !important` na regra, então o alfa sobrevive. Troque para `opacity` de
+ * novo só se também atualizar a varredura para não forçá-lo — senão o fundo
+ * vai parecer bom no navegador e reprovar na medição, ou pior, o contrário.
+ */
+const INTENSIDADE_FORMA = 0.08;
+
+/** `#RRGGBB` + alfa (0–1) → `rgba(r,g,b,a)`. Ver o aviso em `INTENSIDADE_FORMA`. */
+function comAlfa(hex: string, alfa: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alfa})`;
+}
+
+/**
+ * As duas formas, arredondadas e assimétricas (não círculos perfeitos) para
+ * não repetir a queixa "parece um círculo" que derrubou a v3 — ali o problema
+ * era ser a única leitura possível da forma; aqui é só textura de fundo atrás
+ * de papel kraft, então a semelhança importa menos, mas o raio orgânico
+ * (`border-radius` em oito valores) custa zero a mais e evita a leitura
+ * geométrica de propósito.
+ *
+ * `vmax` (não `vw`/`vh` isolado, e não pixel — ver "por que esta versão não
+ * pede calibração por largura de tela" acima, a mesma lição da v10/v11):
+ * cobre a tela inteira em qualquer proporção, retrato ou paisagem, sem a
+ * calibração por breakpoint que a v9 precisou.
+ */
+const FORMAS: {
+  top: string;
+  left: string;
+  size: string;
+  radius: string;
+}[] = [
+  {
+    top: "28%",
+    left: "22%",
+    size: "92vmax",
+    radius: "42% 58% 63% 37% / 41% 45% 55% 59%",
+  },
+  {
+    top: "68%",
+    left: "74%",
+    size: "88vmax",
+    radius: "60% 40% 35% 65% / 55% 62% 38% 45%",
+  },
+];
+
 export function MenuBackdrop() {
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-      <Image
-        src="/cardapio/fundo-curvas.webp"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover"
-      />
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      style={{ backgroundColor: KRAFT }}
+    >
+      {FORMAS.map((forma, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            top: forma.top,
+            left: forma.left,
+            width: forma.size,
+            height: forma.size,
+            borderRadius: forma.radius,
+            backgroundColor: comAlfa(LARANJA, INTENSIDADE_FORMA),
+            mixBlendMode: "multiply",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      ))}
+
+      {/* Grão de papel: feTurbulence + feColorMatrix (satura para cinza) por
+          cima de tudo, baixíssima opacidade. Ver "v15" acima para o porquê.
+          O alfa baixo é `feFuncA` (linear, `slope=0.05`) DENTRO do filtro, não
+          `style={{ opacity: 0.05 }}` no `<svg>` — mesmo motivo do aviso em
+          `INTENSIDADE_FORMA`: uma regra externa com `opacity: 1 !important`
+          apagaria o `opacity` do elemento, mas não alcança o alfa que o
+          próprio filtro já cozinhou no pixel. */}
+      <svg aria-hidden className="absolute inset-0 h-full w-full" style={{ mixBlendMode: "overlay" }}>
+        <filter id="menu-backdrop-grao">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves={2} stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.05" intercept="0" />
+          </feComponentTransfer>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#menu-backdrop-grao)" />
+      </svg>
     </div>
   );
 }

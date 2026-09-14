@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { formatBRL, wines } from "@/config/menu";
+import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * A carta de vinhos.
@@ -26,11 +27,13 @@ export async function WineList() {
   const t = await getTranslations("cardapio");
 
   if (wines.length === 0) {
-    // Texto solto sobre o fundo escuro da v11 (`MenuBackdrop`): não há
-    // `bg-card` aqui, então `--foreground` sumiria. `text-background/70`
-    // como o resto do texto de apoio solto da página.
+    // Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas em
+    // laranja): não há `bg-card` aqui, e `--foreground` reprova nas três
+    // superfícies do fundo novo (ver o docblock de `MenuBackdrop`, seção
+    // "v15"). `TEXTO_SOLTO_APOIO`, como o resto do texto de apoio solto da
+    // página.
     return (
-      <p className="mt-6 max-w-xl text-pretty text-background/70">
+      <p className="mt-6 max-w-xl text-pretty" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("winesPending")}
       </p>
     );
@@ -40,19 +43,25 @@ export async function WineList() {
     <div className="mt-10 flex flex-col gap-10">
       {wines.map((vinho) => (
         <div key={vinho.name}>
-          {/* Rótulo e nota (safra/uva) soltos sobre o fundo — `text-background`
-              e a variante `/70`, mesmo motivo do estado vazio acima. */}
-          <h3 className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-serif text-xl font-bold tracking-tight text-background sm:text-2xl">
+          {/* Rótulo e nota (safra/uva) soltos sobre o fundo — `TEXTO_SOLTO` e
+              `TEXTO_SOLTO_APOIO`, mesmo motivo do estado vazio acima. */}
+          <h3
+            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-serif text-xl font-bold tracking-tight sm:text-2xl"
+            style={{ color: TEXTO_SOLTO }}
+          >
             {vinho.name}
             {vinho.note ? (
-              <span className="font-sans text-sm font-medium tracking-normal text-background/70">
+              <span
+                className="font-sans text-sm font-medium tracking-normal"
+                style={{ color: TEXTO_SOLTO_APOIO }}
+              >
                 {vinho.note}
               </span>
             ) : null}
           </h3>
 
           {vinho.labels ? (
-            <p className="mt-2 text-pretty text-sm text-background/70">
+            <p className="mt-2 text-pretty text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
               {vinho.labels.join(" · ")}
             </p>
           ) : null}
