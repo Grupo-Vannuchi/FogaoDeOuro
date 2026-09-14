@@ -62,8 +62,10 @@ export default async function CardapioPage({
   return (
     <>
       {/* Decorativo, fixo, atrás de tudo — não entra na ordem de leitura nem
-          na de tabulação. Ver o docblock de `MenuBackdrop` para o porquê da
-          vinheta e o histórico das nove tentativas anteriores. */}
+          na de tabulação. Ver o docblock de `MenuBackdrop` para o porquê do
+          fundo escuro (v11) e o histórico das dez tentativas anteriores —
+          é também de lá que vem a obrigação de inverter o texto solto desta
+          página para creme e fixar os `bg-card` com `text-card-foreground`. */}
       <MenuBackdrop />
 
       <MenuHero />
@@ -76,8 +78,11 @@ export default async function CardapioPage({
           <PriceCallout />
         </div>
 
+        {/* Estados vazios soltos sobre o fundo escuro da v11 (`MenuBackdrop`) —
+            `text-background/70`, não `text-muted-foreground`: nenhum dos dois
+            mora dentro de um `bg-card`. */}
         {buffet.length === 0 ? (
-          <p className="mt-12 text-center text-muted-foreground">{t("empty")}</p>
+          <p className="mt-12 text-center text-background/70">{t("empty")}</p>
         ) : (
           <div className="mt-12">
             <DayTabs
@@ -89,15 +94,18 @@ export default async function CardapioPage({
                 const dishes = dishesOf(day);
                 if (dishes.length === 0) {
                   return (
-                    <p key={day} className="text-center text-muted-foreground">
+                    <p key={day} className="text-center text-background/70">
                       {t("emptyDay")}
                     </p>
                   );
                 }
                 return (
+                  // `text-card-foreground`: fixa o texto de cada prato contra
+                  // o creme do cartão — sem isto herdaria o creme do texto
+                  // solto da página (ver `MenuBackdrop`) e sumiria.
                   <ul
                     key={day}
-                    className="overflow-hidden rounded-2xl border border-border bg-card"
+                    className="overflow-hidden rounded-2xl border border-border bg-card text-card-foreground"
                   >
                     {dishes.map((dish) => (
                       <DishRow key={dish.id} dish={dish} />
@@ -134,7 +142,7 @@ export default async function CardapioPage({
         </div>
 
         {pasta.length > 0 ? (
-          <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
+          <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
             {pasta.map((dish) => (
               <DishRow key={dish.id} dish={dish} />
             ))}

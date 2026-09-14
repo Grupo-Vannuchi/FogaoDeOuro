@@ -83,6 +83,12 @@ export function DayTabs({
               onClick={() => setPicked(day)}
               className={cn(
                 "inline-flex h-11 shrink-0 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors",
+                /* Este `bg-card` não ganhou `text-card-foreground` como os
+                   outros 10 da página: o próprio botão já fixa a cor do seu
+                   texto (`text-muted-foreground`, um token neutro, escuro em
+                   qualquer superfície clara e alheio ao fundo escuro da v11)
+                   em vez de herdá-la — empilhar as duas classes de `color`
+                   no mesmo elemento seria conflito, não reforço. */
                 selected
                   ? "border-brand bg-brand text-brand-foreground"
                   : "border-border bg-card text-muted-foreground hover:border-brand hover:text-brand",

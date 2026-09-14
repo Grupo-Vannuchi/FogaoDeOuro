@@ -36,7 +36,12 @@ export async function PriceCallout({ compact = false }: { compact?: boolean }) {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5"
+          // `text-card-foreground`: os textos aqui dentro já têm cor própria
+          // (`text-muted-foreground`/`text-brand`), então isto é defensivo —
+          // mas todo `bg-card` da página do cardápio ganhou o mesmo fixador
+          // desde que o fundo escuro da v11 (`MenuBackdrop`) inverteu o texto
+          // solto para creme.
+          className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 text-card-foreground"
         >
           <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
             <card.icon className="size-5" aria-hidden />

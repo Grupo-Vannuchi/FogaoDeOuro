@@ -131,7 +131,12 @@ export function MenuSection({
             </h2>
           </Pilula>
           {subtitle ? (
-            <p className="max-w-xl text-pretty text-xl text-muted-foreground sm:text-2xl">
+            // `text-background` (creme), não `text-muted-foreground`: desde a
+            // v11 de `MenuBackdrop` a página é escura, e este subtítulo cai
+            // solto sobre o fundo, fora de qualquer `bg-card` — herdar
+            // `--foreground` (quase preto) o apagaria. Ver o docblock de
+            // `MenuBackdrop` para a lista completa do texto solto invertido.
+            <p className="max-w-xl text-pretty text-xl text-background/70 sm:text-2xl">
               {subtitle}
             </p>
           ) : null}

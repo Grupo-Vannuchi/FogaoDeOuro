@@ -43,7 +43,10 @@ export function DrinkGroupList({
   group: (typeof drinkGroups)[number];
 }) {
   return (
-    <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
+    // `text-card-foreground`: desde a v11 de `MenuBackdrop` a página é
+    // escura e o texto solto virou creme — sem isto o nome/preço de cada
+    // bebida herdaria esse creme e sumiria sobre o próprio `bg-card` creme.
+    <ul className="mt-10 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
       {group.items.map((bebida) => (
         <li
           key={`${bebida.name}-${bebida.volume}`}

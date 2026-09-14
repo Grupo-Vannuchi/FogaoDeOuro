@@ -18,7 +18,10 @@ export async function DessertList() {
 
   return (
     <>
-      <ul className="mt-8 overflow-hidden rounded-2xl border border-border bg-card">
+      {/* `text-card-foreground`: fundo escuro da v11 inverteu o texto solto da
+          página para creme — sem isto o nome/nota de cada sobremesa herdaria
+          esse creme e sumiria sobre o próprio `bg-card` creme. */}
+      <ul className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground">
         {desserts.map((sobremesa) => {
           const foto = sobremesa.photo;
           return (
@@ -59,7 +62,9 @@ export async function DessertList() {
           );
         })}
       </ul>
-      <p className="mt-4 text-sm text-muted-foreground">
+      {/* Fora do `<ul>`, solta sobre o fundo escuro — `text-background/70`,
+          não `text-muted-foreground`. */}
+      <p className="mt-4 text-sm text-background/70">
         {t("dessertsTakeaway")}
       </p>
     </>
