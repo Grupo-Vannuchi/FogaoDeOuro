@@ -27,11 +27,10 @@ export async function WineList() {
   const t = await getTranslations("cardapio");
 
   if (wines.length === 0) {
-    // Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas em
-    // laranja): não há `bg-card` aqui, e `--foreground` reprova nas três
-    // superfícies do fundo novo (ver o docblock de `MenuBackdrop`, seção
-    // "v15"). `TEXTO_SOLTO_APOIO`, como o resto do texto de apoio solto da
-    // página.
+    // Texto solto direto sobre `MenuBackdrop`: não há `bg-card` aqui, e
+    // `--foreground` é medido contra o creme do site, não contra o fundo do
+    // cardápio. `TEXTO_SOLTO_APOIO`, como o resto do texto de apoio solto da
+    // página — importado, porque a cor muda junto com o fundo.
     return (
       <p className="mt-6 max-w-xl text-pretty" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("winesPending")}

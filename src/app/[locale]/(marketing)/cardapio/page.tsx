@@ -63,10 +63,13 @@ export default async function CardapioPage({
     <>
       {/* Decorativo, fixo, atrás de tudo — não entra na ordem de leitura nem
           na de tabulação. Ver o docblock de `MenuBackdrop` para o porquê do
-          fundo (papel kraft + formas em laranja, v15) e o histórico das
-          quatorze tentativas anteriores — é também de lá que vem a obrigação
-          de inverter o texto solto desta página para quase-preto e fixar os
-          `bg-card` com `text-card-foreground`. */}
+          fundo e o histórico das quinze tentativas anteriores — é também de
+          lá que vem a cor do texto solto desta página e a obrigação de fixar
+          os `bg-card` com `text-card-foreground`.
+
+          Não repita aqui a descrição do fundo: ela já ficou obsoleta uma vez
+          (estes comentários descreviam a chama da v12 enquanto o kraft da v15
+          estava no ar). O fundo muda; `MenuBackdrop` é a fonte. */}
       <MenuBackdrop />
 
       <MenuHero />

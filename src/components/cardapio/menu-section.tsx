@@ -30,20 +30,20 @@ import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backd
  *
  * ── O título, agora texto solto ───────────────────────────────────────────
  *
- * `#1A110C` (quase-preto), não `text-background` nem `--foreground`: desde a
- * v15 de `MenuBackdrop` o fundo é papel kraft com formas em laranja, e o
- * título cai solto sobre ele, fora de qualquer `bg-card`. `--foreground`
- * (`#474544`) foi medido e reprova nas três superfícies do fundo novo; só o
- * quase-preto passa nas três — ver o docblock de `MenuBackdrop`, seção "v15",
- * para a tabela completa. Até a v14 este título era `text-background`
- * (creme): a v11/v12 tinham fundo escuro, e a v15 inverteu de volta. Mesma
- * tipografia de sempre (`font-serif` = Grenze Gotisch, `text-3xl font-bold
- * tracking-tight sm:text-4xl`) — só a cor e o contêiner mudaram.
+ * `TEXTO_SOLTO`, importado de `MenuBackdrop`, e não `--foreground`: o título
+ * cai solto sobre o fundo do cardápio, fora de qualquer `bg-card`, e
+ * `--foreground` (`#474544`) é medido contra o creme do site — sobre o fundo
+ * desta página ele reprova. A cor certa muda toda vez que o fundo muda (creme
+ * na v11/v12, quase-preto na v15, creme de novo na v16), e é por isso que ela
+ * vem importada de lá em vez de escrita aqui: um hex copiado para cá vira uma
+ * cor não medida no dia seguinte. Mesma tipografia de sempre (`font-serif` =
+ * Grenze Gotisch, `text-3xl font-bold tracking-tight sm:text-4xl`) — só a cor
+ * e o contêiner mudaram.
  *
- * Ao contrário do núcleo claro da chama (v12), o fundo v15 não tem uma região
- * "perigosa" para evitar: o quase-preto passa contra as três superfícies do
- * fundo (kraft, laranja, lente), em qualquer ponto da rolagem — por isso este
- * título não precisa de uma zona segura por posição, só da cor certa.
+ * Ao contrário do núcleo claro da chama (v12), os fundos desde a v13 não têm
+ * uma região "perigosa" para evitar: a cor exportada passa contra o fundo
+ * inteiro, em qualquer ponto da rolagem — por isso este título não precisa de
+ * uma zona segura por posição, só da cor certa.
  *
  * ── Sangrar existiu, e foi recusado ───────────────────────────────────────
  *
@@ -104,13 +104,13 @@ export function MenuSection({
             {title}
           </h2>
           {subtitle ? (
-            // Quase-preto, não `text-background` nem `text-muted-foreground`:
-            // desde a v15 de `MenuBackdrop` o fundo é papel kraft com formas
-            // em laranja, e este subtítulo cai solto sobre ele, fora de
-            // qualquer `bg-card` — `--foreground` reprova nas três
-            // superfícies do fundo novo. `TEXTO_SOLTO_APOIO`, um tom mais
-            // claro que o título mas ainda escuro, porque é texto de apoio —
-            // ver o docblock de `MenuBackdrop`, seção "v15", para a medição.
+            // `TEXTO_SOLTO_APOIO`, não `text-muted-foreground`: este
+            // subtítulo cai solto sobre o fundo do cardápio, fora de qualquer
+            // `bg-card`, e os tokens do tema são medidos contra o creme do
+            // site. É um tom só um degrau distante do título, porque é texto
+            // de apoio — e uma COR sólida, não o título com opacidade: sobre
+            // fundo de tom médio a opacidade come o contraste rápido demais
+            // (ver o docblock de `MenuBackdrop`, seção "v16").
             <p
               className="max-w-xl text-pretty text-xl sm:text-2xl"
               style={{ color: TEXTO_SOLTO_APOIO }}

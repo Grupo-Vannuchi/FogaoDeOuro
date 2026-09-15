@@ -63,10 +63,11 @@ export async function DessertList() {
           );
         })}
       </ul>
-      {/* Fora do `<ul>`, solta sobre o fundo v15 (papel kraft + formas em
-          laranja) — `TEXTO_SOLTO_APOIO`, não `text-muted-foreground`: este
-          reprova nas três superfícies do fundo novo (ver o docblock de
-          `MenuBackdrop`, seção "v15"). */}
+      {/* Fora do `<ul>`, solta direto sobre `MenuBackdrop` — daí
+          `TEXTO_SOLTO_APOIO` e não `text-muted-foreground`, que é medido
+          contra o creme do site e não contra o fundo do cardápio. A cor vem
+          importada porque ela muda junto com o fundo; ver o docblock de
+          `MenuBackdrop` para a medição da versão no ar. */}
       <p className="mt-4 text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
         {t("dessertsTakeaway")}
       </p>

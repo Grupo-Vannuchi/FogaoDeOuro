@@ -56,11 +56,12 @@ export async function PastaBuilder() {
 
   return (
     <div className="mt-10">
-      {/* Texto solto sobre o fundo v15 (`MenuBackdrop`, papel kraft + formas
-          em laranja) — `TEXTO_SOLTO`/`TEXTO_SOLTO_APOIO`, não `--foreground`/
-          `text-muted-foreground`: reprovam nas três superfícies do fundo
-          novo (ver o docblock de `MenuBackdrop`, seção "v15"). Nada aqui mora
-          dentro de um `bg-card`. */}
+      {/* Texto solto direto sobre `MenuBackdrop` — daí
+          `TEXTO_SOLTO`/`TEXTO_SOLTO_APOIO` e não `--foreground`/
+          `text-muted-foreground`, que são medidos contra o creme do site e
+          não contra o fundo do cardápio. As cores vêm importadas porque mudam
+          junto com o fundo; ver o docblock de `MenuBackdrop` para a medição da
+          versão no ar. Nada aqui mora dentro de um `bg-card`. */}
       <h3
         className="mt-10 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
         style={{ color: TEXTO_SOLTO }}
