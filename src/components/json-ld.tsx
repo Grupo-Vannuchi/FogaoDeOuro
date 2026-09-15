@@ -32,8 +32,31 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
  * lets Google show the opening hours, the address and the reservation signal
  * directly in the results, which a generic `Organization` cannot do.
  *
- * Deliberately omits `priceRange`: the client's visual direction forbids
- * publishing prices, and structured data surfaces in search too.
+ * ── `priceRange` esteve ausente, e voltou ────────────────────────────────
+ *
+ * Por muito tempo este bloco omitia `priceRange` de propósito: a regra da casa
+ * é não publicar valores. A omissão vinha de uma confusão de vocabulário —
+ * `priceRange` no schema é a escala de CIFRÕES do Google Maps (`$$$`), não um
+ * valor. Ela diz "esta é uma opção cara"; não diz quanto custa o quilo. O
+ * cliente escolheu a faixa em 15/09/2026 e a regra continua intacta.
+ *
+ * O que continua proibido é o outro formato aceito pelo schema: o intervalo
+ * textual (`"R$ 40 - R$ 70"`). Esse publicaria preço. A escolha do formato é a
+ * regra, não a presença do campo.
+ *
+ * ── Sem `aggregateRating`, e não é por falta de depoimento ────────────────
+ *
+ * Tentador ligar as estrelas aqui assim que houver depoimentos cadastrados.
+ * Não ligue. O Google chama de *self-serving review* uma avaliação sobre a
+ * entidade A publicada no site da própria entidade A, e uma página que faz
+ * isso fica **inelegível** para o recurso de estrelas — política de 2019, vale
+ * para `LocalBusiness` e `Organization`. Emitir `aggregateRating` aqui não
+ * traria estrela nenhuma e ainda contrariaria a política.
+ *
+ * As estrelas que aparecem ao pesquisar o restaurante vêm do Google Business
+ * Profile, que é outro canal e não depende deste arquivo. Depoimento no site
+ * serve para convencer quem já está na página — é conversão, não schema.
+ * https://developers.google.com/search/docs/appearance/structured-data/review-snippet
  */
 export function OrganizationJsonLd() {
   const {
@@ -44,6 +67,7 @@ export function OrganizationJsonLd() {
     social,
     openingHours,
     servesCuisine,
+    priceRange,
   } = siteConfig;
   const url = localizedUrl(defaultLocale);
 
@@ -59,6 +83,7 @@ export function OrganizationJsonLd() {
     telephone: contact.phone,
     foundingDate: String(foundedYear),
     servesCuisine,
+    priceRange,
     acceptsReservations: true,
     // `menu` aponta para o cardápio de verdade, não para a vitrine: o Google
     // usa esta URL como "o cardápio do restaurante", e /gastronomia apresenta
@@ -75,6 +100,18 @@ export function OrganizationJsonLd() {
         postalCode: contact.address.postalCode,
       }),
     },
+    // A coordenada da porta, irmã do endereço postal e não substituta dele: o
+    // endereço resolve para a quadra, `geo` resolve para a entrada — é o que
+    // alimenta "perto de mim" e o pino do mapa. Opcional no config, então só
+    // entra no grafo quando existe; um `geo` com `undefined` dentro seria pior
+    // que a ausência, porque o validador do Google o trata como campo quebrado.
+    ...(contact.address.geo && {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: contact.address.geo.latitude,
+        longitude: contact.address.geo.longitude,
+      },
+    }),
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

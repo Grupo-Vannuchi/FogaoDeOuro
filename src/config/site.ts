@@ -98,6 +98,18 @@ export type SiteConfig = {
       /** Brazilian CEP. Required by schema.org `PostalAddress` to resolve the
        *  restaurant to a physical place in local search results. */
       postalCode?: string;
+      /**
+       * Coordenadas da PORTA, para schema.org `GeoCoordinates`.
+       *
+       * O endereço postal resolve para a quadra; a coordenada resolve para a
+       * entrada — é o que o Google usa para "perto de mim" e para o pino do
+       * mapa. Amostrada no Google Maps sobre a porta, não sobre o centro do
+       * lote.
+       *
+       * Seis casas decimais ≈ 11 cm. Mais casas não são mais precisão: são
+       * ruído do clique, e sugerem uma exatidão que a medição não tem.
+       */
+      geo?: { latitude: number; longitude: number };
     };
   };
 
@@ -128,12 +140,24 @@ export type SiteConfig = {
   /** When the restaurant serves. Drives both the copy and the local SEO schema. */
   openingHours: OpeningHours;
 
-  /**
-   * Cuisine types for schema.org `Restaurant.servesCuisine`.
-   * Note: no `priceRange` — the client's visual direction forbids publishing
-   * prices, and emitting one in structured data would surface it in search.
-   */
+  /** Cuisine types for schema.org `Restaurant.servesCuisine`. */
   servesCuisine: string[];
+
+  /**
+   * Faixa de preço RELATIVA para schema.org `Restaurant.priceRange` — a mesma
+   * escala de cifrões que o Google Maps mostra ao lado do nome.
+   *
+   * Isto não é preço, e é por isso que ele existe apesar da regra da casa de
+   * não publicar valores: `$$` diz "esta é uma opção de preço moderado", não
+   * "o quilo custa X". O schema também aceita um intervalo textual
+   * ("R$ 40 - R$ 70") —
+   * **esse** publicaria preço e foi recusado de propósito. Se alguém trocar o
+   * formato um dia, é essa a linha que está sendo cruzada.
+   *
+   * Escolhido pelo cliente em 15/09/2026. É autodescrição do negócio, não
+   * medição: só o dono pode dizer em que faixa a casa se posiciona.
+   */
+  priceRange: "$" | "$$" | "$$$" | "$$$$";
 
   /**
    * The site renders `light` and nothing else — there is no theme switch. `dark`
@@ -175,6 +199,7 @@ export const siteConfig: SiteConfig = {
       region: "SP",
       country: "Brasil",
       postalCode: "11010-090",
+      geo: { latitude: -23.932863, longitude: -46.330253 },
     },
   },
 
@@ -199,6 +224,7 @@ export const siteConfig: SiteConfig = {
   },
 
   servesCuisine: ["Brasileira", "Churrasco", "Frutos do mar", "Buffet"],
+  priceRange: "$$",
 
   /**
    * The four brand colours are amber (#E68A08 — "Ouro"), ember (#E04F26), warm
