@@ -41,7 +41,6 @@ const DESTAQUES = ["buffet-de-saladas", "ilha-de-massas", "pudim"];
 
 export async function MenuPreview({ locale }: { locale: Locale }) {
   const t = await getTranslations("home.gastronomia");
-  const tc = await getTranslations("common");
   const categories = await getMenu(locale);
 
   /**
@@ -82,11 +81,18 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
           subtitle={t("subtitle")}
           align="left"
         />
+        {/* Vai para /experiencia, não para o cardápio: esta seção se chama
+            "A experiência", e o rótulo agora diz isso. Trocado em 15/09 junto
+            com o CTA do hero, que assumiu o caminho do cardápio — os dois
+            estavam cruzados, cada um levando para o destino do outro. O rótulo
+            saiu de `common.viewAllMenu` (removido, sem outro consumidor) para
+            uma chave da própria seção: uma chave "comum" que só um lugar usa
+            e que descreve o destino errado é pior que nenhuma. */}
         <Link
-          href="/cardapio"
+          href="/experiencia"
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
-          {tc("viewAllMenu")}
+          {t("cta")}
           <ArrowRight className="size-4" />
         </Link>
       </div>

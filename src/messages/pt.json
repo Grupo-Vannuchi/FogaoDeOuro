@@ -24,7 +24,6 @@
     "reserveTable": "Reserve a sua mesa",
     "callUs": "Ligar {phone}",
     "viewAllGallery": "Ver toda a galeria",
-    "viewAllMenu": "Ver toda a gastronomia",
     "learnMore": "Saiba mais",
     "sendWhatsapp": "Chamar no WhatsApp",
     "backHome": "Voltar para o início",
@@ -33,7 +32,7 @@
   "home": {
     "hero": {
       "eyebrow": "{years} anos no Centro de Santos",
-      "primaryCta": "Conheça a experiência",
+      "primaryCta": "Ver toda a gastronomia",
       "secondaryCta": "Como chegar",
       "carouselLabel": "Destaques",
       "prevSlide": "Slide anterior",
@@ -60,6 +59,7 @@
     },
     "gastronomia": {
       "eyebrow": "A experiência",
+      "cta": "Conheça a experiência",
       "title": "Uma experiência completa à sua espera",
       "subtitle": "Churrasco na brasa, peixes selecionados, massas preparadas na hora e um buffet completo, com sabores que fazem daqui uma experiência única no Centro."
     },

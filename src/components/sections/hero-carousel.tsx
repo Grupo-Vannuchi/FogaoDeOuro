@@ -185,8 +185,14 @@ export function HeroCarousel({
                   {slide.subtitle}
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
+                  {/* Vai para o cardápio, não para /experiencia: o rótulo
+                      ("Ver toda a gastronomia") promete comida, e botão que
+                      promete uma coisa e entrega outra é defeito, não estilo.
+                      Rótulo e destino trocaram JUNTOS em 15/09 — antes este
+                      botão dizia "Conheça a experiência", que hoje é o CTA da
+                      seção `MenuPreview`. */}
                   <Link
-                    href="/experiencia"
+                    href="/cardapio"
                     tabIndex={active ? undefined : -1}
                     className={buttonVariants({ size: "lg", className: "group" })}
                   >
