@@ -1,3 +1,17 @@
+> ## ⚠️ Documento meio convertido — leia antes de usar
+>
+> O cabeçalho e a nota abaixo são de **`n8xmarketing.com.br`**, o site da agência
+> de onde este projeto nasceu como fork (commit `0a44516`, 23/06/2026). Mas o
+> corpo foi **parcialmente adaptado** para o Fogão de Ouro depois — a seção de
+> conteúdo já fala de `/novidades` e de palavras-chave de Santos.
+>
+> Ou seja: parte descreve outro site, parte descreve este. Não trate nenhuma
+> afirmação daqui como verificada sem reconferir. **A nota 94/100 é do site da
+> agência.**
+>
+> Para o estado real do Fogão de Ouro, medido:
+> [`2026-09-15-fogao-de-ouro.md`](2026-09-15-fogao-de-ouro.md).
+
 # Plano de Ação SEO — N8X Marketing
 
 **Site:** https://n8xmarketing.com.br · **Nota geral:** 94/100 (Excelente)

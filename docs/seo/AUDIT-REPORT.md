@@ -1,3 +1,17 @@
+> ## ⚠️ Este relatório NÃO é do Fogão de Ouro
+>
+> Ele audita **`n8xmarketing.com.br`**, o site da agência de onde este projeto
+> nasceu como fork. Chegou junto com o commit `0a44516` (23/06/2026, "gold-standard
+> documentation set") e nunca foi removido.
+>
+> **A nota 94/100 abaixo é de outro site.** Se você veio procurar o SEO do Fogão
+> de Ouro, está no arquivo errado — veja
+> [`2026-09-15-fogao-de-ouro.md`](2026-09-15-fogao-de-ouro.md), que tem a medição
+> real, feita contra a produção deste cliente.
+>
+> Fica aqui como registro histórico: descreve o estado do código que este projeto
+> herdou, e várias decisões de estrutura vieram dele.
+
 # Auditoria de SEO Completa — N8X Marketing
 
 **Site:** https://n8xmarketing.com.br

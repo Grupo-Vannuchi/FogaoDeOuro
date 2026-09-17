@@ -20,7 +20,7 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "db:set-admin": "tsx prisma/set-admin.ts",
+    "db:set-admin": "tsx --env-file-if-exists=.env prisma/set-admin.ts",
     "db:studio": "prisma studio",
     "db:dump": "docker exec n8x-marketing-db pg_dump -U agency -d agency --clean --if-exists --no-owner --no-privileges > prisma/backups/snapshot.sql",
     "db:restore": "docker exec -i n8x-marketing-db psql -U agency -d agency < prisma/backups/snapshot.sql",

@@ -48,20 +48,21 @@
  * largura do `srcset` é uma entrada de cache diferente, então conferir uma só
  * não prova nada. Por isso o `rm -rf` no uso acima.
  */
-import { pathToFileURL } from "node:url";
 
 /**
- * O Playwright não é dependência deste projeto. Enquanto não for, o caminho
- * aponta para a instalação do projeto irmão — o que faz este script rodar
- * apenas nesta máquina. Instalar como `devDependency` é a correção, e está
- * pendente de decisão.
+ * `@playwright/test`, a dependência deste projeto mesmo.
+ *
+ * Até 17/09 esta linha era um caminho absoluto para o `node_modules` do
+ * projeto irmão, com um aviso dizendo que o Playwright "não é dependência
+ * deste projeto". A premissa estava errada: `@playwright/test` já estava no
+ * `devDependencies` — o caminho absoluto sobreviveu de quando a varredura foi
+ * adaptada de lá, e ninguém reconferiu. O efeito era que o script rodava só
+ * nesta máquina, e quebrava para qualquer outra pessoa e no CI.
+ *
+ * `chromium` vem de `@playwright/test` (que o reexporta do `playwright-core`)
+ * e não de `playwright`: é o pacote que este projeto declara.
  */
-const PLAYWRIGHT =
-  process.env.PLAYWRIGHT_PATH ??
-  "c:/Users/Usuario/restaurantePrato/node_modules/playwright/index.js";
-
-const _pw = await import(pathToFileURL(PLAYWRIGHT).href);
-const { chromium } = _pw.default ?? _pw;
+import { chromium } from "@playwright/test";
 const sharp = (await import("sharp")).default;
 
 /** Mínimo da WCAG para texto normal. */
