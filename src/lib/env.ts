@@ -39,6 +39,27 @@ const serverSchema = z.object({
     .enum(["true", "false"])
     .default("false")
     .transform((value) => value === "true"),
+  /**
+   * Código de verificação do Google Search Console — só o valor, sem a tag.
+   * O Google entrega `<meta name="google-site-verification" content="XYZ" />`;
+   * o que entra aqui é o `XYZ`.
+   *
+   * **Não é segredo.** Ele vai para o HTML de toda página e qualquer visitante
+   * lê — está aqui como variável de ambiente por outro motivo: assim o código
+   * chega do painel da Vercel direto para o ar, sem precisar de um commit e de
+   * alguém disponível para fazê-lo. Quem verifica a propriedade costuma não
+   * ser quem mexe no repositório.
+   *
+   * Opcional de propósito: ausente, a tag simplesmente não é emitida. Uma
+   * verificação a menos nunca quebra o site; uma tag com valor vazio, sim —
+   * o Google a lê como propriedade de outra pessoa e recusa a verificação.
+   *
+   * Só é necessário para propriedade do tipo **Prefixo do URL**. A propriedade
+   * de **Domínio** verifica por registro TXT no DNS e não toca no site — é a
+   * preferível, porque cobre `www` e raiz de uma vez e sobrevive a qualquer
+   * mudança de hospedagem.
+   */
+  GOOGLE_SITE_VERIFICATION: z.string().min(1).optional(),
 
   // --- Integrations (optional — degrade gracefully when unset) ---------------
   // Evolution API (WhatsApp) for lead-notification message sends.
@@ -84,7 +105,17 @@ const serverSchema = z.object({
    * simplesmente não aparece — é o estado em que o projeto nasce.
    */
   INSTAGRAM_ACCESS_TOKEN: z.string().min(1).optional(),
-  /** ID numérico da conta profissional, de `GET /me?fields=id`. */
+  /**
+   * ID da conta profissional — **opcional, e normalmente desnecessário.**
+   *
+   * Sem ele o código chama `/me/media`, e a Meta resolve a conta pelo próprio
+   * token. Preencher só faz sentido se um dia o token servir mais de uma
+   * conta, o que não é o caso aqui.
+   *
+   * Se for preencher, cuidado: `GET /me` devolve `id` e `user_id`, parecidos e
+   * diferentes. O errado não dá erro — a integração se declara configurada e
+   * devolve zero post. É justamente essa armadilha que deixar vazio evita.
+   */
   INSTAGRAM_USER_ID: z.string().min(1).optional(),
   /**
    * Versão da Graph API. Fixada em vez de "a mais recente" porque a Meta

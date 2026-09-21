@@ -79,6 +79,14 @@ export async function generateMetadata({
     ...(env.SITE_INDEXABLE
       ? {}
       : { robots: { index: false, follow: false } as const }),
+    // Verificação do Search Console, emitida só quando o código existe. Mesmo
+    // padrão do `robots` acima — espalhada, nunca atribuída: um
+    // `verification: undefined` fixo apagaria o campo num merge de metadata de
+    // rota, e uma tag com `content=""` faz o Google recusar a verificação em
+    // vez de ignorá-la. Ausente é o estado seguro; vazio não é.
+    ...(env.GOOGLE_SITE_VERIFICATION
+      ? { verification: { google: env.GOOGLE_SITE_VERIFICATION } }
+      : {}),
     // og/twitter title + description are intentionally omitted: Next derives
     // them from each page's `title`/`description`, so every route gets its own
     // social copy instead of the site default. `baseOpenGraph` is the single
