@@ -26,7 +26,7 @@ export async function GET() {
         configured: false,
         posts: [],
         message:
-          "Integração desligada: INSTAGRAM_ACCESS_TOKEN e INSTAGRAM_USER_ID não estão definidos.",
+          "Integração desligada: INSTAGRAM_ACCESS_TOKEN não está definido. (INSTAGRAM_USER_ID é opcional — sem ele a conta é resolvida pelo próprio token.)",
       },
       // 200, não erro: "não configurado" é um estado válido do projeto, e um
       // 500 aqui poluiria o monitoramento com um alarme que não é problema.

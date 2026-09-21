@@ -314,21 +314,27 @@ suportada — a conversão é gratuita, no app do Instagram.
    Instagram e devolve um **token de curta duração (1 hora)**.
    - Peça **apenas** `instagram_business_basic`. Publicação, comentários e
      mensagens não são necessários para exibir posts.
-5. **Troque por um token longo (60 dias)** — uma vez, no terminal:
+ 5. **Confira a validade do token — e provavelmente pule a troca.** A
+    documentação atual da Meta diz que o token gerado pelo painel **já nasce
+    longo (60 dias)**. Tente ir direto para a Vercel; se ele recusar em poucas
+    horas, aí sim era curto, e a troca é esta, uma vez, no terminal:
 
-   ```
-   curl -s "https://graph.instagram.com/access_token\
-   ?grant_type=ig_exchange_token\
-   &client_secret=SEU_APP_SECRET\
-   &access_token=TOKEN_CURTO"
-   ```
+    ```
+    curl -s "https://graph.instagram.com/access_token    ?grant_type=ig_exchange_token    &client_secret=SEU_APP_SECRET    &access_token=TOKEN_CURTO"
+    ```
 
-6. **Pegue o ID da conta** com o token longo:
+    > Este passo era descrito como obrigatório, e não é.
+    > `INSTAGRAM_APP_SECRET` não é lida por **nenhuma linha de código** do
+    > projeto — existe só para esta chamada manual.
 
-   ```
-   curl -s "https://graph.instagram.com/v25.0/me?fields=id,username\
-   &access_token=TOKEN_LONGO"
-   ```
+ 6. **Não pegue o ID da conta.** Desde 21/09 o código chama `/me/media`, e a
+    Meta resolve a conta pelo próprio token. `INSTAGRAM_USER_ID` ficou
+    opcional e deve ficar **vazia**.
+
+    > Por quê: `GET /me` devolve `id` **e** `user_id`, parecidos e com valores
+    > diferentes. O errado não dá erro — a integração se declara configurada e
+    > devolve zero post, o que parece defeito do site. Não preencher elimina a
+    > armadilha inteira.
 
 ### Variáveis na Vercel
 
@@ -337,8 +343,8 @@ prefixo público, e nenhuma delas leva `NEXT_PUBLIC_`):
 
 | Variável | Valor |
 | --- | --- |
-| `INSTAGRAM_ACCESS_TOKEN` | o token longo do passo 5 |
-| `INSTAGRAM_USER_ID` | o `id` do passo 6 |
+| `INSTAGRAM_ACCESS_TOKEN` | o token do passo 4 (ou do 5, se precisou trocar) |
+| `INSTAGRAM_USER_ID` | **deixe vazia** — ver passo 6 |
 | `INSTAGRAM_API_VERSION` | `v25.0` (opcional — é o padrão) |
 | `INSTAGRAM_POST_LIMIT` | `4` (opcional — é o padrão) |
 

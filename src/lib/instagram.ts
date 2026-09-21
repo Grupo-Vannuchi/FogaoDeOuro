@@ -35,7 +35,7 @@ export type { InstagramPost } from "@/lib/instagram-media";
 
 /** Está configurado? Usado pela seção para nem renderizar quando não está. */
 export function isInstagramConfigured(): boolean {
-  return Boolean(env.INSTAGRAM_ACCESS_TOKEN && env.INSTAGRAM_USER_ID);
+  return Boolean(env.INSTAGRAM_ACCESS_TOKEN);
 }
 
 /**
@@ -50,8 +50,23 @@ function logFailure(context: string, detail: string) {
 
 async function fetchPosts(): Promise<import("@/lib/instagram-media").InstagramPost[]> {
   const token = env.INSTAGRAM_ACCESS_TOKEN;
-  const userId = env.INSTAGRAM_USER_ID;
-  if (!token || !userId) return [];
+  if (!token) return [];
+
+  /**
+   * `me` — o próprio token já diz de quem é a conta.
+   *
+   * A Meta documenta `/me` como endpoint especial que "traduz para o ID do
+   * objeto da conta cujo token de acesso está sendo usado na chamada", e isso
+   * vale para `media`. Como este projeto serve UMA conta, pedir o ID à parte
+   * só criava uma segunda chance de errar: o `GET /me` devolve `id` E
+   * `user_id`, com nomes parecidos e valores diferentes, e escolher o errado
+   * produz a pior falha possível — a integração se declara configurada e
+   * devolve zero post, o que parece defeito do site.
+   *
+   * `INSTAGRAM_USER_ID` continua sendo respeitado quando existe: quem já o
+   * tem preenchido não precisa mexer em nada.
+   */
+  const userId = env.INSTAGRAM_USER_ID ?? "me";
 
   const fields = [
     "id",
