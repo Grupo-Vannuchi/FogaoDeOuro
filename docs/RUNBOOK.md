@@ -401,3 +401,55 @@ avalia o app e exige documentação da empresa.
 A Meta limita as requisições por hora por app. O projeto guarda o resultado por
 **dez minutos** em cache, então o volume não depende do número de visitantes —
 são cerca de seis chamadas por hora, independentemente do movimento.
+
+## Imagens órfãs no Storage — como achar e limpar
+
+Toda troca de foto pelo painel admin **deixa a anterior no bucket**. O banco
+passa a apontar para a nova e ninguém remove a velha. Em 21/09 o bucket `media`
+tinha **55 arquivos para 23 em uso** — 32 órfãos, 4,6 MB, mais da metade.
+
+Isso **não deixa o site lento**: arquivo sem referência não é baixado por
+ninguém. O que custa é armazenamento e clareza. Não trate como urgência.
+
+### Onde as imagens moram, que não é um lugar só
+
+| Origem | Onde | Como limpar |
+| --- | --- | --- |
+| `public/` | no repositório | `git rm` |
+| Bucket `media` do Supabase | fora do repositório | API de Storage |
+
+E as referências vêm de **quatro** campos, em quatro tabelas: `MenuItem.image`,
+`GalleryPhoto.image`, `Information.image` e `Testimonial.avatarUrl`. Varrer
+menos que isso produz falso órfão.
+
+### A verificação que não pode ser pulada
+
+**Antes de apagar, varra TODOS os campos de TODAS as tabelas** procurando
+`/media/` e `supabase.co/storage`, não só os campos de imagem. Uma URL dentro
+do corpo de uma novidade é um uso real, e apagá-la quebra a página sem aviso.
+Em 21/09 essa varredura voltou zero — mas ela é o que autoriza a exclusão, não
+uma formalidade.
+
+**Recalcule a lista no momento de apagar**, dentro do mesmo script, e aborte se
+algum caminho marcado como órfão também constar como em uso. Lista feita
+minutos antes é dado velho, e foi assim que a galeria do projeto irmão quebrou:
+o deploy removeu arquivos que o banco ainda listava.
+
+**Depois, confira uma a uma.** As em uso devem responder 200, e a página de
+galeria deve continuar íntegra em produção. "Apagou e o site abriu" não é
+verificação — as páginas são estáticas e podem estar servindo cache.
+
+### Armadilhas
+
+- **Citação em comentário conta como uso.** Uma varredura que procura o nome do
+  arquivo no código encontra menções em docblock e considera a imagem viva. É o
+  caso de `public/cardapio/fundo-curvas.webp`, guardada de propósito: ela nunca
+  aparece como órfã, e a razão é o comentário, não o uso.
+- **A mesma foto pode ter vários donos.** As 39 referências ao Storage apontam
+  para 23 caminhos: 15 imagens servem duas linhas cada (prato e galeria).
+  Contar referências em vez de caminhos únicos infla o número.
+- **A chave nova do Supabase não é JWT.** A API de Storage recusa com
+  `Invalid Compact JWS` se você mandar só `Authorization: Bearer`. Mande
+  `apikey` **junto**.
+- **Não há lixeira.** O Supabase não tem desfazer. Baixe antes, ou confirme com
+  quem tem as originais.
