@@ -4,25 +4,29 @@ import { join } from "node:path";
 import { siteConfig } from "@/config/site";
 
 /**
- * App icon (favicon / browser tab / PWA), generated at build time.
+ * Ícone raster — o FALLBACK. O favicon de verdade é `icon.svg`, ao lado.
  *
- * The mark is the stove pulled out of the client's PREVIOUS lockup. The 2026
- * rebrand is purely typographic and ships no compact mark, and stacked type does
- * not survive 32×32 — so the retired stove stays here, by the client's explicit
- * decision. See `public/brand/README.md` before changing it. Full-bleed graphite
- * field so Android's maskable crop never bites into transparency.
+ * A marca é o "O" de Ouro, recortado do `wordmark.svg` em vetor. Substituiu o
+ * fogão da logo ANTIGA em 22/09/2026, por decisão do cliente que reviu a de
+ * 21/08 — até então o favicon era de uma marca aposentada, e o
+ * `public/brand/README.md` chamava isso de "assimetria consciente".
  *
- * Embedded as a PNG rather than the source SVG because satori cannot resolve
- * the `url(#gradient)` fills the logo is built from. `npm run brand:rasters`
- * regenerates it.
+ * **Por que o "O" e não o logotipo inteiro.** Medido, não suposto: o logotipo
+ * empilhado a 16×16 vira uma mancha laranja sem forma de letra; a 32×32 os
+ * traços finos se desfazem e "RESTAURANTE" some. É geometria — a logo é 1,71:1
+ * e o ícone é quadrado, então sobram ~9px de altura para tipo em duas linhas.
+ * O "O" é 509×494, praticamente quadrado: preenche a moldura e a forma fechada
+ * sobrevive a qualquer tamanho. Era o candidato que o próprio README indicava.
+ *
+ * Embutido como PNG, não como o SVG de origem, porque o satori não resolve os
+ * `url(#gradient)` de que esta logo é feita. `npm run brand:rasters` regenera.
  */
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
 
 export default async function Icon() {
-  const { background } = siteConfig.theme.dark;
   const symbol = await readFile(
-    join(process.cwd(), "public", "brand", "symbol.png"),
+    join(process.cwd(), "public", "brand", "monogram-o.png"),
     "base64",
   );
 
@@ -35,11 +39,12 @@ export default async function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background,
+          background: siteConfig.theme.light.background,
         }}
       >
-        {/* Inset so the maskable crop keeps the whole stove inside the safe area. */}
-        <img src={`data:image/png;base64,${symbol}`} height={324} />
+        {/* O PNG já vem com a folga do monograma embutida; aqui ele sangra
+            inteiro para o recorte maskable do Android nunca morder transparência. */}
+        <img src={`data:image/png;base64,${symbol}`} height={512} />
       </div>
     ),
     { ...size },

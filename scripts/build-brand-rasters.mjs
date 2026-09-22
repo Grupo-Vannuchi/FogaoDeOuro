@@ -8,6 +8,11 @@
  *
  * Run with `npm run brand:rasters` after changing anything in `public/brand/`.
  * The outputs are committed, so a normal build never needs this.
+ *
+ * `monogram-o.svg` é derivado: sai do `wordmark.svg`, carregando só o path do
+ * "O" de Ouro e o único degradê que ele referencia (dos 22 do wordmark). Não o
+ * edite à mão — se a logo mudar, regenere a partir do wordmark novo, senão o
+ * monograma passa a ser de uma marca que não existe mais.
  */
 import sharp from "sharp";
 import { readFile, stat } from "node:fs/promises";
@@ -17,6 +22,7 @@ const BRAND = join(process.cwd(), "public", "brand");
 
 /** Rendered well above their display size so downscaling stays crisp. */
 const jobs = [
+  { from: "monogram-o.svg", to: "monogram-o.png", width: 512 },
   { from: "symbol.svg", to: "symbol.png", width: 512 },
   { from: "logo-dark.svg", to: "lockup.png", width: 1000 },
 ];

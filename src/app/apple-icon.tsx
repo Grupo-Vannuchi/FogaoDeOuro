@@ -10,9 +10,9 @@ export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
 export default async function AppleIcon() {
-  const { background } = siteConfig.theme.dark;
+  const { background } = siteConfig.theme.light;
   const symbol = await readFile(
-    join(process.cwd(), "public", "brand", "symbol.png"),
+    join(process.cwd(), "public", "brand", "monogram-o.png"),
     "base64",
   );
 
@@ -28,7 +28,7 @@ export default async function AppleIcon() {
           background,
         }}
       >
-        <img src={`data:image/png;base64,${symbol}`} height={114} />
+        <img src={`data:image/png;base64,${symbol}`} height={150} /* recuo: o iOS mascara o ícone num quadrado arredondado, e o "O" a sangue encostaria na curva */ />
       </div>
     ),
     { ...size },

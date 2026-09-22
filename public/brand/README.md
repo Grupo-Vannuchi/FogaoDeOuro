@@ -62,20 +62,49 @@ O site é **só tema claro** e por isso a página nunca renderiza esse cut: o ro
 usa sempre o `logo.svg`. Ele continua no repo porque o `lockup.png` é rasterizado
 a partir dele — se o lockup escuro sumir, o `npm run brand:rasters` quebra junto.
 
-## ⚠️ O favicon ainda é o fogão da marca antiga
+## O favicon é o monograma do "O" — resolvido em 22/09/2026
 
-`symbol.svg` e `symbol.png` **não** vieram do rebrand: são o fogão recortado da
-logo anterior, mantidos **por decisão explícita do cliente** em 21/08/2026.
+`monogram-o.svg` é o **"O" de Ouro**, derivado do `wordmark.svg`: carrega só o
+path daquela letra e o único degradê que ela referencia (dos 22 do wordmark).
+É o caminho que esta própria seção recomendava — "um monograma do 'O' de Ouro
+é o candidato natural, é a letra mais distintiva da marca".
 
-O motivo de a pergunta existir: a marca nova não tem elemento compacto. É
-tipografia empilhada em três linhas, e a 32×32 do favicon ela não se lê. Como o
-rebrand não veio com um símbolo, e inventar um seria decisão de design que não
-cabe aqui, o fogão antigo segue nos ícones.
+Substituiu o fogão da logo ANTIGA, que estava aqui **por decisão explícita do
+cliente em 21/08/2026** e que ele reviu em 22/09. Até então o site tinha uma
+assimetria consciente: o favicon era de uma marca aposentada.
 
-Isso é uma assimetria consciente: **o favicon não bate com a marca do site.**
-Não "conserte" trocando o `symbol.svg` pelo wordmark novo — a 32px o resultado é
-uma mancha. A saída real é pedir ao designer uma versão compacta (um monograma
-do "O" de Ouro é o candidato natural, é a letra mais distintiva da marca).
+### O logotipo inteiro foi testado e reprovou — não repita
+
+Antes de trocar, o lockup completo foi renderizado nos tamanhos reais:
+
+| tamanho | resultado |
+| --- | --- |
+| 16×16 (aba do navegador) | mancha laranja, sem forma de letra |
+| 32×32 | dá para adivinhar "Fogão de Ouro", traços finos se desfazem, "RESTAURANTE" some |
+
+É geometria, não qualidade de imagem: a logo é 1,71:1 e o ícone é quadrado.
+Encaixando a largura, sobram ~9 px de altura para tipo em **duas linhas**. O
+"O" é 509×494 — praticamente quadrado, preenche a moldura, e a forma fechada
+sobrevive a qualquer tamanho.
+
+⚠️ **Ao medir, não encadeie dois `resize` no mesmo pipeline do sharp** — ele
+colapsa e aplica só o último sobre o original, e você "mede" uma imagem que
+nunca existiu. Grave o arquivo pequeno em disco e releia para ampliar.
+
+### As três rotas, e por que são três
+
+| rota | formato | para quem |
+| --- | --- | --- |
+| `/icon.svg` | SVG, 2 KB | navegadores modernos — nítido em qualquer densidade |
+| `/icon` | PNG 512 | fallback de quem não lê SVG |
+| `/apple-icon` | PNG 180 | iOS, que não aceita SVG |
+
+O SVG estático é o que **destrava o degradê**: ele não passa pelo satori (ver
+a seção abaixo), então as referências `url(#gradiente)` funcionam. O
+`apple-icon` leva recuo porque o iOS mascara o ícone num quadrado arredondado.
+
+`symbol.svg`/`symbol.png` (o fogão) ficam no repositório: são história da marca
+e não custam nada parados.
 
 ## Gradientes e satori
 
