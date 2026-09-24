@@ -98,7 +98,12 @@ export function MenuSection({
       <Container className="max-w-3xl">
         <div className="flex flex-col items-center gap-4 pt-12 text-center sm:pt-16">
           <h2
-            className="font-serif text-3xl font-bold tracking-tight sm:text-4xl"
+            /* Um degrau acima do resto da página (24/09): o cliente pediu que
+               cada categoria fosse identificável na leitura corrida. Quebra em
+               duas linhas no celular com os títulos longos ("Refrigerantes e
+               cerveja") — é aceitável porque o bloco é centrado; o que não
+               pode é vazar a largura, e não vaza. */
+            className="text-balance font-serif text-4xl font-bold tracking-tight sm:text-5xl"
             style={{ color: TEXTO_SOLTO }}
           >
             {title}

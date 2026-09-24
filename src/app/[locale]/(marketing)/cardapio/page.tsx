@@ -124,6 +124,18 @@ export default async function CardapioPage({
             </DayTabs>
           </div>
         )}
+
+        {/* A ressalva de que o buffet varia. Fica no FIM da seção, depois das
+            grades: antes dos pratos ela leria como desculpa; depois, como
+            explicação do que a pessoa acabou de ver. Discreta de propósito
+            (`text-sm`), mas não apagada — `TEXTO_SOLTO_APOIO` é medido contra
+            o fundo do cardápio, ao contrário de `text-muted-foreground`. */}
+        <p
+          className="mx-auto mt-8 max-w-xl text-pretty text-center text-sm leading-relaxed"
+          style={{ color: TEXTO_SOLTO_APOIO }}
+        >
+          {t("buffetFreshNote")}
+        </p>
       </MenuSection>
 
       {/* 2 — A ilha de massas. O carrossel entra na coluna de leitura, como
@@ -161,11 +173,10 @@ export default async function CardapioPage({
       </MenuSection>
 
       {/* 3 — Sobremesas. */}
+      {/* Sem foto de banner desde 24/09, a pedido do cliente. A seção se
+          sustenta sem ela: cada sobremesa já tem a própria foto na linha, e o
+          banner repetia o assunto que a lista logo abaixo mostra dez vezes. */}
       <MenuSection
-        photo={{
-          src: "/sobremesas/petit-gateau-largo.webp",
-          alt: t("dessertsPhotoAlt"),
-        }}
         title={t("dessertsLabel")}
         subtitle={t("dessertsNote")}
       >

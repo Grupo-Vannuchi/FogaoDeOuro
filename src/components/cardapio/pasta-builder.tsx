@@ -104,7 +104,7 @@ export async function PastaBuilder() {
                   coluna do número para fora. */}
               <div className={`min-w-0 flex-1 pt-1.5 ${ultimo ? "" : "pb-9"}`}>
                 <h4
-                  className="flex items-center gap-2.5 font-serif text-lg font-bold leading-snug sm:text-xl"
+                  className="flex items-center gap-2.5 font-serif text-xl font-bold leading-snug sm:text-2xl"
                   style={{ color: TEXTO_SOLTO }}
                 >
                   {/* O mesmo número da trilha, na versão de celular. Some em

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Cake } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { desserts, formatBRL } from "@/config/menu";
 import { TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
@@ -63,6 +64,16 @@ export async function DessertList() {
           );
         })}
       </ul>
+      {/* A cortesia de aniversário. Ganha superfície própria (`bg-card` com
+          borda da marca) em vez de virar mais uma linha de texto solto: é
+          oferta, não observação, e some no meio das notas se não se destacar.
+          Dentro de um `bg-card`, então `text-card-foreground` — as constantes
+          de texto solto valem para quem cai direto sobre o fundo, não aqui. */}
+      <p className="mt-6 flex items-center gap-3 rounded-2xl border border-brand/30 bg-card px-5 py-4 text-pretty text-base font-medium text-card-foreground sm:px-6">
+        <Cake className="size-5 shrink-0 text-brand" aria-hidden />
+        {t("dessertsBirthday")}
+      </p>
+
       {/* Fora do `<ul>`, solta direto sobre `MenuBackdrop` — daí
           `TEXTO_SOLTO_APOIO` e não `text-muted-foreground`, que é medido
           contra o creme do site e não contra o fundo do cardápio. A cor vem
