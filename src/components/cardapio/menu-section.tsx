@@ -94,9 +94,60 @@ export function MenuSection({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-24 pb-12 sm:pb-16">
+    <section id={id} className="scroll-mt-24 pb-12 pt-12 sm:pb-16 sm:pt-16">
       <Container className="max-w-3xl">
-        <div className="flex flex-col items-center gap-4 pt-12 text-center sm:pt-16">
+        {/* A chapa do letreiro. Reintroduzida em 24/09 a pedido do cliente —
+            ver "a pílula existiu e foi removida" no topo deste arquivo, que
+            pedia justamente um pedido explícito antes de voltar.
+
+            NÃO é a `Pilula` antiga. Aquela era uma cápsula MARROM SÓLIDA com
+            texto branco, desenhada para o fundo escuro da v12. Sobre a
+            terracota de hoje, marrom e terracota são quase o mesmo matiz e a
+            cápsula sumiria dentro do fundo.
+
+            Esta escurece o que estiver atrás, em vez de pintar por cima: o
+            fundo é `fixed` e o banho radial passa por baixo dela conforme a
+            página rola, então uma cor fixa brigaria com o gradiente em alguma
+            altura da rolagem, e um escurecimento acompanha.
+
+            Alfa na COR (`rgba`), nunca na propriedade `opacity` — a varredura
+            de contraste força `opacity: 1 !important` para congelar animações,
+            e apagaria o efeito antes de medir (ver `INTENSIDADE_FORMA` em
+            `MenuBackdrop`).
+
+            14% foi medido, não escolhido no olho. Sobre o ponto mais claro do
+            banho (`#9A4530`, o pior caso), a chapa leva o título de 5,23 para
+            6,45 e o apoio de 4,58 para 5,64 — ou seja, destaca E melhora a
+            legibilidade. Acima disso começa a pesar e a virar caixa.
+
+            Largura CHEIA da coluna, não `w-fit`. A primeira versão abraçava o
+            texto, e o cliente apontou o efeito: a chapa ficava mais estreita
+            que a foto logo abaixo, e as duas bordas desalinhadas leem como
+            erro. Alinhar com o conteúdo vale mais do que a chapa curta que
+            "Sucos" sozinho pediria.
+
+            Cor própria, e não mais o terracota escurecido. Medida a separação
+            de cada candidato contra os três tons do banho — quanto menor, mais
+            a chapa some dentro do fundo:
+
+              couro da peça   #5E2B1F ... 1,13   sumiria
+              couro claro     #7E3923 ... 1,10   sumiria
+              marrom da marca #8A5206 ... 1,01   invisível
+              expresso        #3A211A ... 1,47   ESCOLHIDA
+              quase-preto     #2A1109 ... 1,75   severa demais
+
+            Os marrons do couro impresso eram o candidato óbvio e são os
+            piores: terracota e couro dividem o matiz, então a chapa
+            desapareceria no fundo. O expresso sai da família sem sair do
+            registro quente, e leva o título a 12,11 de contraste (era 5,23
+            sobre o fundo nu). */}
+        <div
+          className="flex flex-col items-center gap-4 rounded-2xl px-6 py-8 text-center sm:px-10 sm:py-10"
+          style={{
+            backgroundColor: "#3A211A",
+            border: "1px solid rgba(239, 233, 194, 0.12)",
+          }}
+        >
           <h2
             /* Um degrau acima do resto da página (24/09): o cliente pediu que
                cada categoria fosse identificável na leitura corrida. Quebra em
