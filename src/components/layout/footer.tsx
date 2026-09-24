@@ -116,6 +116,22 @@ export async function Footer() {
             ) : null}
           </div>
 
+          {/* Convite para seguir, em texto, ao lado dos ícones que ficam. Vai
+              para o Instagram e não para uma página de "redes": é o único
+              perfil que a casa mantém, e um índice com um item só é um clique
+              a mais para chegar no mesmo lugar. Some junto com o perfil — sem
+              Instagram no config, sem frase. */}
+          {siteConfig.social.instagram ? (
+            <a
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+            >
+              {tc("socialCta")}
+            </a>
+          ) : null}
+
           {/* O convite vira texto, no mesmo estilo dos links de Navegação. O
               acesso rápido é o ícone do Google, que divide a linha com o
               Instagram acima — um pill com texto ao lado de um ícone circular

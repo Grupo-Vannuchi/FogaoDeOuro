@@ -2,12 +2,12 @@ import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Mail, Phone, MessageCircle, MapPin, Clock, Star } from "lucide-react";
+import { Mail, Phone, MessageCircle, MapPin, Clock } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/ui/section";
 import { ContactForm } from "@/components/forms/contact-form";
 import { MapEmbed } from "@/components/layout/map-embed";
-import { ReserveButton } from "@/components/reserve-button";
 import { buttonVariants } from "@/components/ui/button";
 import {
   fullAddress,
@@ -38,6 +38,7 @@ export default async function ContactPage({
 }) {
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
+  const zap = whatsappLink();
   const t = await getTranslations("contact");
   const tc = await getTranslations("common");
   // O horário já existe no catálogo em dois lugares; reaproveitar evita uma
@@ -88,14 +89,15 @@ export default async function ContactPage({
 
   return (
     <>
-      {/* A fachada no cabeçalho: quem abre o contato quer reconhecer a
-          esquina, e o letreiro faz isso melhor que qualquer texto. */}
-      <PageHeader
-        title={t("title")}
-        subtitle={t("subtitle")}
-        image="/ambiente/fachada.webp"
-        imageAlt={t("headerAlt")}
-      />
+      {/* Sem foto desde 24/09: o cliente retirou a da fachada e vai mandar
+          outra. A prop `image` é opcional e o cabeçalho volta ao tratamento
+          das páginas sem foto — é só devolver `image`/`imageAlt` quando a nova
+          chegar. `headerAlt` fica no catálogo esperando.
+
+          O que a foto fazia, para quem escolher a substituta: quem abre o
+          contato quer reconhecer a esquina, e o letreiro dizia isso melhor que
+          qualquer texto. */}
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       {/* 1 — Como falar com a gente. Primeiro bloco da página desde 24/09, a
           pedido do cliente: quem abre "Contato" quer o telefone, não um
@@ -149,19 +151,35 @@ export default async function ContactPage({
           </ul>
         </div>
 
+        {/* Dois caminhos, trocados em 24/09 a pedido do cliente.
+
+            "Fazer minha reserva" deixou de abrir o WhatsApp e passa a levar
+            para /reservas: quem clica aqui quer saber horário e como funciona
+            antes de mandar mensagem, e a página responde isso. O atalho direto
+            para o WhatsApp não se perdeu — virou o segundo botão.
+
+            O convite para avaliar no Google saiu deste par. Ele continua no
+            rodapé, que é onde esse tipo de pedido incomoda menos; aqui ocupava
+            o lugar da ação que a página existe para oferecer. */}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <ReserveButton size="lg" />
-          {/* Convite para avaliar no Google. Sai do config, nunca escrito aqui,
-              e só aparece quando há URL — sem perfil, sem botão. */}
-          {siteConfig.reviewUrl ? (
+          <Link
+            href="/reservas"
+            className={buttonVariants({ size: "lg" })}
+          >
+            {tc("reserveTable")}
+          </Link>
+          {/* Guardado numa const: `whatsappLink()` devolve `string | null`, e
+              chamá-la duas vezes faria o TypeScript perder o estreitamento que
+              o próprio `if` acabou de fazer. */}
+          {zap ? (
             <a
-              href={siteConfig.reviewUrl}
+              href={zap}
               target="_blank"
               rel="noopener noreferrer"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
-              <Star className="size-5" aria-hidden />
-              {tc("reviewCta")}
+              <MessageCircle className="size-5" aria-hidden />
+              {tc("contactUsCta")}
             </a>
           ) : null}
         </div>
