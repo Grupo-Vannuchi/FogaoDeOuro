@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { fillYears } from "@/config/site";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { MenuItemCard } from "@/components/menu-item-card";
@@ -75,10 +76,16 @@ export async function MenuPreview({ locale }: { locale: Locale }) {
   return (
     <Section id="gastronomia" className="bg-muted/30">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+        {/* `t.raw` no subtítulo: desde 24/09 essa chave é uma LISTA de
+            parágrafos, e `t()` só devolve string. As outras seções que
+            usam `SectionHeader` seguem passando string, e nada muda nelas. */}
         <SectionHeader
           eyebrow={t("eyebrow")}
           title={t("title")}
-          subtitle={t("subtitle")}
+          // `fillYears`: o texto cita os anos de casa, e o número sai de
+          // `foundedYear`. Escrito fixo, erraria em janeiro e contradiria o
+          // selo do hero, que calcula. Mesmo tratamento que os slides já têm.
+          subtitle={(t.raw("subtitle") as string[]).map((p) => fillYears(p))}
           align="left"
         />
         {/* Vai para /experiencia, não para o cardápio: esta seção se chama

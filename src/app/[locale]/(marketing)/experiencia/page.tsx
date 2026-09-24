@@ -80,9 +80,24 @@ export default async function AboutPage({
       />
 
       <Section>
-        <p className="max-w-3xl text-pretty text-xl leading-relaxed">
-          {t.rich("lead", richTags)}
-        </p>
+        {/* `lead` virou LISTA de parágrafos em 24/09 — eram três blocos num
+            `<p>` só.
+
+            Texto puro, não `t.rich`: as chaves de mensagem são tipadas, e uma
+            chave montada em execução (`lead.${i}`) não passa no typecheck. O
+            texto atual não usa `<b>`, então não se perde nada — mas quem
+            acrescentar negrito aqui vai ver a tag crua na tela, e o caminho é
+            voltar a uma chave por parágrafo.
+
+            `fillYears` porque o primeiro parágrafo cita os anos de casa; sem
+            ele, `{years}` apareceria literal. */}
+        <div className="flex max-w-3xl flex-col gap-4">
+          {(t.raw("lead") as string[]).map((paragrafo) => (
+            <p key={paragrafo} className="text-pretty text-xl leading-relaxed">
+              {fillYears(paragrafo)}
+            </p>
+          ))}
+        </div>
 
         <div className="mt-16 grid gap-12 lg:grid-cols-2">
           <div>

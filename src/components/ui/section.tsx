@@ -94,7 +94,8 @@ export function SectionHeader({
 }: {
   eyebrow?: string;
   title: string;
-  subtitle?: string;
+  /** Uma string vira um parágrafo; uma lista vira um por item. */
+  subtitle?: string | string[];
   align?: "center" | "left";
   size?: keyof typeof HEADER_SIZES;
   tone?: keyof typeof HEADER_TONES;
@@ -130,7 +131,19 @@ export function SectionHeader({
       >
         {title}
       </h2>
-      {subtitle ? (
+      {/* Lista vira um parágrafo por item, string vira um só. Aditivo em
+          24/09 para a seção "A experiência", cujo texto passou de 149 para 604
+          caracteres: num `<p>` único aquilo era um bloco de nove linhas. Os 15
+          outros usos passam string e não mudam em nada. */}
+      {Array.isArray(subtitle) ? (
+        <div className={cn("flex max-w-xl flex-col gap-3")}>
+          {subtitle.map((paragrafo) => (
+            <p key={paragrafo} className={cn("text-pretty", corpo.subtitle, cor.subtitle)}>
+              {paragrafo}
+            </p>
+          ))}
+        </div>
+      ) : subtitle ? (
         <p
           className={cn(
             "max-w-xl text-pretty",

@@ -20,9 +20,14 @@ export async function CTA() {
           <h2 className="relative mx-auto max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             {t("title")}
           </h2>
-          <p className="relative mx-auto mt-4 max-w-xl text-pretty opacity-90">
-            {t("subtitle")}
-          </p>
+          {/* Lista de parágrafos, como no `SectionHeader` desde 24/09: o texto
+              desta seção passou a ter dois blocos, e num `<p>` único eles
+              viravam um bloco corrido de seis linhas centralizadas. */}
+          <div className="relative mx-auto mt-4 flex max-w-xl flex-col gap-3 text-pretty opacity-90">
+            {(t.raw("subtitle") as string[]).map((paragrafo) => (
+              <p key={paragrafo}>{paragrafo}</p>
+            ))}
+          </div>
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/reservas"
