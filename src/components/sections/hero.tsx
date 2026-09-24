@@ -8,11 +8,12 @@ import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carouse
  * fetching from a remote host). One per slide, matched by index to the copy in
  * `home.hero.slides`.
  *
- * Authorial photography delivered by the client on 20/08/2026, one per slide and
- * matched to that slide.s copy: the lunch spread for "a sua melhor experiência do
- * dia", the rotisserie for "direto da brasa", the dining room for "salão amplo",
- * the pudim for "guarde um espaço para a sobremesa". No stock imagery — the brief requires the restaurant's own photos, and
- * the previous brand's shots literally carried its logo in frame.
+ * Authorial photography delivered by the client, one per slide and matched to
+ * that slide's copy — seis desde 24/09: a ilha flambada na abertura, a
+ * rotisseria em vídeo para a brasa, as cubas do buffet, o prato de massa para
+ * a ilha, o pudim para a sobremesa e o salão para fechar. No stock imagery —
+ * the brief requires the restaurant's own photos, and the previous brand's
+ * shots literally carried its logo in frame.
  *
  * Sources were 1600x900 JPEG (323–489 KB), re-encoded to WebP at q=80, which
  * lands each file in the ~100–230 KB band this carousel budgets for. Keep new
@@ -27,8 +28,21 @@ const slideImages: string[] = [
   // O do slide 2 é o pôster do vídeo: o quadro tem de ser do próprio vídeo,
   // senão o hero "pula" de uma cena para outra ao começar.
   "/hero/slide-2-poster.webp",
-  "/hero/slide-3.webp",
+  // 3 e 4 entraram em 24/09 com o carrossel indo de quatro para seis slides.
+  // Nomes por ASSUNTO, não por posição: `slide-3`/`slide-4` abaixo já não
+  // estão nas posições 3 e 4, e é exatamente por isso que nome posicional
+  // envelhece. Não renomeei os antigos para não trocar arquivo publicado à
+  // toa — os comentários dizem o que cada um é.
+  //
+  // O buffet é 1800×600, e é o único fora do 16:9 do resto. Foi deliberado:
+  // recortar para 16:9 daria 1067×600, e aí cobrir uma tela grande pediria
+  // ampliar 1,8×. Inteiro, o `object-cover` corta as laterais e usa a altura
+  // cheia — menos ampliação, mesmo sendo a proporção "errada".
+  "/hero/slide-buffet.webp",
+  "/hero/slide-massas.webp",
+  // O pudim (era a posição 4) e o salão (era a 3), agora fechando o carrossel.
   "/hero/slide-4.webp",
+  "/hero/slide-3.webp",
 ];
 
 /**
@@ -43,6 +57,8 @@ const slideImages: string[] = [
 const slideVideos: (string | undefined)[] = [
   undefined,
   "/hero/slide-2.mp4",
+  undefined,
+  undefined,
   undefined,
   undefined,
 ];
