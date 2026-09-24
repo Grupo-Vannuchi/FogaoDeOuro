@@ -21,7 +21,17 @@ export default async function MarketingLayout({
 
   // Sem o dropdown de categorias, o cabeçalho não precisa mais delas — uma
   // consulta a menos em toda página do site.
-  const informations = await getInformations(locale);
+  //
+  // `featuredOnly` desde 24/09: o menu listava as 103 novidades, e ~100 delas
+  // são páginas de SEO local ("restaurante perto do Gonzaga"). Elas continuam
+  // publicadas, no sitemap e listadas em `/novidades` — só saem do menu, que
+  // é onde viravam ruído. O cliente pediu apenas as novidades de verdade ali.
+  //
+  // O filtro usa `featured`, que já existia no model e no formulário do admin
+  // sem nenhum consumidor: marcar uma novidade como destaque não fazia nada.
+  // Agora faz, e é o próprio admin que controla quem aparece — sem lista de
+  // slugs no código, que envelheceria na primeira novidade nova.
+  const informations = await getInformations(locale, { featuredOnly: true });
 
   const informationLinks = informations.map((i) => ({
     slug: i.slug,
