@@ -97,26 +97,15 @@ export default async function ContactPage({
         imageAlt={t("headerAlt")}
       />
 
-      {/* O formulário sozinho, em largura de leitura. Ele já era o assunto da
-          página; dividir a linha com a coluna de contatos deixava um vão à
-          direita assim que o formulário terminava. */}
-      {/* O mapa antes do formulário: quem abre esta página quer saber onde
-          fica antes de escrever. Some do rodapé aqui, para não repetir. */}
-      <Section className="pb-0 sm:pb-0">
-        <div className="mx-auto max-w-3xl">
-          <MapEmbed src={mapEmbedUrl()} title={t("mapTitle")} />
-        </div>
-      </Section>
+      {/* 1 — Como falar com a gente. Primeiro bloco da página desde 24/09, a
+          pedido do cliente: quem abre "Contato" quer o telefone, não um
+          formulário. O mapa vem depois (onde fica) e o formulário por último —
+          é o caminho mais caro dos três e o que menos gente quer.
 
+          Perdeu o `border-t` e o `bg-muted/30` de quando era faixa de rodapé:
+          colado no cabeçalho, o traço leria como linha dupla e a chapa cinza
+          brigaria com a foto da fachada logo acima. */}
       <Section>
-        <div className="mx-auto max-w-2xl">
-          <ContactForm />
-        </div>
-      </Section>
-
-      {/* Os canais viram uma faixa abaixo do formulário: em grade eles ocupam a
-          largura inteira, que é justamente o espaço que sobrava. */}
-      <Section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-3xl">
           <h2 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">
             {t("infoTitle")}
@@ -177,6 +166,25 @@ export default async function ContactPage({
           ) : null}
         </div>
       </Section>
+      {/* 2 — O mapa. Continua antes do formulário: saber onde fica pesa mais
+          que escrever. Some do rodapé nesta página, para não repetir.
+
+          Recuperou o espaçamento inferior (`pb-0` saiu): ele existia para
+          colar o mapa no formulário quando os dois abriam a página, e agora há
+          um bloco de contatos acima empurrando o ritmo. */}
+      <Section>
+        <div className="mx-auto max-w-3xl">
+          <MapEmbed src={mapEmbedUrl()} title={t("mapTitle")} />
+        </div>
+      </Section>
+
+      {/* 3 — O formulário, por último e em largura de leitura. */}
+      <Section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-2xl">
+          <ContactForm />
+        </div>
+      </Section>
+
     </>
   );
 }
