@@ -78,7 +78,7 @@ import { TEXTO_SOLTO, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backd
  *
  * Duas seções não têm foto (Cardápio da Semana e Café e água), e a ilha de
  * massas troca a foto por um carrossel dentro dos `children` (ver
- * `pasta-carousel.tsx`) em vez de usar a prop `photo`.
+ * `photo-carousel.tsx`) em vez de usar a prop `photo`.
  */
 export function MenuSection({
   id,

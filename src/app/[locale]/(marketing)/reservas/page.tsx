@@ -6,8 +6,8 @@ import { resolveLocale } from "@/i18n/routing";
 import { localeMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/page-header";
 import { Section, SectionHeader } from "@/components/ui/section";
-import { Reveal } from "@/components/ui/reveal";
 import { ReserveButton } from "@/components/reserve-button";
+import { PhotoCarousel, type CarouselPhoto } from "@/components/photo-carousel";
 import { fullAddress, siteConfig } from "@/config/site";
 
 export async function generateMetadata({
@@ -24,27 +24,6 @@ export async function generateMetadata({
   };
 }
 
-type BestTime = { when: string; what: string; alt: string };
-
-/**
- * Uma foto por faixa de horário, casada por índice com `bestTime` no catálogo
- * — mesmo pareamento que o hero faz entre foto e copy. Trocar a ordem aqui sem
- * trocar lá desencontra imagem e legenda.
- *
- * A do card das 13h era o salão visto de um ângulo que pegava a porta do
- * banheiro ao fundo — o cliente vetou.
- *
- * A substituta não podia ser outro buffet (o card do meio já é um) nem outro
- * salão: o do topo da página e o do fundo da seção de eventos já ocupam essa
- * família, e uma terceira sala na mesma rolagem lê como repetição. Sobra a
- * carne, que ainda não aparece em lugar nenhum daqui — e a fileira fica prato,
- * buffet, carne, que é também a ordem em que se monta o prato.
- */
-const slotImages = [
-  "/ambiente/horario-11h.webp",
-  "/ambiente/horario-11h30.webp",
-  "/ambiente/picanha-na-brasa.webp",
-];
 
 /** One line of the "practical information" list. */
 function Fact({
@@ -78,7 +57,7 @@ export default async function ReservasPage({
   setRequestLocale(locale);
   const t = await getTranslations("reservas");
 
-  const bestTime = t.raw("bestTime") as BestTime[];
+  const fotos = t.raw("photos") as CarouselPhoto[];
   const { openingHours, contact } = siteConfig;
   const hours = `${t("hoursTitle")}`;
 
@@ -87,54 +66,45 @@ export default async function ReservasPage({
       {/* Faixa na cor da marca: esta página é a que fecha a visita — quem
           chega aqui vem reservar —, e o creme de sempre a deixava igual às
           demais. */}
-      <PageHeader title={t("title")} subtitle={t("subtitle")} tone="brand" />
+      {/* Foto no cabeçalho desde 24/09, a pedido do cliente. `salao-mesas`, e
+          não `salao`: esta última abre o carrossel logo abaixo, e a mesma
+          imagem duas vezes em sequência lê como falha de carregamento. */}
+      <PageHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        image="/ambiente/salao-mesas.webp"
+        imageAlt={t("headerAlt")}
+        tone="brand"
+      />
 
       {/* 5.1 — Horários + "melhor momento para você" */}
       <Section>
-        {/* O salão antes dos horários: quem abre esta página está decidindo se
-            vem, e a foto responde "que lugar é esse?" antes de qualquer texto.
-            É a maior imagem da rota, e a primeira — daí o `priority`. */}
-        <Image
-          src="/ambiente/salao.webp"
-          alt={t("salaoAlt")}
-          width={1600}
-          height={900}
-          priority
-          sizes="(min-width: 1280px) 1200px, 100vw"
-          className="mb-12 aspect-[16/9] w-full rounded-2xl object-cover sm:aspect-[21/9]"
+        {/* Carrossel de seis fotos, a pedido do cliente em 24/09 — era uma
+            foto só do salão. A mecânica vem de `ui/carousel.tsx`, a mesma da
+            ilha de massas e da carta de vinhos; aqui entra só o conteúdo.
+
+            Três destas fotos vinham dos cards de horário que saíram desta
+            página no mesmo dia: elas descreviam o salão em cada faixa de
+            horário, e continuam dizendo isso — só que como galeria, sem
+            repetir na página o texto que vive em /experiencia.
+
+            ⚠️ As três herdadas são 800×450, contra 1600×900 das outras. A
+            largura cheia do carrossel amplia as menores em cerca de 1,5×.
+            Aceitável, mas se o cliente mandar versões maiores, troque. */}
+        <PhotoCarousel
+          photos={fotos}
+          labels={{
+            carousel: t("carousel"),
+            prev: t("prevPhoto"),
+            next: t("nextPhoto"),
+            goTo: t("goToPhoto", { n: "{n}" }),
+          }}
         />
         <SectionHeader
           title={t("hoursTitle")}
-          subtitle={t("bestTimeTitle")}
           align="left"
+          className="mt-12"
         />
-        <ol className="mt-10 grid gap-6 sm:grid-cols-3">
-          {bestTime.map((slot, i) => (
-            <Reveal
-              as="li"
-              key={slot.when}
-              delay={i * 90}
-              className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card"
-            >
-              {/* 16:9 nos três, para os cards ficarem da mesma altura mesmo
-                  com legendas de comprimentos diferentes. */}
-              <Image
-                src={slotImages[i]}
-                alt={slot.alt}
-                width={800}
-                height={450}
-                sizes="(min-width: 640px) 33vw, 100vw"
-                className="aspect-[16/9] w-full object-cover"
-              />
-              <div className="flex flex-col gap-2 p-6">
-                <span className="text-xl font-bold text-brand">{slot.when}</span>
-                <span className="text-pretty leading-relaxed text-muted-foreground">
-                  {slot.what}
-                </span>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
         <div className="mt-10">
           <ReserveButton size="lg" />
         </div>

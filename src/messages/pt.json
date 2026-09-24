@@ -18,7 +18,7 @@
     "skipToContent": "Pular para o conteúdo"
   },
   "common": {
-    "reviewCta": "Deixe sua avaliação aqui",
+    "reviewCta": "Deixe sua avaliação sobre nosso restaurante",
     "talkToUs": "Falar com o restaurante",
     "makeReservation": "Fazer minha reserva",
     "reserveTable": "Reserve a sua mesa",
@@ -27,7 +27,9 @@
     "learnMore": "Saiba mais",
     "sendWhatsapp": "Chamar no WhatsApp",
     "backHome": "Voltar para o início",
-    "loading": "Carregando"
+    "loading": "Carregando",
+    "socialCta": "Siga o nosso perfil nas redes sociais",
+    "contactUsCta": "Fale conosco"
   },
   "home": {
     "hero": {
@@ -41,27 +43,37 @@
       "slides": [
         {
           "title": "Sabor, qualidade e tradição para o seu almoço no Centro de Santos.",
-          "subtitle": "Há {years} anos, transformamos o seu almoço em um momento irresistível e inesquecível. Um ambiente acolhedor e premium, onde a suculência das carnes nobres e o nosso atendimento impecável esperam por você."
+          "subtitle": "Há {years} anos, levamos sabor, variedade e qualidade ao coração de Santos. Nosso buffet oferece uma seleção completa para todos os gostos, com opções de proteínas, massas, peixes, carnes preparadas na brasa e muito mais, sempre com cuidado no preparo e ingredientes selecionados. Em um ambiente climatizado e acolhedor, recebemos você de segunda a sexta com um buffet completo e sempre quentinho, servido a partir das 11h."
         },
         {
           "title": "Carnes no ponto, direto da brasa.",
-          "subtitle": "Cortes selecionados fatiados na hora, peixes nobres e a ilha de massas preparada na sua frente. O churrasco que fez a fama da casa."
+          "subtitle": "Para quem aprecia um bom churrasco, nossa brasa é destaque de segunda a sexta. Servimos cortes selecionados como cupim, maminha, picanha e fraldinha, preparados no ponto certo para preservar sabor, suculência e aquele toque especial que só a brasa proporciona."
+        },
+        {
+          "title": "Variedade e sabor de segunda a sexta.",
+          "subtitle": "De segunda a sexta, uma grande variedade de sabores espera por você. A partir das 11h, nosso buffet é servido sempre fresquinho, quentinho e preparado com todo cuidado para tornar o seu almoço ainda mais especial. Ao longo da semana, o cardápio ganha novas opções, trazendo ainda mais variedade para o nosso réchaud."
+        },
+        {
+          "title": "Sua massa, do seu jeito.",
+          "subtitle": "Na nossa Ilha de Massas, você encontra diferentes opções de massas e molhos para montar o prato do seu jeito. Escolha suas combinações favoritas e aproveite uma experiência preparada na hora, com muito sabor e variedade."
+        },
+        {
+          "title": "Guarde um espaço para a sobremesa.",
+          "subtitle": "Para finalizar o seu almoço, nada melhor do que um toque doce. Nosso tradicional pudim de leite é um dos grandes favoritos da casa: cremoso, geladinho e acompanhado de uma calda irresistível. Além dele, você encontra uma variedade de tortas e sobremesas para encerrar sua experiência com ainda mais sabor."
         },
         {
           "title": "O almoço à altura do seu dia.",
           "subtitle": "Salão amplo, climatizado e silencioso o bastante para a conversa que importa. No coração do Centro Histórico."
-        },
-        {
-          "title": "Guarde um espaço para a sobremesa.",
-          "subtitle": "Impossível pedir um pedaço só. O pudim de leite é a nossa sobremesa mais amada: cremoso, geladinho e com aquela calda perfeita. Temos variedades de tortas e sobremesas para você fechar seu almoço com chave de ouro."
         }
       ]
     },
     "gastronomia": {
       "eyebrow": "A experiência",
-      "cta": "Conheça a experiência",
+      "cta": "Conheça nossa história",
       "title": "Uma experiência completa à sua espera",
-      "subtitle": "Churrasco na brasa, peixes selecionados, massas preparadas na hora e um buffet completo, com sabores que fazem daqui uma experiência única no Centro."
+      "subtitle": [
+        "Churrasco na brasa, peixes selecionados, massas preparadas na hora e um buffet completo, com sabores que fazem daqui uma experiência única no Centro."
+      ]
     },
     "galeria": {
       "eyebrow": "Galeria",
@@ -74,8 +86,11 @@
       "subtitle": "Mais de 1.200 avaliações de quem volta sempre."
     },
     "cta": {
-      "title": "O rechaud abre às 11h. Recém-servido, fumegante, completo.",
-      "subtitle": "Nosso rechaud é servido a partir das 11h. Uma experiência completa com uma grande variedade de pratos recém-preparados e na temperatura perfeita. Chegue cedo para aproveitar todas as opções do nosso rechaud recém-servido, ou venha após as 13h30 se o seu objetivo é curtir um salão mais tranquilo.",
+      "title": "Tudo pronto para tornar o seu almoço ainda melhor",
+      "subtitle": [
+        "Nosso rechaud é servido a partir das 11h, uma experiência completa com uma grande variedade de pratos recém-preparados e na temperatura perfeita.",
+        "Chegue cedo para aproveitar todas as opções do nosso rechaud recém-servido, das 11h às 12h, ou venha das 13h às 14h30 se o seu objetivo é curtir um salão mais tranquilo."
+      ],
       "button": "Horários & Reservas"
     }
   },
@@ -83,15 +98,19 @@
     "title": "Mais que um almoço. Um ritual do Centro de Santos.",
     "metaDescription": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu refúgio no Centro Histórico de Santos: salão amplo, elegante e discreto, com churrasco na brasa, peixes nobres e massas preparadas na hora.",
     "subtitle": "O verdadeiro sabor do seu almoço no Centro de Santos.",
-    "lead": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu verdadeiro refúgio. Muito mais do que uma refeição, entregamos uma <b>experiência de conforto absoluto</b>: um salão amplo, elegante e discreto, pensado em cada detalhe para acolher desde uma pausa merecida até grandes almoços de negócios. Aqui, a tradição da nossa família encontra o rigor que o seu paladar exige.",
+    "lead": [
+      "Há {years} anos no coração do Centro de Santos, o Fogão de Ouro constrói sua história unindo tradição, variedade e cuidado em cada detalhe.",
+      "Com um cardápio diversificado e opções que se renovam ao longo da semana, o restaurante oferece uma experiência completa para quem valoriza boa comida e praticidade no dia a dia.",
+      "O salão amplo, elegante e discreto foi pensado para proporcionar conforto em todos os momentos, seja em um almoço tranquilo, em família ou em encontros e reuniões."
+    ],
     "practice": {
       "title": "O que faz o almoço aqui ser diferente",
-      "intro": "O ponto de encontro de quem exige excelência. Transformamos o seu almoço com um salão acolhedor e <b>100% renovado</b>, acompanhado de uma fartura irresistível.",
+      "intro": "O Fogão de Ouro reúne diferentes opções para quem busca um almoço completo e variado:",
       "items": [
-        "Churrasco de verdade. Picanha, cupim, maminha e cortes selecionados, fatiados na hora, direto da brasa",
-        "Peixes e frutos do mar escolhidos a dedo, toda semana.",
-        "Ilha de massas preparada na hora, na sua frente. Você escolhe a massa, os ingredientes e o molho",
-        "Buffet completo com saladas frescas, pratos quentes e uma grande variedade de massas.",
+        "Churrasco de verdade com cortes selecionados, fatiados na hora diretamente na brasa",
+        "Peixes e frutos do mar fresquinhos, escolhidos a dedo",
+        "Você escolhe a massa, que é preparada com ingredientes e molho de sua preferência na hora",
+        "Buffet completo com saladas e frutas frescas, pratos quentes e uma grande variedade de massas no rechaud",
         "Variedade de sobremesas e aquele cafezinho para fechar o seu almoço com chave de ouro.",
         "Salão amplo, climatizado e silencioso o bastante para a conversa que importa"
       ]
@@ -121,18 +140,18 @@
     },
     "timing": {
       "title": "O melhor momento para você",
-      "intro": "Servimos de segunda a sexta, das 11h às 15h. Cada horário tem o seu clima:",
+      "intro": "Servimos de segunda a sexta, das 11h às 15h, cada horário tem o seu clima",
       "items": [
-        "11h às 12h. Rechaud recém-posto e mesa à escolha",
-        "12h às 13h. O horário de pico, salão cheio e movimentado",
-        "13h às 14h30. Salão mais tranquilo, no ritmo do seu almoço"
+        "11h às 12h — Rechaud recém-posto e mesa à escolha",
+        "12h às 13h — O horário de pico, salão cheio e movimentado",
+        "13h às 14h30 — Salão mais tranquilo, no ritmo do seu almoço"
       ],
-      "note": "O salão enche entre meio-dia e uma da tarde. Chegue antes das 12h ou depois das 13h e você almoça com mais calma — a comida é a mesma do primeiro ao último minuto."
+      "note": "O salão enche entre meio-dia e uma da tarde. Chegue antes das 12h ou depois das 13h e você almoça com mais calma."
     },
     "whyFullService": {
-      "title": "A brasa, buffet variado e a massa todos os dias.",
+      "title": "A brasa, buffet variado e a massa de segunda a sexta.",
       "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana, escolhida pessoalmente, toda semana, pelo dono da casa.",
-      "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente. Completam a mesa as saladas frescas, os pratos quentes e as sobremesas: torta holandesa, pudim, petit gâteau. E o café que fecha a sua hora de almoço."
+      "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente."
     },
     "contactCta": {
       "title": "Reserve a sua mesa",
@@ -155,7 +174,7 @@
   },
   "gastronomia": {
     "title": "Nossa Gastronomia",
-    "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo. Todos os dias.",
+    "subtitle": "Churrasco na brasa, peixes nobres, ilha de massas e o buffet completo. De segunda a sexta.",
     "empty": "Em breve, novidades por aqui.",
     "ctaTitle": "Tudo isso espera por você a partir das 11h.",
     "ctaButton": "Fazer minha reserva",
@@ -193,25 +212,7 @@
     "metaDescription": "Segunda a sexta, das 11h às 15h, no Centro Histórico de Santos. Salão de 180 lugares para confraternizações, almoços de diretoria e eventos corporativos.",
     "subtitle": "Segunda a sexta, das 11h às 15h.",
     "hoursTitle": "Segunda a sexta, das 11h às 15h",
-    "bestTimeTitle": "O melhor momento para você",
     "salaoAlt": "Salão do Fogão de Ouro com painel de mosaico, mesas de madeira e adega ao fundo",
-    "bestTime": [
-      {
-        "when": "11h às 12h",
-        "what": "Rechaud recém-posto e mesa à escolha.",
-        "alt": "Buffet de saladas e pratos frios recém-montado no Fogão de Ouro"
-      },
-      {
-        "when": "12h às 13h",
-        "what": "O horário de pico: salão cheio e movimentado.",
-        "alt": "Cliente servindo-se no rechaud do Fogão de Ouro"
-      },
-      {
-        "when": "13h às 14h30",
-        "what": "Salão mais tranquilo, no ritmo do seu almoço.",
-        "alt": "Picanha na brasa sendo fatiada no Fogão de Ouro"
-      }
-    ],
     "groupsTitle": "Seu evento no salão de 180 lugares",
     "groupsCopy": "Confraternizações de equipe, almoços de diretoria e eventos corporativos, no coração do Centro Histórico.",
     "groupsMessage": "Olá! Gostaria de informações sobre reserva para grupos e eventos no Fogão de Ouro.",
@@ -221,7 +222,38 @@
     "accessLabel": "Acesso",
     "access": "A poucos passos da Bolsa do Café e do Museu do Café",
     "addressLabel": "Endereço",
-    "hoursLabel": "Horário"
+    "hoursLabel": "Horário",
+    "headerAlt": "Salão do Fogão de Ouro com mesas postas, no Centro Histórico de Santos",
+    "carousel": "Fotos do salão e do serviço",
+    "prevPhoto": "Foto anterior",
+    "nextPhoto": "Próxima foto",
+    "goToPhoto": "Ir para a foto {n}",
+    "photos": [
+      {
+        "image": "/ambiente/salao.webp",
+        "alt": "Salão do Fogão de Ouro com painel de mosaico, mesas de madeira e adega ao fundo"
+      },
+      {
+        "image": "/ambiente/horario-11h.webp",
+        "alt": "Buffet de saladas e pratos frios recém-montado no Fogão de Ouro"
+      },
+      {
+        "image": "/ambiente/horario-11h30.webp",
+        "alt": "Cliente servindo-se no rechaud do Fogão de Ouro"
+      },
+      {
+        "image": "/ambiente/picanha-na-brasa.webp",
+        "alt": "Picanha na brasa sendo fatiada no Fogão de Ouro"
+      },
+      {
+        "image": "/ambiente/vinhos.webp",
+        "alt": "Garrafas da carta de vinhos do Fogão de Ouro"
+      },
+      {
+        "image": "/ambiente/buffet.webp",
+        "alt": "Cubas do buffet do Fogão de Ouro, recém-montadas"
+      }
+    ]
   },
   "contact": {
     "title": "Estamos no coração do Centro Histórico",

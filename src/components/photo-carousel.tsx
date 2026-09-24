@@ -7,21 +7,26 @@ import {
   type CarouselLabels,
 } from "@/components/ui/carousel";
 
-export type PastaPhoto = { image: string; alt: string };
+export type CarouselPhoto = { image: string; alt: string };
 
 /**
- * As fotos que abrem a seção de massas.
+ * Carrossel de fotos 16:9.
  *
  * A mecânica de deslize mora em `ui/carousel.tsx` desde que a carta de vinhos
  * passou a precisar dela com outro conteúdo dentro. Aqui fica só o que é
- * específico de foto: o formato 16/9, o `priority` na primeira e o `lazy` nas
+ * específico de FOTO: o formato 16/9, o `priority` na primeira e o `lazy` nas
  * outras.
+ *
+ * Nasceu como `PastaCarousel`, dentro de `components/cardapio/`. Em 24/09 a
+ * página de horários passou a querer o mesmo comportamento com outro assunto,
+ * e o nome virou mentira antes do código: nada aqui sabe o que é massa.
+ * Promovido em vez de duplicado.
  */
-export function PastaCarousel({
+export function PhotoCarousel({
   photos,
   labels,
 }: {
-  photos: PastaPhoto[];
+  photos: CarouselPhoto[];
   labels: CarouselLabels;
 }) {
   return (

@@ -5,7 +5,7 @@ import { MenuSection } from "@/components/cardapio/menu-section";
 import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
 import { DishRow } from "@/components/cardapio/dish-row";
-import { PastaCarousel } from "@/components/cardapio/pasta-carousel";
+import { PhotoCarousel } from "@/components/photo-carousel";
 import { PastaBuilder } from "@/components/cardapio/pasta-builder";
 import { DrinkGroupList } from "@/components/cardapio/drink-list";
 import { DessertList } from "@/components/cardapio/dessert-list";
@@ -147,7 +147,7 @@ export default async function CardapioPage({
         subtitle={t("pastaNote")}
       >
         <div className="mt-8">
-          <PastaCarousel
+          <PhotoCarousel
             photos={pastaPhotos.map((f) => ({
               image: f.photo,
               alt: t("dishImageAlt", { name: f.name }),
