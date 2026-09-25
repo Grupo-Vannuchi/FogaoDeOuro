@@ -139,10 +139,13 @@ export async function PastaBuilder() {
                     ))}
                   </ul>
                 ) : (
-                  <p
-                    className="mt-2 text-pretty leading-relaxed"
-                    style={{ color: TEXTO_SOLTO_APOIO }}
-                  >
+                  // Mesmo cartão do passo que tem opções, a pedido do cliente
+                  // em 25/09: antes a nota caía solta sobre o `MenuBackdrop`
+                  // em `TEXTO_SOLTO_APOIO`, e um passo com lista branca ao
+                  // lado de um passo sem nada parecia inacabado. Dentro de
+                  // `bg-card` vale `text-card-foreground` — as constantes de
+                  // texto solto são para quem cai direto sobre o fundo.
+                  <p className="mt-4 text-pretty rounded-2xl border border-border bg-card px-4 py-4 leading-relaxed text-card-foreground sm:px-6">
                     {passo.nota}
                   </p>
                 )}

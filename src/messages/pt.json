@@ -43,7 +43,7 @@
       "slides": [
         {
           "title": "Sabor, qualidade e tradição para o seu almoço no Centro de Santos.",
-          "subtitle": "Há {years} anos a mesma promessa: buffet completo e sempre quentinho, com carnes na brasa, peixes e massas feitas na hora."
+          "subtitle": "Há {years} anos a mesma qualidade: buffet completo e sempre quentinho, com carnes na brasa, peixes e massas feitas na hora."
         },
         {
           "title": "A brasa é a assinatura da casa.",
@@ -51,19 +51,19 @@
         },
         {
           "title": "Cinco dias, nunca o mesmo almoço.",
-          "subtitle": "A partir das 11h o réchaud está fumegando, e o cardápio muda ao longo da semana: o almoço de terça não é o mesmo de quinta."
+          "subtitle": "A partir das 11h, o buffet está pronto para receber você com pratos quentinhos e um cardápio que se renova ao longo da semana, trazendo novas opções e sabores a cada dia."
         },
         {
           "title": "Sua massa, feita na hora, do seu jeito.",
-          "subtitle": "Você escolhe a massa, os ingredientes e o molho, e a gente prepara na sua frente, na frigideira, até sair fumegando no seu prato."
+          "subtitle": "Você escolhe a massa, os ingredientes e o molho, e a gente prepara na sua frente, na frigideira, do seu jeito"
         },
         {
           "title": "Deixe um espaço para o pudim.",
-          "subtitle": "O pudim de leite é o xodó da casa: cremoso, geladinho e com calda. Ao lado dele, tortas e doces para fechar o almoço em alta."
+          "subtitle": "O pudim de leite é o xodó da casa: cremoso, geladinho e com calda. Ao lado dele, tortas e doces para fechar o almoço com chave de ouro"
         },
         {
-          "title": "Um salão à altura da conversa.",
-          "subtitle": "Amplo, climatizado e silencioso o bastante para a conversa que importa, no coração do Centro Histórico de Santos."
+          "title": "Um espaço pensado para seu conforto",
+          "subtitle": "Um salão, climatizado e silencioso o bastante para a conversa ou reuniões na hora do seu almoço, estamos localizados no coração do Centro Histórico de Santos."
         }
       ]
     },
@@ -73,7 +73,8 @@
       "title": "Uma experiência completa à sua espera",
       "subtitle": [
         "Mais do que um almoço, oferecemos uma experiência pensada para unir variedade, praticidade e sabor em um ambiente agradável e climatizado.",
-        "Nosso buffet traz opções diferentes ao longo da semana, sempre com diversidade para que cada visita tenha algo novo para descobrir. Além do self-service, você também pode aproveitar carnes preparadas na brasa, montar sua própria combinação na nossa Ilha de Massas e finalizar a refeição com uma seleção especial de sobremesas.",
+        "Nosso buffet traz opções diferentes ao longo da semana, sempre com diversidade para que cada visita tenha algo novo para descobrir.",
+        "Além do self-service, você também pode aproveitar carnes preparadas na brasa, montar sua própria combinação na nossa Ilha de Massas e finalizar a refeição com uma seleção especial de sobremesas.",
         "Tudo isso com a praticidade de escolher o que quiser, montar o seu prato do seu jeito e aproveitar cada momento com conforto e tranquilidade."
       ]
     },
@@ -113,8 +114,8 @@
         "Peixes e frutos do mar fresquinhos, escolhidos a dedo",
         "Você escolhe a massa, que é preparada com ingredientes e molho de sua preferência na hora",
         "Buffet completo com saladas e frutas frescas, pratos quentes e uma grande variedade de massas no rechaud",
-        "Variedade de sobremesas e aquele cafezinho para fechar o seu almoço com chave de ouro.",
-        "Salão amplo, climatizado e silencioso o bastante para a conversa que importa"
+        "Diversidade de sobremesas e aquele cafezinho para fechar o seu almoço com chave de ouro.",
+        "Salão amplo, climatizado e silencioso o bastante para a conversa"
       ]
     },
     "salao": {
@@ -130,7 +131,7 @@
     },
     "audience": {
       "title": "Tradição, conforto e sabor incomparável",
-      "intro": "Somos o endereço onde a <b>excelência</b> nos trouxe até aqui.",
+      "intro": "A nossa <b>excelência</b> e tradição nos trouxe até aqui:",
       "items": [
         "{years} anos servindo o Centro de Santos",
         "4,5 ★ em mais de 1.200 avaliações no Google",
@@ -218,6 +219,7 @@
     "groupsTitle": "Seu evento no salão de 180 lugares",
     "groupsCopy": "Confraternizações de equipe, almoços de diretoria e eventos corporativos, no coração do Centro Histórico.",
     "groupsMessage": "Olá! Gostaria de informações sobre reserva para grupos e eventos no Fogão de Ouro.",
+    "groupsButton": "Reserve nosso espaço",
     "practicalTitle": "Informações práticas",
     "paymentsLabel": "Pagamentos",
     "payments": "Cartões de crédito e débito, VR e VA",
@@ -232,28 +234,20 @@
     "goToPhoto": "Ir para a foto {n}",
     "photos": [
       {
-        "image": "/ambiente/salao.webp",
-        "alt": "Salão do Fogão de Ouro com painel de mosaico, mesas de madeira e adega ao fundo"
+        "image": "/ambiente/salao-mosaico.webp",
+        "alt": "Painel de mosaico, prateleiras de louça e mesas postas no salão do Fogão de Ouro"
       },
       {
-        "image": "/ambiente/horario-11h.webp",
-        "alt": "Buffet de saladas e pratos frios recém-montado no Fogão de Ouro"
+        "image": "/ambiente/salao-luminarias-verdes.webp",
+        "alt": "Mesas postas sob as luminárias verdes, com a parede de pedra do Centro Histórico"
       },
       {
-        "image": "/ambiente/horario-11h30.webp",
-        "alt": "Cliente servindo-se no rechaud do Fogão de Ouro"
+        "image": "/ambiente/salao-balcao.webp",
+        "alt": "Balcão de pedra com pratos e taças, ao lado das mesas do salão do Fogão de Ouro"
       },
       {
-        "image": "/ambiente/picanha-na-brasa.webp",
-        "alt": "Picanha na brasa sendo fatiada no Fogão de Ouro"
-      },
-      {
-        "image": "/ambiente/vinhos.webp",
-        "alt": "Garrafas da carta de vinhos do Fogão de Ouro"
-      },
-      {
-        "image": "/ambiente/buffet.webp",
-        "alt": "Cubas do buffet do Fogão de Ouro, recém-montadas"
+        "image": "/ambiente/salao-luminaria-vinhos.webp",
+        "alt": "Luminária de vidro verde sobre a prateleira de vinhos do Fogão de Ouro"
       }
     ]
   },

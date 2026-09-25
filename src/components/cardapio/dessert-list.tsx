@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { Cake } from "lucide-react";
+import { Cake, Package } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { desserts, formatBRL } from "@/config/menu";
-import { TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 
 /**
  * As sobremesas, com preço por item.
@@ -74,12 +73,14 @@ export async function DessertList() {
         {t("dessertsBirthday")}
       </p>
 
-      {/* Fora do `<ul>`, solta direto sobre `MenuBackdrop` — daí
-          `TEXTO_SOLTO_APOIO` e não `text-muted-foreground`, que é medido
-          contra o creme do site e não contra o fundo do cardápio. A cor vem
-          importada porque ela muda junto com o fundo; ver o docblock de
-          `MenuBackdrop` para a medição da versão no ar. */}
-      <p className="mt-4 text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
+      {/* Mesma superfície da cortesia acima, a pedido do cliente em 25/09.
+          Era texto solto sobre o `MenuBackdrop`, em `TEXTO_SOLTO_APOIO`; as
+          duas notas fecham a seção e sendo irmãs visuais leem como um par, em
+          vez de uma sobrar. Dentro de `bg-card`, então `text-card-foreground`
+          — as constantes de texto solto valem para quem cai direto sobre o
+          fundo do cardápio, e aqui já não é o caso. */}
+      <p className="mt-4 flex items-center gap-3 rounded-2xl border border-brand/30 bg-card px-5 py-4 text-pretty text-base font-medium text-card-foreground sm:px-6">
+        <Package className="size-5 shrink-0 text-brand" aria-hidden />
         {t("dessertsTakeaway")}
       </p>
     </>

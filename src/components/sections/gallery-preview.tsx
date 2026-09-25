@@ -29,12 +29,11 @@ export async function GalleryPreview({ locale }: { locale: Locale }) {
   return (
     <Section id="galeria">
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-        <SectionHeader
-          eyebrow={t("eyebrow")}
-          title={t("title")}
-          subtitle={t("subtitle")}
-          align="left"
-        />
+        {/* Só a sobrancelha: o título ("O que sai do buffet") e o apoio
+            ("Carnes na brasa…") saíram a pedido do cliente em 25/09. As chaves
+            `home.galeria.title` e `.subtitle` ficaram no catálogo de
+            propósito — ele está iterando na copy e pode querê-las de volta. */}
+        <SectionHeader eyebrow={t("eyebrow")} align="left" />
         <Link
           href="/galeria"
           className={buttonVariants({ variant: "outline", size: "sm" })}

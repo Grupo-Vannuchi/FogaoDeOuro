@@ -85,12 +85,22 @@ export function MenuSection({
   photo,
   title,
   subtitle,
+  note,
   children,
 }: {
   id?: string;
   photo?: { src: string; alt: string };
   title: string;
   subtitle?: string;
+  /**
+   * Linha curta impressa DENTRO da chapa, abaixo do subtítulo.
+   *
+   * Existe para o horário do cardápio da semana. Ele morava solto embaixo das
+   * grades, e o cliente pediu em 25/09 que entrasse na chapa: quem lê "de
+   * segunda a sexta" quer isso junto do letreiro que promete os cinco dias, e
+   * não trinta linhas abaixo dele.
+   */
+  note?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -172,6 +182,18 @@ export function MenuSection({
               style={{ color: TEXTO_SOLTO_APOIO }}
             >
               {subtitle}
+            </p>
+          ) : null}
+          {note ? (
+            // Um degrau ACIMA do subtítulo em peso e ABAIXO em tamanho: é
+            // dado objetivo (dias e horas), não prosa. `TEXTO_SOLTO` e não o
+            // tom de apoio, pelo mesmo motivo do título — ver o comentário do
+            // subtítulo logo acima sobre cor sólida contra este fundo.
+            <p
+              className="text-sm font-medium uppercase tracking-widest"
+              style={{ color: TEXTO_SOLTO }}
+            >
+              {note}
             </p>
           ) : null}
         </div>

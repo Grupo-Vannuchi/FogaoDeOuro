@@ -94,7 +94,12 @@ export function SectionHeader({
   className,
 }: {
   eyebrow?: string;
-  title: string;
+  /**
+   * Opcional desde 25/09, para a prévia da galeria: o cliente pediu a seção só
+   * com a sobrancelha e o botão. Sem título o `<h2>` não é renderizado — uma
+   * seção sem cabeçalho é legítima, um `<h2>` vazio não.
+   */
+  title?: string;
   /** Uma string vira um parágrafo; uma lista vira um por item. */
   subtitle?: string | string[];
   align?: "center" | "left";
@@ -126,15 +131,17 @@ export function SectionHeader({
           {eyebrow}
         </span>
       ) : null}
-      <h2
-        className={cn(
-          "max-w-2xl text-balance font-bold tracking-tight",
-          corpo.title,
-          cor.title,
-        )}
-      >
-        {title}
-      </h2>
+      {title ? (
+        <h2
+          className={cn(
+            "max-w-2xl text-balance font-bold tracking-tight",
+            corpo.title,
+            cor.title,
+          )}
+        >
+          {title}
+        </h2>
+      ) : null}
     </>
   );
 

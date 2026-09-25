@@ -172,7 +172,7 @@ export default async function AboutPage({
               aria-hidden
               className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-white/10 blur-2xl"
             />
-            <div className="relative mx-auto max-w-2xl text-center">
+            <div className="relative max-w-2xl">
               <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
                 {t("contactCta.title")}
               </h2>
@@ -186,7 +186,7 @@ export default async function AboutPage({
               <p className="mt-6 text-lg font-semibold">
                 {t("contactCta.tagline")}
               </p>
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/contato"
                   className={buttonVariants({

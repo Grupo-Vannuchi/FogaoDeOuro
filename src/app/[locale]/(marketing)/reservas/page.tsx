@@ -100,12 +100,13 @@ export default async function ReservasPage({
             goTo: t("goToPhoto", { n: "{n}" }),
           }}
         />
-        <SectionHeader
-          title={t("hoursTitle")}
-          align="left"
-          className="mt-12"
-        />
-        <div className="mt-10">
+        {/* O letreiro "Segunda a sexta, das 11h às 15h" saiu daqui em 25/09
+            a pedido do cliente. A informação não se perdeu: ela continua no
+            subtítulo do cabeçalho desta página e no quadro de Informações
+            práticas lá embaixo, que é onde se vai conferir horário. Repetida
+            três vezes na mesma página, virava ruído. A chave `hoursTitle`
+            segue viva — o quadro a consome. */}
+        <div className="mt-12">
           <ReserveButton size="lg" />
         </div>
       </Section>
@@ -204,7 +205,15 @@ export default async function ReservasPage({
             {t("groupsCopy")}
           </p>
           <div className="mt-8 flex justify-center">
-            <ReserveButton size="lg" message={t("groupsMessage")} />
+            {/* Rótulo próprio, e não o `makeReservation` comum: esta seção
+                vende o SALÃO para um evento, não uma mesa para o almoço, e o
+                mesmo botão em dois papéis diferentes confunde o que se está
+                pedindo. A chave comum segue servindo os outros usos. */}
+            <ReserveButton
+              size="lg"
+              message={t("groupsMessage")}
+              label={t("groupsButton")}
+            />
           </div>
         </div>
       </Section>
