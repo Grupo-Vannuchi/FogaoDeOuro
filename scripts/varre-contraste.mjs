@@ -42,7 +42,23 @@
  * entre a medição e a foto, e os pontos caem noutro lugar. Defesa: esperar
  * `img.complete` em todas antes de medir.
  *
- * E uma quarta, que não é do script: **o cache de imagens do Next**. Trocar um
+ * **4. Confiar numa guarda de COR para descartar sobreposição.** O botão
+ * flutuante do WhatsApp cobre texto, e a defesa era pular o ponto cuja cor
+ * fosse exatamente o verde dele. Só que a borda arredondada é anti-serrilhada
+ * e a `shadow-lg` esmaece: a rampa entre o verde e o fundo passa por dezenas
+ * de tons, nenhum deles igual ao verde. Em 25/09 isso produziu uma reprova de
+ * `4,47` num texto que, medido nos outros pontos de rolagem, dava `5,11` — e
+ * quase rendeu um token escurecido para corrigir uma tela que estava certa.
+ * Aumentar a tolerância da cor não resolve: a rampa termina no próprio fundo,
+ * então qualquer tolerância larga o bastante para pegar a sombra também
+ * descarta o fundo legítimo. Defesa: descartar por GEOMETRIA. Elemento
+ * `fixed`/`sticky` COM `z-index` positivo e que não seja ancestral do medido é
+ * sobreposição; o retângulo dele, folgado para a sombra, vira zona morta. O
+ * `z-index` é o que separa sobreposição de fundo full-bleed: a lavagem do
+ * cardápio também é `fixed inset-0`, mas em `-z-10`, e é justamente o fundo a
+ * medir.
+ *
+ * E uma quinta, que não é do script: **o cache de imagens do Next**. Trocar um
  * arquivo em `public/` não invalida as versões otimizadas em
  * `.next/dev/cache/images`. Medir sem limpar mede a imagem antiga — e cada
  * largura do `srcset` é uma entrada de cache diferente, então conferir uma só
@@ -74,8 +90,14 @@ const LARGURAS = [
   ["celular", 390, 844],
 ];
 
-/** O botão flutuante do WhatsApp cobre texto: é sobreposição, não contraste. */
-const WHATSAPP = [37, 211, 102];
+/**
+ * Folga, em px, somada ao retângulo de cada sobreposição `fixed`/`sticky`.
+ *
+ * A sombra pinta FORA do retângulo, e é justamente a rampa dela que enganou a
+ * guarda de cor (armadilha 4). `shadow-lg` do Tailwind desloca 10px e desfoca
+ * 15px, então 24px cobre a sombra inteira com margem.
+ */
+const FOLGA_SOBREPOSICAO = 24;
 
 const luminancia = ([r, g, b]) => {
   const c = [r, g, b]
@@ -136,8 +158,37 @@ for (const rota of rotas) {
         .catch(() => {});
       await pagina.waitForTimeout(400);
 
-      const alvos = await pagina.evaluate(() => {
+      const alvos = await pagina.evaluate((folga) => {
         const saida = [];
+
+        // Armadilha 4: sobreposição se descarta por geometria, não por cor.
+        // `elementFromPoint` não basta — ele devolve quem está embaixo quando a
+        // sobreposição tem `pointer-events: none`, e ignora a sombra, que pinta
+        // fora do retângulo do elemento.
+        // `fixed` sozinho não serve de critério: a lavagem do cardápio é
+        // `fixed inset-0` e cobriria a tela toda — mas ela fica ATRÁS, em
+        // `-z-10`, e é o fundo que a varredura quer medir. Quem pinta por cima
+        // precisa se levantar do empilhamento, então o critério é o `z-index`
+        // positivo. (Primeira tentativa deste conserto usou só a posição e
+        // zerou as 1200 amostras do cardápio: uma porta que não mede nada
+        // aprova tudo.)
+        const sobreposicoes = [];
+        for (const el of document.querySelectorAll("body *")) {
+          const estilo = getComputedStyle(el);
+          const pos = estilo.position;
+          if (pos !== "fixed" && pos !== "sticky") continue;
+          if (!(Number(estilo.zIndex) > 0)) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) continue;
+          sobreposicoes.push({
+            el,
+            topo: r.top - folga,
+            base: r.bottom + folga,
+            esq: r.left - folga,
+            dir: r.right + folga,
+          });
+        }
+
         const seletor =
           "main p, main h1, main h2, main h3, main h4, main span, main li, main a, footer p, footer a, footer h3";
         for (const el of document.querySelectorAll(seletor)) {
@@ -155,12 +206,23 @@ for (const rota of rotas) {
           if (base - topo < 6 || dir - esq < 6) continue;
 
           const ym = (topo + base) / 2;
+
+          // Uma sobreposição que EMBRULHA o medido (cabeçalho grudado, por
+          // exemplo) é o fundo dele, não estorvo: essas não valem como zona
+          // morta, senão o próprio texto delas nunca seria medido.
+          const zonasMortas = sobreposicoes.filter((s) => !s.el.contains(el));
+
           const pontos = [];
           for (let k = 1; k <= 5; k++) {
             const x = esq + ((dir - esq) * k) / 6;
             // Armadilha 1: o ponto tem de pertencer a ESTE elemento.
             const dono = document.elementFromPoint(x, ym);
             if (dono !== el && !el.contains(dono)) continue;
+            // Armadilha 4: e não pode cair na sombra de uma sobreposição.
+            const coberto = zonasMortas.some(
+              (s) => x >= s.esq && x <= s.dir && ym >= s.topo && ym <= s.base,
+            );
+            if (coberto) continue;
             pontos.push([x, ym]);
           }
           if (pontos.length) {
@@ -172,7 +234,7 @@ for (const rota of rotas) {
           }
         }
         return saida;
-      });
+      }, FOLGA_SOBREPOSICAO);
       if (!alvos.length) continue;
 
       const esconde = await pagina.addStyleTag({
@@ -194,7 +256,6 @@ for (const rota of rotas) {
         for (const [x, y] of alvo.pontos) {
           if (x < 0 || y < 0 || x >= info.width || y >= info.height) continue;
           const fundo = pixel(x, y);
-          if (fundo.every((v, i) => v === WHATSAPP[i])) continue;
 
           amostras++;
           const r = razao(cor, fundo);
