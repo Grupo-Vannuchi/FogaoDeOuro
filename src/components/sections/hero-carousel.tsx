@@ -39,6 +39,18 @@ export type HeroCarouselLabels = {
  * prev/next arrows and dot indicators. Slides cross-fade; autoplay pauses on
  * hover/focus and is disabled under `prefers-reduced-motion`.
  */
+/**
+ * Quanto tempo cada slide fica na tela antes de virar sozinho.
+ *
+ * 7s desde 25/09/2026, a pedido do cliente; eram 6s. Os apoios dos slides têm
+ * entre 109 e 170 caracteres, e o mais longo ocupa cinco linhas no celular —
+ * 6s era pouco para ler o texto e ainda olhar a foto.
+ *
+ * O relógio só corre quando ninguém está interagindo: o autoplay para no
+ * `hover`, no foco do teclado e quando o sistema pede menos movimento.
+ */
+const PERMANENCIA_MS = 7000;
+
 export function HeroCarousel({
   slides,
   eyebrow,
@@ -88,7 +100,10 @@ export function HeroCarousel({
   useEffect(() => {
     if (paused || count <= 1) return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), 6000);
+    const id = window.setInterval(
+      () => setIndex((i) => (i + 1) % count),
+      PERMANENCIA_MS,
+    );
     return () => window.clearInterval(id);
   }, [paused, count]);
 
