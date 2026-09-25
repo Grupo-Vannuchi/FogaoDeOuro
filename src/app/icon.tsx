@@ -6,17 +6,25 @@ import { siteConfig } from "@/config/site";
 /**
  * Ícone raster — o FALLBACK. O favicon de verdade é `icon.svg`, ao lado.
  *
- * A marca é o "O" de Ouro, recortado do `wordmark.svg` em vetor. Substituiu o
- * fogão da logo ANTIGA em 22/09/2026, por decisão do cliente que reviu a de
- * 21/08 — até então o favicon era de uma marca aposentada, e o
- * `public/brand/README.md` chamava isso de "assimetria consciente".
+ * É o logotipo INTEIRO — "Fogão de Ouro" empilhado, com a régua "RESTAURANTE"
+ * embaixo — sobre o creme da marca. Entrou em 25/09/2026 a pedido do cliente,
+ * no lugar do monograma "O" que vigorou desde 22/09.
  *
- * **Por que o "O" e não o logotipo inteiro.** Medido, não suposto: o logotipo
- * empilhado a 16×16 vira uma mancha laranja sem forma de letra; a 32×32 os
- * traços finos se desfazem e "RESTAURANTE" some. É geometria — a logo é 1,71:1
- * e o ícone é quadrado, então sobram ~9px de altura para tipo em duas linhas.
- * O "O" é 509×494, praticamente quadrado: preenche a moldura e a forma fechada
- * sobrevive a qualquer tamanho. Era o candidato que o próprio README indicava.
+ * **O que se ganha e o que se perde, medido e não suposto.** Renderizando o
+ * `icon.svg` em cada tamanho e ampliando sem suavizar:
+ *
+ *   16×16 ... mancha; lêem-se duas linhas laranja, não as palavras
+ *   32×32 ... "Fogão" e "Ouro" legíveis; "RESTAURANTE" vira borrão
+ *   48×48 ... confortável
+ *   64×64 ... nítido
+ *
+ * O caso que importa é o de 32: a aba do navegador pede 16 CSS px, mas numa
+ * tela de densidade dupla — que é a regra hoje — o sistema busca 32 de
+ * dispositivo. Aí o nome se lê. Em 16 real (favoritos antigos, alguns
+ * leitores de feed) sobra a cor e a silhueta, que ainda identificam a casa.
+ *
+ * O `monogram-o.svg`/`.png` continuam no `public/brand/`: não são código
+ * morto, são peças da marca, e a volta atrás é trocar o caminho abaixo.
  *
  * Embutido como PNG, não como o SVG de origem, porque o satori não resolve os
  * `url(#gradient)` de que esta logo é feita. `npm run brand:rasters` regenera.
@@ -26,7 +34,7 @@ export const contentType = "image/png";
 
 export default async function Icon() {
   const symbol = await readFile(
-    join(process.cwd(), "public", "brand", "monogram-o.png"),
+    join(process.cwd(), "public", "brand", "logo.png"),
     "base64",
   );
 
@@ -42,9 +50,11 @@ export default async function Icon() {
           background: siteConfig.theme.light.background,
         }}
       >
-        {/* O PNG já vem com a folga do monograma embutida; aqui ele sangra
-            inteiro para o recorte maskable do Android nunca morder transparência. */}
-        <img src={`data:image/png;base64,${symbol}`} height={512} />
+        {/* Limitado pela LARGURA, não pela altura: o logotipo é 1,38:1, e
+            preso pela altura ele vazaria a moldura quadrada pelos lados. Os
+            26px de folga de cada lado impedem que o recorte maskable do
+            Android coma a primeira e a última letra. */}
+        <img src={`data:image/png;base64,${symbol}`} width={460} />
       </div>
     ),
     { ...size },

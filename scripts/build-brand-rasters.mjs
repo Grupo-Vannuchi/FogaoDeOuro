@@ -25,6 +25,10 @@ const jobs = [
   { from: "monogram-o.svg", to: "monogram-o.png", width: 512 },
   { from: "symbol.svg", to: "symbol.png", width: 512 },
   { from: "logo-dark.svg", to: "lockup.png", width: 1000 },
+  // Logotipo CLARO em raster: é o que `src/app/icon.tsx` e `apple-icon.tsx`
+  // embutem, desde que o favicon passou a ser a marca inteira em 25/09. O
+  // `lockup.png` ao lado é a versão escura e não serve sobre o creme.
+  { from: "logo.svg", to: "logo.png", width: 1000 },
 ];
 
 for (const { from, to, width } of jobs) {

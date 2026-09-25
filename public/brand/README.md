@@ -37,8 +37,11 @@ byte. Se o cliente entregar o vetor um dia, jogue-o direto em `logo.svg` /
 | `logo.svg` | lockup completo, cores originais (1,38:1) | rodapé |
 | `logo-dark.svg` | idem, tagline repintada de creme `#EFE9C2` | só como origem do `lockup.png` |
 | `lockup.png` | raster 1000px de `logo-dark.svg` | `src/app/[locale]/opengraph-image.tsx` |
-| `symbol.svg` | **o fogão da marca ANTIGA** | origem dos ícones |
-| `symbol.png` | raster 512px de `symbol.svg` | `src/app/icon.tsx`, `apple-icon.tsx` |
+| `logo.png` | raster 1000px de `logo.svg` (claro) | `src/app/icon.tsx`, `apple-icon.tsx` |
+| `monogram-o.svg` | o "O" de Ouro, recortado do `wordmark.svg` | nada hoje — ver abaixo |
+| `monogram-o.png` | raster 512px de `monogram-o.svg` | nada hoje — ver abaixo |
+| `symbol.svg` | **o fogão da marca ANTIGA** | nada — história |
+| `symbol.png` | raster 512px de `symbol.svg` | nada — história |
 
 Os PNG saem de `npm run brand:rasters`.
 
@@ -62,30 +65,43 @@ O site é **só tema claro** e por isso a página nunca renderiza esse cut: o ro
 usa sempre o `logo.svg`. Ele continua no repo porque o `lockup.png` é rasterizado
 a partir dele — se o lockup escuro sumir, o `npm run brand:rasters` quebra junto.
 
-## O favicon é o monograma do "O" — resolvido em 22/09/2026
+## O favicon é o logotipo inteiro — decidido em 25/09/2026
 
-`monogram-o.svg` é o **"O" de Ouro**, derivado do `wordmark.svg`: carrega só o
-path daquela letra e o único degradê que ela referencia (dos 22 do wordmark).
-É o caminho que esta própria seção recomendava — "um monograma do 'O' de Ouro
-é o candidato natural, é a letra mais distintiva da marca".
+`src/app/icon.svg` é o `logo.svg` numa moldura quadrada: mesma viewBox alargada
+para 1739×1739 com folga de 8%, e um retângulo creme `#EFE9C2` atrás. Nada foi
+recortado — o cliente pediu a marca inteira, com "RESTAURANTE" e tudo.
 
-Substituiu o fogão da logo ANTIGA, que estava aqui **por decisão explícita do
-cliente em 21/08/2026** e que ele reviu em 22/09. Até então o site tinha uma
-assimetria consciente: o favicon era de uma marca aposentada.
+É a terceira marca neste lugar. A primeira foi o fogão da logo ANTIGA, posto
+por decisão explícita do cliente em 21/08/2026 — o site carregou por um mês o
+favicon de uma marca aposentada, e o README chamava isso de assimetria
+consciente. Em 22/09 ele reviu e entrou o monograma do "O". Em 25/09 pediu o
+logotipo completo.
 
-### O logotipo inteiro foi testado e reprovou — não repita
+`monogram-o.svg`/`.png` continuam no repositório e **não são código morto**:
+são peças da marca, e voltar atrás é trocar um caminho em `icon.tsx`,
+`apple-icon.tsx` e a viewBox do `icon.svg`.
 
-Antes de trocar, o lockup completo foi renderizado nos tamanhos reais:
+### O que se perde no tamanho pequeno, medido
+
+Renderizando o `icon.svg` em cada tamanho e ampliando sem suavizar:
 
 | tamanho | resultado |
 | --- | --- |
-| 16×16 (aba do navegador) | mancha laranja, sem forma de letra |
-| 32×32 | dá para adivinhar "Fogão de Ouro", traços finos se desfazem, "RESTAURANTE" some |
+| 16×16 | mancha; lêem-se duas linhas laranja, não as palavras |
+| **32×32** | **"Fogão" e "Ouro" legíveis**; "RESTAURANTE" vira borrão |
+| 48×48 | confortável |
+| 64×64 | nítido |
 
-É geometria, não qualidade de imagem: a logo é 1,71:1 e o ícone é quadrado.
-Encaixando a largura, sobram ~9 px de altura para tipo em **duas linhas**. O
-"O" é 509×494 — praticamente quadrado, preenche a moldura, e a forma fechada
-sobrevive a qualquer tamanho.
+O caso que importa é o de 32: a aba pede 16 CSS px, mas em tela de densidade
+dupla — a regra hoje — o sistema busca 32 de dispositivo. Em 16 real (favoritos
+antigos, alguns leitores de feed) sobram a cor e a silhueta, que ainda
+identificam a casa. O monograma ganhava nesse caso extremo; o cliente preferiu
+ser reconhecido pelo nome no caso comum.
+
+📌 **Correção de um número que circulou aqui.** Esta seção afirmava que a logo
+é 1,71:1, e era sobre esse número que se apoiava o veredito de que o logotipo
+inteiro "reprovou". Medida no `viewBox` do `logo.svg` — `614 253 1499 1086` —
+ela é **1,38:1**. O aperto vertical é bem menor do que o texto antigo dizia.
 
 ⚠️ **Ao medir, não encadeie dois `resize` no mesmo pipeline do sharp** — ele
 colapsa e aplica só o último sobre o original, e você "mede" uma imagem que
@@ -103,8 +119,8 @@ O SVG estático é o que **destrava o degradê**: ele não passa pelo satori (ve
 a seção abaixo), então as referências `url(#gradiente)` funcionam. O
 `apple-icon` leva recuo porque o iOS mascara o ícone num quadrado arredondado.
 
-`symbol.svg`/`symbol.png` (o fogão) ficam no repositório: são história da marca
-e não custam nada parados.
+`symbol.svg`/`symbol.png` (o fogão) e `monogram-o.svg`/`.png` ficam no
+repositório: são história e alternativas da marca, e não custam nada parados.
 
 ## Gradientes e satori
 
