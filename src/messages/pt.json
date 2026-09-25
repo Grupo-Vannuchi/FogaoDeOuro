@@ -43,27 +43,27 @@
       "slides": [
         {
           "title": "Sabor, qualidade e tradição para o seu almoço no Centro de Santos.",
-          "subtitle": "Há {years} anos, levamos sabor, variedade e qualidade ao coração de Santos. Nosso buffet oferece uma seleção completa para todos os gostos, com opções de proteínas, massas, peixes, carnes preparadas na brasa e muito mais, sempre com cuidado no preparo e ingredientes selecionados. Em um ambiente climatizado e acolhedor, recebemos você de segunda a sexta com um buffet completo e sempre quentinho, servido a partir das 11h."
+          "subtitle": "Há {years} anos a mesma promessa: buffet completo e sempre quentinho, com carnes na brasa, peixes e massas feitas na hora."
         },
         {
-          "title": "Carnes no ponto, direto da brasa.",
-          "subtitle": "Para quem aprecia um bom churrasco, nossa brasa é destaque de segunda a sexta. Servimos cortes selecionados como cupim, maminha, picanha e fraldinha, preparados no ponto certo para preservar sabor, suculência e aquele toque especial que só a brasa proporciona."
+          "title": "A brasa é a assinatura da casa.",
+          "subtitle": "Cupim, maminha, picanha e fraldinha em cortes selecionados, fatiados na hora e servidos suculentos, direto da brasa para o prato."
         },
         {
-          "title": "Variedade e sabor de segunda a sexta.",
-          "subtitle": "De segunda a sexta, uma grande variedade de sabores espera por você. A partir das 11h, nosso buffet é servido sempre fresquinho, quentinho e preparado com todo cuidado para tornar o seu almoço ainda mais especial. Ao longo da semana, o cardápio ganha novas opções, trazendo ainda mais variedade para o nosso réchaud."
+          "title": "Cinco dias, nunca o mesmo almoço.",
+          "subtitle": "A partir das 11h o réchaud está fumegando, e o cardápio muda ao longo da semana: o almoço de terça não é o mesmo de quinta."
         },
         {
-          "title": "Sua massa, do seu jeito.",
-          "subtitle": "Na nossa Ilha de Massas, você encontra diferentes opções de massas e molhos para montar o prato do seu jeito. Escolha suas combinações favoritas e aproveite uma experiência preparada na hora, com muito sabor e variedade."
+          "title": "Sua massa, feita na hora, do seu jeito.",
+          "subtitle": "Você escolhe a massa, os ingredientes e o molho, e a gente prepara na sua frente, na frigideira, até sair fumegando no seu prato."
         },
         {
-          "title": "Guarde um espaço para a sobremesa.",
-          "subtitle": "Para finalizar o seu almoço, nada melhor do que um toque doce. Nosso tradicional pudim de leite é um dos grandes favoritos da casa: cremoso, geladinho e acompanhado de uma calda irresistível. Além dele, você encontra uma variedade de tortas e sobremesas para encerrar sua experiência com ainda mais sabor."
+          "title": "Deixe um espaço para o pudim.",
+          "subtitle": "O pudim de leite é o xodó da casa: cremoso, geladinho e com calda. Ao lado dele, tortas e doces para fechar o almoço em alta."
         },
         {
-          "title": "O almoço à altura do seu dia.",
-          "subtitle": "Salão amplo, climatizado e silencioso o bastante para a conversa que importa. No coração do Centro Histórico."
+          "title": "Um salão à altura da conversa.",
+          "subtitle": "Amplo, climatizado e silencioso o bastante para a conversa que importa, no coração do Centro Histórico de Santos."
         }
       ]
     },
@@ -72,7 +72,9 @@
       "cta": "Conheça nossa história",
       "title": "Uma experiência completa à sua espera",
       "subtitle": [
-        "Churrasco na brasa, peixes selecionados, massas preparadas na hora e um buffet completo, com sabores que fazem daqui uma experiência única no Centro."
+        "Mais do que um almoço, oferecemos uma experiência pensada para unir variedade, praticidade e sabor em um ambiente agradável e climatizado.",
+        "Nosso buffet traz opções diferentes ao longo da semana, sempre com diversidade para que cada visita tenha algo novo para descobrir. Além do self-service, você também pode aproveitar carnes preparadas na brasa, montar sua própria combinação na nossa Ilha de Massas e finalizar a refeição com uma seleção especial de sobremesas.",
+        "Tudo isso com a praticidade de escolher o que quiser, montar o seu prato do seu jeito e aproveitar cada momento com conforto e tranquilidade."
       ]
     },
     "galeria": {
@@ -89,13 +91,13 @@
       "title": "Tudo pronto para tornar o seu almoço ainda melhor",
       "subtitle": [
         "Nosso rechaud é servido a partir das 11h, uma experiência completa com uma grande variedade de pratos recém-preparados e na temperatura perfeita.",
-        "Chegue cedo para aproveitar todas as opções do nosso rechaud recém-servido, das 11h às 12h, ou venha das 13h às 14h30 se o seu objetivo é curtir um salão mais tranquilo."
+        "Chegue cedo para aproveitar todas as opções do nosso rechaud, ou venha das 13h às 14h30 se o seu objetivo é curtir um salão mais tranquilo."
       ],
       "button": "Horários & Reservas"
     }
   },
   "experiencia": {
-    "title": "Mais que um almoço. Um ritual do Centro de Santos.",
+    "title": "Mais que um almoço, um espaço para bons momentos.",
     "metaDescription": "O Fogão de Ouro foi inteiramente redesenhado para ser o seu refúgio no Centro Histórico de Santos: salão amplo, elegante e discreto, com churrasco na brasa, peixes nobres e massas preparadas na hora.",
     "subtitle": "O verdadeiro sabor do seu almoço no Centro de Santos.",
     "lead": [
@@ -150,7 +152,7 @@
     },
     "whyFullService": {
       "title": "A brasa, buffet variado e a massa de segunda a sexta.",
-      "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana, escolhida pessoalmente, toda semana, pelo dono da casa.",
+      "p1": "O churrasco é o que fez a fama da casa: <b>picanha, cupim, maminha, alcatra e cortes selecionados</b>, fatiados na hora, direto da brasa. Ao lado dele, salmão, bacalhau, camarão e a seleção da semana, escolhida pessoalmente, pelo dono da casa.",
       "p2": "Na ilha de massas você escolhe a massa, os ingredientes e o molho, e a gente prepara na hora, na sua frente."
     },
     "contactCta": {
@@ -610,7 +612,7 @@
   },
   "cardapio": {
     "title": "Cardápio da Semana",
-    "subtitle": "As opções preparadas para cada dia, de segunda a sexta.",
+    "subtitle": "As opções preparadas para cada dia estão sujeitas a alterações.",
     "metaDescription": "Confira o cardápio da semana do Fogão de Ouro: buffet por quilo e massas, de segunda a sexta, no Centro de Santos.",
     "buffetLabel": "Buffet por quilo",
     "buffetNote": "O valor é calculado pelo peso do prato que você montar, não pelo que escolher.",

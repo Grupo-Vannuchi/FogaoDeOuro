@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { MenuBackdrop, TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
+import {
+  MenuBackdrop,
+  TEXTO_SOLTO,
+  TEXTO_SOLTO_APOIO,
+} from "@/components/cardapio/menu-backdrop";
 import { MenuSection } from "@/components/cardapio/menu-section";
-import { MenuHero } from "@/components/cardapio/menu-hero";
 import { DayTabs } from "@/components/cardapio/day-tabs";
 import { DishRow } from "@/components/cardapio/dish-row";
 import { PhotoCarousel } from "@/components/photo-carousel";
@@ -44,6 +47,9 @@ export default async function CardapioPage({
   const locale = resolveLocale((await params).locale);
   setRequestLocale(locale);
   const t = await getTranslations("cardapio");
+  // `hours` vive no namespace do rodapé, que é a fonte única da frase de
+  // horário do site. Era de lá que o `MenuHero` a puxava antes de sair.
+  const tf = await getTranslations("footer");
 
   // Independentes: buscar em sequência só somaria latência.
   const [buffet, pasta] = await Promise.all([
@@ -72,7 +78,6 @@ export default async function CardapioPage({
           estava no ar). O fundo muda; `MenuBackdrop` é a fonte. */}
       <MenuBackdrop />
 
-      <MenuHero />
 
       {/* 1 — O buffet do dia. Sem foto: são dezenas de pratos que mudam toda
              semana, e nenhuma imagem representa "quarta-feira". A curva vira
@@ -124,6 +129,21 @@ export default async function CardapioPage({
             </DayTabs>
           </div>
         )}
+
+        {/* O horário, que morava no hero removido em 25/09. Aqui embaixo por
+            pedido do cliente: quem abre esta página quer ver os pratos, e o
+            horário é o que ele confere DEPOIS de decidir que quer vir.
+
+            A ressalva "Sujeito a alterações" que vinha junto no hero não foi
+            reaproveitada: o subtítulo da página agora diz isso, e a nota logo
+            abaixo explica o porquê. Repetir três vezes na mesma tela é o que
+            transforma aviso em ruído. */}
+        <p
+          className="mt-10 text-center text-base font-medium uppercase tracking-widest"
+          style={{ color: TEXTO_SOLTO }}
+        >
+          {tf("hours")}
+        </p>
 
         {/* A ressalva de que o buffet varia. Fica no FIM da seção, depois das
             grades: antes dos pratos ela leria como desculpa; depois, como

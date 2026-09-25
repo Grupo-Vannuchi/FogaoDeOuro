@@ -90,6 +90,7 @@ export function SectionHeader({
   align = "center",
   size = "md",
   tone = "claro",
+  action,
   className,
 }: {
   eyebrow?: string;
@@ -99,19 +100,22 @@ export function SectionHeader({
   align?: "center" | "left";
   size?: keyof typeof HEADER_SIZES;
   tone?: keyof typeof HEADER_TONES;
+  /**
+   * Botão ou link que pertence ao cabeçalho, renderizado ao final dele.
+   *
+   * Existe para o botão não ser irmão solto da seção. Como irmão, ele vivia
+   * numa linha `justify-between` com `sm:items-end`, alinhado pelo rodapé do
+   * bloco mais alto: com um apoio de três parágrafos isso o largava no canto
+   * inferior direito, a meia seção de distância do título que ele acompanha.
+   */
+  action?: React.ReactNode;
   className?: string;
 }) {
   const corpo = HEADER_SIZES[size];
   const cor = HEADER_TONES[tone];
 
-  return (
-    <Reveal
-      className={cn(
-        "flex flex-col gap-3",
-        align === "center" ? "items-center text-center" : "items-start",
-        className,
-      )}
-    >
+  const cabeca = (
+    <>
       {eyebrow ? (
         <span
           className={cn(
@@ -131,29 +135,50 @@ export function SectionHeader({
       >
         {title}
       </h2>
-      {/* Lista vira um parágrafo por item, string vira um só. Aditivo em
-          24/09 para a seção "A experiência", cujo texto passou de 149 para 604
-          caracteres: num `<p>` único aquilo era um bloco de nove linhas. Os 15
-          outros usos passam string e não mudam em nada. */}
-      {Array.isArray(subtitle) ? (
-        <div className={cn("flex max-w-xl flex-col gap-3")}>
-          {subtitle.map((paragrafo) => (
-            <p key={paragrafo} className={cn("text-pretty", corpo.subtitle, cor.subtitle)}>
-              {paragrafo}
-            </p>
-          ))}
-        </div>
-      ) : subtitle ? (
+    </>
+  );
+
+  // Lista vira um parágrafo por item, string vira um só. Aditivo em 24/09 para
+  // a seção "A experiência", cujo texto passou de 149 para 604 caracteres: num
+  // `<p>` único aquilo era um bloco de nove linhas. Os 15 outros usos passam
+  // string e não mudam em nada.
+  //
+  // Uma lista usa a largura do TÍTULO (`max-w-2xl`), não a do apoio de uma
+  // linha (`max-w-xl`). São 604 caracteres: em `max-w-xl` viram um filete
+  // estreito e alto, e o desencontro entre a borda do título e a do texto é o
+  // que fazia o bloco parecer torto. Na mesma largura, os dois lêem como uma
+  // coisa só. Tentou-se antes dividir em duas colunas, título de um lado e
+  // texto do outro; o título é curto e o texto alto, então sobrava um vão de
+  // uns 300px embaixo do título — trocava um desencontro por um buraco.
+  const medida = Array.isArray(subtitle) ? "max-w-2xl" : "max-w-xl";
+  const texto = Array.isArray(subtitle) ? (
+    <div className={cn("flex flex-col gap-3", medida)}>
+      {subtitle.map((paragrafo) => (
         <p
-          className={cn(
-            "max-w-xl text-pretty",
-            corpo.subtitle,
-            cor.subtitle,
-          )}
+          key={paragrafo}
+          className={cn("text-pretty", corpo.subtitle, cor.subtitle)}
         >
-          {subtitle}
+          {paragrafo}
         </p>
-      ) : null}
+      ))}
+    </div>
+  ) : subtitle ? (
+    <p className={cn("text-pretty", medida, corpo.subtitle, cor.subtitle)}>
+      {subtitle}
+    </p>
+  ) : null;
+
+  return (
+    <Reveal
+      className={cn(
+        "flex flex-col gap-3",
+        align === "center" ? "items-center text-center" : "items-start",
+        className,
+      )}
+    >
+      {cabeca}
+      {texto}
+      {action ? <div className="mt-3">{action}</div> : null}
     </Reveal>
   );
 }

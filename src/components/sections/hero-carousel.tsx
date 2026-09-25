@@ -102,7 +102,16 @@ export function HeroCarousel({
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <div className="relative h-[34rem] sm:h-[42rem]">
+      {/* Altura aumentada em 25/09 a pedido do cliente: 34/42rem viraram
+          38/48rem (608px no celular, 768px no desktop).
+
+          O teto NÃO é estético: é quanto do site a primeira tela ainda mostra.
+          Num celular de 360×640 o hero já ocupa 608 dos 640 — sobram 32px da
+          seção seguinte, que é o que sinaliza "tem mais abaixo". Crescer mais
+          transforma a abertura num `100vh` e empurra o resto da home para fora
+          do primeiro quadro, que é o que a pessoa vê ao chegar e o que vira
+          miniatura quando o link é compartilhado. */}
+      <div className="relative h-[38rem] sm:h-[48rem]">
         {slides.map((slide, i) => {
           const active = i === index;
           // One real <h1> for the page (first slide); the rest are <h2>.
