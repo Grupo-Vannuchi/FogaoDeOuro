@@ -171,12 +171,12 @@ export const drinkGroups = [
   {
     /** O rótulo do grupo é UI e vem do catálogo; os nomes das bebidas, não. */
     labelKey: "drinksJuices",
-    /**
-     * Recorte com fundo transparente, e é isso que decide o `object-contain`
-     * lá na lista: `cover` cortaria o copo pelas bordas.
-     */
-    photo: "/bebidas/suco.webp",
-    altKey: "drinksJuicesAlt",
+    // Sem foto desde 01/10/2026, a pedido do cliente, pelo mesmo motivo do
+    // grupo de refrigerantes. Saiu com ela a nota sobre o recorte de fundo
+    // transparente, que explicava o `object-contain` da lista — se a foto
+    // voltar, aquele detalhe volta a importar: `cover` corta o copo pelas
+    // bordas. O arquivo `/bebidas/suco.webp` e a chave `drinksJuicesAlt`
+    // seguem onde estão.
     items: [
       { name: "Suco natural", volume: "300 ml", price: 12.0 },
       { name: "Suco de polpa", volume: "300 ml", price: 10.9 },
@@ -204,9 +204,12 @@ export const drinkGroups = [
     ],
   },
   {
+    // Sem foto desde 01/10/2026, a pedido do cliente. O `altKey` saiu junto: a
+    // página só monta a imagem quando TEM foto E alt, então um sem o outro é
+    // config morta. A chave `drinksSodasBeerAlt` segue no catálogo e o arquivo
+    // `/bebidas/refrigerante.webp` segue em `public/` — voltar atrás é
+    // devolver estas duas linhas.
     labelKey: "drinksSodasBeer",
-    photo: "/bebidas/refrigerante.webp",
-    altKey: "drinksSodasBeerAlt",
     items: [
       { name: "Refrigerante", volume: "200 ml", price: 5.6 },
       { name: "Refrigerante zero", volume: "200 ml", price: 5.6 },

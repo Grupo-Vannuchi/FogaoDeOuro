@@ -193,14 +193,22 @@ export default async function CardapioPage({
              A âncora `bebidas` fica no primeiro grupo. Nada no site aponta
              para ela, mas link externo indexado não aparece numa busca do
              repositório, e manter o `id` custa zero. */}
+      {/* Nenhum grupo de bebidas tem foto desde 01/10/2026 — o cliente pediu
+          suco e refrigerante fora, e a carta de vinhos nunca teve aqui. Por
+          isso o `photo` saiu deste `map`: com `drinkGroups` sem nenhum membro
+          que declare `photo`/`altKey`, o `"altKey" in grupo` deixava de
+          encontrar qualquer coisa e o tipo virava `{}`, derrubando o
+          typecheck. Era código inalcançável se fingindo de vivo.
+
+          Para devolver uma foto a um grupo: declare `photo` e `altKey` nele
+          em `config/menu.ts` e volte a passar
+          `photo={foto && alt ? { src: foto, alt: t(alt) } : undefined}`
+          aqui. Os arquivos em `public/bebidas/` não foram apagados. */}
       {drinkGroups.map((grupo, i) => {
-        const foto = "photo" in grupo ? grupo.photo : undefined;
-        const alt = "altKey" in grupo ? grupo.altKey : undefined;
         return (
           <MenuSection
             key={grupo.labelKey}
             id={i === 0 ? "bebidas" : undefined}
-            photo={foto && alt ? { src: foto, alt: t(alt) } : undefined}
             title={t(grupo.labelKey)}
             /* A ressalva de que bebida não entra no quilo vale para os três
                grupos, e repeti-la em cada um viraria ruído. Fica no primeiro. */
