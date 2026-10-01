@@ -97,7 +97,21 @@ export default async function ContactPage({
           O que a foto fazia, para quem escolher a substituta: quem abre o
           contato quer reconhecer a esquina, e o letreiro dizia isso melhor que
           qualquer texto. */}
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      {/* A fachada abre o contato de novo, com foto nova do cliente
+          (01/10/2026). A anterior, `fachada.webp`, saiu em 25/09 a pedido
+          dele — era um recorte fechado só do letreiro.
+
+          `fachada-loja.webp` é recortado com o LETREIRO no centro vertical, e
+          não a loja inteira: a faixa chega a 5,7:1 no desktop e o
+          `object-cover` mostra só a fatia do meio. Centrado na loja, o olho
+          receberia o toldo e o letreiro ficaria de fora — justo a parte que
+          diz o nome da casa. */}
+      <PageHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        image="/ambiente/fachada-loja.webp"
+        imageAlt={t("headerAlt")}
+      />
 
       {/* 1 — Como falar com a gente. Primeiro bloco da página desde 24/09, a
           pedido do cliente: quem abre "Contato" quer o telefone, não um

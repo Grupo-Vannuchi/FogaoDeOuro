@@ -63,18 +63,25 @@ export default async function ReservasPage({
 
   return (
     <>
-      {/* Faixa na cor da marca: esta página é a que fecha a visita — quem
-          chega aqui vem reservar —, e o creme de sempre a deixava igual às
-          demais. */}
-      {/* Foto no cabeçalho desde 24/09, a pedido do cliente. `salao-mesas`, e
-          não `salao`: esta última abre o carrossel logo abaixo, e a mesma
-          imagem duas vezes em sequência lê como falha de carregamento. */}
+      {/* A faixa que fecha a visita — quem chega aqui vem reservar —, e por
+          isso nunca foi o creme de sempre. Já foi a cor da marca; desde
+          24/09 era a foto `salao-mesas`.
+
+          Em 01/10 o cliente pediu a foto fora e "o laranja do fundo do
+          cardápio" no lugar. É a lavagem de terracota, importada do
+          `MenuBackdrop` pelo `tone="cardapio"` — não uma cópia da cor.
+
+          O laranja que o `site.ts` chama de laranja (`accent`, #E04F26) ficou
+          de fora por medição, não por gosto: branco sobre ele dá 3,95:1 e o
+          mínimo é 4,5. A terracota dá 6,43 ao branco e 5,23 ao creme.
+
+          Sai também o carrossel ganhando: a foto do cabeçalho vinha do mesmo
+          acervo de salão que ele mostra logo abaixo, e agora não há repetição
+          nenhuma na primeira rolagem. */}
       <PageHeader
         title={t("title")}
         subtitle={t("subtitle")}
-        image="/ambiente/salao-mesas.webp"
-        imageAlt={t("headerAlt")}
-        tone="brand"
+        tone="cardapio"
       />
 
       {/* 5.1 — Horários + "melhor momento para você" */}

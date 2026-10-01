@@ -546,6 +546,30 @@ const CENTRO = "#9A4530";
 const MEIO = "#8A3B2A";
 const BORDA = "#6E2E20";
 
+/**
+ * A cor de base do banho — a borda, que é o tom mais escuro dos três.
+ *
+ * Exportada junto com {@link LAVAGEM} para quem pintar uma superfície menor
+ * que a tela: o degradê sozinho deixa transparência nos cantos que a elipse
+ * não alcança, e sem uma cor por baixo aparece o creme do site.
+ */
+export const LAVAGEM_BASE = BORDA;
+
+/**
+ * O banho de terracota como valor de `background-image`, para reuso.
+ *
+ * Existia só dentro do `MenuBackdrop` até 01/10/2026, quando a faixa de
+ * Horários & Reservas trocou a foto por esta mesma lavagem, a pedido do
+ * cliente. Copiar o `radial-gradient` para lá criaria duas verdades sobre a
+ * mesma cor: a próxima calibração mudaria uma e esqueceria a outra, e as duas
+ * telas sairiam do ar com terracotas diferentes.
+ *
+ * Quem usa isto herda também o par de texto medido contra ESTE fundo —
+ * {@link TEXTO_SOLTO} e {@link TEXTO_SOLTO_APOIO}, ver "v16" acima. Texto
+ * branco também passaria, mas creme é o que o resto do cardápio usa.
+ */
+export const LAVAGEM = `radial-gradient(120% 95% at 42% 38%, ${CENTRO} 0%, ${MEIO} 45%, ${BORDA} 100%)`;
+
 export function MenuBackdrop() {
   return (
     <div
@@ -562,7 +586,7 @@ export function MenuBackdrop() {
            Tudo em `%` da própria caixa, herdado da v10/v11/v12: a proporção
            não muda com a largura da tela, então esta versão não precisa da
            calibração por breakpoint que as fitas da v9 exigiram. */
-        backgroundImage: `radial-gradient(120% 95% at 42% 38%, ${CENTRO} 0%, ${MEIO} 45%, ${BORDA} 100%)`,
+        backgroundImage: LAVAGEM,
       }}
     />
   );
