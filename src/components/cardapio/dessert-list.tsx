@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Cake, Package } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { TEXTO_SOLTO_APOIO } from "@/components/cardapio/menu-backdrop";
 import { desserts, formatBRL } from "@/config/menu";
 
 /**
@@ -63,6 +64,25 @@ export async function DessertList() {
           );
         })}
       </ul>
+      {/* A ressalva de que sobremesa não vai no quilo, em corpo miúdo e logo
+          abaixo dos preços — que é onde a dúvida nasce. Até 02/10/2026 ela era
+          o SUBTÍTULO da seção, em `text-xl sm:text-2xl` dentro da chapa: a
+          primeira coisa sob o letreiro "Sobremesas" era um aviso de cobrança,
+          no lugar que devia vender o pudim. E estava escrita com a mesma frase
+          exata da seção de bebidas, o que lia como carimbo e não como alguém
+          falando.
+
+          Fica, e não some: num restaurante por quilo a dúvida é real — doce no
+          balcão poderia ir no peso —, e o atrito que isso evita é na balança,
+          que é o caro. Pequena basta porque cada linha acima já mostra o
+          próprio preço: é confirmação, não revelação.
+
+          `TEXTO_SOLTO_APOIO`: cai direto sobre o fundo do cardápio, fora de
+          qualquer `bg-card`. */}
+      <p className="mt-6 text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
+        {t("dessertsPriceNote")}
+      </p>
+
       {/* A cortesia de aniversário. Ganha superfície própria (`bg-card` com
           borda da marca) em vez de virar mais uma linha de texto solto: é
           oferta, não observação, e some no meio das notas se não se destacar.

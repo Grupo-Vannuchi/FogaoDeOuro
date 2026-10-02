@@ -210,11 +210,24 @@ export default async function CardapioPage({
             key={grupo.labelKey}
             id={i === 0 ? "bebidas" : undefined}
             title={t(grupo.labelKey)}
-            /* A ressalva de que bebida não entra no quilo vale para os três
-               grupos, e repeti-la em cada um viraria ruído. Fica no primeiro. */
+            /* O subtítulo só no primeiro grupo, e agora ele VENDE os sucos
+               em vez de avisar de cobrança — a ressalva desceu para o corpo
+               miúdo abaixo da última lista, junto dos preços. Até 02/10/2026
+               este slot trazia "Cobradas à parte: não entram no preço por
+               quilo." em `text-xl sm:text-2xl`, palavra por palavra igual ao
+               da seção de sobremesas. */
             subtitle={i === 0 ? t("drinksNote") : undefined}
           >
             <DrinkGroupList group={grupo} />
+            {/* A ressalva fecha o ÚLTIMO grupo, não o primeiro: ela vale para
+                os três, e dita ao fim lê como fecho da lista inteira. No
+                primeiro, lia como advertência antes de a pessoa ver o que há.
+                Repeti-la nos três viraria ruído — essa parte não mudou. */}
+            {i === drinkGroups.length - 1 ? (
+              <p className="mt-6 text-sm" style={{ color: TEXTO_SOLTO_APOIO }}>
+                {t("drinksPriceNote")}
+              </p>
+            ) : null}
           </MenuSection>
         );
       })}
