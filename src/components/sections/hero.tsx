@@ -43,6 +43,9 @@ const slideImages: string[] = [
   // O pudim (era a posição 4) e o salão (era a 3), agora fechando o carrossel.
   "/hero/slide-4.webp",
   "/hero/slide-3.webp",
+  // O sétimo entrou em 05/10/2026, com o vídeo do cliente. É o PÔSTER dele —
+  // primeiro quadro do próprio arquivo, pela mesma razão do slide 2.
+  "/hero/slide-servindo-poster.webp",
 ];
 
 /**
@@ -61,6 +64,21 @@ const slideVideos: (string | undefined)[] = [
   undefined,
   undefined,
   undefined,
+  // Segundo vídeo, no fecho do carrossel. O original do cliente tinha 29,5s,
+  // 1080x1350 (retrato, de Instagram), 15,5 Mbps e 57 MB — e os últimos ~7
+  // segundos eram a animação da logo, que no hero colidiria com o título por
+  // cima e repetiria a marca que já está no cabeçalho.
+  //
+  // Daqui saiu o trecho de 12s a 20s: as travessas do buffet e alguém se
+  // servindo. Oito segundos porque o slide só fica SETE na tela antes de o
+  // carrossel virar — vídeo mais longo seria banda que ninguém chega a ver,
+  // e `loop` cobre quem pausa no hover. Recortado 16:9 do centro, reescalado
+  // para 1280x720 (o mesmo do slide 2) e sem faixa de áudio, que o player
+  // silencia de qualquer forma. 57 MB viraram 1,05 MB.
+  //
+  // O buffet e não as carnes: o slide 2 já são as carnes girando, e dois
+  // vídeos do mesmo assunto no mesmo carrossel leem como repetição.
+  "/hero/slide-servindo.mp4",
 ];
 
 export async function Hero() {
