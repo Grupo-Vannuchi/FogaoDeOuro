@@ -183,13 +183,18 @@ export const siteConfig: SiteConfig = {
     // criada nele — por isso o contato público segue no Gmail. Trocar assim que
     // existir um @fogaodeouro.com.br de verdade.
     email: "fgdeouro3@gmail.com",
-    phone: "+55 (13) 3219-1552",
+    // Desde 07/10/2026 o fixo e o WhatsApp são o MESMO número, por decisão do
+    // cliente: o antigo fixo (13) 3219-1552 e o antigo WhatsApp (13) 99163-2985
+    // saíram os dois. Por isso `phone` e `whatsapp.display` são iguais — não é
+    // duplicação por descuido, e a página de contato lista os dois cartões de
+    // propósito: um disca, o outro abre a conversa.
+    phone: "+55 (13) 99210-1637",
     whatsapp: {
       // `number` alimenta o link wa.me e por isso é só dígitos, com DDI e sem
       // pontuação — qualquer "+", parêntese ou hífen quebra o deep link.
       // `display` é o que a página de contato mostra para o visitante.
-      number: "5513991632985",
-      display: "+55 (13) 99163-2985",
+      number: "5513992101637",
+      display: "+55 (13) 99210-1637",
       defaultMessage:
         "Olá! Vim pelo site do Fogão de Ouro e gostaria de reservar uma mesa.",
     },

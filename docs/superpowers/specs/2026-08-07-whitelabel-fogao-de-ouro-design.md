@@ -27,7 +27,7 @@ conteúdo vive no banco e é editado pelo admin.
 | `name` (wordmark/títulos) | **Fogão de Ouro** |
 | Ano de fundação | **2001** (→ "25 anos" em 2026) |
 | Endereço | Rua Frei Gaspar, 46 — Centro Histórico, Santos/SP, CEP 11010-090 |
-| Telefone | (13) 3219-1552 |
+| Telefone | (13) 3219-1552 — **substituído em 07/10/2026** por (13) 99210-1637, que passou a ser também o WhatsApp. O valor acima fica como estava: este documento registra o que foi decidido em 07/08, e reescrevê-lo falsificaria o registro. A fonte viva é `src/config/site.ts`. |
 | E-mail | fogaodeouro@fogaodeouro.com.br |
 | Instagram | @fogao.de.ouro *(perfil inativo — feed embedado só após reativação)* |
 | Horário | Segunda a sexta, 11h–15h |

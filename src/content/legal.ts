@@ -32,7 +32,7 @@ export const legalEntity = {
   cnpj: "04.160.109/0001-47",
   address:
     "Rua Frei Gaspar, nº 46 — Centro Histórico, CEP 11010-090, Santos/SP, Brasil",
-  phones: "(13) 3219-1552",
+  phones: "(13) 99210-1637",
   email: "fgdeouro3@gmail.com",
   // Mesmo endereço do contato geral: o restaurante não tem um encarregado de
   // dados separado, e apontar a LGPD para uma caixa que ninguém lê seria pior.
