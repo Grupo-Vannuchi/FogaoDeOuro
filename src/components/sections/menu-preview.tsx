@@ -39,7 +39,15 @@ const VAGAS = 4;
  * completa as vagas que sobrarem — trocar a foto no admin continua bastando.
  */
 const DESTAQUES = [
-  "buffet-de-saladas",
+  // Era `buffet-de-saladas`, com a salada caprese e uma taça de suco ao lado.
+  // Em 09/10/2026 o cliente pediu foto melhor e "um prato de comida" — e,
+  // perguntado, escolheu trocar o NOME junto, para título e imagem não se
+  // contradizerem: card chamado "Buffet de saladas" com um prato montado é
+  // contradição que o visitante nota.
+  //
+  // A foto escolhida tem salada à vista no prato: faz a ponte com o tema
+  // antigo e não repete carne, que já é o terceiro card.
+  "buffet-por-quilo",
   "ilha-de-massas",
   // A carne entrou em 25/09, a pedido do cliente, e a ordem é a dele:
   // buffet, massas, carne, sobremesa — a sequência de um almoço.
